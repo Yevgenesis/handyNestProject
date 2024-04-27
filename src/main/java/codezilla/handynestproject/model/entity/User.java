@@ -65,7 +65,7 @@ public class User {
     @Column(name = "city", nullable = false, length = 70)
     private String city;
 
-    @Builder.Default
+
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -74,7 +74,7 @@ public class User {
     private Set<Task> tasks = new HashSet<>();
 
 
-    @Builder.Default
+
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
@@ -82,7 +82,7 @@ public class User {
     )
     private Set<Attachment> attachments = new HashSet<>();
 
-    @Builder.Default
+
     @OneToMany(
             mappedBy = "sender_id",
             cascade = CascadeType.ALL,
@@ -90,7 +90,7 @@ public class User {
     )
     private Set<Feedback> sentFeedbacks = new HashSet<>();
 
-    @Builder.Default
+
     @OneToMany(
             mappedBy = "receiver_id",
             cascade = CascadeType.ALL,

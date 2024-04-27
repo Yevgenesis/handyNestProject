@@ -28,7 +28,7 @@ public class Category {
     private int parentId;
     private int position;
 
-    @Builder.Default
+
     @OneToMany(mappedBy = "category",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
