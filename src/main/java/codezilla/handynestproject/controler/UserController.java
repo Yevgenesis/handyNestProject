@@ -12,7 +12,6 @@ import java.util.List;
 @RequestMapping(path = "/user")
 public class UserController {
 
-
     public final UserService userService;
 
     public UserController(UserService userService) {
@@ -21,7 +20,6 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUsers() {
-
         return userService.getUsers();
     }
 }
