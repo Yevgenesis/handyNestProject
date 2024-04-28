@@ -1,10 +1,17 @@
 package codezilla.handynestproject.model.entity;
 
-import jakarta.persistence.*;
+import codezilla.handynestproject.generator.UuidTimeSequenceGenerator;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Transient;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Builder
@@ -14,7 +21,8 @@ import org.springframework.data.annotation.Transient;
 public class Attachment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", type = UuidTimeSequenceGenerator.class)
     private Long id;
 
     @Column(name = "first_name", nullable = false)
@@ -22,9 +30,9 @@ public class Attachment {
     @Column(name = "last_name", nullable = false)
     private String filePath;
 
-    @Transient
+
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Performer performer;
 
 
 

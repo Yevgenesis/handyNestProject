@@ -1,6 +1,6 @@
 package codezilla.handynestproject.service.impl;
 
-import codezilla.handynestproject.model.entity.User;
+import codezilla.handynestproject.model.entity.UserInfo;
 import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.service.UserService;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<User> getUsers() {
+    public List<UserInfo> getUsers() {
         return userRepository.findAll();
     }
 }

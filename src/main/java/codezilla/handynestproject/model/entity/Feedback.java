@@ -1,9 +1,16 @@
 package codezilla.handynestproject.model.entity;
 
-import jakarta.persistence.*;
+import codezilla.handynestproject.generator.UuidTimeSequenceGenerator;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Builder
@@ -13,14 +20,15 @@ import lombok.NoArgsConstructor;
 public class Feedback {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", type = UuidTimeSequenceGenerator.class)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User sender_id;
+    private UserInfo sender_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User receiver_id;
+    private UserInfo receiver_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Task task;
