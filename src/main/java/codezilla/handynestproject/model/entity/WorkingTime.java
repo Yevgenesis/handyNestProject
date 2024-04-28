@@ -1,6 +1,5 @@
 package codezilla.handynestproject.model.entity;
 
-import codezilla.handynestproject.generator.UuidTimeSequenceGenerator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +8,8 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Builder
@@ -19,8 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class WorkingTime {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", type = UuidTimeSequenceGenerator.class)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column(name = "title", nullable = false)

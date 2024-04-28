@@ -1,6 +1,6 @@
 package codezilla.handynestproject.model.entity;
 
-import codezilla.handynestproject.generator.UuidTimeSequenceGenerator;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,10 +14,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Data
 @Entity
@@ -28,20 +29,18 @@ import java.util.Set;
 public class Role {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", type = UuidTimeSequenceGenerator.class)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column(name = "role_name", nullable = false, length = 20)
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+    @Builder.Default
     private Set<UserInfo> users = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "role_authority",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+    @Builder.Default
     private Set<Authority> authorities = new HashSet<>();
 
 

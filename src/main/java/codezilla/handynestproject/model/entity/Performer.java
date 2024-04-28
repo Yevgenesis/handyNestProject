@@ -1,6 +1,5 @@
 package codezilla.handynestproject.model.entity;
 
-import codezilla.handynestproject.generator.UuidTimeSequenceGenerator;
 import codezilla.handynestproject.model.entity.enums.Rating;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,10 +16,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Data
 @Builder
@@ -30,8 +30,7 @@ import java.util.Set;
 @Table(name = "performer")
 public class Performer {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", type = UuidTimeSequenceGenerator.class)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column(name = "phone_number", length = 20)
@@ -53,8 +52,7 @@ public class Performer {
     @Column(name = "city", length = 70)
     private String city;
 
-    @OneToOne
-    @JoinColumn(name = "user_info_id")
+    @OneToOne(mappedBy = "performer", cascade = CascadeType.ALL)
     private UserInfo userInfo;
 
 

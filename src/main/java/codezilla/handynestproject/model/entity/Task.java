@@ -1,17 +1,21 @@
 package codezilla.handynestproject.model.entity;//package codezilla.hendynestproject.model.entity;
 
-import codezilla.handynestproject.generator.UuidTimeSequenceGenerator;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+
+import java.util.Set;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Builder
@@ -21,8 +25,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Task {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", type = UuidTimeSequenceGenerator.class)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     private String title;
@@ -42,5 +45,12 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
+
+    @OneToMany(
+            mappedBy = "task",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<Feedback> feedbacks;
 
 }
