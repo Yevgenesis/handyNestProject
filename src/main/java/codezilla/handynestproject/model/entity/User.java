@@ -1,11 +1,14 @@
 package codezilla.handynestproject.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -35,10 +38,12 @@ public class User {
     private String password;
 
     @Column(name = "created_on", nullable = false, updatable = false)
-    private LocalDate created_on;
+    @CreatedDate
+    private Timestamp created_on;
 
-    @Column(name = "updated_on", nullable = false, updatable = false)
-    private LocalDate updated_on;
+    @Column(name = "updated_on", nullable = false)
+    @LastModifiedDate
+    private Timestamp updated_on;
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
@@ -47,7 +52,7 @@ public class User {
 
     /** Только для исполнителей
      */
-    @Column(name = "phone_number", nullable = false, length = 20)
+    @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
     @Column(name = "is_phone_verified", nullable = false)
@@ -56,71 +61,70 @@ public class User {
     @Column(name = "is_passport_verified", nullable = false)
     private boolean isPassportVerified;
 
-    @Column(name = "rating", nullable = false)
+    @Column(name = "rating")
     private int rating;
 
-    @Column(name = "country", nullable = false, length = 70)
+    @Column(name = "country", length = 70)
     private String country;
 
-    @Column(name = "city", nullable = false, length = 70)
+    @Column(name = "city", length = 70)
     private String city;
 
 
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Task> tasks = new HashSet<>();
+//    @OneToMany(
+//            mappedBy = "user",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private Set<Task> tasks = new HashSet<>();
 
 
-
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Attachment> attachments = new HashSet<>();
-
-
-    @OneToMany(
-            mappedBy = "sender_id",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Feedback> sentFeedbacks = new HashSet<>();
+//    @OneToMany(
+//            mappedBy = "user",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private Set<Attachment> attachments = new HashSet<>();
 
 
-    @OneToMany(
-            mappedBy = "receiver_id",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Feedback> receivedFeedbacks = new HashSet<>();
+//    @OneToMany(
+//            mappedBy = "sender_id",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private Set<Feedback> sentFeedbacks = new HashSet<>();
+//
 
-    @ManyToOne
-    private Role roles;
+//    @OneToMany(
+//            mappedBy = "receiver_id",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private Set<Feedback> receivedFeedbacks = new HashSet<>();
 
-    public void addTask(Task task) {
-        this.tasks.add(task);
-    }
-    public void removeTask(Task task) {
-        this.tasks.remove(task);
-    }
-
-    public void addAttachment(Attachment attachment) {
-        this.attachments.add(attachment);
-    }
-    public void removeAttachment(Attachment attachment) {
-        this.attachments.remove(attachment);
-    }
-
-    public void addFeedback(Feedback feedback) {
-        this.receivedFeedbacks.add(feedback);
-    }
-    public void removeFeedback(Feedback feedback) {
-        this.receivedFeedbacks.remove(feedback);
-    }
+//    @ManyToOne
+//    private Role roles;
+//
+//    public void addTask(Task task) {
+//        this.tasks.add(task);
+//    }
+//    public void removeTask(Task task) {
+//        this.tasks.remove(task);
+//    }
+//
+//    public void addAttachment(Attachment attachment) {
+//        this.attachments.add(attachment);
+//    }
+//    public void removeAttachment(Attachment attachment) {
+//        this.attachments.remove(attachment);
+//    }
+//
+//    public void addFeedback(Feedback feedback) {
+//        this.receivedFeedbacks.add(feedback);
+//    }
+//    public void removeFeedback(Feedback feedback) {
+//        this.receivedFeedbacks.remove(feedback);
+//    }
 
 
 }
