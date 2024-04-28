@@ -2,9 +2,14 @@ package codezilla.handynestproject.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -13,17 +18,24 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "\"user\"")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    /** Для всех пользователей
+
+    /**
+     * Для всех пользователей
      */
+
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
+
+    /**
+     * Email используется для авторизации как Username
+     */
 
     @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
@@ -33,6 +45,9 @@ public class User {
 
     @Column(name = "password", nullable = false, length = 50)
     private String password;
+
+    @Transient
+    private String passwordConfirm;
 
     @Column(name = "created_on", nullable = false, updatable = false)
     private LocalDate created_on;
@@ -44,9 +59,10 @@ public class User {
     private boolean isDeleted;
 
 
-
-    /** Только для исполнителей
+    /**
+     * Только для исполнителей
      */
+
     @Column(name = "phone_number", nullable = false, length = 20)
     private String phoneNumber;
 
@@ -98,8 +114,15 @@ public class User {
     )
     private Set<Feedback> receivedFeedbacks = new HashSet<>();
 
-    @ManyToOne
-    private Role roles;
+    @ManyToMany
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"
+            ))
+    private Collection<Role> roles;
 
     public void addTask(Task task) {
         this.tasks.add(task);
@@ -123,4 +146,39 @@ public class User {
     }
 
 
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Transient;
 
 @Entity
 @Builder
@@ -21,7 +22,7 @@ public class Attachment {
     @Column(name = "last_name", nullable = false)
     private String filePath;
 
-
+    @Transient
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
