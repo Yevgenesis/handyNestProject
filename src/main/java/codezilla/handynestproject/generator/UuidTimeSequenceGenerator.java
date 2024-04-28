@@ -19,7 +19,7 @@ public class UuidTimeSequenceGenerator implements IdentifierGenerator {
     }
 
     private char[] concatInHexFormat(long currentTime, UUID uuid) {
-        String uuidStr = uuid.toString().replace("-", "");
+        String uuidStr = uuid.toString().replace("-", "").toUpperCase();
         String millis = Long.toString(currentTime);
         String sequenceHex = uuidStr.substring(0, 16);
         String concatHex = millis + sequenceHex;
