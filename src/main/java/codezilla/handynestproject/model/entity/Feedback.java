@@ -1,11 +1,6 @@
 package codezilla.handynestproject.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -24,10 +19,10 @@ public class Feedback {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserInfo sender_id;
+    private User sender_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserInfo receiver_id;
+    private User receiver_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Task task;

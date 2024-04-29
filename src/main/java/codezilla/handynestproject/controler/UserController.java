@@ -1,6 +1,6 @@
 package codezilla.handynestproject.controler;
 
-import codezilla.handynestproject.model.entity.UserInfo;
+import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +17,12 @@ public class UserController {
     public final UserService userService;
 
     @GetMapping
-    public List<UserInfo> getAllUsers() {
+    public List<User> getAllUsers() {
         return userService.getUsers();
     }
 
 //    @PostMapping
-//    public UserInfo addUser(@RequestBody UserInfo userInfo) {
+//    public User addUser(@RequestBody User user) {
 //
 //    }
 }

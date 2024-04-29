@@ -1,9 +1,9 @@
 package codezilla.handynestproject.service;
 
-import codezilla.handynestproject.model.entity.UserInfo;
+import codezilla.handynestproject.model.entity.User;
 
 import java.util.List;
 
 public interface UserService {
-    List<UserInfo> getUsers();
+    List<User> getUsers();
 }
