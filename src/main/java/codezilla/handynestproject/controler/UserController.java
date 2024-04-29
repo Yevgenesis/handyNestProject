@@ -20,7 +20,6 @@ public class UserController {
     public List<User> getAllUsers() {
         List<User> users = userService.getUsers();
         System.out.println(users);
-
         return users;
     }
 
