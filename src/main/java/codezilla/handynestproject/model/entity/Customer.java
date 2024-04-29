@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -20,17 +19,13 @@ import java.util.UUID;
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", columnDefinition = "uuid")
-    private UUID id;
-
+    @MapsId
+    @OneToOne(fetch = FetchType.EAGER)
+    private UserInfo userInfo;
 
     @Column(name = "rating")
     @Enumerated(EnumType.STRING)
     private Rating rating;
-
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
-    private UserInfo userInfo;
 
     @OneToMany(
             mappedBy = "customer",
@@ -38,11 +33,6 @@ public class Customer {
             orphanRemoval = true
     )
     private Set<Task> tasks = new HashSet<>();
-
-
-
-
-
 
     }
 

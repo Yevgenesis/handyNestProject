@@ -20,4 +20,9 @@ public class UserController {
     public List<UserInfo> getAllUsers() {
         return userService.getUsers();
     }
+
+//    @PostMapping
+//    public UserInfo addUser(@RequestBody UserInfo userInfo) {
+//
+//    }
 }

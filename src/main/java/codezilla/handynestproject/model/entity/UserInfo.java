@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -14,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@EntityScan
+
 @Data
 @Builder
 @Entity
@@ -28,7 +27,6 @@ public class UserInfo {
     @Column(name = "id", columnDefinition = "uuid")
     private UUID id;
 
-
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
@@ -39,7 +37,7 @@ public class UserInfo {
      * Email используется для авторизации как Username
      */
 
-    @Column(name = "email", nullable = false, length = 50, unique = true)
+    @Column(name = "email", updatable = false, nullable = false, length = 50, unique = true)
     private String email;
 
     @Column(name = "is_email_verified", nullable = false)
@@ -48,8 +46,8 @@ public class UserInfo {
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
-    @Column(name = "created_on", nullable = false, updatable = false)
     @CreatedDate
+    @Column(name = "created_on", nullable = false, updatable = false)
     private Timestamp created_on;
 
     @LastModifiedDate
@@ -58,14 +56,6 @@ public class UserInfo {
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Customer customer;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Performer performer;
 
 
     @ManyToMany

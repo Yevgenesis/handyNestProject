@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -20,9 +19,9 @@ import java.util.UUID;
 public class Performer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", columnDefinition = "uuid")
-    private UUID id;
+    @MapsId
+    @OneToOne(fetch = FetchType.EAGER)
+    private UserInfo userInfo;
 
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
@@ -42,9 +41,6 @@ public class Performer {
 
     @Column(name = "city", length = 70)
     private String city;
-
-    @OneToOne(mappedBy = "performer", cascade = CascadeType.ALL)
-    private UserInfo userInfo;
 
 
     @OneToMany(
