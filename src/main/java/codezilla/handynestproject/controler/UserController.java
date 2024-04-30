@@ -19,7 +19,7 @@ public class UserController {
     @GetMapping
     public List<User> getAllUsers() {
         List<User> users = userService.getUsers();
-        System.out.println(users);
+        System.out.println(users.get(1).getId());
         return users;
     }
 

@@ -1,12 +1,9 @@
 package codezilla.handynestproject.dto;
 
-import codezilla.handynestproject.model.entity.Feedback;
 import codezilla.handynestproject.model.entity.enums.Rating;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -42,6 +39,5 @@ public class UserResponseDto {
 
     private String city;
 
-    private Set<Feedback> sentFeedbacks = new HashSet<>();
-
 }
+
