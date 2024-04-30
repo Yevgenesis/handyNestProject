@@ -8,7 +8,7 @@ import lombok.Data;
 
 import java.util.Set;
 
-// ToDo исправить (Тестовый DTO)
+// ToDo проверить (Тестовый DTO)
 @Data
 public class TaskResponseDto {
     private Long id;
