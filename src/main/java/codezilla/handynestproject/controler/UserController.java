@@ -1,6 +1,7 @@
 package codezilla.handynestproject.controler;
 
-import codezilla.handynestproject.model.entity.User;
+import codezilla.handynestproject.dto.UserResponseDto;
+import codezilla.handynestproject.mapper.UserMapper;
 import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,17 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    public final UserService userService;
+    private final UserService userService;
+    private final UserMapper userMapper;
+
 
     @GetMapping
-    public List<User> getAllUsers() {
-        List<User> users = userService.getUsers();
-        System.out.println(users.get(1).getId());
-        return users;
+    public List<UserResponseDto> getAllUsers() {
+        return userMapper.usersToListDto(userService.getUsers());
     }
 
-//    @PostMapping
-//    public User addUser(@RequestBody User user) {
-//
-//    }
 }
