@@ -6,6 +6,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+// ToDo убрать конфиденциальные поля (оставил для тестов)
 @Data
 public class UserResponseDto {
 
