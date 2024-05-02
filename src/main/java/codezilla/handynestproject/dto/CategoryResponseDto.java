@@ -5,12 +5,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CategoryDto {
+public class CategoryResponseDto {
 
     private Long id;
-
     private String name;
-    private List<CategoryDto> child;
+    private List<CategoryResponseDto> children;
     private int weight;
 
 }

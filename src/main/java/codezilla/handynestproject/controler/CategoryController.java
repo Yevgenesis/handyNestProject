@@ -1,6 +1,7 @@
 package codezilla.handynestproject.controler;
 
-import codezilla.handynestproject.model.entity.Category;
+import codezilla.handynestproject.dto.CategoryResponseDto;
+import codezilla.handynestproject.mapper.CategoryMapper;
 import codezilla.handynestproject.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +16,11 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        categoryService.getCategories();
-        return categoryService.getCategories();
+    public List<CategoryResponseDto> getAllCategories() {
+        return categoryMapper.categoryToListDto(categoryService.getCategories());
     }
 
 }
