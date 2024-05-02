@@ -4,7 +4,6 @@ import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.model.entity.Task;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
 
 import java.util.List;
 

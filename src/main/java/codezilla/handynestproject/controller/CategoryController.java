@@ -1,4 +1,4 @@
-package codezilla.handynestproject.controler;
+package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.dto.CategoryResponseDto;
 import codezilla.handynestproject.mapper.CategoryMapper;

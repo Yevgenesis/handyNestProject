@@ -6,11 +6,7 @@ import codezilla.handynestproject.exception.CategoryNotFoundException;
 import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
-import codezilla.handynestproject.model.entity.Address;
-import codezilla.handynestproject.model.entity.Category;
-import codezilla.handynestproject.model.entity.Task;
-import codezilla.handynestproject.model.entity.User;
-import codezilla.handynestproject.model.entity.WorkingTime;
+import codezilla.handynestproject.model.entity.*;
 import codezilla.handynestproject.model.entity.enums.TaskStatus;
 import codezilla.handynestproject.repository.CategoryRepository;
 import codezilla.handynestproject.repository.TaskRepository;
@@ -131,11 +127,7 @@ public class TaskServiceImpl implements TaskService {
 
     private Category getCategoryFromDto(TaskRequestDto dto) {
         Long categoryId = dto.categoryId();
-        Category category = categoryRepository.getById(categoryId);
-        if (category == null) {
-            throw new CategoryNotFoundException();
-        }
-        return category;
+        return categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
     }
 
     private WorkingTime getWorkingTimeFromWorkingTimeId(Long workingTimeId) {
