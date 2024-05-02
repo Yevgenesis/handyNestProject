@@ -13,12 +13,11 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Data
-@Builder
 @Entity
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "\"user\"")
 public class User {
 
