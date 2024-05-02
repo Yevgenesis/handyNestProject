@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkingTimeRepository extends JpaRepository<WorkingTime, Long> {
 
-    WorkingTime getById(Long workingTimeId);
+    WorkingTime getWorkingTimeById(Long workingTimeId);
 
 
 }
