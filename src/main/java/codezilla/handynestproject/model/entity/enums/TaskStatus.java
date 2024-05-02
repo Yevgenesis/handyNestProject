@@ -2,7 +2,7 @@ package codezilla.handynestproject.model.entity.enums;
 
 public enum TaskStatus {
     OPEN,
-    CLOSED,
+    CANCELED,
     IN_PROGRESS,
     COMPLETED
 }

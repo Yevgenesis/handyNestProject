@@ -1,4 +1,4 @@
-package codezilla.handynestproject.controler;
+package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.mapper.UserMapper;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/user")

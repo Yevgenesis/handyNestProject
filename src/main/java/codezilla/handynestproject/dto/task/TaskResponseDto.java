@@ -22,4 +22,5 @@ public class TaskResponseDto {
     private Long workingTimeId;
     private Category category;
     private User user;
+    private boolean isPublish;
    }

@@ -36,6 +36,8 @@ public class Task {
     @OneToOne
     private Address address;
     private TaskStatus taskStatus;
+    @Builder.Default
+    private boolean isPublish = true;
 
     @OneToOne
     private WorkingTime workingTime;

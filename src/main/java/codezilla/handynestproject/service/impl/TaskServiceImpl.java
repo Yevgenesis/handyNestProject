@@ -6,6 +6,7 @@ import codezilla.handynestproject.exception.CategoryNotFoundException;
 import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
+import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.entity.User;
@@ -18,6 +19,8 @@ import codezilla.handynestproject.repository.WorkingTimeRepository;
 import codezilla.handynestproject.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +38,9 @@ public class TaskServiceImpl implements TaskService {
                 .title(dto.title())
                 .description(dto.description())
                 .price(dto.price())
-                .address(dto.address())
+                .address(getAddressFromDto(dto))
                 .taskStatus(TaskStatus.OPEN)
+                .isPublish(dto.isPublish())
                 .workingTime(getWorkingTimeFromDto(dto))
                 .category(getCategoryFromDto(dto))
                 .user(getUserFromTaskDto(dto))
@@ -81,6 +85,23 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         taskRepository.delete(task);
     }
+
+    @Override
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
+    }
+
+    @Override
+    public Task getTaskById(Long taskId) {
+        return taskRepository.findTaskById(taskId);
+    }
+
+    @Override
+    public List<Task> getAllPublishTasks() {
+        List<Task> tasks = taskRepository.findAll();
+        return tasks.stream()
+                .filter(Task::isPublish).toList();
+    }
 //
 //    @Override
 //    public Task addPerformer(Long taskId, Performer performer) {
@@ -119,5 +140,14 @@ public class TaskServiceImpl implements TaskService {
 
     private WorkingTime getWorkingTimeFromWorkingTimeId(Long workingTimeId) {
         return workingTimeRepository.getById(workingTimeId);
+    }
+
+    private Address getAddressFromDto(TaskRequestDto dto) {
+        return Address.builder()
+                .country(dto.country())
+                .city(dto.city())
+                .street(dto.street())
+                .zip(dto.zip())
+                .build();
     }
 }
