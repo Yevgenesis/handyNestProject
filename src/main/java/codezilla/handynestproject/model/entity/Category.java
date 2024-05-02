@@ -18,9 +18,8 @@ import java.util.UUID;
 public class Category {
 
     @Id
-    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
-    @Column(name = "id", columnDefinition = "uuid", unique = true, nullable = false, updatable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String name;
     private int parentId;

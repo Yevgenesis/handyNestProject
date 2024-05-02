@@ -24,15 +24,9 @@ import java.util.UUID;
 @Table(name = "\"user\"")
 public class User {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    @Column(name = "id", columnDefinition = "uuid", unique = true, nullable = false, updatable = false)
-//    private UUID id;
-
     @Id
-    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
-    @Column(name = "id", columnDefinition = "uuid", unique = true, nullable = false, updatable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;

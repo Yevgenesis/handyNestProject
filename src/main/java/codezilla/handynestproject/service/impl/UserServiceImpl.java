@@ -6,8 +6,6 @@ import codezilla.handynestproject.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,8 +23,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserByUuid(UUID uuid) {
-        return userRepository.findUserById(uuid);
+    public User getUserById(Long id) {
+        return userRepository.findUserById(id);
     }
 
 }

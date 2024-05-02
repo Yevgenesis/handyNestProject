@@ -9,5 +9,5 @@ import java.util.UUID;
 public interface UserService {
     List<User> getUsers();
 
-    Optional<User> getUserByUuid(UUID uuid);
+    User getUserById(Long id);
 }

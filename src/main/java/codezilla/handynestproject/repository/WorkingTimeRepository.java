@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface WorkingTimeRepository extends JpaRepository<WorkingTime, UUID> {
 
+    WorkingTime getById(Long workingTimeId);
+    WorkingTime getByWorkingTimeId(Long workingTimeId);
 }

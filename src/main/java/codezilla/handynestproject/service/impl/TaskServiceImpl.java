@@ -1,7 +1,9 @@
 package codezilla.handynestproject.service.impl;
 
 import codezilla.handynestproject.dto.task.TaskRequestDto;
+import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.exception.CategoryNotFoundException;
+import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
 import codezilla.handynestproject.model.entity.Category;
@@ -44,7 +46,27 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task updateTask(TaskRequestDto dto) {
+    public Task updateTask(TaskUpdateRequestDto dto) {
+        Task task = taskRepository.findById(dto.getId()).orElseThrow(TaskNotFoundException::new);
+        if(dto.getTitle() != null){
+            task.setTitle(dto.getTitle());
+        }
+        if(dto.getDescription() != null){
+            task.setDescription(dto.getDescription());
+        }
+        if(dto.getPrice() != null){
+            task.setPrice(dto.getPrice());
+        }
+        if(dto.getAddress() != null){
+            task.setAddress(dto.getAddress());
+        }
+        if(dto.getTaskStatus() != null){
+            task.setTaskStatus(dto.getTaskStatus());
+        }
+        if(dto.getWorkingTimeId() != null){
+            task.setWorkingTime(getWorkingTimeFromWorkingTimeId(dto.getWorkingTimeId()));
+        }
+
 
         return null;
     }
@@ -65,7 +87,7 @@ public class TaskServiceImpl implements TaskService {
 
     private WorkingTime getWorkingTimeFromDto(TaskRequestDto dto) {
         Long workingTimeId = dto.workingTimeId();
-        WorkingTime workingTime = workingTimeRepository.getById(workingTimeId)
+        WorkingTime workingTime = workingTimeRepository.getById(workingTimeId);
         if (workingTime == null) {
             throw new WorkingTimeNotFoundException();
         }
@@ -79,5 +101,9 @@ public class TaskServiceImpl implements TaskService {
             throw new CategoryNotFoundException();
         }
         return category;
+    }
+
+    private WorkingTime getWorkingTimeFromWorkingTimeId(Long workingTimeId) {
+        return workingTimeRepository.getById(workingTimeId);
     }
 }
