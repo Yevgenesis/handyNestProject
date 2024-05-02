@@ -9,16 +9,18 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @Entity
 @Builder
-@Table(name = "category")
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "category")
 public class Category {
 
     @Id
@@ -26,7 +28,10 @@ public class Category {
     private Long id;
 
     private String name;
-    private int parentId;
+
+    @Column(name = "parent_id")
+    private Long parentId;
+
     private int weight;
 
     @OneToMany(mappedBy = "category",

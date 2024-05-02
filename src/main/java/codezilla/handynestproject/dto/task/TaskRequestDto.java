@@ -1,4 +1,4 @@
-package codezilla.handynestproject.dto.task;
+package codezilla.handynestproject.dto;
 
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.WorkingTime;
@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
-import java.util.UUID;
 
 public record TaskRequestDto(
         @NotBlank @Size(min = 3, max = 50) String title,
