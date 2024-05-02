@@ -4,13 +4,12 @@ import codezilla.handynestproject.model.entity.enums.Rating;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.util.UUID;
 
 // ToDo убрать конфиденциальные поля (оставил для тестов)
 @Data
 public class UserResponseDto {
 
-    private UUID id;
+    private Long id;
 
     private String firstName;
 

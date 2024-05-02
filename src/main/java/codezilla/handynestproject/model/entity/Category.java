@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Builder
@@ -18,9 +16,8 @@ import java.util.UUID;
 public class Category {
 
     @Id
-    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
-    @Column(name = "id", columnDefinition = "uuid", unique = true, nullable = false, updatable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String name;
     private int parentId;

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
-import java.util.UUID;
 
 public record TaskRequestDto(
         @NotBlank @Size(min = 3, max = 50) String title,
@@ -14,6 +13,6 @@ public record TaskRequestDto(
         List<Double> location,
         List<Integer> workingTime,
         @NotNull Integer categoryId,
-        @NotBlank UUID userId
+        @NotBlank Long userId
 ) {
 }

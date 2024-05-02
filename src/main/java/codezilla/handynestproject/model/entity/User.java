@@ -6,14 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 
 @Data
@@ -24,15 +22,9 @@ import java.util.UUID;
 @Table(name = "\"user\"")
 public class User {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    @Column(name = "id", columnDefinition = "uuid", unique = true, nullable = false, updatable = false)
-//    private UUID id;
-
     @Id
-    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
-    @Column(name = "id", columnDefinition = "uuid", unique = true, nullable = false, updatable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
