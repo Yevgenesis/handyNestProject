@@ -1,7 +1,7 @@
 package codezilla.handynestproject.mapper;
 
 
-import codezilla.handynestproject.dto.UserResponseDto;
+import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.model.entity.User;
 import org.mapstruct.Mapper;
 

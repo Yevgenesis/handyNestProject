@@ -1,6 +1,6 @@
 package codezilla.handynestproject.controler;
 
-import codezilla.handynestproject.dto.UserResponseDto;
+import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.mapper.UserMapper;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.service.UserService;

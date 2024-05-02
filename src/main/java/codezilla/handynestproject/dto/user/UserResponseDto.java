@@ -1,4 +1,4 @@
-package codezilla.handynestproject.dto;
+package codezilla.handynestproject.dto.user;
 
 import codezilla.handynestproject.model.entity.enums.Rating;
 import lombok.Data;

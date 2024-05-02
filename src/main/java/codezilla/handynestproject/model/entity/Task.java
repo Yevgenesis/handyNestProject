@@ -1,5 +1,6 @@
 package codezilla.handynestproject.model.entity;//package codezilla.hendynestproject.model.entity;
 
+import codezilla.handynestproject.model.entity.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+
 @Builder
 @Table(name = "task")
 @AllArgsConstructor
@@ -24,8 +26,8 @@ public class Task {
     private String title;
     private String description;
     private Double price;
-    private String location;
-    private String state;
+    private Address address;
+    private TaskStatus taskStatus;
 
     @OneToOne
     private WorkingTime workingTime;
