@@ -4,10 +4,9 @@ import codezilla.handynestproject.model.entity.WorkingTime;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
 
 @Repository
-public interface WorkingTimeRepository extends JpaRepository<WorkingTime, UUID> {
+public interface WorkingTimeRepository extends JpaRepository<WorkingTime, Long> {
 
     WorkingTime getById(Long workingTimeId);
 
