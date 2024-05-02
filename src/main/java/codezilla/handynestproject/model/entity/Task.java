@@ -1,16 +1,11 @@
 package codezilla.handynestproject.model.entity;//package codezilla.hendynestproject.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Builder
@@ -29,13 +24,20 @@ public class Task {
     private String location;
     private String state;
 
+    @OneToOne
+    private WorkingTime workingTime;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private WorkingTime workingTime;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @OneToMany(
+            mappedBy = "task",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<Feedback> feedbacks;
 
 }

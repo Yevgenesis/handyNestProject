@@ -3,37 +3,44 @@ package codezilla.handynestproject.model.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
+@Data
 @Entity
 @Builder
-@Table(name = "role")
+@Table(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(name = "role_name", nullable = false)
+    @Column(name = "role_name", nullable = false, length = 20)
     private String roleName;
 
-    @OneToMany
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Collection<User> users = new HashSet<>();
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<User> users = new HashSet<>();
 
-    public void addUser(User user) {
-        users.add(user);
-    }
-    public void removeUser(User user) {
-        users.remove(user);
-    }
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<Authority> authorities = new HashSet<>();
+
+
+
+
+
+
+
+
 
 
 }
