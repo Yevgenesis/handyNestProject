@@ -20,7 +20,7 @@ public class Category {
     private Long id;
 
     private String name;
-    private int parentId;
+    private Long parentId;
     private int weight;
 
     @OneToMany(mappedBy = "category",
