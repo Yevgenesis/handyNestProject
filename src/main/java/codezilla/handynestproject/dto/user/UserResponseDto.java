@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 public class UserResponseDto {
 
-    private UUID id;
+    private Long id;
 
     private String firstName;
 

@@ -41,6 +41,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 
+//    @ExceptionHandler(PerformerNotFoundException.class)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    public @ResponseBody ErrorResponse handlePerformerNotFoundException(PerformerNotFoundException ex) {
+//        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+//    }
+
     /**
     Method für @Nullable
     */

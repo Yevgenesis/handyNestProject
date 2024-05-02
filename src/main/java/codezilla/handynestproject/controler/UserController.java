@@ -30,9 +30,9 @@ public class UserController {
         return userMapper.usersToListDto(userService.getUsers());
     }
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<User> getUserByUuid(@PathVariable UUID uuid) {
-        Optional<User> userOptional = userService.getUserByUuid(uuid);
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        Optional<User> userOptional = userService.getUserById(id);
         return userOptional.map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

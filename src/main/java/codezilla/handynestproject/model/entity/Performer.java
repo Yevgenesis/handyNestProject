@@ -1,11 +1,13 @@
 //package codezilla.handynestproject.model.entity;
 //
 //import codezilla.handynestproject.model.entity.enums.Rating;
-//import jakarta.persistence.*;
-//import lombok.AllArgsConstructor;
-//import lombok.Builder;
+//import jakarta.persistence.CascadeType;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Embeddable;
+//import jakarta.persistence.EnumType;
+//import jakarta.persistence.Enumerated;
+//import jakarta.persistence.OneToMany;
 //import lombok.Data;
-//import lombok.NoArgsConstructor;
 //
 //import java.util.HashSet;
 //import java.util.Set;
@@ -52,7 +54,7 @@
 //
 //}
 //
-//
-//
-//
-//
+
+
+
+

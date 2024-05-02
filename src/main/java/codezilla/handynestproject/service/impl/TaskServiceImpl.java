@@ -48,33 +48,47 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task updateTask(TaskUpdateRequestDto dto) {
         Task task = taskRepository.findById(dto.getId()).orElseThrow(TaskNotFoundException::new);
-        if(dto.getTitle() != null){
-            task.setTitle(dto.getTitle());
-        }
-        if(dto.getDescription() != null){
-            task.setDescription(dto.getDescription());
-        }
-        if(dto.getPrice() != null){
-            task.setPrice(dto.getPrice());
-        }
-        if(dto.getAddress() != null){
-            task.setAddress(dto.getAddress());
-        }
-        if(dto.getTaskStatus() != null){
-            task.setTaskStatus(dto.getTaskStatus());
-        }
-        if(dto.getWorkingTimeId() != null){
+        if (dto.getWorkingTimeId() != null) {
             task.setWorkingTime(getWorkingTimeFromWorkingTimeId(dto.getWorkingTimeId()));
         }
+        if (dto.getTitle() != null) {
+            task.setTitle(dto.getTitle());
+        }
+        if (dto.getDescription() != null) {
+            task.setDescription(dto.getDescription());
+        }
+        if (dto.getPrice() != null) {
+            task.setPrice(dto.getPrice());
+        }
+        if (dto.getAddress() != null) {
+            task.setAddress(dto.getAddress());
+        }
+        if (dto.getTaskStatus() != null) {
+            task.setTaskStatus(dto.getTaskStatus());
+        }
+        if (dto.getCategory() != null) {
+            task.setCategory(dto.getCategory());
+        }
+        if (dto.getUser() != null) {
+            task.setUser(dto.getUser());
+        }
 
-
-        return null;
+        return taskRepository.save(task);
     }
 
     @Override
     public void deleteTaskById(Long taskId) {
-
+        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+        taskRepository.delete(task);
     }
+//
+//    @Override
+//    public Task addPerformer(Long taskId, Performer performer) {
+//        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+//
+//
+//        return null;
+//    }
 
     private User getUserFromTaskDto(TaskRequestDto dto) {
         Long userId = dto.userId();
