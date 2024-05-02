@@ -3,7 +3,7 @@ package codezilla.handynestproject.dto.task;
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.User;
-import codezilla.handynestproject.model.entity.enums.TaskStatus;
+import codezilla.handynestproject.model.enums.TaskStatus;
 import lombok.Data;
 
 @Data

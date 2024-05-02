@@ -1,6 +1,6 @@
 package codezilla.handynestproject.dto.user;
 
-import codezilla.handynestproject.model.entity.enums.Rating;
+import codezilla.handynestproject.model.enums.Rating;
 import lombok.Data;
 
 import java.sql.Timestamp;

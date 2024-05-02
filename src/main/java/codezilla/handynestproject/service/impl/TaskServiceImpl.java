@@ -7,7 +7,7 @@ import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
 import codezilla.handynestproject.model.entity.*;
-import codezilla.handynestproject.model.entity.enums.TaskStatus;
+import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.CategoryRepository;
 import codezilla.handynestproject.repository.TaskRepository;
 import codezilla.handynestproject.repository.UserRepository;

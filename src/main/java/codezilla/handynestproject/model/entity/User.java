@@ -1,6 +1,6 @@
 package codezilla.handynestproject.model.entity;
 
-import codezilla.handynestproject.model.entity.enums.Rating;
+import codezilla.handynestproject.model.enums.Rating;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

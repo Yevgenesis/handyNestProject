@@ -1,4 +1,4 @@
-package codezilla.handynestproject.model.entity.enums;
+package codezilla.handynestproject.model.enums;
 
 public enum Rating {
     STAR0,

@@ -1,6 +1,6 @@
 package codezilla.handynestproject.model.entity;//package codezilla.hendynestproject.model.entity;
 
-import codezilla.handynestproject.model.entity.enums.TaskStatus;
+import codezilla.handynestproject.model.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

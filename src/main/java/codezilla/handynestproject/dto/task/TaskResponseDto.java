@@ -2,13 +2,9 @@ package codezilla.handynestproject.dto.task;//package codezilla.hendynestproject
 
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
-import codezilla.handynestproject.model.entity.Feedback;
 import codezilla.handynestproject.model.entity.User;
-import codezilla.handynestproject.model.entity.WorkingTime;
-import codezilla.handynestproject.model.entity.enums.TaskStatus;
+import codezilla.handynestproject.model.enums.TaskStatus;
 import lombok.Data;
-
-import java.util.Set;
 
 // ToDo проверить (Тестовый DTO)
 @Data
