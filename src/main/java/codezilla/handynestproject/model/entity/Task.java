@@ -26,6 +26,8 @@ public class Task {
     private Double price;
     @OneToOne
     private Address address;
+
+    @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
     @Builder.Default
     private boolean isPublish = true;
