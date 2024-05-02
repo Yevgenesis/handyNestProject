@@ -18,14 +18,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-//
-//    @Override
-//    public List<Category> getCategories() {
-//
-//        return categoryRepository.findAll();
-//
-//    }
-
     @Override
     @Transactional(readOnly = true)
     public List<CategoryResponseDto> getListCategoryResponseDto() {
