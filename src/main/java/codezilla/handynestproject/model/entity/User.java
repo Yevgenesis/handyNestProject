@@ -1,6 +1,5 @@
 package codezilla.handynestproject.model.entity;
 
-import codezilla.handynestproject.model.enums.Rating;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,10 +31,6 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    /**
-     * Email используется для авторизации как Username
-     */
-
     @Column(name = "email", updatable = false, nullable = false, length = 50, unique = true)
     private String email;
 
@@ -45,6 +40,13 @@ public class User {
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Task.class)
+    private Set<Task> tasks = new HashSet<>();
+
     @CreatedDate
     @Column(name = "created_on", nullable = false, updatable = false)
     private Timestamp created_on;
@@ -53,48 +55,10 @@ public class User {
     @Column(name = "updated_on", nullable = false)
     private Timestamp updated_on;
 
-    @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted;
-
-    @Column(name = "phone_number", length = 20)
-    private String phoneNumber;
-
-    @Column(name = "is_phone_verified")
-    private boolean isPhoneVerified;
-
-    @Column(name = "is_passport_verified")
-    private boolean isPassportVerified;
-
-    @Column(name = "rating")
-    @Enumerated(EnumType.STRING)
-    private Rating rating;
-
-    @Column(name = "country", length = 70)
-    private String country;
-
-    @Column(name = "city", length = 70)
-    private String city;
-
-
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Task> tasks = new HashSet<>();
-
-
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Attachment> attachments = new HashSet<>();
-
     @ManyToMany
     @JoinTable(
             name = "user_roles",
-            joinColumns = @JoinColumn (name = "user_id"),
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
@@ -104,7 +68,6 @@ public class User {
             orphanRemoval = true
     )
     private Set<Feedback> sentFeedbacks = new HashSet<>();
-
 
     @OneToMany(
             mappedBy = "receiver_id",

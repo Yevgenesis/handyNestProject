@@ -34,8 +34,12 @@ public class Category {
     @Builder.Default
     private Set<Task> tasks = new HashSet<>();
 
-
-
+    @ManyToMany
+    @JoinTable(
+            name = "performer_categories",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "performer_id"))
+    private Set<Performer> performers = new HashSet<>();
 
 
 }

@@ -1,6 +1,5 @@
 package codezilla.handynestproject.dto.user;
 
-import codezilla.handynestproject.model.enums.Rating;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -27,17 +26,7 @@ public class UserResponseDto {
 
     private boolean isDeleted;
 
-    private String phoneNumber;
 
-    private boolean isPhoneVerified;
-
-    private boolean isPassportVerified;
-
-    private Rating rating;
-
-    private String country;
-
-    private String city;
 
 }
 

@@ -1,59 +1,71 @@
-//package codezilla.handynestproject.model.entity;
-//
-//import codezilla.handynestproject.model.enums.Rating;
-//import jakarta.persistence.CascadeType;
-//import jakarta.persistence.Column;
-//import jakarta.persistence.Embeddable;
-//import jakarta.persistence.EnumType;
-//import jakarta.persistence.Enumerated;
-//import jakarta.persistence.OneToMany;
-//import lombok.Data;
-//
-//import java.util.HashSet;
-//import java.util.Set;
-//
-//@Data
-//@Embeddable
-//public class Performer {
-//
-//    @Column(name = "phone_number", length = 20)
-//    private String phoneNumber;
-//
-//    @Column(name = "is_phone_verified")
-//    private boolean isPhoneVerified;
-//
-//    @Column(name = "is_passport_verified")
-//    private boolean isPassportVerified;
-//
-//    @Column(name = "rating")
-//    @Enumerated(EnumType.STRING)
-//    private Rating rating;
-//
-//    @Column(name = "country", length = 70)
-//    private String country;
-//
-//    @Column(name = "city", length = 70)
-//    private String city;
-//
-//
-//    @OneToMany(
-//            mappedBy = "user",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private Set<Task> tasks = new HashSet<>();
-//
-//
-//    @OneToMany(
-//            mappedBy = "performer",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private Set<Attachment> attachments = new HashSet<>();
-//
-//
-//}
-//
+package codezilla.handynestproject.model.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
+
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "performer")
+public class Performer {
+
+    @Id
+    private Long id;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
+    private User user;
+
+    @Column(name = "phone_number", length = 20)
+    private String phoneNumber;
+
+    @Column(name = "is_phone_verified")
+    private boolean isPhoneVerified;
+
+    @Column(name = "is_passport_verified")
+    private boolean isPassportVerified;
+
+    @Column(name = "description")
+    private String description;
+
+    @ManyToMany(mappedBy = "performers", cascade = CascadeType.ALL)
+    private Set<Category> categories = new HashSet<>();
+
+    @OneToOne
+    private Address address;
+
+    @Column(name = "is_available")
+    boolean isAvailable;
+
+    @Column(name = "performer_rating")
+    private Double positiveFeedbackPercent;
+
+    @Column(name = "feedback_count")
+    private Long feedbackCount;
+
+    @CreatedDate
+    @Column(name = "created_on", nullable = false, updatable = false)
+    private Timestamp created_on;
+
+    @LastModifiedDate
+    @Column(name = "updated_on", nullable = false)
+    private Timestamp updated_on;
+
+
+}
+
 
 
 

@@ -1,4 +1,4 @@
-package codezilla.handynestproject.dto;
+package codezilla.handynestproject.dto.category;
 
 import lombok.Data;
 

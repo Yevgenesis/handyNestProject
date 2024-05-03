@@ -1,6 +1,6 @@
 package codezilla.handynestproject.service.impl;
 
-import codezilla.handynestproject.dto.CategoryResponseDto;
+import codezilla.handynestproject.dto.category.CategoryResponseDto;
 import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.repository.CategoryRepository;
 import codezilla.handynestproject.service.CategoryService;

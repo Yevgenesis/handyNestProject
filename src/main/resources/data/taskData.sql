@@ -1,6 +1,5 @@
-INSERT INTO "task" (title, description, price,address_id,working_time_id,user_id,category_id)
-VALUES ('House Cleaning', 'Need someone to clean a 3 bedroom house', 50, 1, 1, 1, 1),
-('Dog Walking','Looking for a reliable dog walker for 2 small dogs',20,2, 2, 4, 2),
-('Tutoring Services','Need a tutor for high school math and science subjects',30,2,3, 2, 3),
-('Personal Training','Looking for a certified personal trainer for in-home sessions',40,4,4, 1, 4),
-('Landscaping Services','Need someone to mow the lawn and trim hedges',35, 5, 5, 2, 5);
+INSERT INTO task (title, description, price, task_status, is_publish, address_id, working_time_id, category_id, user_id)
+VALUES ('Починить кран', 'Требуется починить кран на кухне', 50.00, 'OPEN', true, 1, 1, 12, 1),
+       ('Покрасить комнату', 'Нужно покрасить стены в гостиной', 200.00, 'IN_PROGRESS', true, 2, 2, 12, 2),
+       ('Установить светильники', 'Требуется установить новые светильники в коридоре', 100.00, 'COMPLETED', true, 3, 3,
+        12, 3);

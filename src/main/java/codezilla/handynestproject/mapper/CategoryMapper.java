@@ -1,7 +1,7 @@
 package codezilla.handynestproject.mapper;
 
 
-import codezilla.handynestproject.dto.CategoryResponseDto;
+import codezilla.handynestproject.dto.category.CategoryResponseDto;
 import codezilla.handynestproject.model.entity.Category;
 import org.mapstruct.Mapper;
 

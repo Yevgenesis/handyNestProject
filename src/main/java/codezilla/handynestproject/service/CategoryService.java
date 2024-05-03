@@ -1,6 +1,6 @@
 package codezilla.handynestproject.service;
 
-import codezilla.handynestproject.dto.CategoryResponseDto;
+import codezilla.handynestproject.dto.category.CategoryResponseDto;
 
 import java.util.List;
 

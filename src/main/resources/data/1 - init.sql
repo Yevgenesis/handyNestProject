@@ -53,28 +53,47 @@ VALUES (1, 'с 8 до 12'),
        (3, 'с 16 до 22'),
        (4, 'в любое время');
 
-
+-- Address
 INSERT INTO address (street, city, zip, country)
-VALUES ('123 Main St', 'New York', '10001', 'USA'),
-       ('456 Elm St', 'Los Angeles', '90001', 'USA'),
-       ('789 Oak St', 'Chicago', '60601', 'USA');
+VALUES ('123 Unter den Linden', 'Berlin', '10117', 'Germany'),
+       ('456 Königsallee', 'Düsseldorf', '40212', 'Germany'),
+       ('789 Karl-Liebknecht-Strasse', 'Leipzig', '04109', 'Germany'),
+       ('321 Maximilianstrasse', 'Munich', '80539', 'Germany'),
+       ('555 Friedrichstrasse', 'Berlin', '10117', 'Germany'),
+       ('777 Champs-Élysées', 'Paris', '75008', 'France'),
+       ('888 Gran Vía', 'Madrid', '28013', 'Spain'),
+       ('999 Strøget', 'Copenhagen', '1200', 'Denmark'),
+       ('234 Princes Street', 'Edinburgh', 'EH2 4AD', 'United Kingdom'),
+       ('678 Via del Corso', 'Rome', '00186', 'Italy');
 
-
-INSERT INTO "user" (first_name, last_name, email, is_email_verified, password, created_on, updated_on, is_deleted,
-                    phone_number, is_phone_verified, is_passport_verified, rating, country, city)
+-- User
+INSERT INTO "user" (first_name, last_name, email, is_email_verified, password, created_on, updated_on, is_deleted)
 VALUES ('John', 'Doe', 'john.doe@example.com', true, 'password123',
-        '2024-04-29 10:00:00', '2024-04-29 10:00:00', false, '+1234567890', true, true, 'STAR5', 'USA', 'New York'),
+        '2024-04-29 10:00:00', '2024-04-29 10:00:00', false),
        ('Jane', 'Smith', 'jane.smith@example.com', true, 'qwerty123',
-        '2024-04-29 11:00:00', '2024-04-29 11:00:00', false, '+9876543210', true, false, 'STAR4', 'Canada', 'Toronto'),
+        '2024-04-29 11:00:00', '2024-04-29 11:00:00', false),
        ('Alice', 'Johnson', 'alice.johnson@example.com', true, 'test123',
-        '2024-04-29 12:00:00', '2024-04-29 12:00:00', false, '+1122334455', true, true, 'STAR3', 'UK', 'London'),
+        '2024-04-29 12:00:00', '2024-04-29 12:00:00', false),
        ('Bob', 'Williams', 'bob.williams@example.com', true, 'password456',
-        '2024-04-29 13:00:00', '2024-04-29 13:00:00', false, '+9988776655', true, false, 'STAR2', 'Australia',
-        'Sydney'),
+        '2024-04-29 13:00:00', '2024-04-29 13:00:00', false),
        ('Eva', 'Brown', 'eva.brown@example.com', true, 'abc123',
-        '2024-04-29 14:00:00', '2024-04-29 14:00:00', false, '+6655443322', true, true, 'STAR1', 'Germany', 'Berlin');
+        '2024-04-29 14:00:00', '2024-04-29 14:00:00', false);
 
+-- исполнители
+INSERT INTO performer (id, phone_number, is_phone_verified, is_passport_verified, description, is_available,
+                       performer_rating, feedback_count, created_on, updated_on)
+VALUES (1, '+49123456789', true, true, 'Опытный сантехник с большим опытом работы', true, 4.5, 100, CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP),
+       (2, '+49123456789', true, true, 'Опытный маляр, предоставляю услуги качественной покраски стен', true, 4.8, 150,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (3, '+49123456789', true, true, 'Электрик с опытом работы, устанавливаю различные светильники', true, 4.0, 80,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (4, '+49123456789', true, true, 'Опытный сантехник, умею делать качественный ремонт сантехники', true, 4.7, 120,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+       (5, '+49123456789', true, true, 'Опытный строитель, предоставляю услуги по строительству домов и квартир', true,
+        4.2, 90, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+-- Task
 INSERT INTO task (title, description, price, task_status, is_publish, address_id, working_time_id, category_id, user_id)
 VALUES ('Починить кран', 'Требуется починить кран на кухне', 50.00, 'OPEN', true, 1, 1, 12, 1),
        ('Покрасить комнату', 'Нужно покрасить стены в гостиной', 200.00, 'IN_PROGRESS', true, 2, 2, 12, 2),

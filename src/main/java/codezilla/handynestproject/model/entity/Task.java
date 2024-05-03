@@ -24,7 +24,8 @@ public class Task {
     private String title;
     private String description;
     private Double price;
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
 
     @Enumerated(EnumType.STRING)
@@ -35,7 +36,8 @@ public class Task {
     @OneToOne
     private WorkingTime workingTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
