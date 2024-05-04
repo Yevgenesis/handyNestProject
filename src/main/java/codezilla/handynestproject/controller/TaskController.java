@@ -2,6 +2,7 @@ package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
+import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.service.TaskService;
@@ -20,12 +21,11 @@ public class TaskController {
 
     @GetMapping
     public List<TaskResponseDto> getAllTasks() {
-        List<Task>task = taskService.getAllTasks();
-        List<TaskResponseDto> dtos = taskMapper.toTaskResponseDtoList(task);
-        return dtos;
-//        return taskMapper.toTaskResponseDtoList
-//                (taskService.getAllTasks());
+         return taskMapper.toTaskResponseDtoList
+                (taskService.getAllTasks());
     }
+
+
 
     @GetMapping("/{id}")
     public TaskResponseDto getTaskById(@PathVariable("id") Long id) {
@@ -35,5 +35,10 @@ public class TaskController {
     @PostMapping
     public TaskResponseDto createTask(@RequestBody TaskRequestDto taskRequestDto) {
         return taskMapper.toTaskResponseDto(taskService.createTask(taskRequestDto));
+    }
+
+    @PostMapping("/update/{id}")
+    public TaskResponseDto updateTask(@PathVariable("id") Long id, @RequestBody TaskUpdateRequestDto taskUpdateRequestDto) {
+        return taskMapper.toTaskResponseDto(taskService.updateTask(taskUpdateRequestDto));
     }
 }
