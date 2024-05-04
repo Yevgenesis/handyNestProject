@@ -14,8 +14,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {WorkingTimeMapper.class, CategoryMapper.class})
 public interface TaskMapper {
 
-    TaskMapper INSTANCE = Mappers.getMapper(TaskMapper.class);
-
     @Mapping(target = "address.street", source = "street")
     @Mapping(target = "address.city", source = "city")
     @Mapping(target = "address.country", source = "country")
