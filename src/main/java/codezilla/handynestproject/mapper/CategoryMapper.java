@@ -4,6 +4,7 @@ package codezilla.handynestproject.mapper;
 import codezilla.handynestproject.dto.category.CategoryResponseDto;
 import codezilla.handynestproject.model.entity.Category;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 

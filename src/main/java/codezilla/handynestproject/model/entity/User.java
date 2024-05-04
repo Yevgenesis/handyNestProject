@@ -1,5 +1,6 @@
 package codezilla.handynestproject.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,27 +33,34 @@ public class User {
     private String lastName;
 
     @Column(name = "email", updatable = false, nullable = false, length = 50, unique = true)
+    @JsonIgnore
     private String email;
 
     @Column(name = "is_email_verified", nullable = false)
+    @JsonIgnore
     private boolean isEmailVerified;
 
     @Column(name = "password", nullable = false, length = 50)
+    @JsonIgnore
     private String password;
 
 
     @Column(name = "is_deleted", nullable = false)
+    @JsonIgnore
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Task.class)
+    @JsonIgnore
     private Set<Task> tasks = new HashSet<>();
 
     @CreatedDate
     @Column(name = "created_on", nullable = false, updatable = false)
+    @JsonIgnore
     private Timestamp created_on;
 
     @LastModifiedDate
     @Column(name = "updated_on", nullable = false)
+    @JsonIgnore
     private Timestamp updated_on;
 
     @ManyToMany
@@ -60,6 +68,7 @@ public class User {
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(
@@ -67,6 +76,7 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private Set<Feedback> sentFeedbacks = new HashSet<>();
 
     @OneToMany(
@@ -74,6 +84,7 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private Set<Feedback> receivedFeedbacks = new HashSet<>();
 
 }

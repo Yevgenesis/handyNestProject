@@ -1,6 +1,7 @@
 package codezilla.handynestproject.model.entity;//package codezilla.hendynestproject.model.entity;
 
 import codezilla.handynestproject.model.enums.TaskStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,15 +34,16 @@ public class Task {
     @Builder.Default
     private boolean isPublish = true;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private WorkingTime workingTime;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
+
 
     @OneToMany(
             mappedBy = "task",

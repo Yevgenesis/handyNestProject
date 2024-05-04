@@ -3,6 +3,7 @@ package codezilla.handynestproject.controller;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.mapper.TaskMapper;
+import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,11 @@ public class TaskController {
 
     @GetMapping
     public List<TaskResponseDto> getAllTasks() {
-        return taskMapper.toTaskResponseDtoList(taskService.getAllTasks());
+        List<Task>task = taskService.getAllTasks();
+        List<TaskResponseDto> dtos = taskMapper.toTaskResponseDtoList(task);
+        return dtos;
+//        return taskMapper.toTaskResponseDtoList
+//                (taskService.getAllTasks());
     }
 
     @GetMapping("/{id}")
