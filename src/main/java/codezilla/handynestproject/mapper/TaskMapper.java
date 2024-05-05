@@ -30,15 +30,6 @@ public interface TaskMapper {
 
     TaskResponseDto toTaskResponseDto(Task task);
 
-
-    @Mapping(target = "performer.email", ignore = true)
-    @Mapping(target = "performer.password", ignore = true)
-    @Mapping(target = "performer.created_on", ignore = true)
-    @Mapping(target = "performer.updated_on", ignore = true)
-    @Mapping(target = "performer.tasks", ignore = true)
-    @Mapping(target = "performer.roles", ignore = true)
-    @Mapping(target = "performer.sentFeedbacks", ignore = true)
-    @Mapping(target = "performer.receivedFeedbacks", ignore = true)
     TaskWithPerformerResponseDto toTaskWithPerformerResponseDto(Task task);
     List<TaskResponseDto> toTaskResponseDtoList(List<Task> tasks);
 
