@@ -1,5 +1,6 @@
 package codezilla.handynestproject.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "performer")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Performer {
 
     @Id
@@ -45,6 +47,10 @@ public class Performer {
 
     @OneToOne
     private Address address;
+
+    @OneToMany(mappedBy = "performer", cascade = CascadeType.ALL,
+            orphanRemoval = true, targetEntity = Task.class)
+    private Set<Task> tasks = new HashSet<>();
 
     @Column(name = "is_available")
     boolean isAvailable;

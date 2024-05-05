@@ -2,16 +2,16 @@ package codezilla.handynestproject.dto.task;//package codezilla.hendynestproject
 
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
+import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.model.entity.WorkingTime;
 import codezilla.handynestproject.model.enums.TaskStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 // ToDo проверить (Тестовый DTO)
 
 @Data
-public class TaskResponseDto {
+public class TaskWithPerformerResponseDto {
     private Long id;
     private String title;
     private String description;
@@ -21,5 +21,6 @@ public class TaskResponseDto {
     private WorkingTime workingTime;
     private Category category;
     private User user;
+    private Performer performer;
     private boolean isPublish;
    }
