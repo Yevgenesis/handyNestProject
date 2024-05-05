@@ -45,7 +45,7 @@ public class Performer {
     @ManyToMany(mappedBy = "performers", cascade = CascadeType.ALL)
     private Set<Category> categories = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
 
     @OneToMany(mappedBy = "performer", cascade = CascadeType.ALL,

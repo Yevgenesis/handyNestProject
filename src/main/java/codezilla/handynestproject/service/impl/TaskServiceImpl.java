@@ -8,11 +8,7 @@ import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
 import codezilla.handynestproject.model.entity.*;
 import codezilla.handynestproject.model.enums.TaskStatus;
-import codezilla.handynestproject.repository.CategoryRepository;
-import codezilla.handynestproject.repository.PerformerRepository;
-import codezilla.handynestproject.repository.TaskRepository;
-import codezilla.handynestproject.repository.UserRepository;
-import codezilla.handynestproject.repository.WorkingTimeRepository;
+import codezilla.handynestproject.repository.*;
 import codezilla.handynestproject.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -103,7 +99,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getTaskById(Long taskId) {
-        return taskRepository.findTaskById(taskId);
+        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+        return task;
     }
 
     @Override

@@ -2,7 +2,6 @@ package codezilla.handynestproject.dto.performer;
 
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
 import codezilla.handynestproject.model.entity.Address;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -25,7 +24,7 @@ public class PerformerResponseDto {
 
     private Set<CategoryTitleDto> categories = new HashSet<>();
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING) // ToDo
+    //    @JsonFormat(shape = JsonFormat.Shape.STRING) // ToDo
     private Address address;
 
     boolean isAvailable;
