@@ -127,9 +127,15 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getTasksByPerformerId(Long performerId) {
         Performer performer = performerRepository.findPerformerById(performerId);
         List<Task> tasks = taskRepository.findAll();
-        return tasks.stream()
-                .filter(t->t.getPerformer().equals(performer))
-                .toList();
+         if(tasks.get(0).getTaskStatus().equals(TaskStatus.IN_PROGRESS)){
+             tasks.stream()
+                     .filter(t->t.getPerformer().equals(performer))
+                     .toList();
+             return tasks;
+         }
+
+
+         return null;
     }
 //TODO написать эксепшн если юзер и перформер совпадают
     @Override
