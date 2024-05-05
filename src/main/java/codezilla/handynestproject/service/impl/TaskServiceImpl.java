@@ -9,6 +9,7 @@ import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
 import codezilla.handynestproject.model.entity.*;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.CategoryRepository;
+import codezilla.handynestproject.repository.PerformerRepository;
 import codezilla.handynestproject.repository.TaskRepository;
 import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.repository.WorkingTimeRepository;
@@ -26,6 +27,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final WorkingTimeRepository workingTimeRepository;
     private final CategoryRepository categoryRepository;
+    private final PerformerRepository performerRepository;
 
 
     @Override
@@ -42,6 +44,22 @@ public class TaskServiceImpl implements TaskService {
                 .user(getUserFromTaskDto(dto))
                 .build();
 
+        return taskRepository.save(task);
+    }
+    @Override
+    public Task createTaskByUserId(Long userId, TaskRequestDto dto) {
+        User user = userRepository.findUserById(userId);
+        Task task = Task.builder()
+                .title(dto.title())
+                .description(dto.description())
+                .price(dto.price())
+                .address(getAddressFromDto(dto))
+                .taskStatus(TaskStatus.OPEN)
+                .isPublish(dto.isPublish())
+                .workingTime(getWorkingTimeFromDto(dto))
+                .category(getCategoryFromDto(dto))
+                .user(user)
+                .build();
         return taskRepository.save(task);
     }
 
@@ -63,15 +81,11 @@ public class TaskServiceImpl implements TaskService {
         if (dto.getAddress() != null) {
             task.setAddress(dto.getAddress());
         }
-        if (dto.getTaskStatus() != null) {
-            task.setTaskStatus(dto.getTaskStatus());
-        }
+
         if (dto.getCategory() != null) {
             task.setCategory(dto.getCategory());
         }
-        if (dto.getUser() != null) {
-            task.setUser(dto.getUser());
-        }
+
 
         return taskRepository.save(task);
     }
@@ -93,19 +107,43 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getAllPublishTasks() {
+    public List<Task> getAvailableTasks() {
         List<Task> tasks = taskRepository.findAll();
         return tasks.stream()
-                .filter(Task::isPublish).toList();
+                .filter(t -> t.getTaskStatus().equals(TaskStatus.OPEN))
+                .toList();
     }
-//
-//    @Override
-//    public Task addPerformer(Long taskId, Performer performer) {
-//        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
-//
-//
-//        return null;
-//    }
+
+    @Override
+    public List<Task> getTasksByUserId(Long userId) {
+        User user = userRepository.findUserById(userId);
+        List<Task> tasks = taskRepository.findAll();
+        return tasks.stream()
+                .filter(t->t.getUser().equals(user))
+                .toList();
+    }
+
+    @Override
+    public List<Task> getTasksByPerformerId(Long performerId) {
+        Performer performer = performerRepository.findPerformerById(performerId);
+        List<Task> tasks = taskRepository.findAll();
+        return tasks.stream()
+                .filter(t->t.getPerformer().equals(performer))
+                .toList();
+    }
+//TODO написать эксепшн если юзер и перформер совпадают
+    @Override
+    public Task addPerformerToTask(Long taskId, Long performerId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+        Performer performer = performerRepository.findPerformerById(performerId);
+        if(performer.getUser().equals(task.getUser())){
+            throw new UserNotFoundException();
+        }
+        task.setTaskStatus(TaskStatus.IN_PROGRESS);
+        task.setPerformer(performer);
+        return taskRepository.save(task);
+    }
+
 
     private User getUserFromTaskDto(TaskRequestDto dto) {
         Long userId = dto.userId();

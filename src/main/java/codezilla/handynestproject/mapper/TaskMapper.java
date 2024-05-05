@@ -3,6 +3,7 @@ package codezilla.handynestproject.mapper;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
+import codezilla.handynestproject.dto.task.TaskWithPerformerResponseDto;
 import codezilla.handynestproject.model.entity.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,7 +11,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 
-@Mapper(componentModel = "spring", uses = {WorkingTimeMapper.class, CategoryMapper.class})
+@Mapper(componentModel = "spring", uses = {WorkingTimeMapper.class, CategoryMapper.class, PerformerMapper.class})
 
 public interface TaskMapper {
 
@@ -28,6 +29,17 @@ public interface TaskMapper {
 
 
     TaskResponseDto toTaskResponseDto(Task task);
+
+
+    @Mapping(target = "performer.email", ignore = true)
+    @Mapping(target = "performer.password", ignore = true)
+    @Mapping(target = "performer.created_on", ignore = true)
+    @Mapping(target = "performer.updated_on", ignore = true)
+    @Mapping(target = "performer.tasks", ignore = true)
+    @Mapping(target = "performer.roles", ignore = true)
+    @Mapping(target = "performer.sentFeedbacks", ignore = true)
+    @Mapping(target = "performer.receivedFeedbacks", ignore = true)
+    TaskWithPerformerResponseDto toTaskWithPerformerResponseDto(Task task);
     List<TaskResponseDto> toTaskResponseDtoList(List<Task> tasks);
 
 

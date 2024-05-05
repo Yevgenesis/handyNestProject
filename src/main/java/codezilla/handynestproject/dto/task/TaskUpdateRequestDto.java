@@ -13,8 +13,7 @@ public class TaskUpdateRequestDto {
     private String description;
     private Double price;
     private Address address;
-    private TaskStatus taskStatus;
     private Long workingTimeId;
     private Category category;
-    private User user;
+
 }

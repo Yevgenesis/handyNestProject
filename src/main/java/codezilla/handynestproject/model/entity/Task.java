@@ -44,6 +44,9 @@ public class Task {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Performer performer;
+
 
     @OneToMany(
             mappedBy = "task",

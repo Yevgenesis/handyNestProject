@@ -57,8 +57,8 @@ public class User {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Task.class)
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
+            orphanRemoval = true, targetEntity = Task.class)
     private Set<Task> tasks = new HashSet<>();
 
     @CreatedDate
