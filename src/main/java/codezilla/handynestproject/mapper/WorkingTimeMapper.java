@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface WorkingTimeMapper {
+
     default String getTitleById(Integer id) {
         switch (id) {
             case 1:
