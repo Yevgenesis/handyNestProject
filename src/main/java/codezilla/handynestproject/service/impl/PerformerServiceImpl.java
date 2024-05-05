@@ -14,7 +14,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PerformerServiceImpl implements PerformerService {
 
-    //    private final UserRepository userRepository;
     private final PerformerRepository performerRepository;
 
 
@@ -25,7 +24,8 @@ public class PerformerServiceImpl implements PerformerService {
 
     @Override
     public Optional<Performer> getPerformerById(Long id) {
-        return Optional.ofNullable(performerRepository.findPerformerById(id));
+        Performer performer = performerRepository.findPerformerById(id);
+        return Optional.ofNullable(performer);
     }
 
 }

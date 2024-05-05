@@ -82,17 +82,30 @@ VALUES ('John', 'Doe', 'john.doe@example.com', true, 'password123',
 
 -- исполнители
 INSERT INTO performer (id, phone_number, is_phone_verified, is_passport_verified, description, is_available,
-                       performer_rating, feedback_count, created_on, updated_on)
+                       performer_rating, feedback_count, created_on, updated_on, address_id)
 VALUES (1, '+49123456789', true, true, 'Опытный сантехник с большим опытом работы', true, 4.5, 100, CURRENT_TIMESTAMP,
-        CURRENT_TIMESTAMP),
+        CURRENT_TIMESTAMP, 1),
        (2, '+49123456789', true, true, 'Опытный маляр, предоставляю услуги качественной покраски стен', true, 4.8, 150,
-        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2),
        (3, '+49123456789', true, true, 'Электрик с опытом работы, устанавливаю различные светильники', true, 4.0, 80,
-        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3),
        (4, '+49123456789', true, true, 'Опытный сантехник, умею делать качественный ремонт сантехники', true, 4.7, 120,
-        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 4),
        (5, '+49123456789', true, true, 'Опытный строитель, предоставляю услуги по строительству домов и квартир', true,
-        4.2, 90, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+        4.2, 90, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 5);
+
+-- категории для Performera
+INSERT INTO performer_categories(category_id, performer_id)
+VALUES (2, 1),
+       (4, 1),
+       (8, 2),
+       (19, 2),
+       (20, 2),
+       (8, 3),
+       (18, 4),
+       (35, 4),
+       (40, 5),
+       (28, 5);
 
 -- Task
 INSERT INTO task (title, description, price, task_status, is_publish, address_id, working_time_id, category_id, user_id)
