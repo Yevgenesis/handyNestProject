@@ -94,7 +94,7 @@ VALUES (1, '+49123456789', true, true, 'Опытный сантехник с б�
        (5, '+49123456789', true, true, 'Опытный строитель, предоставляю услуги по строительству домов и квартир', true,
         4.2, 90, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 5);
 
--- категории для Performera
+-- категории для Performer
 INSERT INTO performer_categories(category_id, performer_id)
 VALUES (2, 1),
        (4, 1),
@@ -106,6 +106,7 @@ VALUES (2, 1),
        (35, 4),
        (40, 5),
        (28, 5);
+
 
 -- Task
 INSERT INTO task (title, description, price, task_status, is_publish, address_id, working_time_id, category_id, user_id)

@@ -1,12 +1,11 @@
 package codezilla.handynestproject.service;
 
-import codezilla.handynestproject.model.entity.User;
+import codezilla.handynestproject.dto.user.UserResponseDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
-    List<User> getUsers();
+    List<UserResponseDto> getUsers();
 
-    Optional<User> getUserById(Long id);
+    UserResponseDto getUserById(Long id);
 }

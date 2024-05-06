@@ -5,16 +5,9 @@ import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.dto.task.TaskWithPerformerResponseDto;
 import codezilla.handynestproject.mapper.TaskMapper;
-import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.service.TaskService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,17 +22,17 @@ public class TaskController {
 
     @GetMapping
     public List<TaskResponseDto> getAllTasks() {
-         return taskMapper.toTaskResponseDtoList
-                (taskService.getAllTasks());
+        List<TaskResponseDto> dtos = taskService.getAllTasks();
+        return dtos;
     }
     @GetMapping("/open")
     public List<TaskResponseDto> getAvailableTasks() {
-        return taskMapper.toTaskResponseDtoList(taskService.getAvailableTasks());
+        return taskService.getAvailableTasks();
     }
 
     @GetMapping("/byUser/{id}")
     public List<TaskResponseDto> getTasksByUser(@PathVariable Long id) {
-        return taskMapper.toTaskResponseDtoList(taskService.getTasksByUserId(id));
+        return taskService.getTasksByUserId(id);
     }
 
     @GetMapping("/byPerformer/{id}")
@@ -49,9 +42,10 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public TaskResponseDto getTaskById(@PathVariable("id") Long id) {
-        return taskMapper.toTaskResponseDto(taskService.getTaskById(id));
+        return taskService.getTaskById(id);
     }
 
+    // ToDo - BAG с WorkingTime не добавляет в базу, если в поле working_time_id одинаковое ID
     @PostMapping
     public TaskResponseDto createTask(@RequestBody TaskRequestDto taskRequestDto) {
         return taskMapper.toTaskResponseDto(taskService.createTask(taskRequestDto));

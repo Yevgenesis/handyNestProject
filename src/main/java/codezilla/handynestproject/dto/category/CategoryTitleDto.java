@@ -6,5 +6,4 @@ import lombok.Data;
 public class CategoryTitleDto {
     private Long id;
     private String name;
-
 }

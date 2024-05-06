@@ -4,7 +4,7 @@ import codezilla.handynestproject.dto.category.CategoryTitleDto;
 import codezilla.handynestproject.model.entity.Address;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +13,10 @@ import java.util.Set;
 public class PerformerResponseDto {
 
     private Long id;
+
+    private String firstName;
+
+    private String lastName;
 
     private String phoneNumber;
 
@@ -24,7 +28,7 @@ public class PerformerResponseDto {
 
     private Set<CategoryTitleDto> categories = new HashSet<>();
 
-    //    @JsonFormat(shape = JsonFormat.Shape.STRING) // ToDo
+    //        @JsonFormat(shape = JsonFormat.Shape.STRING) // ToDo
     private Address address;
 
     boolean isAvailable;
@@ -33,9 +37,9 @@ public class PerformerResponseDto {
 
     private Long feedbackCount;
 
-    private Timestamp createdOn;
+    private LocalDate createdOn;
 
-    private Timestamp updatedOn;
+    private LocalDate updatedOn;
 
 }
 

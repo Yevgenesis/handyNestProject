@@ -2,17 +2,7 @@ package codezilla.handynestproject.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -58,7 +48,7 @@ public class User {
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
-            orphanRemoval = true, targetEntity = Task.class)
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
 
     @CreatedDate
@@ -83,15 +73,14 @@ public class User {
     @OneToMany(
             mappedBy = "sender_id",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true, fetch = FetchType.LAZY
     )
-
     private Set<Feedback> sentFeedbacks = new HashSet<>();
 
     @OneToMany(
             mappedBy = "receiver_id",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true, fetch = FetchType.LAZY
     )
 
     private Set<Feedback> receivedFeedbacks = new HashSet<>();
