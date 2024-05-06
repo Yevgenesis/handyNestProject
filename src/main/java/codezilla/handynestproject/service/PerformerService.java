@@ -1,12 +1,13 @@
 package codezilla.handynestproject.service;
 
-import codezilla.handynestproject.model.entity.Performer;
+import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PerformerService {
-    List<Performer> getPerformers();
 
-    Optional<Performer> getPerformerById(Long id);
+    PerformerResponseDto getPerformerById(Long id);
+
+    List<PerformerResponseDto> getPerformers();
+
 }

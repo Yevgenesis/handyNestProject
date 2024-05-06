@@ -8,13 +8,12 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = PerformerMapper.class)
 public interface PerformerMapper {
+
 
     @Mapping(source = "user.firstName", target = "firstName")
     @Mapping(source = "user.lastName", target = "lastName")
-    @Mapping(source = "performer.created_on", target = "createdOn")
-    @Mapping(source = "performer.updated_on", target = "updatedOn")
     PerformerResponseDto performerToDto(Performer performer);
 
     List<PerformerResponseDto> performersToListDto(List<Performer> performers);

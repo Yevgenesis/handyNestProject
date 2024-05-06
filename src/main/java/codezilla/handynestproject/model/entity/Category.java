@@ -36,12 +36,8 @@ public class Category {
     @JsonIgnore
     private Set<Task> tasks = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "performer_categories",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "performer_id"))
-    @JsonIgnore
+
+    @ManyToMany()
     private Set<Performer> performers = new HashSet<>();
 
 

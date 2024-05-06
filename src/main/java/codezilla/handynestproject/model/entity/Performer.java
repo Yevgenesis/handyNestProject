@@ -1,6 +1,5 @@
 package codezilla.handynestproject.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,19 +13,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "performer")
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Performer {
 
     @Id
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     private User user;
 
@@ -42,14 +40,21 @@ public class Performer {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "performers", cascade = CascadeType.ALL)
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "performer_categories",
+            joinColumns = @JoinColumn(name = "performer_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
+    )
     private Set<Category> categories = new HashSet<>();
+
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
 
     @OneToMany(mappedBy = "performer", cascade = CascadeType.ALL,
-            orphanRemoval = true, targetEntity = Task.class)
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
 
     @Column(name = "is_available")
@@ -63,11 +68,11 @@ public class Performer {
 
     @CreatedDate
     @Column(name = "created_on", nullable = false, updatable = false)
-    private Timestamp created_on;
+    private Timestamp createdOn;
 
     @LastModifiedDate
     @Column(name = "updated_on", nullable = false)
-    private Timestamp updated_on;
+    private Timestamp updatedOn;
 
 
 }
