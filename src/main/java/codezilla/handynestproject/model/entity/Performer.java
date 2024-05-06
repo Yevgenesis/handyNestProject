@@ -22,6 +22,7 @@ import java.util.Set;
 public class Performer {
 
     @Id
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -50,11 +51,19 @@ public class Performer {
     private Set<Category> categories = new HashSet<>();
 
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
     private Address address;
 
-    @OneToMany(mappedBy = "performer", cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(
+            mappedBy = "performer",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     private Set<Task> tasks = new HashSet<>();
 
     @Column(name = "is_available")
