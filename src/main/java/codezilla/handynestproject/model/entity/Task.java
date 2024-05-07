@@ -35,7 +35,7 @@ public class Task {
     private boolean isPublish = true;
 
     // ToDo исправить связи
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private WorkingTime workingTime;
 
     @ManyToOne(fetch = FetchType.EAGER)

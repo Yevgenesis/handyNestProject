@@ -28,7 +28,6 @@ public class PerformerResponseDto {
 
     private Set<CategoryTitleDto> categories = new HashSet<>();
 
-    //        @JsonFormat(shape = JsonFormat.Shape.STRING) // ToDo
     private Address address;
 
     boolean isAvailable;
