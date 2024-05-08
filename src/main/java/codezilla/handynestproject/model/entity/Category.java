@@ -32,7 +32,7 @@ public class Category {
     @OneToMany(mappedBy = "category",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @Builder.Default
+
     private Set<Task> tasks = new HashSet<>();
 
 

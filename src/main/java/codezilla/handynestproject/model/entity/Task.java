@@ -1,7 +1,19 @@
 package codezilla.handynestproject.model.entity;//package codezilla.hendynestproject.model.entity;
 
 import codezilla.handynestproject.model.enums.TaskStatus;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,8 +46,8 @@ public class Task {
     @Builder.Default
     private boolean isPublish = true;
 
-    // ToDo исправить связи
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "working_time_id")
     private WorkingTime workingTime;
 
     @ManyToOne(fetch = FetchType.EAGER)

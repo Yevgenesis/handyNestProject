@@ -2,13 +2,14 @@ package codezilla.handynestproject.repository;
 
 import codezilla.handynestproject.model.entity.WorkingTime;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
 public interface WorkingTimeRepository extends JpaRepository<WorkingTime, Long> {
 
-    WorkingTime getTitleById(Long workingTimeId);
+WorkingTime findWorkingTimeById(Long id);
 
 
 }

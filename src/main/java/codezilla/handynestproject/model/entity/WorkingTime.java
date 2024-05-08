@@ -34,7 +34,6 @@ public class WorkingTime {
     @OneToMany(mappedBy = "workingTime",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @Builder.Default
     private Set<Task> tasks = new HashSet<>();
 
 

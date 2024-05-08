@@ -73,20 +73,30 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
 
+
     @Override
     public TaskResponseDto updateTask(TaskUpdateRequestDto dto) {
-        Task task = taskRepository.findById(dto.getId()).orElseThrow(TaskNotFoundException::new);
+        Long workingTimeId = dto.getWorkingTimeId();
 
-            task.setWorkingTime(workingTimeRepository.findById(dto.getWorkingTimeId())
-                    .orElseThrow(WorkingTimeNotFoundException::new));
-            task.setTitle(dto.getTitle());
-            task.setDescription(dto.getDescription());
-            task.setPrice(dto.getPrice());
-            task.setAddress(dto.getAddress());
-            task.setCategory(categoryRepository.findById(dto.getCategory().getId())
-                    .orElseThrow(CategoryNotFoundException::new));
-        return taskMapper.toTaskResponseDto(taskRepository.save(task));
+        Task task = taskRepository.findById(dto.getId())
+                .orElseThrow(TaskNotFoundException::new);
+        if(task.getTaskStatus().equals(TaskStatus.OPEN)) {
+            Optional.ofNullable(dto.getTitle()).ifPresent(task::setTitle);
+            Optional.ofNullable(dto.getDescription()).ifPresent(task::setDescription);
+            Optional.ofNullable(dto.getPrice()).ifPresent(task::setPrice);
+            Optional.ofNullable(dto.getAddress()).ifPresent(task::setAddress);
+            Optional.ofNullable(workingTimeRepository.findWorkingTimeById(workingTimeId))
+                    .ifPresent(task::setWorkingTime);
+        }
+        else {
+            throw new TaskNotFoundException("Task have status: " + task.getTaskStatus()+
+                    " and can't be updated");
+        }
+
+
+        return  taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
+
 
     @Override
     public void deleteTaskById(Long taskId) {
@@ -161,13 +171,14 @@ public class TaskServiceImpl implements TaskService {
 
     private WorkingTime getWorkingTimeFromDto(TaskRequestDto dto) {
         Long workingTimeId = dto.workingTimeId();
-        Optional<WorkingTime> workingTime = workingTimeRepository.findById(workingTimeId); // ToDo exception
-        return workingTime.get();
+        return workingTimeRepository.findById(workingTimeId)
+                .orElseThrow(WorkingTimeNotFoundException::new);
     }
 
     private Category getCategoryFromDto(TaskRequestDto dto) {
         Long categoryId = dto.categoryId();
-        return categoryRepository.findById(categoryId).orElseThrow(CategoryNotFoundException::new);
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(CategoryNotFoundException::new);
     }
 
     private Address getAddressFromDto(TaskRequestDto dto) {
