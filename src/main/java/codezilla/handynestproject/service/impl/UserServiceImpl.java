@@ -1,6 +1,7 @@
 package codezilla.handynestproject.service.impl;
 
 import codezilla.handynestproject.dto.user.UserResponseDto;
+import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.UserMapper;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.repository.UserRepository;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -28,8 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto getUserById(Long id) {
-        User user = userRepository.findUserById(id);
-        UserResponseDto userResponseDto = userMapper.userToDto(user);
+        Optional<User> user = userRepository.findById(id);
+        UserResponseDto userResponseDto = userMapper.userToDto(user.orElseThrow(UserNotFoundException::new));
         return userResponseDto;
     }
 

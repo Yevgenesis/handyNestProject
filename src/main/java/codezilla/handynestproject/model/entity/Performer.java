@@ -19,13 +19,21 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "performer")
+@NamedEntityGraph(name = "Performer.withUserAndCategoriesAndAddress", attributeNodes = {
+        @NamedAttributeNode("user"),
+        @NamedAttributeNode("categories"),
+        @NamedAttributeNode("address")
+}
+)
+//@EqualsAndHashCode(exclude = {"tasks", "address", "categories","user"})
+//@ToString(exclude = {"tasks", "address", "categories","user"})
 public class Performer {
 
     @Id
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
     private User user;
 
@@ -51,6 +59,7 @@ public class Performer {
     private Set<Category> categories = new HashSet<>();
 
 
+
     @OneToOne(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
@@ -67,7 +76,7 @@ public class Performer {
     private Set<Task> tasks = new HashSet<>();
 
     @Column(name = "is_available")
-    boolean isAvailable;
+    private boolean isAvailable;
 
     @Column(name = "performer_rating")
     private Double positiveFeedbackPercent;

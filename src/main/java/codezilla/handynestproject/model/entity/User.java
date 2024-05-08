@@ -1,7 +1,6 @@
 package codezilla.handynestproject.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +20,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "\"user\"")
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@EqualsAndHashCode(exclude = {"tasks", "roles", "sentFeedbacks","receivedFeedbacks"})
+//@ToString(exclude = {"tasks", "roles", "sentFeedbacks","receivedFeedbacks"})
 public class User {
 
     @Id

@@ -48,7 +48,7 @@ public class TaskServiceImpl implements TaskService {
     }
     @Override
     public Task createTaskByUserId(Long userId, TaskRequestDto dto) {
-        User user = userRepository.findUserById(userId);
+        Optional<User> user = userRepository.findById(userId);
         Task task = Task.builder()
                 .title(dto.title())
                 .description(dto.description())
@@ -58,7 +58,7 @@ public class TaskServiceImpl implements TaskService {
                 .isPublish(dto.isPublish())
                 .workingTime(getWorkingTimeFromDto(dto))
                 .category(getCategoryFromDto(dto))
-                .user(user)
+                .user(user.get()) // ToDo check
                 .build();
         return taskRepository.save(task);
     }
@@ -132,7 +132,7 @@ public class TaskServiceImpl implements TaskService {
         List<Task> tasks = taskRepository.findAll();
          if(tasks.get(0).getTaskStatus().equals(TaskStatus.IN_PROGRESS)){
              tasks.stream()
-                     .filter(t->t.getPerformer().equals(performer))
+                     .filter(t -> t.getPerformer().equals(performer.get()))
                      .toList();
              return tasks;
          }
@@ -156,11 +156,11 @@ public class TaskServiceImpl implements TaskService {
 
     private User getUserFromTaskDto(TaskRequestDto dto) {
         Long userId = dto.userId();
-        User user = userRepository.findUserById(userId);
+        Optional<User> user = userRepository.findById(userId);
         if (user == null) {
             throw new UserNotFoundException();
         }
-        return user;
+        return user.get(); // ToDo check
     }
 
     private WorkingTime getWorkingTimeFromDto(TaskRequestDto dto) {

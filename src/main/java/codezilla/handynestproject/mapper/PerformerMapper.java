@@ -8,9 +8,8 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = PerformerMapper.class)
+@Mapper(componentModel = "spring")
 public interface PerformerMapper {
-
 
     @Mapping(source = "user.firstName", target = "firstName")
     @Mapping(source = "user.lastName", target = "lastName")

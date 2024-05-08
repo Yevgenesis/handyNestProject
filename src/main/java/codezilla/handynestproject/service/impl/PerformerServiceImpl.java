@@ -22,7 +22,7 @@ public class PerformerServiceImpl implements PerformerService {
 
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<PerformerResponseDto> getPerformers() {
         List<Performer> performers = performerRepository.findAll();
         List<PerformerResponseDto> dtos = performerMapper.performersToListDto(performers);

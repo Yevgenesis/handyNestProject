@@ -30,9 +30,9 @@ public class Role {
     @Builder.Default
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
-    @Builder.Default
-    private Set<Authority> authorities = new HashSet<>();
+//    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+//    @Builder.Default
+//    private Set<Authority> authorities = new HashSet<>();
 
 
 

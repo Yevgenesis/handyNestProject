@@ -1,7 +1,7 @@
 package codezilla.handynestproject.dto.performer;
 
+import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
-import codezilla.handynestproject.model.entity.Address;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -20,16 +20,16 @@ public class PerformerResponseDto {
 
     private String phoneNumber;
 
-    private boolean isPhoneVerified;
-
-    private boolean isPassportVerified;
+//    private boolean isPhoneVerified;
+//
+//    private boolean isPassportVerified;
 
     private String description;
 
     private Set<CategoryTitleDto> categories = new HashSet<>();
 
     //        @JsonFormat(shape = JsonFormat.Shape.STRING) // ToDo
-    private Address address;
+    private AddressDto address;
 
     boolean isAvailable;
 
