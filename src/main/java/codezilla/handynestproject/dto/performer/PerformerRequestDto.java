@@ -18,15 +18,6 @@ public class PerformerRequestDto {
 
     private List<Long> categoryIDs = new ArrayList<>();
 
-    // Address
-//    private String street;
-//
-//    private String city;
-//
-//    private String country;
-//
-//    private String zip;
-
     private AddressDto addressDto;
 
 }

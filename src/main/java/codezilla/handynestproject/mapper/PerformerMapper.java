@@ -18,7 +18,5 @@ public interface PerformerMapper {
 
     List<PerformerResponseDto> performersToListDto(List<Performer> performers);
 
-    @Mapping(target = "user", ignore = true)
-        // Если user не нужно устанавливать, исключаем его из маппинга
     Performer dtoToPerformer(PerformerRequestDto performerDto);
 }

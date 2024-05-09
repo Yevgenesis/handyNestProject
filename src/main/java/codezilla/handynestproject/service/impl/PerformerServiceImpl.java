@@ -1,8 +1,9 @@
 package codezilla.handynestproject.service.impl;
 
-import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
+import codezilla.handynestproject.exception.UserNotFoundException;
+import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.PerformerMapper;
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
@@ -30,40 +31,29 @@ public class PerformerServiceImpl implements PerformerService {
     private final PerformerMapper performerMapper;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
-
+    private final AddressMapper addressMapper;
 
 
     @Override
+    @Transactional
     public PerformerResponseDto createPerformer(@RequestBody PerformerRequestDto performerDTO) {
-        User user = userRepository.findById(performerDTO.getUserId()).get();
+        User user = userRepository.findById(performerDTO.getUserId()).orElseThrow(() -> new UserNotFoundException("Not Found User with id: " + performerDTO.getUserId()));
         Performer performer = new Performer();
 
-        // Заполняем поля Performer из DTO
         performer.setPhoneNumber(performerDTO.getPhoneNumber());
         performer.setDescription(performerDTO.getDescription());
-        // Остальные поля Performer также устанавливаются из DTO
-
-        // Устанавливаем пользователя для Performer
         performer.setUser(user);
 
         Set<Category> categories = categoryRepository.findCategoriesByIdIn(performerDTO.getCategoryIDs());
 
         performer.setCategories(categories);
-        AddressDto addressDto = performerDTO.getAddressDto();
-        performer.setAddress(
-                Address.builder()
-                        .country(addressDto.getCountry())
-                        .city(addressDto.getCity())
-                        .street(addressDto.getStreet())
-                        .zip(addressDto.getZip())
-                        .build()
-        );
-//        performer.setId(user.getId());
-        // Сохраняем Performer в базе данных
+        Address address = addressMapper.dtoToAddress(performerDTO.getAddressDto());
+        performer.setAddress(address);
+
         performer = performerRepository.save(performer);
 
-        // Возвращаем DTO с данными сохраненного Performer
-        return performerMapper.performerToDto(performerRepository.save(performer));
+        Performer performer1 = performerRepository.save(performer);
+        return performerMapper.performerToDto(performer1);
     }
 
     @Override

@@ -92,6 +92,17 @@ public class Performer {
     @Column(name = "updated_on", nullable = false)
     private Timestamp updatedOn;
 
+    @PrePersist
+    public void prePersist() {
+        this.createdOn = new Timestamp(System.currentTimeMillis());
+        this.updatedOn = new Timestamp(System.currentTimeMillis());
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedOn = new Timestamp(System.currentTimeMillis());
+    }
+
 
 }
 

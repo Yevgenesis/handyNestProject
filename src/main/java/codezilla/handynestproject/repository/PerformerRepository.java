@@ -16,6 +16,8 @@ public interface PerformerRepository extends JpaRepository<Performer, Long> {
 //    Optional<Performer> findPerformerWithCategoriesById(Long id);
 
 
+    Performer save(Performer performer);
+
     @EntityGraph(value = "Performer.withUserAndCategoriesAndAddress", type = EntityGraph.EntityGraphType.LOAD)
     List<Performer> findAll();
 
