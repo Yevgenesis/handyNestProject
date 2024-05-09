@@ -2,10 +2,10 @@ package codezilla.handynestproject.service.impl;
 
 import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
+import codezilla.handynestproject.exception.CategoryNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.PerformerMapper;
-import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.User;
@@ -37,23 +37,23 @@ public class PerformerServiceImpl implements PerformerService {
     @Override
     @Transactional
     public PerformerResponseDto createPerformer(@RequestBody PerformerRequestDto performerDTO) {
-        User user = userRepository.findById(performerDTO.getUserId()).orElseThrow(() -> new UserNotFoundException("Not Found User with id: " + performerDTO.getUserId()));
-        Performer performer = new Performer();
-
-        performer.setPhoneNumber(performerDTO.getPhoneNumber());
-        performer.setDescription(performerDTO.getDescription());
-        performer.setUser(user);
-
+        User user = userRepository.findById(performerDTO.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("Not Found User with id: " + performerDTO.getUserId()));
         Set<Category> categories = categoryRepository.findCategoriesByIdIn(performerDTO.getCategoryIDs());
 
-        performer.setCategories(categories);
-        Address address = addressMapper.dtoToAddress(performerDTO.getAddressDto());
-        performer.setAddress(address);
+        // проверяем все ли категории нашлись
+        if (categories.size() != performerDTO.getCategoryIDs().size())
+            throw new CategoryNotFoundException("Wrong Category IDs");
 
-        performer = performerRepository.save(performer);
-
-        Performer performer1 = performerRepository.save(performer);
-        return performerMapper.performerToDto(performer1);
+        Performer performer = Performer.builder()
+                .phoneNumber(performerDTO.getPhoneNumber())
+                .description(performerDTO.getDescription())
+                .user(user)
+                .categories(categories)
+                .address(addressMapper.dtoToAddress(performerDTO.getAddressDto()))
+                .build();
+        Performer responsePerformer = performerRepository.save(performer);
+        return performerMapper.performerToDto(responsePerformer);
     }
 
     @Override
