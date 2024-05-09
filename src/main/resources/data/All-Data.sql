@@ -69,16 +69,28 @@ VALUES ('123 Unter den Linden', 'Berlin', '10117', 'Germany'),
 
 -- User
 INSERT INTO "user" (first_name, last_name, email, is_email_verified, password, created_on, updated_on, is_deleted)
-VALUES ('John', 'Doe', 'john.doe@example.com', true, 'password123',
+VALUES ('Джон', 'Доу', 'john.doe@example.com', true, 'password123',
         '2024-04-29 10:00:00', '2024-04-29 10:00:00', false),
-       ('Jane', 'Smith', 'jane.smith@example.com', true, 'qwerty123',
+       ('Джейн', 'Смит', 'jane.smith@example.com', true, 'qwerty123',
         '2024-04-29 11:00:00', '2024-04-29 11:00:00', false),
-       ('Alice', 'Johnson', 'alice.johnson@example.com', true, 'test123',
+       ('Алиса', 'Джонсон', 'alice.johnson@example.com', true, 'test123',
         '2024-04-29 12:00:00', '2024-04-29 12:00:00', false),
-       ('Bob', 'Williams', 'bob.williams@example.com', true, 'password456',
+       ('Боб', 'Уильямс', 'bob.williams@example.com', true, 'password456',
         '2024-04-29 13:00:00', '2024-04-29 13:00:00', false),
-       ('Eva', 'Brown', 'eva.brown@example.com', true, 'abc123',
-        '2024-04-29 14:00:00', '2024-04-29 14:00:00', false);
+       ('Ева', 'Браун', 'eva.brown@example.com', true, 'abc123',
+        '2024-04-29 14:00:00', '2024-04-29 14:00:00', false),
+       ('Иван', 'Иванов', 'ivan.ivanov@example.com', true, 'ivan123',
+        '2024-05-01 10:00:00', '2024-05-01 10:00:00', false),
+       ('Мария', 'Петрова', 'maria.petrova@example.com', true, 'maria456',
+        '2024-05-01 11:00:00', '2024-05-01 11:00:00', false),
+       ('Александр', 'Сидоров', 'alex.sid@example.com', true, 'sid123',
+        '2024-05-01 12:00:00', '2024-05-01 12:00:00', false),
+       ('Ольга', 'Смирнова', 'olga.sm@example.com', true, 'olga789',
+        '2024-05-01 13:00:00', '2024-05-01 13:00:00', false),
+       ('Петр', 'Кузнецов', 'peter.kuz@example.com', true, 'peter456',
+        '2024-05-01 14:00:00', '2024-05-01 14:00:00', false),
+       ('Светлана', 'Иванова', 'svetlana.ivanova@example.com', true, 'sveta123',
+        '2024-05-01 15:00:00', '2024-05-01 15:00:00', false);
 
 -- исполнители
 INSERT INTO performer (id, phone_number, is_phone_verified, is_passport_verified, description, is_available,
