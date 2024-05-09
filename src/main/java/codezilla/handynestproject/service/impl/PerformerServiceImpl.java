@@ -6,6 +6,7 @@ import codezilla.handynestproject.exception.CategoryNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.PerformerMapper;
+import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.User;
@@ -34,6 +35,7 @@ public class PerformerServiceImpl implements PerformerService {
     private final AddressMapper addressMapper;
 
 
+
     @Override
     @Transactional
     public PerformerResponseDto createPerformer(@RequestBody PerformerRequestDto performerDTO) {
@@ -52,6 +54,32 @@ public class PerformerServiceImpl implements PerformerService {
                 .categories(categories)
                 .address(addressMapper.dtoToAddress(performerDTO.getAddressDto()))
                 .build();
+        Performer responsePerformer = performerRepository.save(performer);
+        return performerMapper.performerToDto(responsePerformer);
+    }
+
+    @Override
+    @Transactional
+    public PerformerResponseDto updatePerformer(PerformerRequestDto performerDto) {
+        User user = userRepository.findById(performerDto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("Not Found User with id: " + performerDto.getUserId()));
+        Set<Category> categories = categoryRepository.findCategoriesByIdIn(performerDto.getCategoryIDs());
+
+        // ToDo тут должна быть проверка роли (performerRole)
+
+        Performer performer = performerRepository.findById(performerDto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("Not Found Performer with id: " + performerDto.getUserId()));
+
+        performer.setPhoneNumber(performerDto.getPhoneNumber());
+        performer.setDescription(performerDto.getDescription());
+        performer.setCategories(categories);
+
+        Address address = performer.getAddress();
+        address.setCity(performerDto.getAddressDto().getCity());
+        address.setCountry(performerDto.getAddressDto().getCountry());
+        address.setStreet(performerDto.getAddressDto().getStreet());
+        address.setZip(performerDto.getAddressDto().getZip());
+
         Performer responsePerformer = performerRepository.save(performer);
         return performerMapper.performerToDto(responsePerformer);
     }

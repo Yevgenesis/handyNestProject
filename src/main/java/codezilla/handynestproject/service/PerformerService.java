@@ -13,4 +13,5 @@ public interface PerformerService {
 
     List<PerformerResponseDto> getPerformers();
 
+    PerformerResponseDto updatePerformer(PerformerRequestDto performerDto);
 }

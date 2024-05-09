@@ -15,11 +15,20 @@ public class PerformerController {
 
     private final PerformerService performerService;
 
+    //POST
     @PostMapping
     public PerformerResponseDto createPerformer(@RequestBody PerformerRequestDto performerDto) {
         return performerService.createPerformer(performerDto);
     }
 
+    //PUT
+    @PutMapping
+    public PerformerResponseDto updatePerformer(@RequestBody PerformerRequestDto updateDto) {
+        return performerService.updatePerformer(updateDto);
+    }
+
+
+    //GET
     @GetMapping
     public List<PerformerResponseDto> getAllPerformers() {
         return performerService.getPerformers();

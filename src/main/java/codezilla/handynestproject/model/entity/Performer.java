@@ -27,6 +27,7 @@ import java.util.Set;
 )
 //@EqualsAndHashCode(exclude = {"tasks", "address", "categories","user"})
 //@ToString(exclude = {"tasks", "address", "categories","user"})
+//@EntityListeners(AuditingEntityListener.class)
 public class Performer {
 
     @Id
@@ -84,15 +85,18 @@ public class Performer {
     @Column(name = "feedback_count")
     private Long feedbackCount;
 
+
     @CreatedDate
     @Column(name = "created_on", nullable = false, updatable = false)
     private Timestamp createdOn;
 
+    // ToDo BAG - updatedOn не обновляется при обновлении
     @LastModifiedDate
     @Column(name = "updated_on", nullable = false)
     private Timestamp updatedOn;
 
-    // установка значений по умолчанию при добавлении в базу
+
+    //     установка значений по умолчанию при добавлении в базу
     @PrePersist
     public void prePersist() {
         this.createdOn = new Timestamp(System.currentTimeMillis());
@@ -102,7 +106,7 @@ public class Performer {
         this.positiveFeedbackPercent = 0.0;
     }
 
-    // установка значений при обновлении
+    //     установка значений при обновлении
     @PreUpdate
     public void preUpdate() {
         this.updatedOn = new Timestamp(System.currentTimeMillis());
