@@ -3,8 +3,8 @@ package codezilla.handynestproject.dto.performer;
 import codezilla.handynestproject.dto.address.AddressDto;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -16,7 +16,7 @@ public class PerformerRequestDto {
 
     private String description;
 
-    private Set<Long> categoryIDs = new HashSet<>();
+    private List<Long> categoryIDs = new ArrayList<>();
 
     // Address
 //    private String street;

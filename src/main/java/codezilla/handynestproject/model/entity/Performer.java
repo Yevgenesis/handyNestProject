@@ -30,7 +30,6 @@ import java.util.Set;
 public class Performer {
 
     @Id
-    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -79,10 +78,10 @@ public class Performer {
     private boolean isAvailable;
 
     @Column(name = "performer_rating")
-    private Double positiveFeedbackPercent;
+    private Double positiveFeedbackPercent = 0.0;
 
     @Column(name = "feedback_count")
-    private Long feedbackCount;
+    private Long feedbackCount = 0L;
 
     @CreatedDate
     @Column(name = "created_on", nullable = false, updatable = false)
