@@ -93,40 +93,40 @@ VALUES ('Джон', 'Доу', 'john.doe@example.com', true, 'password123',
         '2024-05-01 15:00:00', '2024-05-01 15:00:00', false);
 
 -- исполнители
--- INSERT INTO performer (id, phone_number, is_phone_verified, is_passport_verified, description, is_available,
---                        performer_rating, feedback_count, created_on, updated_on, address_id)
--- VALUES (1, '+49123456789', true, true, 'Опытный сантехник с большим опытом работы', true, 4.5, 100, CURRENT_TIMESTAMP,
---         CURRENT_TIMESTAMP, 1),
---        (2, '+49123456789', true, true, 'Опытный маляр, предоставляю услуги качественной покраски стен', true, 4.8, 150,
---         CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2),
---        (3, '+49123456789', true, true, 'Электрик с опытом работы, устанавливаю различные светильники', true, 4.0, 80,
---         CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3),
---        (4, '+49123456789', true, true, 'Опытный сантехник, умею делать качественный ремонт сантехники', true, 4.7, 120,
---         CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 4),
---        (5, '+49123456789', true, true, 'Опытный строитель, предоставляю услуги по строительству домов и квартир', true,
---         4.2, 90, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 5);
+INSERT INTO performer (id, phone_number, is_phone_verified, is_passport_verified, description, is_available,
+                       performer_rating, feedback_count, created_on, updated_on, address_id)
+VALUES (1, '+49123456789', true, true, 'Опытный сантехник с большим опытом работы', true, 4.5, 100, CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP, 1),
+       (2, '+49123456789', true, true, 'Опытный маляр, предоставляю услуги качественной покраски стен', true, 4.8, 150,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2),
+       (3, '+49123456789', true, true, 'Электрик с опытом работы, устанавливаю различные светильники', true, 4.0, 80,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3),
+       (4, '+49123456789', true, true, 'Опытный сантехник, умею делать качественный ремонт сантехники', true, 4.7, 120,
+        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 4),
+       (5, '+49123456789', true, true, 'Опытный строитель, предоставляю услуги по строительству домов и квартир', true,
+        4.2, 90, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 5);
 
 -- категории для Performer
--- INSERT INTO performer_categories(category_id, performer_id)
--- VALUES (2, 1),
---        (4, 1),
---        (8, 2),
---        (19, 2),
---        (20, 2),
---        (8, 3),
---        (18, 4),
---        (35, 4),
---        (40, 5),
---        (28, 5);
+INSERT INTO performer_categories(category_id, performer_id)
+VALUES (2, 1),
+       (4, 1),
+       (8, 2),
+       (19, 2),
+       (20, 2),
+       (8, 3),
+       (18, 4),
+       (35, 4),
+       (40, 5),
+       (28, 5);
 
 
 -- Task
--- INSERT INTO task (title, description, price, task_status, is_publish, address_id, working_time_id, category_id, user_id,
---                   performer_id)
--- VALUES ('Починить кран', 'Требуется починить кран на кухне', 50.00, 'OPEN', true, 1, 1, 12, 1, 3),
---        ('Покрасить комнату', 'Нужно покрасить стены в гостиной', 200.00, 'IN_PROGRESS', true, 2, 2, 12, 2, 4),
---        ('Установить светильники', 'Требуется установить новые светильники в коридоре', 100.00, 'COMPLETED', true, 3, 3,
---         12, 3, 2),
---        ('Установить светильники', 'Хочу установить старые светильники в сарае', 100.00, 'OPEN', true, 4, 4, 12, 4,
---         null);
+INSERT INTO task (title, description, price, task_status, is_publish, address_id, working_time_id, category_id, user_id,
+                  performer_id)
+VALUES ('Починить кран', 'Требуется починить кран на кухне', 50.00, 'OPEN', true, 1, 1, 12, 1, 3),
+       ('Покрасить комнату', 'Нужно покрасить стены в гостиной', 200.00, 'IN_PROGRESS', true, 2, 2, 12, 2, 4),
+       ('Установить светильники', 'Требуется установить новые светильники в коридоре', 100.00, 'COMPLETED', true, 3, 3,
+        12, 3, 2),
+       ('Установить светильники', 'Хочу установить старые светильники в сарае', 100.00, 'OPEN', true, 4, 4, 12, 4,
+        null);
 

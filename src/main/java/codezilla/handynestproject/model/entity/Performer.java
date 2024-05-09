@@ -79,10 +79,10 @@ public class Performer {
     private boolean isAvailable;
 
     @Column(name = "performer_rating")
-    private Double positiveFeedbackPercent = 0.0;
+    private Double positiveFeedbackPercent;
 
     @Column(name = "feedback_count")
-    private Long feedbackCount = 0L;
+    private Long feedbackCount;
 
     @CreatedDate
     @Column(name = "created_on", nullable = false, updatable = false)
@@ -92,12 +92,17 @@ public class Performer {
     @Column(name = "updated_on", nullable = false)
     private Timestamp updatedOn;
 
+    // установка значений по умолчанию при добавлении в базу
     @PrePersist
     public void prePersist() {
         this.createdOn = new Timestamp(System.currentTimeMillis());
         this.updatedOn = new Timestamp(System.currentTimeMillis());
+        this.isAvailable = true;
+        this.feedbackCount = 0L;
+        this.positiveFeedbackPercent = 0.0;
     }
 
+    // установка значений при обновлении
     @PreUpdate
     public void preUpdate() {
         this.updatedOn = new Timestamp(System.currentTimeMillis());
