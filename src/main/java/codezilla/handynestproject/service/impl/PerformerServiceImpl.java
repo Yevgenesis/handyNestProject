@@ -58,7 +58,7 @@ public class PerformerServiceImpl implements PerformerService {
                         .zip(addressDto.getZip())
                         .build()
         );
-        performer.setId(user.getId());
+//        performer.setId(user.getId());
         // Сохраняем Performer в базе данных
         performer = performerRepository.save(performer);
 

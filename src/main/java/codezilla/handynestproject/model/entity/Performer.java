@@ -34,6 +34,7 @@ public class Performer {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
+    @MapsId
     private User user;
 
     @Column(name = "phone_number", length = 20)
