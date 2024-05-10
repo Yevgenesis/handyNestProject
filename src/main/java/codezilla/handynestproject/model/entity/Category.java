@@ -1,7 +1,10 @@
 package codezilla.handynestproject.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +15,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "category")
-@EqualsAndHashCode(exclude = {"tasks", "performers"})
-@ToString(exclude = {"tasks", "performers"})
+//@EqualsAndHashCode(exclude = {"tasks", "performers"})
+//@ToString(exclude = {"tasks", "performers"})
 public class Category {
 
     @Id
@@ -34,8 +37,8 @@ public class Category {
     @Builder.Default
     private Set<Task> tasks = new HashSet<>();
 
-
-    @ManyToMany
-    private Set<Performer> performers = new HashSet<>();
+//
+//    @ManyToMany
+//    private Set<Performer> performers = new HashSet<>();
 
 }

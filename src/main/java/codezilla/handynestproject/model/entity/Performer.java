@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -27,7 +28,7 @@ import java.util.Set;
 )
 //@EqualsAndHashCode(exclude = {"tasks", "address", "categories","user"})
 //@ToString(exclude = {"tasks", "address", "categories","user"})
-//@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class)
 public class Performer {
 
     @Id
@@ -80,14 +81,15 @@ public class Performer {
     private boolean isAvailable;
 
     @Column(name = "performer_rating")
-    private Double positiveFeedbackPercent;
+    @Builder.Default
+    private Double positiveFeedbackPercent = 0.0;
 
     @Column(name = "feedback_count")
     private Long feedbackCount;
 
 
     @CreatedDate
-    @Column(name = "created_on", nullable = false, updatable = false)
+    @Column(name = "created_on", updatable = false, nullable = false)
     private Timestamp createdOn;
 
     // ToDo BAG - updatedOn не обновляется при обновлении
@@ -97,20 +99,20 @@ public class Performer {
 
 
     //     установка значений по умолчанию при добавлении в базу
-    @PrePersist
-    public void prePersist() {
-        this.createdOn = new Timestamp(System.currentTimeMillis());
-        this.updatedOn = new Timestamp(System.currentTimeMillis());
-        this.isAvailable = true;
-        this.feedbackCount = 0L;
-        this.positiveFeedbackPercent = 0.0;
-    }
+//    @PrePersist
+//    public void prePersist() {
+//        this.createdOn = new Timestamp(System.currentTimeMillis());
+//        this.updatedOn = new Timestamp(System.currentTimeMillis());
+//        this.isAvailable = true;
+//        this.feedbackCount = 0L;
+//        this.positiveFeedbackPercent = 0.0;
+//    }
 
     //     установка значений при обновлении
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedOn = new Timestamp(System.currentTimeMillis());
-    }
+//    @PreUpdate
+//    public void preUpdate() {
+//        this.updatedOn = new Timestamp(System.currentTimeMillis());
+//    }
 
 
 }

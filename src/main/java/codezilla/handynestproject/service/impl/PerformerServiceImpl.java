@@ -47,6 +47,7 @@ public class PerformerServiceImpl implements PerformerService {
         if (categories.size() != performerDTO.getCategoryIDs().size())
             throw new CategoryNotFoundException("Wrong Category IDs");
 
+        // ToDo оптимизировать запрос
         Performer performer = Performer.builder()
                 .phoneNumber(performerDTO.getPhoneNumber())
                 .description(performerDTO.getDescription())
