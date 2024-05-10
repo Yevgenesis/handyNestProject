@@ -85,14 +85,14 @@ public class Performer {
     private Double positiveFeedbackPercent = 0.0;
 
     @Column(name = "feedback_count")
-    private Long feedbackCount;
+    @Builder.Default
+    private Long feedbackCount = 0L;
 
 
     @CreatedDate
     @Column(name = "created_on", updatable = false, nullable = false)
     private Timestamp createdOn;
 
-    // ToDo BAG - updatedOn не обновляется при обновлении
     @LastModifiedDate
     @Column(name = "updated_on", nullable = false)
     private Timestamp updatedOn;
