@@ -4,6 +4,7 @@ import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.exception.CategoryNotFoundException;
+import codezilla.handynestproject.exception.PerformerNotFoundException;
 import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
@@ -110,6 +111,8 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
+
+
     @Override
     public TaskResponseDto getTaskById(Long taskId) {
         Optional<Task> task = Optional.of(taskRepository.findById(taskId)
@@ -134,31 +137,53 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskResponseDto> getTasksByPerformerId(Long performerId) {
         Optional<Performer> performer = performerRepository.findById(performerId);
         List<Task> tasks = taskRepository.findAll();
-         if(tasks.get(0).getTaskStatus().equals(TaskStatus.IN_PROGRESS)){
-             tasks.stream()
-                     .filter(t->t.getPerformer().equals(performer))
-                     .toList();
-             return taskMapper.toTaskResponseDtoList(tasks);
-         }
+         tasks.stream()
+                 .filter(t-> t.getTaskStatus().equals(TaskStatus.IN_PROGRESS))
+                 .filter(t->t.getPerformer().equals(performer))
+                .toList();
+        return taskMapper.toTaskResponseDtoList(tasks);
 
-
-         return null;
     }
-//TODO написать эксепшн если юзер и перформер совпадают
+
+    @Override
+    public List<TaskResponseDto> getTasksByStatus(TaskStatus status) {
+        return taskMapper.toTaskResponseDtoList(taskRepository.findTaskByTaskStatus(status));
+    }
+//TODO проверить корректность написания эксепшенов
     @Override
     public TaskResponseDto addPerformerToTask(Long taskId, Long performerId) {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         Optional<Performer> performer = performerRepository.findById(performerId);
-        if (performer.get().getId().equals(task.getUser().getId())
-        || !userRepository.findUserById(performerId).isDeleted()
-        || !task.getTaskStatus().equals(TaskStatus.OPEN)) { // ToDo exception
-            throw new IllegalArgumentException();
-        }
+        if ( performer.get().getId().equals(task.getUser().getId()))
+            throw new PerformerNotFoundException("Performer can't be same as user");
+        if(userRepository.findUserById(performerId).isDeleted())
+            throw new UserNotFoundException("User is delete");
+         if(!task.getTaskStatus().equals(TaskStatus.OPEN))
+            throw new TaskNotFoundException("Status must be OPEN");
         task.setTaskStatus(TaskStatus.IN_PROGRESS);
         task.setPerformer(performer.get());
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
+    @Override
+    public TaskResponseDto removePerformerFromTask(Long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+        if(task.getPerformer() == null)
+            throw new PerformerNotFoundException("Performer not found");
+        task.setTaskStatus(TaskStatus.OPEN);
+        task.setPerformer(null);
+        return taskMapper.toTaskResponseDto(taskRepository.save(task));
+    }
 
+    @Override
+    public TaskResponseDto updateTaskStatusById(Long taskId, TaskStatus status){
+        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+                if(task.getTaskStatus().equals(TaskStatus.CANCELED)
+                        || task.getTaskStatus().equals(TaskStatus.COMPLETED)){
+                    throw new TaskNotFoundException("Task have status: " + task.getTaskStatus());
+                }
+        task.setTaskStatus(status);
+        return  taskMapper.toTaskResponseDto(taskRepository.save(task));
+    }
 
     private User getUserFromTaskDto(TaskRequestDto dto) {
         Long userId = dto.userId();
