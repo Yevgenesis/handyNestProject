@@ -107,8 +107,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskResponseDto> getAllTasks() {
-        List<Task> tasks = taskRepository.findAll();
-        return taskMapper.toTaskResponseDtoList(tasks);
+        return taskMapper.toTaskResponseDtoList(taskRepository.findAll());
     }
 
 

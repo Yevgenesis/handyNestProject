@@ -6,10 +6,13 @@ import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.model.entity.WorkingTime;
 import codezilla.handynestproject.model.enums.TaskStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 // ToDo проверить (Тестовый DTO)
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class TaskWithPerformerResponseDto {
     private Long id;
