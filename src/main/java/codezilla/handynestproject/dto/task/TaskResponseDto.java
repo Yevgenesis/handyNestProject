@@ -28,5 +28,6 @@ public class TaskResponseDto {
     private CategoryTitleDto category;
     private UserResponseDto user;
     private PerformerResponseDto performer;
-    private boolean isPublish;
+    @Builder.Default
+    private boolean isPublish = true;
    }

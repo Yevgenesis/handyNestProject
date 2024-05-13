@@ -8,6 +8,7 @@ import codezilla.handynestproject.exception.PerformerNotFoundException;
 import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
+import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.CategoryMapper;
 import codezilla.handynestproject.mapper.PerformerMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
@@ -41,6 +42,7 @@ public class TaskServiceImpl implements TaskService {
     private final CategoryRepository categoryRepository;
     private final PerformerRepository performerRepository;
     private final TaskMapper taskMapper;
+    private final AddressMapper addressMapper;
     private final CategoryService categoryService;
 
 
@@ -90,7 +92,8 @@ public class TaskServiceImpl implements TaskService {
             Optional.ofNullable(dto.getTitle()).ifPresent(task::setTitle);
             Optional.ofNullable(dto.getDescription()).ifPresent(task::setDescription);
             Optional.ofNullable(dto.getPrice()).ifPresent(task::setPrice);
-            Optional.ofNullable(dto.getAddress()).ifPresent(task::setAddress);
+            Optional.ofNullable(dto.getAddressDto())
+                    .ifPresent(addressDto -> task.setAddress(addressMapper.dtoToAddress(addressDto)));
             Optional.ofNullable(workingTimeRepository.findWorkingTimeById(workingTimeId))
                     .ifPresent(task::setWorkingTime);
         }

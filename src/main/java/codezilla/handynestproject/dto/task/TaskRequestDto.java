@@ -18,8 +18,5 @@ public record TaskRequestDto(
         Long userId,
         Long categoryId,
         boolean isPublish
-
-
-
 ) {
 }
