@@ -1,4 +1,4 @@
-INSERT INTO category (id, name, parent_id, weight)
+INSERT INTO category (id, title, parent_id, weight)
 VALUES (1, 'Ремонт', NULL, 10),
        (2, 'Строительство', NULL, 20),
        (3, 'Уборка', NULL, 30),

@@ -3,7 +3,9 @@ package codezilla.handynestproject.dto.performer;
 import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -11,6 +13,8 @@ import java.util.Set;
 
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PerformerResponseDto {
 
     private Long id;

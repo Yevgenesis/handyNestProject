@@ -8,6 +8,8 @@ import codezilla.handynestproject.exception.PerformerNotFoundException;
 import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
+import codezilla.handynestproject.mapper.CategoryMapper;
+import codezilla.handynestproject.mapper.PerformerMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
@@ -21,6 +23,7 @@ import codezilla.handynestproject.repository.PerformerRepository;
 import codezilla.handynestproject.repository.TaskRepository;
 import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.repository.WorkingTimeRepository;
+import codezilla.handynestproject.service.CategoryService;
 import codezilla.handynestproject.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,7 @@ public class TaskServiceImpl implements TaskService {
     private final CategoryRepository categoryRepository;
     private final PerformerRepository performerRepository;
     private final TaskMapper taskMapper;
+    private final CategoryService categoryService;
 
 
 
@@ -59,7 +63,7 @@ public class TaskServiceImpl implements TaskService {
     }
     @Override
     public TaskResponseDto createTaskByUserId(Long userId, TaskRequestDto dto) {
-        Optional<User> user = userRepository.findUserById(userId);
+        Optional<User> user = userRepository.findById(userId);
         Task task = Task.builder()
                 .title(dto.title())
                 .description(dto.description())
@@ -152,15 +156,16 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto addPerformerToTask(Long taskId, Long performerId) {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
-        Optional<Performer> performer = performerRepository.findById(performerId);
-        if ( performer.get().getId().equals(task.getUser().getId()))
+        Performer performer = performerRepository.findById(performerId)
+                .orElseThrow(()->new PerformerNotFoundException("Performer can't be same as user"));
+        if ( performer.getId().equals(task.getUser().getId()))
             throw new PerformerNotFoundException("Performer can't be same as user");
-        if(userRepository.findUserById(performerId).isDeleted())
+        if(performer.getUser().isDeleted())
             throw new UserNotFoundException("User is delete");
          if(!task.getTaskStatus().equals(TaskStatus.OPEN))
             throw new TaskNotFoundException("Status must be OPEN");
         task.setTaskStatus(TaskStatus.IN_PROGRESS);
-        task.setPerformer(performer.get());
+        task.setPerformer(performer);
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
     @Override
@@ -181,22 +186,19 @@ public class TaskServiceImpl implements TaskService {
                     throw new TaskNotFoundException("Task have status: " + task.getTaskStatus());
                 }
         task.setTaskStatus(status);
-        return  taskMapper.toTaskResponseDto(taskRepository.save(task));
+        return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
 
     private User getUserFromTaskDto(TaskRequestDto dto) {
-        Long userId = dto.userId();
-        Optional<User> user = userRepository.findById(userId);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        return user.get(); // ToDo check
+       return userRepository.findById(dto.userId())
+               .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     private WorkingTime getWorkingTimeFromDto(TaskRequestDto dto) {
-        Long workingTimeId = dto.workingTimeId();
-        return workingTimeRepository.findById(workingTimeId)
-                .orElseThrow(WorkingTimeNotFoundException::new);
+
+        return workingTimeRepository.findById(dto.workingTimeId())
+                .orElseThrow(WorkingTimeNotFoundException::new)
+                ;
     }
 
     private Category getCategoryFromDto(TaskRequestDto dto) {

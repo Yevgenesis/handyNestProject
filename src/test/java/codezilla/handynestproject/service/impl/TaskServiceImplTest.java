@@ -1,8 +1,12 @@
-package codezilla.handynestproject.service;
+package codezilla.handynestproject.service.impl;
 
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
+import codezilla.handynestproject.mapper.CategoryMapper;
+import codezilla.handynestproject.mapper.CategoryMapperImpl;
+import codezilla.handynestproject.mapper.PerformerMapper;
+import codezilla.handynestproject.mapper.PerformerMapperImpl;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.mapper.TaskMapperImpl;
 import codezilla.handynestproject.model.entity.Address;
@@ -16,8 +20,8 @@ import codezilla.handynestproject.repository.PerformerRepository;
 import codezilla.handynestproject.repository.TaskRepository;
 import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.repository.WorkingTimeRepository;
-import codezilla.handynestproject.service.impl.TaskServiceImpl;
-import org.junit.jupiter.api.Assertions;
+import codezilla.handynestproject.service.CategoryService;
+import codezilla.handynestproject.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,14 +34,18 @@ import java.util.Optional;
 
 import static codezilla.handynestproject.service.TestData.TASK_REQUEST_DTO;
 import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO;
+import static codezilla.handynestproject.service.TestData.TEST_CATEGORY;
+import static codezilla.handynestproject.service.TestData.TEST_PERFORMER;
 import static codezilla.handynestproject.service.TestData.TEST_TASK;
+import static codezilla.handynestproject.service.TestData.TEST_USER;
+import static codezilla.handynestproject.service.TestData.TEST_WORKING_TIME;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 @ExtendWith(MockitoExtension.class)
-class TaskServiceTest {
+class TaskServiceImplTest {
 
     @Mock
     private TaskRepository mockTaskRepository;
@@ -51,6 +59,9 @@ class TaskServiceTest {
     private PerformerRepository mockPerformerRepository;
 
     private TaskMapper taskMapper = new TaskMapperImpl();
+    private CategoryService categoryService;
+
+
 
     private TaskService taskService;
 
@@ -59,7 +70,8 @@ class TaskServiceTest {
     void setUp() {
         openMocks(this);
         taskService = new TaskServiceImpl(mockUserRepository, mockTaskRepository,
-                mockWorkingTimeRepository, mockCategoryRepository, mockPerformerRepository, taskMapper);
+                mockWorkingTimeRepository, mockCategoryRepository, mockPerformerRepository, taskMapper,
+                categoryService);
 
     }
 
@@ -68,6 +80,14 @@ class TaskServiceTest {
     void createTaskTest() {
         TaskRequestDto request = TASK_REQUEST_DTO;
         when(mockTaskRepository.save(any())).thenReturn(TEST_TASK);
+        when(mockWorkingTimeRepository.findById(any()))
+                .thenReturn(Optional.ofNullable(TEST_WORKING_TIME));
+        when(mockCategoryRepository.findById(any()))
+                .thenReturn(Optional.ofNullable(TEST_CATEGORY));
+        when(mockPerformerRepository.findById(any()))
+                .thenReturn(Optional.ofNullable(TEST_PERFORMER));
+        when(mockUserRepository.findById(any()))
+                .thenReturn(Optional.ofNullable(TEST_USER));
         TaskResponseDto actual = taskService.createTask(request);
         assertEquals(TASK_RESPONSE_DTO,actual);
 

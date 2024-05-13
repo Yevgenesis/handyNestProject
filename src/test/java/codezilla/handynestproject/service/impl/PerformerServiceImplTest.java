@@ -75,7 +75,7 @@ public class PerformerServiceImplTest {
 
         Category category = new Category();
         category.setId(12L);
-        category.setName("Test Дизайн интерьера");
+        category.setTitle("Test Дизайн интерьера");
         category.setParentId(1L);
         category.setWeight(1);
 

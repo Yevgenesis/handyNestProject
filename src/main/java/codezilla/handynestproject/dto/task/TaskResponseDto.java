@@ -1,5 +1,6 @@
 package codezilla.handynestproject.dto.task;//package codezilla.hendynestproject.model.entity;
 
+import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
@@ -19,7 +20,7 @@ public class TaskResponseDto {
     private String title;
     private String description;
     private Double price;
-    private Address address;
+    private AddressDto address;
     private TaskStatus taskStatus;
     private WorkingTime workingTime;
     private CategoryTitleDto category;

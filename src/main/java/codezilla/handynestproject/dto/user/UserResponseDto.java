@@ -1,12 +1,16 @@
 package codezilla.handynestproject.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
 // ToDo убрать конфиденциальные поля (оставил для тестов)
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserResponseDto {
 
     private Long id;
