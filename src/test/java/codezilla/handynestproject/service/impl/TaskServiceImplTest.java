@@ -4,9 +4,8 @@ import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.mapper.AddressMapper;
-import codezilla.handynestproject.mapper.AddressMapperImpl;
+import codezilla.handynestproject.mapper.CategoryMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
-import codezilla.handynestproject.mapper.TaskMapperImpl;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.CategoryRepository;
@@ -19,7 +18,6 @@ import codezilla.handynestproject.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -27,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static codezilla.handynestproject.service.TestData.ADDRESS_DTO;
+import static codezilla.handynestproject.service.TestData.CATEGORY_TITLE_DTO;
 import static codezilla.handynestproject.service.TestData.TASK_REQUEST_DTO;
 import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO;
 import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO_WITH_PERFORMER;
@@ -40,6 +39,7 @@ import static codezilla.handynestproject.service.TestData.TEST_WORKING_TIME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -65,13 +65,16 @@ class TaskServiceImplTest {
     @MockBean
     private PerformerRepository mockPerformerRepository;
 
-    @Autowired
-    private TaskMapper taskMapper = new TaskMapperImpl();
+    @MockBean
+    private TaskMapper mockTaskMapper;
 
-    @Autowired
-    private AddressMapper addressMapper = new AddressMapperImpl();
+    @MockBean
+    private AddressMapper mockAddressMapper;
 
-    @Autowired
+    @MockBean
+    private CategoryMapper mockCategoryMapper;
+
+    @MockBean
     private CategoryService categoryService;
 
     private TaskService taskService;
@@ -81,8 +84,8 @@ class TaskServiceImplTest {
     void setUp() {
         openMocks(this);
         taskService = new TaskServiceImpl(mockUserRepository, mockTaskRepository,
-                mockWorkingTimeRepository, mockCategoryRepository, mockPerformerRepository, taskMapper,
-                addressMapper, categoryService);
+                mockWorkingTimeRepository, mockCategoryRepository, mockPerformerRepository, mockTaskMapper,
+                mockAddressMapper);
         when(mockTaskRepository.save(any())).thenReturn(TEST_TASK_OPEN);
         when(mockTaskRepository.findById(any()))
                 .thenReturn(Optional.ofNullable(TEST_TASK_OPEN));
@@ -179,12 +182,17 @@ class TaskServiceImplTest {
     //TODO найти ошибку!!! ? actual = 0;
     @Test
     void getTasksByPerformerId() {
-        List<Task> tasks = List.of(TEST_TASK_OPEN, TEST_TASK2_IN_PROGRESS);
+
+        List<Task> tasks = List.of(TEST_TASK_OPEN,TEST_TASK2_IN_PROGRESS);
         Long performerId = TEST_PERFORMER2.getId();
-        when(mockPerformerRepository.findById(performerId))
+        when(mockPerformerRepository.findById(anyLong()))
                 .thenReturn(Optional.of(TEST_PERFORMER2));
         when(mockTaskRepository.findAll())
                 .thenReturn(tasks);
+        when(mockCategoryMapper.categoryToTitleDto(TEST_CATEGORY))
+                .thenReturn(CATEGORY_TITLE_DTO);
+        when(mockTaskMapper.toTaskResponseDtoList(tasks))
+                .thenReturn(List.of(TASK_RESPONSE_DTO_WITH_PERFORMER));
 
         List<TaskResponseDto> actual = taskService.getTasksByPerformerId(performerId);
         assertEquals(1, actual.size());

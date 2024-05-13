@@ -43,7 +43,7 @@ public class TaskServiceImpl implements TaskService {
     private final PerformerRepository performerRepository;
     private final TaskMapper taskMapper;
     private final AddressMapper addressMapper;
-    private final CategoryService categoryService;
+
 
 
 
