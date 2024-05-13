@@ -40,6 +40,7 @@ import static codezilla.handynestproject.service.TestData.TEST_USER;
 import static codezilla.handynestproject.service.TestData.TEST_WORKING_TIME;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -97,11 +98,9 @@ class TaskServiceImplTest {
 
     @Test
     void createTaskTest() {
-
+        when(mockTaskRepository.save(any())).thenReturn(TEST_TASK_OPEN);
         TaskResponseDto actual = taskService.createTask(TASK_REQUEST_DTO);
         assertEquals(TASK_RESPONSE_DTO, actual);
-
-
     }
 
 
@@ -116,13 +115,16 @@ class TaskServiceImplTest {
 
         assertEquals(TASK_RESPONSE_DTO, taskService.updateTask(dto));
     }
-//TODO проверить написание теста
+
+
+    //TODO проверить написание теста
 
     @Test
     void deleteTaskByIdTest() {
 
         Long taskId = TEST_TASK_OPEN.getId();
         doNothing().when(mockTaskRepository).deleteById(taskId);
+
     }
 
 
@@ -205,6 +207,8 @@ class TaskServiceImplTest {
         .thenReturn(Optional.of(TEST_PERFORMER2));
         TaskResponseDto actual = taskService.removePerformerFromTask(TEST_TASK2_IN_PROGRESS.getId());
         assertEquals(TASK_RESPONSE_DTO, actual);
+        assertEquals(TaskStatus.OPEN, actual.getTaskStatus());
+        assertNull(actual.getPerformer());
     }
 
     @Test
