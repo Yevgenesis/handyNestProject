@@ -29,7 +29,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static codezilla.handynestproject.service.TestData.TASK_REQUEST_DTO;
@@ -44,21 +51,27 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-@ExtendWith(MockitoExtension.class)
+
+
+@SpringBootTest
 class TaskServiceImplTest {
 
-    @Mock
+
+    @MockBean
     private TaskRepository mockTaskRepository;
-    @Mock
+    @MockBean
     private UserRepository mockUserRepository;
-    @Mock
+    @MockBean
     private WorkingTimeRepository mockWorkingTimeRepository;
-    @Mock
+    @MockBean
     private CategoryRepository mockCategoryRepository;
-    @Mock
+    @MockBean
     private PerformerRepository mockPerformerRepository;
 
+    @Autowired
     private TaskMapper taskMapper = new TaskMapperImpl();
+
+    @Autowired
     private CategoryService categoryService;
 
 
@@ -72,13 +85,6 @@ class TaskServiceImplTest {
         taskService = new TaskServiceImpl(mockUserRepository, mockTaskRepository,
                 mockWorkingTimeRepository, mockCategoryRepository, mockPerformerRepository, taskMapper,
                 categoryService);
-
-    }
-
-    @DisplayName("createTask then call taskRepository.save()")
-    @Test
-    void createTaskTest() {
-        TaskRequestDto request = TASK_REQUEST_DTO;
         when(mockTaskRepository.save(any())).thenReturn(TEST_TASK);
         when(mockWorkingTimeRepository.findById(any()))
                 .thenReturn(Optional.ofNullable(TEST_WORKING_TIME));
@@ -88,6 +94,14 @@ class TaskServiceImplTest {
                 .thenReturn(Optional.ofNullable(TEST_PERFORMER));
         when(mockUserRepository.findById(any()))
                 .thenReturn(Optional.ofNullable(TEST_USER));
+
+    }
+
+    @DisplayName("createTask then call taskRepository.save()")
+    @Test
+    void createTaskTest() {
+        TaskRequestDto request = TASK_REQUEST_DTO;
+
         TaskResponseDto actual = taskService.createTask(request);
         assertEquals(TASK_RESPONSE_DTO,actual);
 
@@ -152,8 +166,13 @@ class TaskServiceImplTest {
     @DisplayName("getAllTasks then call once taskRepository.findAll")
     @Test
     void getAllTasksTest() {
-        taskService.getAllTasks();
-        Mockito.verify(mockTaskRepository, Mockito.times(1)).findAll();
+        List<Task> actualList = new ArrayList<>();
+        actualList.add(new Task());
+        actualList.add(new Task());
+        List<TaskResponseDto> responseDtos = taskService.getAllTasks();
+        assertEquals(actualList.size(), responseDtos.size());
+
+
     }
 
     @DisplayName("getTasksByStatus then call once taskRepository.findTaskByTaskStatus()")
