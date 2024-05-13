@@ -1,5 +1,7 @@
 package codezilla.handynestproject.service;
 
+import codezilla.handynestproject.dto.task.TaskRequestDto;
+import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Address;
@@ -25,6 +27,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static codezilla.handynestproject.service.TestData.TASK_REQUEST_DTO;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -58,10 +61,9 @@ class TaskServiceTest {
     @DisplayName("createTask then call taskRepository.save()")
     @Test
     void createTaskTest() {
-        Task task = new Task();
-        task.setId(1L);
-        mockTaskRepository.save(task);
-        Assertions.assertEquals(1L, task.getId());
+        TaskRequestDto request = TASK_REQUEST_DTO;
+        TaskResponseDto actual = taskService.createTask(request);
+
 
     }
 
