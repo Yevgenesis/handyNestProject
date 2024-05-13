@@ -4,6 +4,7 @@ import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.mapper.TaskMapper;
+import codezilla.handynestproject.mapper.TaskMapperImpl;
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.Performer;
@@ -28,6 +29,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static codezilla.handynestproject.service.TestData.TASK_REQUEST_DTO;
+import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO;
+import static codezilla.handynestproject.service.TestData.TEST_TASK;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -44,8 +49,8 @@ class TaskServiceTest {
     private CategoryRepository mockCategoryRepository;
     @Mock
     private PerformerRepository mockPerformerRepository;
-    @Mock
-    private TaskMapper mockTaskMapper;
+
+    private TaskMapper taskMapper = new TaskMapperImpl();
 
     private TaskService taskService;
 
@@ -54,7 +59,7 @@ class TaskServiceTest {
     void setUp() {
         openMocks(this);
         taskService = new TaskServiceImpl(mockUserRepository, mockTaskRepository,
-                mockWorkingTimeRepository, mockCategoryRepository, mockPerformerRepository, mockTaskMapper);
+                mockWorkingTimeRepository, mockCategoryRepository, mockPerformerRepository, taskMapper);
 
     }
 
@@ -62,7 +67,11 @@ class TaskServiceTest {
     @Test
     void createTaskTest() {
         TaskRequestDto request = TASK_REQUEST_DTO;
+        when(mockTaskRepository.save(any())).thenReturn(TEST_TASK);
         TaskResponseDto actual = taskService.createTask(request);
+        assertEquals(TASK_RESPONSE_DTO,actual);
+
+
 
 
     }
@@ -88,9 +97,9 @@ class TaskServiceTest {
         taskService.updateTask(dto);
         Mockito.verify(mockTaskRepository, Mockito.times(1)).save(task);
 
-        Assertions.assertEquals(dto.getId(), task.getId());
-        Assertions.assertEquals(dto.getTitle(), task.getTitle());
-        Assertions.assertEquals(dto.getDescription(), task.getDescription());
+        assertEquals(dto.getId(), task.getId());
+        assertEquals(dto.getTitle(), task.getTitle());
+        assertEquals(dto.getDescription(), task.getDescription());
 
 
     }
@@ -117,7 +126,7 @@ class TaskServiceTest {
         Mockito.doReturn(Optional.of(task)).when(mockTaskRepository).findById(taskId);
         taskService.getTaskById(taskId);
         Mockito.verify(mockTaskRepository, Mockito.times(1)).findById(taskId);
-        Assertions.assertEquals(taskId, task.getId());
+        assertEquals(taskId, task.getId());
     }
 
     @DisplayName("getAllTasks then call once taskRepository.findAll")
