@@ -45,7 +45,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-
+/**
+ * Если запустить тесты на весь класс, то произойдет ошибка во многих тестах,
+ * так как тест updateTaskStatus(), меняет статус на IN_PROGRESS.
+ * Тесты запускать только по одному
+ */
 @SpringBootTest
 class TaskServiceImplTest {
 
