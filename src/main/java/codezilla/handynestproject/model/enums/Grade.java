@@ -1,6 +1,6 @@
 package codezilla.handynestproject.model.enums;
 
-public enum Rating {
+public enum Grade {
     STAR0,
     STAR1,
     STAR2,
