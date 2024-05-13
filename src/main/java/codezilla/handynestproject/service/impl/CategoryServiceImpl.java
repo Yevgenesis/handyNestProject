@@ -31,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryResponseDto mapToDTO(Category category) {
         CategoryResponseDto dto = new CategoryResponseDto();
         dto.setId(category.getId());
-        dto.setName(category.getTitle());
+        dto.setTitle(category.getTitle());
         dto.setWeight(category.getWeight());
         dto.setChildren(getChildrenDTO(category.getId()));
         return dto;
