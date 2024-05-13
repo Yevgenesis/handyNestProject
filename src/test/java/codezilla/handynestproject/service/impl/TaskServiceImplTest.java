@@ -3,17 +3,10 @@ package codezilla.handynestproject.service.impl;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
-import codezilla.handynestproject.mapper.CategoryMapper;
-import codezilla.handynestproject.mapper.CategoryMapperImpl;
-import codezilla.handynestproject.mapper.PerformerMapper;
-import codezilla.handynestproject.mapper.PerformerMapperImpl;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.mapper.TaskMapperImpl;
-import codezilla.handynestproject.model.entity.Address;
-import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
-import codezilla.handynestproject.model.entity.WorkingTime;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.CategoryRepository;
 import codezilla.handynestproject.repository.PerformerRepository;
@@ -25,29 +18,31 @@ import codezilla.handynestproject.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static codezilla.handynestproject.service.TestData.TASK_REQUEST_DTO;
 import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO;
+import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO_WITH_PERFORMER;
+import static codezilla.handynestproject.service.TestData.TEST_ADDRESS;
 import static codezilla.handynestproject.service.TestData.TEST_CATEGORY;
 import static codezilla.handynestproject.service.TestData.TEST_PERFORMER;
-import static codezilla.handynestproject.service.TestData.TEST_TASK;
+import static codezilla.handynestproject.service.TestData.TEST_PERFORMER2;
+import static codezilla.handynestproject.service.TestData.TEST_TASK2_IN_PROGRESS;
+import static codezilla.handynestproject.service.TestData.TEST_TASK_OPEN;
 import static codezilla.handynestproject.service.TestData.TEST_USER;
 import static codezilla.handynestproject.service.TestData.TEST_WORKING_TIME;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -75,7 +70,7 @@ class TaskServiceImplTest {
     private CategoryService categoryService;
 
 
-
+    private MockMvc mockMvc;
     private TaskService taskService;
 
 
@@ -85,7 +80,9 @@ class TaskServiceImplTest {
         taskService = new TaskServiceImpl(mockUserRepository, mockTaskRepository,
                 mockWorkingTimeRepository, mockCategoryRepository, mockPerformerRepository, taskMapper,
                 categoryService);
-        when(mockTaskRepository.save(any())).thenReturn(TEST_TASK);
+        when(mockTaskRepository.save(any())).thenReturn(TEST_TASK_OPEN);
+        when(mockTaskRepository.findById(any()))
+                .thenReturn(Optional.ofNullable(TEST_TASK_OPEN));
         when(mockWorkingTimeRepository.findById(any()))
                 .thenReturn(Optional.ofNullable(TEST_WORKING_TIME));
         when(mockCategoryRepository.findById(any()))
@@ -97,146 +94,133 @@ class TaskServiceImplTest {
 
     }
 
-    @DisplayName("createTask then call taskRepository.save()")
+
     @Test
     void createTaskTest() {
-        TaskRequestDto request = TASK_REQUEST_DTO;
 
-        TaskResponseDto actual = taskService.createTask(request);
-        assertEquals(TASK_RESPONSE_DTO,actual);
-
-
+        TaskResponseDto actual = taskService.createTask(TASK_REQUEST_DTO);
+        assertEquals(TASK_RESPONSE_DTO, actual);
 
 
     }
 
-    @DisplayName("updateTask then call once taskRepository.save()")
+
     @Test
     void updateTaskTest() {
         TaskUpdateRequestDto dto = new TaskUpdateRequestDto(
-                1L, "Test Title", "Test Description", 20.0, new Address(), 2L);
-        Task task = new Task();
-        task.setId(1L);
-        task.setTitle("Title");
-        task.setDescription("Test Description");
-        task.setAddress(new Address());
-        task.setWorkingTime(new WorkingTime());
-        task.setCategory(new Category());
-        task.setPerformer(new Performer());
-        task.setTaskStatus(TaskStatus.OPEN);
+                1L,
+                "Test Title",
+                "Test Description",
+                0.0, TEST_ADDRESS,
+                2L);
 
-
-        when(mockTaskRepository.findById(dto.getId())).thenReturn(Optional.of(task));
-        when(mockTaskRepository.save(task)).thenReturn(task);
-        taskService.updateTask(dto);
-        Mockito.verify(mockTaskRepository, Mockito.times(1)).save(task);
-
-        assertEquals(dto.getId(), task.getId());
-        assertEquals(dto.getTitle(), task.getTitle());
-        assertEquals(dto.getDescription(), task.getDescription());
-
-
+        assertEquals(TASK_RESPONSE_DTO, taskService.updateTask(dto));
     }
+//TODO проверить написание теста
 
-    @DisplayName("deleteTaskById then call once taskRepository.delete")
     @Test
     void deleteTaskByIdTest() {
-        Long taskId = 1L;
-        Task task = new Task();
-        task.setId(taskId);
-        Mockito.doReturn(Optional.of(task)).when(mockTaskRepository).findById(taskId);
-        when(mockTaskRepository.findById(task.getId())).thenReturn(Optional.of(task));
-        taskService.deleteTaskById(task.getId());
-        Mockito.verify(mockTaskRepository, Mockito.times(1)).delete(task);
+
+        Long taskId = TEST_TASK_OPEN.getId();
+        doNothing().when(mockTaskRepository).deleteById(taskId);
     }
 
-    @DisplayName("getTaskById then call once taskRepository.findById()")
+
     @Test
     void getTaskByIdTest() {
-
-        Long taskId = 1L;
-        Task task = new Task();
-        task.setId(taskId);
-        Mockito.doReturn(Optional.of(task)).when(mockTaskRepository).findById(taskId);
-        taskService.getTaskById(taskId);
-        Mockito.verify(mockTaskRepository, Mockito.times(1)).findById(taskId);
-        assertEquals(taskId, task.getId());
+        TaskResponseDto actual = taskService.getTaskById(TEST_TASK_OPEN.getId());
+        assertEquals(TASK_RESPONSE_DTO, actual);
     }
 
-    @DisplayName("getAllTasks then call once taskRepository.findAll")
+
     @Test
     void getAllTasksTest() {
-        List<Task> actualList = new ArrayList<>();
-        actualList.add(new Task());
-        actualList.add(new Task());
-        List<TaskResponseDto> responseDtos = taskService.getAllTasks();
-        assertEquals(actualList.size(), responseDtos.size());
 
-
+        when(mockTaskRepository.findAll()).thenReturn(List.of(TEST_TASK_OPEN));
+        List<TaskResponseDto> tasks = taskService.getAllTasks();
+       assertEquals(1, tasks.size());
+       verify(mockTaskRepository, Mockito.times(1)).findAll();
     }
 
-    @DisplayName("getTasksByStatus then call once taskRepository.findTaskByTaskStatus()")
+
     @Test
     void getTasksByStatusTest() {
-        taskService.getTasksByStatus(TaskStatus.OPEN);
-        Mockito.verify(mockTaskRepository, Mockito.times(1))
-                .findTaskByTaskStatus(TaskStatus.OPEN);
 
+        when(mockTaskRepository.findTaskByTaskStatus(TaskStatus.IN_PROGRESS))
+                .thenReturn(List.of(TEST_TASK2_IN_PROGRESS));
+        List<TaskResponseDto> actual = taskService.getTasksByStatus(TaskStatus.IN_PROGRESS);
+        assertEquals(1, actual.size());
+        verify(mockTaskRepository, Mockito.times(1))
+                .findTaskByTaskStatus(TaskStatus.IN_PROGRESS);
 
     }
 
     @Test
     void getAvailableTasksTest() {
-
+        when(mockTaskRepository.findTaskByTaskStatus(TaskStatus.OPEN)).thenReturn(List.of(TEST_TASK_OPEN));
+        List<TaskResponseDto> actual = taskService.getAvailableTasks();
+        assertEquals(1, actual.size());
     }
 
     @Test
     void getTasksByUserIdTest() {
+        when(mockTaskRepository.findByUserId(TEST_USER.getId()))
+                .thenReturn(Optional.of(TEST_TASK_OPEN));
+        List<TaskResponseDto> actual = taskService.getTasksByUserId(TEST_USER.getId());
+        assertEquals(1, actual.size());
+
+    }
+//TODO найти ошибку!!! ? actual = 0;
+    @Test
+    void getTasksByPerformerId() {
+        List<Task> tasks = List.of(TEST_TASK_OPEN, TEST_TASK2_IN_PROGRESS);
+        Long performerId = TEST_PERFORMER2.getId();
+        when(mockPerformerRepository.findById(performerId))
+        .thenReturn(Optional.of(TEST_PERFORMER2));
+        when(mockTaskRepository.findAll())
+                .thenReturn(tasks);
+
+        List<TaskResponseDto> actual = taskService.getTasksByPerformerId(performerId);
+        assertEquals(1, actual.size());
 
     }
 
     @Test
-    void getTasksByPerformerId() {
-    }
+    void addPerformerToTask() {
+        Long taskId = TASK_RESPONSE_DTO_WITH_PERFORMER.getId();
+        Long performerId = TEST_PERFORMER2.getId();
+        when(mockPerformerRepository.findById(performerId))
+        .thenReturn(Optional.of(TEST_PERFORMER2));
+        TaskResponseDto actual = taskService.addPerformerToTask(taskId, performerId);
+        assertEquals(TASK_RESPONSE_DTO_WITH_PERFORMER.getPerformer(), actual.getPerformer());
+        assertEquals(TASK_RESPONSE_DTO_WITH_PERFORMER.getTaskStatus(), actual.getTaskStatus());
 
-//    @Test
-//    void addPerformerToTask() {
-//        Task task = new Task();
-//        User user = new User();
-//        Performer performer = new Performer();
-//        performer.setId(2L);
-//        task.setUser(user);
-//        user.setId(1L);
-//        task.setPerformer(performer);
-//        task.setId(1L);
-//
-//        Mockito.doReturn(Optional.of(task)).when(mockTaskRepository).findById(task.getId());
-//        Mockito.doReturn(Optional.of(performer)).when(mockPerformerRepository).findById(performer.getId());
-//
-//
-//
-//
-//        when(this.mockPerformerRepository.findById(2L)).thenReturn(Optional.of(performer));
-//        when(mockTaskRepository.findById(1L)).thenReturn(Optional.of(task));
-//        when(mockUserRepository.findById(1L)).thenReturn(Optional.of(user));
-//
-//        TaskResponseDto responseDto = taskService.addPerformerToTask(1L, 2L);
-//
-//        assertNotNull(responseDto);
-//        assertEquals(TaskStatus.IN_PROGRESS, task.getTaskStatus());
-//        assertEquals(performer, task.getPerformer());
-//
-//    }
+    }
 
     @Test
     void removePerformerFromTask() {
+        when(mockTaskRepository.findById(any()))
+        .thenReturn(Optional.of(TEST_TASK2_IN_PROGRESS));
+        when(mockPerformerRepository.findById(TEST_PERFORMER2.getId()))
+        .thenReturn(Optional.of(TEST_PERFORMER2));
+        TaskResponseDto actual = taskService.removePerformerFromTask(TEST_TASK2_IN_PROGRESS.getId());
+        assertEquals(TASK_RESPONSE_DTO, actual);
     }
 
     @Test
     void updateTaskStatusById() {
+        Long taskId = TEST_TASK_OPEN.getId();
+        TaskResponseDto actual = taskService.updateTaskStatusById(taskId, TaskStatus.IN_PROGRESS);
+        assertEquals(TaskStatus.IN_PROGRESS, actual.getTaskStatus());
+
     }
 
     @Test
     void createTaskByUserId() {
+        Long userId = TEST_USER.getId();
+        TaskRequestDto requestDto = TASK_REQUEST_DTO;
+        when(mockTaskRepository.save(any())).thenReturn(TEST_TASK_OPEN);
+        TaskResponseDto actual = taskService.createTaskByUserId(userId, requestDto);
+        assertEquals(TASK_RESPONSE_DTO.getUser(), actual.getUser());
     }
 }

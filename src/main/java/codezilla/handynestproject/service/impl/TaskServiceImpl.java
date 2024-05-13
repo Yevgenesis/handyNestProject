@@ -84,7 +84,8 @@ public class TaskServiceImpl implements TaskService {
         Long workingTimeId = dto.getWorkingTimeId();
 
         Task task = taskRepository.findById(dto.getId())
-                .orElseThrow(TaskNotFoundException::new);
+                .orElseThrow(()->new TaskNotFoundException("Task not found"));
+
         if(task.getTaskStatus().equals(TaskStatus.OPEN)) {
             Optional.ofNullable(dto.getTitle()).ifPresent(task::setTitle);
             Optional.ofNullable(dto.getDescription()).ifPresent(task::setDescription);

@@ -85,6 +85,19 @@ public class TestData {
             .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2001, 1, 1), LocalTime.of(8, 45, 0))))
             .build();
+    public static final Performer TEST_PERFORMER2 = Performer.builder()
+            .id(2L)
+            .phoneNumber("Test Phone Number2")
+            .description("Test Description2")
+            .user(TEST_USER2)
+            .categories(Set.of(TEST_CATEGORY))
+            .address(TEST_ADDRESS)
+            .isAvailable(true)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2001, 1, 1), LocalTime.of(8, 45, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2001, 1, 1), LocalTime.of(8, 45, 0))))
+            .build();
 
     public static final CategoryTitleDto CATEGORY_TITLE_DTO = new CategoryTitleDto(
             1L,
@@ -96,6 +109,17 @@ public class TestData {
             "Test First Name",
             "Test Last Name",
             "Test Email",
+            Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2001, 1, 1), LocalTime.of(8, 45, 0))),
+            Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2001, 1, 1), LocalTime.of(8, 45, 0)))
+
+    );
+    public static final UserResponseDto USER_RESPONSE_DTO2 = new UserResponseDto(
+            2L,
+            "Test First Name2",
+            "Test Last Name2",
+            "Test Email2",
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2001, 1, 1), LocalTime.of(8, 45, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -122,6 +146,24 @@ public class TestData {
 
     );
 
+    public static final PerformerResponseDto PERFORMER_RESPONSE_DTO2 = new PerformerResponseDto(
+            2L,
+            "Test First Name2",
+            "Test Last Name2",
+            "Test Phone Number2",
+            "Test Description2",
+            Set.of(CATEGORY_TITLE_DTO),
+            ADDRESS_DTO,
+            true,
+            0.0,
+            0L,
+            Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2001, 1, 1), LocalTime.of(8, 45, 0))),
+            Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2001, 1, 1), LocalTime.of(8, 45, 0)))
+
+    );
+
     public static final TaskRequestDto TASK_REQUEST_DTO = new TaskRequestDto(
             "Test Title",
             "Test Description",
@@ -136,22 +178,38 @@ public class TestData {
             true
     );
 
-    public static final TaskResponseDto TASK_RESPONSE_DTO =TaskResponseDto.builder()
-        .title("Test Title")
-        .description("Test Description")
-        .price(0.0)
-        .address(ADDRESS_DTO)
-        .taskStatus(TaskStatus.OPEN)
-        .workingTime(TEST_WORKING_TIME)
-        .category(CATEGORY_TITLE_DTO)
-        .user(USER_RESPONSE_DTO)
-        .performer(PERFORMER_RESPONSE_DTO)
-        .isPublish(true)
-        .build();
+    public static final TaskResponseDto TASK_RESPONSE_DTO = TaskResponseDto.builder()
+            .id(1L)
+            .title("Test Title")
+            .description("Test Description")
+            .price(0.0)
+            .address(ADDRESS_DTO)
+            .taskStatus(TaskStatus.OPEN)
+            .workingTime(TEST_WORKING_TIME)
+            .category(CATEGORY_TITLE_DTO)
+            .user(USER_RESPONSE_DTO)
+            .performer(null)
+            .isPublish(true)
+            .build();
+
+    public static final TaskResponseDto TASK_RESPONSE_DTO_WITH_PERFORMER = TaskResponseDto.builder()
+            .id(2L)
+            .title("Test Title")
+            .description("Test Description")
+            .price(0.0)
+            .address(ADDRESS_DTO)
+            .taskStatus(TaskStatus.IN_PROGRESS)
+            .workingTime(TEST_WORKING_TIME)
+            .category(CATEGORY_TITLE_DTO)
+            .user(USER_RESPONSE_DTO)
+            .performer(PERFORMER_RESPONSE_DTO2)
+            .isPublish(true)
+            .build();
 
 
 
-    public static final Task TEST_TASK = Task.builder()
+    public static final Task TEST_TASK_OPEN = Task.builder()
+            .id(1L)
             .title(TASK_REQUEST_DTO.title())
             .description(TASK_REQUEST_DTO.description())
             .price(TASK_REQUEST_DTO.price())
@@ -167,7 +225,27 @@ public class TestData {
             .workingTime(TEST_WORKING_TIME)
             .category(TEST_CATEGORY)
             .user(TEST_USER)
-            .performer(TEST_PERFORMER)
+            .performer(null)
+            .build();
+
+    public static final Task TEST_TASK2_IN_PROGRESS = Task.builder()
+            .id(2L)
+            .title(TASK_REQUEST_DTO.title())
+            .description(TASK_REQUEST_DTO.description())
+            .price(TASK_REQUEST_DTO.price())
+            .address(Address.builder()
+                    .id(2L)
+                    .country(TASK_REQUEST_DTO.country())
+            .city(TASK_REQUEST_DTO.city())
+            .street(TASK_REQUEST_DTO.street())
+            .zip(TASK_REQUEST_DTO.zip())
+                    .build())
+            .taskStatus(TaskStatus.IN_PROGRESS)
+            .isPublish(TASK_REQUEST_DTO.isPublish())
+            .workingTime(TEST_WORKING_TIME)
+            .category(TEST_CATEGORY)
+            .user(TEST_USER)
+            .performer(TEST_PERFORMER2)
             .build();
 
 
