@@ -1,10 +1,11 @@
 package codezilla.handynestproject.dto.performer;
 
+import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
-import codezilla.handynestproject.model.entity.Address;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,15 +21,16 @@ public class PerformerResponseDto {
 
     private String phoneNumber;
 
-    private boolean isPhoneVerified;
-
-    private boolean isPassportVerified;
+//    private boolean isPhoneVerified;
+//
+//    private boolean isPassportVerified;
 
     private String description;
 
     private Set<CategoryTitleDto> categories = new HashSet<>();
 
-    private Address address;
+    //        @JsonFormat(shape = JsonFormat.Shape.STRING) // ToDo
+    private AddressDto address;
 
     boolean isAvailable;
 
@@ -36,9 +38,11 @@ public class PerformerResponseDto {
 
     private Long feedbackCount;
 
-    private LocalDate createdOn;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
+    private Timestamp createdOn;
 
-    private LocalDate updatedOn;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
+    private Timestamp updatedOn;
 
 }
 

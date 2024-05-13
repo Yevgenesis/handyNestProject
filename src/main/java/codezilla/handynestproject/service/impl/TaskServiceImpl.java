@@ -59,7 +59,7 @@ public class TaskServiceImpl implements TaskService {
     }
     @Override
     public TaskResponseDto createTaskByUserId(Long userId, TaskRequestDto dto) {
-        User user = userRepository.findUserById(userId);
+        Optional<User> user = userRepository.findUserById(userId);
         Task task = Task.builder()
                 .title(dto.title())
                 .description(dto.description())
@@ -69,7 +69,7 @@ public class TaskServiceImpl implements TaskService {
                 .isPublish(dto.isPublish())
                 .workingTime(getWorkingTimeFromDto(dto))
                 .category(getCategoryFromDto(dto))
-                .user(user)
+                .user(user.get()) // ToDo check
                 .build();
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
@@ -136,11 +136,11 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskResponseDto> getTasksByPerformerId(Long performerId) {
         Optional<Performer> performer = performerRepository.findById(performerId);
         List<Task> tasks = taskRepository.findAll();
-         tasks.stream()
-                 .filter(t-> t.getTaskStatus().equals(TaskStatus.IN_PROGRESS))
-                 .filter(t->t.getPerformer().equals(performer))
-                .toList();
-        return taskMapper.toTaskResponseDtoList(tasks);
+
+        return taskMapper.toTaskResponseDtoList(tasks.stream()
+                .filter(t-> t.getTaskStatus().equals(TaskStatus.IN_PROGRESS))
+                .filter(t->t.getPerformer().equals(performer))
+                .toList());
 
     }
 
@@ -186,11 +186,11 @@ public class TaskServiceImpl implements TaskService {
 
     private User getUserFromTaskDto(TaskRequestDto dto) {
         Long userId = dto.userId();
-        User user = userRepository.findUserById(userId);
+        Optional<User> user = userRepository.findById(userId);
         if (user == null) {
             throw new UserNotFoundException();
         }
-        return user;
+        return user.get(); // ToDo check
     }
 
     private WorkingTime getWorkingTimeFromDto(TaskRequestDto dto) {

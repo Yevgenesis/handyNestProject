@@ -17,11 +17,12 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private List<Category> rootCategories;
 
     @Override
     @Transactional(readOnly = true)
     public List<CategoryResponseDto> getListCategoryResponseDto() {
-        List<Category> rootCategories = categoryRepository.findAll();
+        rootCategories = categoryRepository.findAll();
         return rootCategories.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
@@ -37,7 +38,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private List<CategoryResponseDto> getChildrenDTO(Long parentId) {
-        List<Category> children = categoryRepository.findByParentId(parentId);
+        List<Category> children = rootCategories.stream()
+                .filter(category -> category.getParentId() != null && category.getParentId().equals(parentId))
+                .toList();
         return children.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());

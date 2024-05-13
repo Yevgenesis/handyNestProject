@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -19,14 +20,23 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "performer")
+@NamedEntityGraph(name = "Performer.withUserAndCategoriesAndAddress", attributeNodes = {
+        @NamedAttributeNode("user"),
+        @NamedAttributeNode("categories"),
+        @NamedAttributeNode("address")
+}
+)
+//@EqualsAndHashCode(exclude = {"tasks", "address", "categories","user"})
+//@ToString(exclude = {"tasks", "address", "categories","user"})
+@EntityListeners(AuditingEntityListener.class)
 public class Performer {
 
     @Id
-    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
+    @MapsId
     private User user;
 
     @Column(name = "phone_number", length = 20)
@@ -51,6 +61,7 @@ public class Performer {
     private Set<Category> categories = new HashSet<>();
 
 
+
     @OneToOne(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
@@ -67,21 +78,41 @@ public class Performer {
     private Set<Task> tasks = new HashSet<>();
 
     @Column(name = "is_available")
-    boolean isAvailable;
+    private boolean isAvailable;
 
     @Column(name = "performer_rating")
-    private Double positiveFeedbackPercent;
+    @Builder.Default
+    private Double positiveFeedbackPercent = 0.0;
 
     @Column(name = "feedback_count")
-    private Long feedbackCount;
+    @Builder.Default
+    private Long feedbackCount = 0L;
+
 
     @CreatedDate
-    @Column(name = "created_on", nullable = false, updatable = false)
+    @Column(name = "created_on", updatable = false, nullable = false)
     private Timestamp createdOn;
 
     @LastModifiedDate
     @Column(name = "updated_on", nullable = false)
     private Timestamp updatedOn;
+
+
+    //     установка значений по умолчанию при добавлении в базу
+//    @PrePersist
+//    public void prePersist() {
+//        this.createdOn = new Timestamp(System.currentTimeMillis());
+//        this.updatedOn = new Timestamp(System.currentTimeMillis());
+//        this.isAvailable = true;
+//        this.feedbackCount = 0L;
+//        this.positiveFeedbackPercent = 0.0;
+//    }
+
+    //     установка значений при обновлении
+//    @PreUpdate
+//    public void preUpdate() {
+//        this.updatedOn = new Timestamp(System.currentTimeMillis());
+//    }
 
 
 }

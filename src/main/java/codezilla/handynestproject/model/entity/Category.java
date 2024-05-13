@@ -15,6 +15,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "category")
+//@EqualsAndHashCode(exclude = {"tasks", "performers"})
+//@ToString(exclude = {"tasks", "performers"})
 public class Category {
 
     @Id
@@ -35,7 +37,8 @@ public class Category {
 
     private Set<Task> tasks = new HashSet<>();
 
+//
+//    @ManyToMany
+//    private Set<Performer> performers = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Performer> performers = new HashSet<>();
 }
