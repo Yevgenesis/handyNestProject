@@ -1,5 +1,6 @@
 package codezilla.handynestproject.dto.feedback;
 
+import codezilla.handynestproject.dto.user.UserNestedResponseDto;
 import codezilla.handynestproject.model.enums.Grade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ public class FeedbackResponseDto {
 
     private Long id;
 
-    private Long senderId;
+    private UserNestedResponseDto sender;
 
     private String text;
 

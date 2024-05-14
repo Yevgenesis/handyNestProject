@@ -21,18 +21,10 @@ public class UserResponseDto {
 
     private String email;
 
-//    private boolean isEmailVerified;
-
-//    private String password;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH.mm.ss")
     private Timestamp created_on;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH.mm.ss")
     private Timestamp updated_on;
-
-//    private boolean isDeleted;
-
-
 
 }
 

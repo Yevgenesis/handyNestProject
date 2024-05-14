@@ -4,6 +4,7 @@ import codezilla.handynestproject.model.enums.Grade;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,10 +15,14 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Builder
-@Table(name = "feedback")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@NamedEntityGraph(name = "Feedback.withUser", attributeNodes = @NamedAttributeNode("sender"))
+@Table(name = "feedback")
+@NamedEntityGraph(name = "FeedbackWithUserAndTask", attributeNodes = {
+        @NamedAttributeNode("sender"),
+        @NamedAttributeNode("task")
+})
 @EntityListeners(AuditingEntityListener.class)
 public class Feedback {
 
