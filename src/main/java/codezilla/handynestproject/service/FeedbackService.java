@@ -10,4 +10,8 @@ public interface FeedbackService {
     List<FeedbackResponseDto> getAllFeedback();
 
     FeedbackResponseDto getFeedbackById(Long id);
+
+    List<FeedbackResponseDto> getFeedbackByTaskId(Long taskId);
+
+    List<FeedbackResponseDto> getFeedbackBySenderId(Long senderId);
 }

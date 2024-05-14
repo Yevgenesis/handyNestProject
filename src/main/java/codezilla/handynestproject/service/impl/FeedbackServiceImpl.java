@@ -31,4 +31,18 @@ public class FeedbackServiceImpl implements FeedbackService {
         FeedbackResponseDto feedbackResponseDto = feedbackMapper.feedbackToDto(feedbackResponse.orElseThrow(FeedbackNotFoundException::new));
         return feedbackResponseDto;
     }
+
+    @Override
+    public List<FeedbackResponseDto> getFeedbackByTaskId(Long taskId) {
+        List<Feedback> feedbacks = feedbackRepository.findFeedbackByTaskId(taskId);
+        List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
+        return feedbacksDtos;
+    }
+
+    @Override
+    public List<FeedbackResponseDto> getFeedbackBySenderId(Long senderId) {
+        List<Feedback> feedbacks = feedbackRepository.findFeedbackBySenderId(senderId);
+        List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
+        return feedbacksDtos;
+    }
 }

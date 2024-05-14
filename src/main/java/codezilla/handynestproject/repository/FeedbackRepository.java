@@ -12,8 +12,14 @@ import java.util.Optional;
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 
     @EntityGraph(value = "FeedbackWithUserAndTask", type = EntityGraph.EntityGraphType.LOAD)
+    List<Feedback> findFeedbackByTaskId(Long taskId);
+
+    @EntityGraph(value = "FeedbackWithUserAndTask", type = EntityGraph.EntityGraphType.LOAD)
     List<Feedback> findAll();
 
     @EntityGraph(value = "FeedbackWithUserAndTask", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Feedback> findById(Long id);
+
+    @EntityGraph(value = "FeedbackWithUserAndTask", type = EntityGraph.EntityGraphType.LOAD)
+    List<Feedback> findFeedbackBySenderId(Long senderId);
 }

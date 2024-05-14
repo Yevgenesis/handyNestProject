@@ -24,7 +24,23 @@ public class FeedbackController {
     }
 
     @GetMapping("/{id}")
-    public FeedbackResponseDto getFeedback(@PathVariable Long id) {
+    public FeedbackResponseDto getFeedbackById(@PathVariable Long id) {
         return feedbackService.getFeedbackById(id);
     }
+
+    // ToDo исправить scope
+    @GetMapping("/task/{taskId}")
+    public List<FeedbackResponseDto> getFeedbacksByTaskID(@PathVariable Long taskId) {
+        return feedbackService.getFeedbackByTaskId(taskId);
+    }
+
+
+    @GetMapping("/sender/{senderId}")
+    public List<FeedbackResponseDto> getFeedbacksByUserID(@PathVariable Long senderId) {
+        return feedbackService.getFeedbackBySenderId(senderId);
+    }
+//
+//    List<TASK> ← getFeedbacksByPerformerID
+
+
 }
