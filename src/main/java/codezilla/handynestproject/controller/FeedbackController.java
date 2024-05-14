@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/feedback")
 @RequiredArgsConstructor
-public class feedbackController {
+public class FeedbackController {
 
     private final FeedbackService feedbackService;
 
