@@ -2,7 +2,9 @@ package codezilla.handynestproject.model.entity;//package codezilla.hendynestpro
 
 import codezilla.handynestproject.model.enums.TaskStatus;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -18,7 +20,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
@@ -27,6 +33,7 @@ import java.util.Set;
 @Table(name = "task")
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Task {
 
     @Id
@@ -66,5 +73,13 @@ public class Task {
             orphanRemoval = true
     )
     private Set<Feedback> feedbacks;
+
+    @CreatedDate
+    @Column(name = "created_on", updatable = false, nullable = false)
+    private Timestamp createdOn;
+
+    @LastModifiedDate
+    @Column(name = "updated_on", nullable = false)
+    private Timestamp updatedOn;
 
 }
