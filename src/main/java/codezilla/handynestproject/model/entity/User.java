@@ -71,18 +71,11 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(
-            mappedBy = "sender_id",
+            mappedBy = "sender",
             cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY
     )
     private Set<Feedback> sentFeedbacks = new HashSet<>();
 
-    @OneToMany(
-            mappedBy = "receiver_id",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY
-    )
-
-    private Set<Feedback> receivedFeedbacks = new HashSet<>();
 
 }
