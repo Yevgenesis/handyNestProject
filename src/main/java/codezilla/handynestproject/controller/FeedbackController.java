@@ -39,8 +39,5 @@ public class FeedbackController {
     public List<FeedbackResponseDto> getFeedbacksByUserID(@PathVariable Long senderId) {
         return feedbackService.getFeedbackBySenderId(senderId);
     }
-//
-//    List<TASK> ← getFeedbacksByPerformerID
-
 
 }
