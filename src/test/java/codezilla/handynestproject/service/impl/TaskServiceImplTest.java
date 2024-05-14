@@ -15,11 +15,15 @@ import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.repository.WorkingTimeRepository;
 import codezilla.handynestproject.service.CategoryService;
 import codezilla.handynestproject.service.TaskService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,20 +69,19 @@ class TaskServiceImplTest {
     @MockBean
     private PerformerRepository mockPerformerRepository;
 
-    @MockBean
+    @Autowired
     private TaskMapper mockTaskMapper;
 
-    @MockBean
+    @Autowired
     private AddressMapper mockAddressMapper;
 
-    @MockBean
+    @Autowired
     private CategoryMapper mockCategoryMapper;
 
-    @MockBean
+    @Autowired
     private CategoryService categoryService;
-
+    @Autowired
     private TaskService taskService;
-
 
     @BeforeEach
     void setUp() {
@@ -99,6 +102,7 @@ class TaskServiceImplTest {
                 .thenReturn(Optional.ofNullable(TEST_USER));
 
     }
+
 
 
     @Test
@@ -136,7 +140,7 @@ class TaskServiceImplTest {
 
     @Test
     void getTaskByIdTest() {
-        TaskResponseDto actual = taskService.getTaskById(TEST_TASK_OPEN.getId());
+        TaskResponseDto actual = taskService.getTaskById(TEST_TASK2_IN_PROGRESS.getId());
         assertEquals(TASK_RESPONSE_DTO, actual);
     }
 
@@ -179,10 +183,9 @@ class TaskServiceImplTest {
 
     }
 
-    //TODO найти ошибку!!! ? actual = 0;
+    //TODO найти ошибку!!! ;
     @Test
     void getTasksByPerformerId() {
-
         List<Task> tasks = List.of(TEST_TASK_OPEN,TEST_TASK2_IN_PROGRESS);
         Long performerId = TEST_PERFORMER2.getId();
         when(mockPerformerRepository.findById(anyLong()))
@@ -226,7 +229,10 @@ class TaskServiceImplTest {
         Long taskId = TEST_TASK_OPEN.getId();
         TaskResponseDto actual = taskService.updateTaskStatusById(taskId, TaskStatus.IN_PROGRESS);
         assertEquals(TaskStatus.IN_PROGRESS, actual.getTaskStatus());
-
+        /**
+         * actual1 переменная для того чтобы вернуть статус OPEN, так как он нужен для других тестов
+         */
+        TaskResponseDto actual1 = taskService.updateTaskStatusById(taskId, TaskStatus.OPEN);
     }
 
     @Test
