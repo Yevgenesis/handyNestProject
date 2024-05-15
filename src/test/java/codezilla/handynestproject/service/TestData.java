@@ -4,6 +4,7 @@ import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.category.CategoryResponseDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
 import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
+import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
@@ -21,6 +22,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Set;
 
 public class TestData {
@@ -146,6 +148,14 @@ public class TestData {
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2001, 1, 1), LocalTime.of(8, 45, 0)))
 
+    );
+
+    public static final PerformerRequestDto PERFORMER_REQUEST_DTO = new PerformerRequestDto(
+            1L,
+            "0123456789",
+            "Test Description",
+            List.of(TEST_CATEGORY.getId()),
+            ADDRESS_DTO
     );
 
 

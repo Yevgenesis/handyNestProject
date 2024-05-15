@@ -1,7 +1,6 @@
 package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.dto.user.UserResponseDto;
-import codezilla.handynestproject.service.TestData;
 import codezilla.handynestproject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static codezilla.handynestproject.service.TestData.*;
@@ -36,7 +34,7 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void getAllUsers() throws Exception {
+    void getAllUsersTest() throws Exception {
 
         List<UserResponseDto> expected = List.of(USER_RESPONSE_DTO, USER_RESPONSE_DTO);
         when(userService.getUsers()).thenReturn(expected);
@@ -51,7 +49,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getUserById() throws Exception {
+    void getUserByIdTest() throws Exception {
         UserResponseDto expected = USER_RESPONSE_DTO;
         Long id = expected.getId();
         when(userService.getUserById(id)).thenReturn(expected);
