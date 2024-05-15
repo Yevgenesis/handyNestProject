@@ -3,6 +3,7 @@ package codezilla.handynestproject.service;
 import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.category.CategoryResponseDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
+import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
@@ -13,6 +14,7 @@ import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.model.entity.WorkingTime;
+import codezilla.handynestproject.model.enums.Grade;
 import codezilla.handynestproject.model.enums.TaskStatus;
 
 import java.sql.Timestamp;
@@ -110,6 +112,16 @@ public class TestData {
             "Test Title",
             null,
             10
+    );
+
+    public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO = new FeedbackResponseDto(
+            1L,
+            1L,
+            "Test Text",
+            Grade.STAR0,
+            1L,
+            Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2001, 1, 1), LocalTime.of(8, 45, 0)))
     );
 
 
