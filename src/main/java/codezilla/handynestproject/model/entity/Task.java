@@ -29,7 +29,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@Builder
+@Builder(toBuilder = true)
 @Table(name = "task")
 @AllArgsConstructor
 @NoArgsConstructor

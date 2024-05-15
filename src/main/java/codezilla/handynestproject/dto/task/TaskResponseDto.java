@@ -31,7 +31,8 @@ public class TaskResponseDto {
     private CategoryTitleDto category;
     private UserResponseDto user;
     private PerformerResponseDto performer;
-    private boolean isPublish;
+    @Builder.Default
+    private boolean isPublish = true;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Timestamp createdOn;
 

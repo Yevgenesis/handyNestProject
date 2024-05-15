@@ -142,13 +142,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskResponseDto> getTasksByPerformerId(Long performerId) {
-        Optional<Performer> performer = performerRepository.findById(performerId);
-        List<Task> tasks = taskRepository.findAll();
 
-        return taskMapper.toTaskResponseDtoList(tasks.stream()
-                .filter(t-> t.getTaskStatus().equals(TaskStatus.IN_PROGRESS))
-                .filter(t->t.getPerformer().equals(performer))
-                .toList());
+       List<Task> tasks = taskRepository.findTasksByPerformerId(performerId);
+        return taskMapper.toTaskResponseDtoList(tasks);
+
 
     }
 
