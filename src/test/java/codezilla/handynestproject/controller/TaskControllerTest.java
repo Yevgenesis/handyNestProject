@@ -187,9 +187,9 @@ class TaskControllerTest {
         when(taskService.updateTask(task)).thenReturn(expectedTask);
         TaskResponseDto actualTask = taskService.updateTask(task);
 
-        mockMvc.perform(put("/task/update/{id}",taskId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(task)))
+        mockMvc.perform(put("/task/update/{id}", taskId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(task)))
                 .andExpect(status().isOk());
 
         assertEquals("updated", expectedTask, actualTask);
@@ -206,8 +206,8 @@ class TaskControllerTest {
         TaskResponseDto actualTask = taskService.addPerformerToTask(taskId, performerId);
 
         mockMvc.perform(put("/task/add/{taskId}/{performerId}", taskId, performerId)
-        .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(task)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(task)))
                 .andExpect(status().isOk());
 
         assertEquals("added", expectedTask, actualTask);
@@ -221,9 +221,9 @@ class TaskControllerTest {
         when(taskService.removePerformerFromTask(taskId)).thenReturn(expectedTask);
         TaskResponseDto actualTask = taskService.removePerformerFromTask(taskId);
 
-        mockMvc.perform(put("/task/removePerformer/{taskId}",taskId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(task)))
+        mockMvc.perform(put("/task/removePerformer/{taskId}", taskId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(task)))
                 .andExpect(status().isOk());
 
         assertEquals("removed", expectedTask, actualTask);
