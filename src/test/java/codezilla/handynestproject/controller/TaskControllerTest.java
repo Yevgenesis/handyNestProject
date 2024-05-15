@@ -60,7 +60,7 @@ class TaskControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", Matchers.hasSize(expectedTasks.size())));
 
-        assertEquals("Tasks should be equal", expectedTasks, actualTasks);
+        assertEquals("Lists should be equal", expectedTasks, actualTasks);
     }
 
     @Test

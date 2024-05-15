@@ -1,6 +1,7 @@
 package codezilla.handynestproject.service;
 
 import codezilla.handynestproject.dto.address.AddressDto;
+import codezilla.handynestproject.dto.category.CategoryResponseDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
@@ -102,6 +103,13 @@ public class TestData {
     public static final CategoryTitleDto CATEGORY_TITLE_DTO = new CategoryTitleDto(
             1L,
             "Test Title"
+    );
+
+    public static final CategoryResponseDto CATEGORY_RESPONSE_DTO = new CategoryResponseDto(
+            1L,
+            "Test Title",
+            null,
+            10
     );
 
 
