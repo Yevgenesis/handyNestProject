@@ -1,5 +1,6 @@
 package codezilla.handynestproject.service;
 
+import codezilla.handynestproject.dto.feedback.FeedbackCreateRequestDto;
 import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface FeedbackService {
     List<FeedbackResponseDto> getFeedbackByTaskId(Long taskId);
 
     List<FeedbackResponseDto> getFeedbackBySenderId(Long senderId);
+
+    FeedbackResponseDto addFeedback(FeedbackCreateRequestDto requestDto);
 }

@@ -1,10 +1,16 @@
 package codezilla.handynestproject.service.impl;
 
+import codezilla.handynestproject.dto.feedback.FeedbackCreateRequestDto;
 import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
+import codezilla.handynestproject.exception.FeedbackErrorException;
 import codezilla.handynestproject.exception.FeedbackNotFoundException;
+import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.mapper.FeedbackMapper;
 import codezilla.handynestproject.model.entity.Feedback;
+import codezilla.handynestproject.model.entity.Task;
+import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.repository.FeedbackRepository;
+import codezilla.handynestproject.repository.TaskRepository;
 import codezilla.handynestproject.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +24,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
     private final FeedbackMapper feedbackMapper;
+    private final TaskRepository taskRepository;
 
     public List<FeedbackResponseDto> getAllFeedback() {
         List<Feedback> feedbackRepositoryList = feedbackRepository.findAll();
@@ -45,4 +52,36 @@ public class FeedbackServiceImpl implements FeedbackService {
         List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
         return feedbacksDtos;
     }
+
+
+    // ToDo оптимизировать запросы
+    @Override
+    public FeedbackResponseDto addFeedback(FeedbackCreateRequestDto dto) {
+        // ToDo сделать подробное исключение
+        Optional<Task> task = Optional.ofNullable(taskRepository.findTaskByIdAndStatusIsNotOPENAndPerformerOrUser(dto.getTaskId(), dto.getSenderId())
+                .orElseThrow(TaskNotFoundException::new));
+
+        List<Feedback> feedbacks = feedbackRepository.findFeedbackByTaskId(dto.getTaskId());
+
+        if (task.get().getPerformer() == null)
+            throw new FeedbackErrorException("You can't send feedback for an unaccepted task");
+
+        if (feedbacks.size() == 2 || feedbacks.get(0).getSender().getId().equals(dto.getSenderId())) {
+            throw new FeedbackErrorException("You can't send feedback more than once for this task");
+        }
+
+        User sender;
+        if (task.get().getUser().getId().equals(dto.getSenderId())) sender = task.get().getUser();
+        else sender = task.get().getPerformer().getUser();
+
+        Feedback feedback = Feedback.builder()
+                .task(task.orElseThrow(TaskNotFoundException::new))
+                .grade(dto.getGrade())
+                .text(dto.getText())
+                .sender(sender)
+                .build();
+        Feedback savedFeedback = feedbackRepository.save(feedback);
+        return feedbackMapper.feedbackToDto(savedFeedback);
+    }
+
 }

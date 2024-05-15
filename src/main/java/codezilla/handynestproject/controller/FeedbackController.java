@@ -1,12 +1,10 @@
 package codezilla.handynestproject.controller;
 
+import codezilla.handynestproject.dto.feedback.FeedbackCreateRequestDto;
 import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 import codezilla.handynestproject.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +16,7 @@ public class FeedbackController {
     private final FeedbackService feedbackService;
 
 
+    //GET
     @GetMapping
     public List<FeedbackResponseDto> getAllFeedback() {
         return feedbackService.getAllFeedback();
@@ -38,6 +37,13 @@ public class FeedbackController {
     @GetMapping("/sender/{senderId}")
     public List<FeedbackResponseDto> getFeedbacksByUserID(@PathVariable Long senderId) {
         return feedbackService.getFeedbackBySenderId(senderId);
+    }
+
+    //POST
+    @PostMapping
+    public FeedbackResponseDto addFeedback(@RequestBody FeedbackCreateRequestDto requestDto) {
+        return feedbackService.addFeedback(requestDto);
+
     }
 
 }
