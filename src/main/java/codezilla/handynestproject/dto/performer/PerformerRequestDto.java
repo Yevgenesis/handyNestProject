@@ -3,13 +3,17 @@ package codezilla.handynestproject.dto.performer;
 import codezilla.handynestproject.dto.address.AddressDto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PerformerRequestDto {
 
     @NotNull(message = "User ID can not be empty")
