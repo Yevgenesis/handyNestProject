@@ -27,16 +27,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 import java.util.Optional;
 
-import static codezilla.handynestproject.service.TestData.ADDRESS_DTO;
-import static codezilla.handynestproject.service.TestData.TASK_REQUEST_DTO;
-import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO;
-import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO_WITH_PERFORMER;
-import static codezilla.handynestproject.service.TestData.TEST_CATEGORY;
-import static codezilla.handynestproject.service.TestData.TEST_PERFORMER2;
-import static codezilla.handynestproject.service.TestData.TEST_TASK2_IN_PROGRESS;
-import static codezilla.handynestproject.service.TestData.TEST_TASK_OPEN;
-import static codezilla.handynestproject.service.TestData.TEST_USER;
-import static codezilla.handynestproject.service.TestData.TEST_WORKING_TIME;
+import static codezilla.handynestproject.TestData.ADDRESS_DTO;
+import static codezilla.handynestproject.TestData.TASK_REQUEST_DTO;
+import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO;
+import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO_WITH_PERFORMER;
+import static codezilla.handynestproject.TestData.TEST_CATEGORY;
+import static codezilla.handynestproject.TestData.TEST_PERFORMER2;
+import static codezilla.handynestproject.TestData.TEST_TASK2_IN_PROGRESS;
+import static codezilla.handynestproject.TestData.TEST_TASK_OPEN;
+import static codezilla.handynestproject.TestData.TEST_USER;
+import static codezilla.handynestproject.TestData.TEST_WORKING_TIME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,11 +47,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-/**
- * Если запустить тесты на весь класс, то произойдет ошибка во многих тестах,
- * так как тест updateTaskStatus(), меняет статус на IN_PROGRESS.
- * Тесты запускать только по одному
- */
+
 @SpringBootTest
 class TaskServiceImplTest {
 

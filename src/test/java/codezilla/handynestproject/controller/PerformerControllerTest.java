@@ -15,9 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static codezilla.handynestproject.service.TestData.PERFORMER_REQUEST_DTO;
-import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO;
-import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO2;
+import static codezilla.handynestproject.TestData.PERFORMER_REQUEST_DTO;
+import static codezilla.handynestproject.TestData.PERFORMER_RESPONSE_DTO;
+import static codezilla.handynestproject.TestData.PERFORMER_RESPONSE_DTO2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

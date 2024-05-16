@@ -4,6 +4,7 @@ import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.model.enums.TaskStatus;
+import codezilla.handynestproject.repository.TaskRepository;
 import codezilla.handynestproject.service.TaskService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
@@ -12,17 +13,18 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static codezilla.handynestproject.service.TestData.ADDRESS_DTO;
-import static codezilla.handynestproject.service.TestData.TASK_REQUEST_DTO;
-import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO;
-import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO_WITH_PERFORMER;
-import static codezilla.handynestproject.service.TestData.TEST_PERFORMER2;
+import static codezilla.handynestproject.TestData.ADDRESS_DTO;
+import static codezilla.handynestproject.TestData.TASK_REQUEST_DTO;
+import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO;
+import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO_H2;
+import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO_WITH_PERFORMER;
+import static codezilla.handynestproject.TestData.TEST_PERFORMER2;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,10 +39,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class TaskControllerTest {
 
-    @MockBean
+    @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -52,7 +58,7 @@ class TaskControllerTest {
     void getAllTasksTest() throws Exception {
 
         List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO_WITH_PERFORMER);
-        when(taskService.getAllTasks()).thenReturn(expectedTasks);
+
         List<TaskResponseDto> actualTasks = taskService.getAllTasks();
 
         mockMvc.perform(get("/task"))
@@ -66,9 +72,9 @@ class TaskControllerTest {
     @Test
     void getTaskByIdTest() throws Exception {
 
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO;
+        TaskResponseDto expectedTask = TASK_RESPONSE_DTO_H2;
         Long taskId = expectedTask.getId();
-        when(taskService.getTaskById(anyLong())).thenReturn(expectedTask);
+
         TaskResponseDto actualTask = taskService.getTaskById(taskId);
 
         mockMvc.perform(get("/task/{id}", taskId))

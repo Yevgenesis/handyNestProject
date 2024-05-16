@@ -68,7 +68,7 @@ VALUES ('123 Unter den Linden', 'Berlin', '10117', 'Germany'),
        ('678 Via del Corso', 'Rome', '00186', 'Italy');
 
 -- User
-INSERT INTO "user" (first_name, last_name, email, is_email_verified, password, created_on, updated_on, is_deleted)
+INSERT INTO handy_user (first_name, last_name, email, is_email_verified, password, created_on, updated_on, is_deleted)
 VALUES ('Джон', 'Доу', 'john.doe@example.com', true, 'password123',
         '2024-04-29 10:00:00', '2024-04-29 10:00:00', false),
        ('Джейн', 'Смит', 'jane.smith@example.com', true, 'qwerty123',
@@ -100,7 +100,7 @@ VALUES (1, '+49123456789', true, true, 'Опытный сантехник с б�
        (2, '+49123456789', true, true, 'Опытный маляр, предоставляю услуги качественной покраски стен', true, 4.8, 150,
         CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2),
        (3, '+49123456789', true, true, 'Электрик с опытом работы, устанавливаю различные светильники', true, 4.0, 80,
-        CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3),
+        '2024-04-29 12:00:00', '2024-04-29 12:00:00', 3),
        (4, '+49123456789', true, true, 'Опытный сантехник, умею делать качественный ремонт сантехники', true, 4.7, 120,
         CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 4),
        (5, '+49123456789', true, true, 'Опытный строитель, предоставляю услуги по строительству домов и квартир', true,

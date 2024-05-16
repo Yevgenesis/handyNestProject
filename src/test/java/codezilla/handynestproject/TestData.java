@@ -1,4 +1,4 @@
-package codezilla.handynestproject.service;
+package codezilla.handynestproject;
 
 import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.category.CategoryResponseDto;
@@ -26,9 +26,9 @@ public class TestData {
             .build();
 
     public static final Category TEST_CATEGORY = Category.builder()
-            .id(1L)
-            .title("Test Title")
-            .parentId(null)
+            .id(12L)
+            .title("Ремонт квартир")
+            .parentId(1L)
             .weight(10)
             .build();
     public static final AddressDto ADDRESS_DTO = new AddressDto(
@@ -119,6 +119,16 @@ public class TestData {
 //                    (2001, 1, 1), LocalTime.of(8, 45, 0)))
 //    );
 
+    public static final UserResponseDto USER_RESPONSE_DTO_H2 = new UserResponseDto(
+            1L,
+            "Джон",
+            "Доу",
+            "john.doe@example.com",
+            Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 4, 29), LocalTime.of(10, 0, 0))),
+            Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 4, 29), LocalTime.of(11, 0, 0)))
+            );
 
     public static final UserResponseDto USER_RESPONSE_DTO = new UserResponseDto(
             1L,
@@ -149,6 +159,27 @@ public class TestData {
             "Test Description",
             List.of(TEST_CATEGORY.getId()),
             ADDRESS_DTO
+    );
+
+    public static final PerformerResponseDto PERFORMER_RESPONSE_DTO_H2 = new PerformerResponseDto(
+            3L,
+            "Алиса",
+            "Джонсон",
+            "+49123456789",
+            "Электрик с опытом работы, устанавливаю различные светильники",
+            Set.of(new CategoryTitleDto(
+                    8L, "Дизайн интерьера"
+            )),
+            new AddressDto(
+                    "789 Karl-Liebknecht-Strasse","Leipzig", "04109", "Germany"
+            ),
+            true,
+            4.0,
+            80L,
+            Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 4, 29), LocalTime.of(12, 00, 0))),
+            Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 4, 29), LocalTime.of(12, 00, 0)))
     );
 
 
@@ -201,6 +232,31 @@ public class TestData {
             1L,
             true
     );
+    public static final AddressDto ADDRESS_DTO_H2 = new AddressDto(
+
+            "123 Unter den Linden",
+            "Berlin",
+            "10117",
+            "Germany"
+                );
+
+    public static final TaskResponseDto TASK_RESPONSE_DTO_H2 = TaskResponseDto.builder()
+            .id(1L)
+            .title("Починить кран")
+            .description("Требуется починить кран на кухне")
+            .price(50.0)
+            .address(ADDRESS_DTO_H2)
+            .taskStatus(TaskStatus.OPEN)
+            .workingTime(TEST_WORKING_TIME)
+            .category(CATEGORY_TITLE_DTO)
+            .user(USER_RESPONSE_DTO_H2)
+            .performer(PERFORMER_RESPONSE_DTO_H2)
+            .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+            (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .isPublish(true)
+            .build();
 
     public static final TaskResponseDto TASK_RESPONSE_DTO = TaskResponseDto.builder()
             .id(1L)

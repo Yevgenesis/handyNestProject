@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static codezilla.handynestproject.service.TestData.CATEGORY_RESPONSE_DTO;
+import static codezilla.handynestproject.TestData.CATEGORY_RESPONSE_DTO;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
