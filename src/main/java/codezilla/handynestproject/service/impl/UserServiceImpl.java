@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {// для секьюрити: implements UserDetailsService
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -35,4 +35,9 @@ public class UserServiceImpl implements UserService {
         return userResponseDto;
     }
 
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        return userRepository.findByEmail(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("Can't find user by username: " + username));// ToDo fix exception
+//    }
 }

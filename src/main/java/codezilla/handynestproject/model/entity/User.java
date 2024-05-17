@@ -22,7 +22,7 @@ import java.util.Set;
 @Table(name = "handy_user")
 //@EqualsAndHashCode(exclude = {"tasks", "roles", "sentFeedbacks","receivedFeedbacks"})
 //@ToString(exclude = {"tasks", "roles", "sentFeedbacks","receivedFeedbacks"})
-public class User {
+public class User { // для секьюрити: public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,4 +78,35 @@ public class User {
     private Set<Feedback> sentFeedbacks = new HashSet<>();
 
 
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return roles.stream()
+//                .map(r->new SimpleGrantedAuthority(r.getRoleName()))
+//                .toList();
+//    }
+//
+//    @Override
+//    public String getUsername() {
+//        return this.email;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return true;
+//    }
 }
