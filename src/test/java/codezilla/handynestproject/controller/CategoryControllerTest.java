@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static codezilla.handynestproject.TestData.CATEGORY_RESPONSE_DTO;
+import static codezilla.handynestproject.TestData.CATEGORY_RESPONSE_DTO1;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,7 +35,7 @@ class CategoryControllerTest {
     @Test
     void getAllCategoriesTest() throws Exception {
 
-        List<CategoryResponseDto> expected = List.of(CATEGORY_RESPONSE_DTO);
+        List<CategoryResponseDto> expected = List.of(CATEGORY_RESPONSE_DTO1);
         when(categoryService.getListCategoryResponseDto()).thenReturn(expected);
         List<CategoryResponseDto> actual = categoryService.getListCategoryResponseDto();
 

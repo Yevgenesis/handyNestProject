@@ -19,13 +19,16 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static codezilla.handynestproject.TestData.ADDRESS_DTO;
-import static codezilla.handynestproject.TestData.TASK_REQUEST_DTO;
-import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO;
-import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO_H2;
-import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO_WITH_PERFORMER;
+import static codezilla.handynestproject.TestData.TASK_REQUEST_DTO3;
+import static codezilla.handynestproject.TestData.TASK_REQUEST_DTO5;
+import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO1;
+import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO2;
+import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO3;
+import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO4;
+import static codezilla.handynestproject.TestData.TASK_RESPONSE_DTO5;
+import static codezilla.handynestproject.TestData.TEST_ADDRESS_DTO1;
 import static codezilla.handynestproject.TestData.TEST_PERFORMER2;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static codezilla.handynestproject.TestData.TEST_PERFORMER4;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
@@ -57,7 +60,8 @@ class TaskControllerTest {
     @Test
     void getAllTasksTest() throws Exception {
 
-        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO_WITH_PERFORMER);
+        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO1,
+                TASK_RESPONSE_DTO2,TASK_RESPONSE_DTO3,TASK_RESPONSE_DTO4,TASK_RESPONSE_DTO5);
 
         List<TaskResponseDto> actualTasks = taskService.getAllTasks();
 
@@ -72,7 +76,7 @@ class TaskControllerTest {
     @Test
     void getTaskByIdTest() throws Exception {
 
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO_H2;
+        TaskResponseDto expectedTask = TASK_RESPONSE_DTO1;
         Long taskId = expectedTask.getId();
 
         TaskResponseDto actualTask = taskService.getTaskById(taskId);
@@ -86,7 +90,7 @@ class TaskControllerTest {
     @Test
     void getAvailableTasksTest() throws Exception {
 
-        List<TaskResponseDto> ExpectedTasks = List.of(TASK_RESPONSE_DTO);
+        List<TaskResponseDto> ExpectedTasks = List.of(TASK_RESPONSE_DTO1);
         when(taskService.getAvailableTasks()).thenReturn(ExpectedTasks);
         List<TaskResponseDto> actualTasks = taskService.getAvailableTasks();
 
@@ -100,8 +104,8 @@ class TaskControllerTest {
     @Test
     void getTasksByUserIdTest() throws Exception {
 
-        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO);
-        Long userId = TASK_RESPONSE_DTO.getId();
+        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO1);
+        Long userId = TASK_RESPONSE_DTO1.getId();
         when(taskService.getTasksByUserId(Mockito.anyLong())).thenReturn(expectedTasks);
         List<TaskResponseDto> actualTasks = taskService.getTasksByUserId(userId);
 
@@ -115,8 +119,8 @@ class TaskControllerTest {
     @Test
     void getTasksByPerformerId() throws Exception {
 
-        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO_WITH_PERFORMER);
-        Long performerId = TASK_RESPONSE_DTO_WITH_PERFORMER.getPerformer().getId();
+        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO2);
+        Long performerId = TEST_PERFORMER4.getId();
         when(taskService.getTasksByPerformerId(Mockito.anyLong())).thenReturn(expectedTasks);
         List<TaskResponseDto> actualTasks = taskService.getTasksByPerformerId(performerId);
 
@@ -130,7 +134,7 @@ class TaskControllerTest {
     @Test
     void getTasksByStatus() throws Exception {
 
-        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO_WITH_PERFORMER);
+        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO2);
         TaskStatus taskStatus = TaskStatus.IN_PROGRESS;
         when(taskService.getTasksByStatus(taskStatus)).thenReturn(expectedTasks);
         List<TaskResponseDto> actualTasks = taskService.getTasksByStatus(taskStatus);
@@ -146,8 +150,8 @@ class TaskControllerTest {
     @Test
     void createTask() throws Exception {
 
-        TaskRequestDto task = TASK_REQUEST_DTO;
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO;
+        TaskRequestDto task = TASK_REQUEST_DTO5;
+        TaskResponseDto expectedTask = TASK_RESPONSE_DTO5;
         when(taskService.createTask(task)).thenReturn(expectedTask);
         TaskResponseDto actualTask = taskService.createTask(task);
 
@@ -163,9 +167,9 @@ class TaskControllerTest {
     @Test
     void createTaskByUserIdTest() throws Exception {
 
-        TaskRequestDto task = TASK_REQUEST_DTO;
+        TaskRequestDto task = TASK_REQUEST_DTO3;
         Long userId = task.userId();
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO;
+        TaskResponseDto expectedTask = TASK_RESPONSE_DTO3;
         when(taskService.createTaskByUserId(userId, task)).thenReturn(expectedTask);
         TaskResponseDto actualTask = taskService.createTaskByUserId(userId, task);
 
@@ -185,11 +189,11 @@ class TaskControllerTest {
                 "Test Title",
                 "Test Description",
                 0.0,
-                ADDRESS_DTO,
+                TEST_ADDRESS_DTO1,
                 2L);
         Long taskId = task.getId();
 
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO;
+        TaskResponseDto expectedTask = TASK_RESPONSE_DTO1;
         when(taskService.updateTask(task)).thenReturn(expectedTask);
         TaskResponseDto actualTask = taskService.updateTask(task);
 
@@ -204,10 +208,10 @@ class TaskControllerTest {
 
     @Test
     void addPerformerToTaskTest() throws Exception {
-        TaskResponseDto task = TASK_RESPONSE_DTO;
+        TaskResponseDto task = TASK_RESPONSE_DTO1;
         Long taskId = task.getId();
         Long performerId = TEST_PERFORMER2.getId();
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO_WITH_PERFORMER;
+        TaskResponseDto expectedTask = TASK_RESPONSE_DTO2;
         when(taskService.addPerformerToTask(taskId, performerId)).thenReturn(expectedTask);
         TaskResponseDto actualTask = taskService.addPerformerToTask(taskId, performerId);
 
@@ -221,9 +225,9 @@ class TaskControllerTest {
 
     @Test
     void removePerformerFromTask() throws Exception {
-        TaskResponseDto task = TASK_RESPONSE_DTO_WITH_PERFORMER;
+        TaskResponseDto task = TASK_RESPONSE_DTO2;
         Long taskId = task.getId();
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO;
+        TaskResponseDto expectedTask = TASK_RESPONSE_DTO1;
         when(taskService.removePerformerFromTask(taskId)).thenReturn(expectedTask);
         TaskResponseDto actualTask = taskService.removePerformerFromTask(taskId);
 
@@ -238,10 +242,10 @@ class TaskControllerTest {
 
     @Test
     void updateTaskStatus() throws Exception {
-        TaskResponseDto task = TASK_RESPONSE_DTO;
+        TaskResponseDto task = TASK_RESPONSE_DTO1;
         Long taskId = task.getId();
         TaskStatus taskStatus = TaskStatus.IN_PROGRESS;
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO_WITH_PERFORMER;
+        TaskResponseDto expectedTask = TASK_RESPONSE_DTO2;
         when(taskService.updateTaskStatusById(taskId, taskStatus)).thenReturn(expectedTask);
         TaskResponseDto actualTask = taskService.updateTaskStatusById(taskId, taskStatus);
 
@@ -255,7 +259,7 @@ class TaskControllerTest {
 
     @Test
     void deleteTask() throws Exception {
-        TaskResponseDto task = TASK_RESPONSE_DTO;
+        TaskResponseDto task = TASK_RESPONSE_DTO1;
         Long taskId = task.getId();
 
         mockMvc.perform(delete("/task/delete/{id}", taskId))

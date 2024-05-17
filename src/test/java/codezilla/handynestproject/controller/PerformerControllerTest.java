@@ -15,8 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static codezilla.handynestproject.TestData.PERFORMER_REQUEST_DTO;
-import static codezilla.handynestproject.TestData.PERFORMER_RESPONSE_DTO;
+import static codezilla.handynestproject.TestData.PERFORMER_REQUEST_DTO1;
+import static codezilla.handynestproject.TestData.PERFORMER_RESPONSE_DTO1;
 import static codezilla.handynestproject.TestData.PERFORMER_RESPONSE_DTO2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -43,8 +43,8 @@ class PerformerControllerTest {
     @Test
     void createPerformerTest() throws Exception {
 
-        PerformerRequestDto performer = PERFORMER_REQUEST_DTO;
-        PerformerResponseDto expected = PERFORMER_RESPONSE_DTO;
+        PerformerRequestDto performer = PERFORMER_REQUEST_DTO1;
+        PerformerResponseDto expected = PERFORMER_RESPONSE_DTO1;
         when(performerService.createPerformer(performer)).thenReturn(expected);
         PerformerResponseDto actual = performerService.createPerformer(performer);
 
@@ -60,8 +60,8 @@ class PerformerControllerTest {
     @Test
     void updatePerformerTest() throws Exception {
 
-        PerformerRequestDto performer = PERFORMER_REQUEST_DTO;
-        PerformerResponseDto expected = PERFORMER_RESPONSE_DTO;
+        PerformerRequestDto performer = PERFORMER_REQUEST_DTO1;
+        PerformerResponseDto expected = PERFORMER_RESPONSE_DTO1;
         when(performerService.updatePerformer(performer)).thenReturn(expected);
         PerformerResponseDto actual = performerService.updatePerformer(performer);
 
@@ -76,7 +76,7 @@ class PerformerControllerTest {
     @Test
     void getAllPerformersTest() throws Exception {
 
-        List<PerformerResponseDto> expected = List.of(PERFORMER_RESPONSE_DTO, PERFORMER_RESPONSE_DTO2);
+        List<PerformerResponseDto> expected = List.of(PERFORMER_RESPONSE_DTO1, PERFORMER_RESPONSE_DTO2);
         when(performerService.getPerformers()).thenReturn(expected);
         List<PerformerResponseDto> actual = performerService.getPerformers();
 
@@ -90,7 +90,7 @@ class PerformerControllerTest {
 
     @Test
     void getPerformerByIdTest() throws Exception {
-        PerformerResponseDto expected = PERFORMER_RESPONSE_DTO;
+        PerformerResponseDto expected = PERFORMER_RESPONSE_DTO1;
         Long id = expected.getId();
         when(performerService.getPerformerById(id)).thenReturn(expected);
         PerformerResponseDto actual = performerService.getPerformerById(id);
