@@ -68,7 +68,7 @@ VALUES ('123 Unter den Linden', 'Berlin', '10117', 'Germany'),
        ('678 Via del Corso', 'Rome', '00186', 'Italy');
 
 -- User
-INSERT INTO "user" (first_name, last_name, email, is_email_verified, password, created_on, updated_on, is_deleted)
+INSERT INTO handy_user (first_name, last_name, email, is_email_verified, password, created_on, updated_on, is_deleted)
 VALUES ('Джон', 'Доу', 'john.doe@example.com', true, 'password123',
         '2024-04-29 10:00:00', '2024-04-29 10:00:00', false),
        ('Джейн', 'Смит', 'jane.smith@example.com', true, 'qwerty123',
@@ -123,8 +123,10 @@ VALUES (2, 1),
 -- Task
 INSERT INTO task (title, description, price, task_status, is_publish, address_id, working_time_id, category_id, user_id,
                   performer_id, created_on, updated_on)
-VALUES ('Починить кран', 'Требуется починить кран на кухне', 50.00, 'OPEN', true, 1, 1, 12, 1, 3,'2024-05-14 12:00:00','2024-05-14 12:00:00'),
-       ('Покрасить комнату', 'Нужно покрасить стены в гостиной', 200.00, 'IN_PROGRESS', true, 2, 2, 12, 2, 4,'2024-05-14 12:00:00','2024-05-14 12:00:00'),
+VALUES ('Починить кран', 'Требуется починить кран на кухне', 50.00, 'OPEN', true, 1, 1, 28, 1, Null,
+        '2024-05-14 12:00:00', '2024-05-14 12:00:00'),
+       ('Покрасить комнату', 'Нужно покрасить стены в гостиной', 200.00, 'IN_PROGRESS', true, 2, 2, 2, 2, 5,
+        '2024-05-14 12:00:00', '2024-05-14 12:00:00'),
        ('Установить светильники', 'Требуется установить новые светильники в коридоре', 100.00, 'COMPLETED', true, 3, 3,
         12, 3, 2,'2024-05-14 12:00:00','2024-05-14 12:00:00'),
        ('Установить светильники', 'Хочу установить старые светильники в сарае', 100.00, 'OPEN', true, 4, 4, 12, 4,

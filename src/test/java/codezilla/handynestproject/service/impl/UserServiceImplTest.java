@@ -13,7 +13,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
-import static codezilla.handynestproject.service.TestData.USER_RESPONSE_DTO;
+import static codezilla.handynestproject.service.TestData.USER_RESPONSE_DTO1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -42,6 +42,6 @@ class UserServiceImplTest {
     @SneakyThrows
     void getUserById() {
         UserResponseDto user = userService.getUserById(1L);
-        assertEquals(USER_RESPONSE_DTO, user);
+        assertEquals(USER_RESPONSE_DTO1, user);
     }
 }

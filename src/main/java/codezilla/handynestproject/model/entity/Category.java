@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Data
 @Entity
 @Builder
@@ -31,11 +28,11 @@ public class Category {
 
     private int weight;
 
-    @OneToMany(mappedBy = "category",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-
-    private Set<Task> tasks = new HashSet<>();
+//    @OneToMany(mappedBy = "category",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//
+//    private Set<Task> tasks = new HashSet<>();
 
 //
 //    @ManyToMany

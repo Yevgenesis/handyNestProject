@@ -19,7 +19,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "\"user\"")
+@Table(name = "handy_user")
 //@EqualsAndHashCode(exclude = {"tasks", "roles", "sentFeedbacks","receivedFeedbacks"})
 //@ToString(exclude = {"tasks", "roles", "sentFeedbacks","receivedFeedbacks"})
 public class User {

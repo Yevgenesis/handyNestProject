@@ -22,7 +22,7 @@ public class SqlRunner implements CommandLineRunner {
     }
 
     private void executeSqlScript() throws IOException {
-        ClassPathResource resource = new ClassPathResource("data/All-Data.sql");
+        ClassPathResource resource = new ClassPathResource("data/All-DataNEW.sql");
         String sql = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
         jdbcTemplate.execute(sql);
     }
