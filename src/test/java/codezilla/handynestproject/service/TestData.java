@@ -122,13 +122,13 @@ public class TestData {
 
     public static final UserResponseDto USER_RESPONSE_DTO = new UserResponseDto(
             1L,
-            "Test First Name",
-            "Test Last Name",
-            "Test Email",
+            "Джон",
+            "Доу",
+            "john.doe@example.com",
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
-                    (2001, 1, 1), LocalTime.of(8, 45, 0))),
+                    (2024, 4, 29), LocalTime.of(10, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
-                    (2001, 1, 1), LocalTime.of(8, 45, 0)))
+                    (2024, 4, 29), LocalTime.of(10, 0, 0)))
 
     );
     public static final UserResponseDto USER_RESPONSE_DTO2 = new UserResponseDto(
