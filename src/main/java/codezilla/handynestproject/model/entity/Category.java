@@ -31,11 +31,8 @@ public class Category {
 
     private int weight;
 
-    @OneToMany(mappedBy = "category",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
 
-    private Set<Task> tasks = new HashSet<>();
+
 
 //
 //    @ManyToMany

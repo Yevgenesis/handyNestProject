@@ -44,7 +44,7 @@ public class Task {
     private String description;
     private Double price;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Address address;
 
     @Enumerated(EnumType.STRING)
@@ -57,13 +57,13 @@ public class Task {
     @JoinColumn(name = "working_time_id")
     private WorkingTime workingTime;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Performer performer;
 
 

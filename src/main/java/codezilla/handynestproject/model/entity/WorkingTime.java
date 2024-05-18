@@ -31,10 +31,6 @@ public class WorkingTime {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "workingTime",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private Set<Task> tasks = new HashSet<>();
 
 
 

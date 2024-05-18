@@ -13,7 +13,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
-import static codezilla.handynestproject.service.TestData.USER_RESPONSE_DTO;
+
+import static codezilla.handynestproject.TestData.USER_RESPONSE_DTO1;
+import static codezilla.handynestproject.TestData.USER_RESPONSE_DTO2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,7 +39,7 @@ class UserControllerContainersTest {
     @Test
     void getAllUsersTest() throws Exception {
 
-        List<UserResponseDto> expected = List.of(USER_RESPONSE_DTO, USER_RESPONSE_DTO);
+        List<UserResponseDto> expected = List.of(USER_RESPONSE_DTO1, USER_RESPONSE_DTO2);
         when(userService.getUsers()).thenReturn(expected);
         List<UserResponseDto> actual = userService.getUsers();
 
@@ -51,7 +53,7 @@ class UserControllerContainersTest {
 
     @Test
     void getUserByIdTest() throws Exception {
-        UserResponseDto expected = USER_RESPONSE_DTO;
+        UserResponseDto expected = USER_RESPONSE_DTO1;
         Long id = expected.getId();
         when(userService.getUserById(id)).thenReturn(expected);
         UserResponseDto actual = userService.getUserById(id);
