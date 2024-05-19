@@ -3,12 +3,16 @@ package codezilla.handynestproject.service;
 import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.category.CategoryResponseDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
+import codezilla.handynestproject.dto.feedback.FeedbackCreateRequestDto;
+import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
+import codezilla.handynestproject.dto.user.UserNestedResponseDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.model.entity.*;
+import codezilla.handynestproject.model.enums.Grade;
 import codezilla.handynestproject.model.enums.TaskStatus;
 
 import java.sql.Timestamp;
@@ -35,6 +39,7 @@ public class TestData {
 
     public static final WorkingTime TEST_WORKING_TIME4 = WorkingTime.builder()
             .id(1L).title("в любое время").build();
+
 
     /**
      * AddressDto
@@ -189,12 +194,53 @@ public class TestData {
      * CategoryResponseDTO
      */
 
-    public static final CategoryResponseDto CATEGORY_RESPONSE_DTO1 = new CategoryResponseDto(
-            12L,
-            "Ремонт квартир",
+    public static final CategoryResponseDto CATEGORY_RESPONSE_DTO2 = new CategoryResponseDto(
+            2L,
+            "Строительство",
             null,
-            10
-    );
+            20);
+
+    public static final CategoryResponseDto CATEGORY_RESPONSE_DTO4 = new CategoryResponseDto(
+            4L,
+            "Грузоперевозки",
+            null,
+            40);
+
+    public static final CategoryResponseDto CATEGORY_RESPONSE_DTO8 = new CategoryResponseDto(
+            8L,
+            "Дизайн интерьера",
+            null,
+            80);
+
+    public static final CategoryResponseDto CATEGORY_RESPONSE_DTO18 = new CategoryResponseDto(
+            18L,
+            "Капитальный ремонт",
+            null,
+            70);
+
+    public static final CategoryResponseDto CATEGORY_RESPONSE_DTO19 = new CategoryResponseDto(
+            19L,
+            "Ремонт кухни",
+            null,
+            80);
+
+    public static final CategoryResponseDto CATEGORY_RESPONSE_DTO20 = new CategoryResponseDto(
+            20L,
+            "Ремонт ванной",
+            null,
+            90);
+
+    public static final CategoryResponseDto CATEGORY_RESPONSE_DTO28 = new CategoryResponseDto(
+            28L,
+            "Офисный переезд",
+            null,
+            20);
+
+    public static final CategoryResponseDto CATEGORY_RESPONSE_DTO35 = new CategoryResponseDto(
+            35L,
+            "Уход за больными",
+            null,
+            30);
 
     /**
      * UserResponseDTO
@@ -234,6 +280,25 @@ public class TestData {
                     (2024, 4, 29), LocalTime.of(14, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(14, 0, 0))));
+
+    /**
+     * UserNestedResponseDto
+     */
+
+    public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO1 = new UserNestedResponseDto(
+            1L, "Джон","Доу");
+
+    public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO2 = new UserNestedResponseDto(
+            2L, "Джейн","Смит");
+
+    public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO3 = new UserNestedResponseDto(
+            3L, "Алиса","Джонсон");
+
+    public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO4 = new UserNestedResponseDto(
+            4L, "Боб","Уильямс");
+
+    public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO5 = new UserNestedResponseDto(
+            5L, "Ева","Браун");
 
     /**
      * test data User
@@ -314,35 +379,35 @@ public class TestData {
 
     public static final PerformerRequestDto PERFORMER_REQUEST_DTO1 = new PerformerRequestDto(
             1L,
-            "49123456789",
+            "+49123456789",
             "Опытный сантехник с большим опытом работы",
             List.of(TEST_CATEGORY2.getId(), TEST_CATEGORY4.getId()),
             TEST_ADDRESS_DTO1);
 
     public static final PerformerRequestDto PERFORMER_REQUEST_DTO2 = new PerformerRequestDto(
             2L,
-            "49123456789",
+            "+49123456789",
             "Опытный маляр, предоставляю услуги качественной покраски стен",
             List.of(TEST_CATEGORY8.getId(), TEST_CATEGORY19.getId(), TEST_CATEGORY20.getId()),
             TEST_ADDRESS_DTO2);
 
     public static final PerformerRequestDto PERFORMER_REQUEST_DTO3 = new PerformerRequestDto(
             3L,
-            "49123456789",
+            "+49123456789",
             "Электрик с опытом работы, устанавливаю различные светильники",
             List.of(TEST_CATEGORY8.getId()),
             TEST_ADDRESS_DTO3);
 
     public static final PerformerRequestDto PERFORMER_REQUEST_DTO4 = new PerformerRequestDto(
             4L,
-            "49123456789",
+            "+49123456789",
             "Опытный сантехник с большим опытом работы",
             List.of(TEST_CATEGORY18.getId(), TEST_CATEGORY35.getId()),
             TEST_ADDRESS_DTO4);
 
     public static final PerformerRequestDto PERFORMER_REQUEST_DTO5 = new PerformerRequestDto(
             5L,
-            "49123456789",
+            "+49123456789",
             "Опытный сантехник с большим опытом работы",
             List.of(TEST_CATEGORY40.getId(), TEST_CATEGORY28.getId()),
             TEST_ADDRESS_DTO5
@@ -376,7 +441,7 @@ public class TestData {
             TEST_USER2.getLastName(),
             PERFORMER_REQUEST_DTO2.getPhoneNumber(),
             PERFORMER_REQUEST_DTO2.getDescription(),
-            Set.of(CATEGORY_TITLE_DTO8, CATEGORY_TITLE_DTO19, CATEGORY_TITLE_DTO20),
+            Set.of(CATEGORY_TITLE_DTO19, CATEGORY_TITLE_DTO8, CATEGORY_TITLE_DTO20),
             TEST_ADDRESS_DTO2,
             true,
             4.8,
@@ -439,8 +504,7 @@ public class TestData {
      */
 
     public static final Performer TEST_PERFORMER1 = Performer.builder()
-            .id(PERFORMER_RESPONSE_DTO1.getId())
-            .phoneNumber(PERFORMER_RESPONSE_DTO1.getPhoneNumber())
+                      .phoneNumber(PERFORMER_RESPONSE_DTO1.getPhoneNumber())
             .isPhoneVerified(true)
             .isPassportVerified(true)
             .description(PERFORMER_RESPONSE_DTO1.getDescription())
@@ -779,25 +843,107 @@ public class TestData {
             .performer(TEST_PERFORMER1)
             .build();
 
+    /**
+     * Feedback
+     */
 
-//    public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO = new FeedbackResponseDto(
-//            1L,
-//            1L,
-//            "Test Text",
-//            Grade.STAR0,
-//            1L,
-//            Timestamp.valueOf(LocalDateTime.of(LocalDate.of
-//                    (2001, 1, 1), LocalTime.of(8, 45, 0)))
-//    );
+    public static final Feedback TEST_FEEDBACK1 = Feedback.builder()
+            .id(1L)
+            .text("Отличная работа!")
+            .sender(TEST_USER1)
+            .grade(Grade.STAR5)
+            .task(TEST_TASK4)
+            .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
 
+            .build(); public static final Feedback TEST_FEEDBACK2 = Feedback.builder()
+            .id(2L)
+            .sender(TEST_USER3)
+            .text("Очень впечатляющая работа!")
+            .grade(Grade.STAR4)
+            .task(TEST_TASK3)
+            .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 15, 0))))
+            .build();
 
+            public static final Feedback TEST_FEEDBACK3 = Feedback.builder()
+            .id(3L)
+            .sender(TEST_USER1)
+            .text(null)
+            .grade(Grade.STAR3)
+            .task(TEST_TASK2)
+            .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 30, 0))))
+            .build();
 
+            public static final Feedback TEST_FEEDBACK4 = Feedback.builder()
+            .id(4L)
+            .sender(TEST_USER3)
+            .text("Отличный исполнитель!")
+            .grade(Grade.STAR5)
+            .task(TEST_TASK3)
+            .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 30, 0))))
 
+            .build();
 
+            public static final Feedback TEST_FEEDBACK5 = Feedback.builder()
+            .id(5L)
+            .sender(TEST_USER2)
+            .text("Требуется улучшение")
+            .grade(Grade.STAR1)
+            .task(TEST_TASK1)
+            .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(13, 0, 0))))
+            .build();
 
+    /**
+     * FeedbackCreateRequestDto
+     */
 
+    public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO1 = new FeedbackCreateRequestDto(
+            TEST_USER1.getId(),"Отличная работа!",Grade.STAR5,TEST_TASK4.getId());
 
+    public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO2 = new FeedbackCreateRequestDto(
+            TEST_USER3.getId(),"Очень впечатляющая работа!",Grade.STAR4,TEST_TASK3.getId());
 
+    public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO3 = new FeedbackCreateRequestDto(
+            TEST_USER1.getId(),null,Grade.STAR3,TEST_TASK2.getId());
+
+    public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO4 = new FeedbackCreateRequestDto(
+            TEST_USER3.getId(),"Отличный исполнитель!",Grade.STAR5,TEST_TASK5.getId());
+
+    public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO5 = new FeedbackCreateRequestDto(
+            TEST_USER2.getId(),"Требуется улучшение",Grade.STAR1,TEST_TASK1.getId());
+
+/**
+ * FeedbackResponseDto
+ */
+
+    public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO1 = new FeedbackResponseDto(
+        1L,USER_NESTED_RESPONSE_DTO1,FEEDBACK_REQUEST_DTO1.getText(),FEEDBACK_REQUEST_DTO1.getGrade(),
+        TEST_TASK4.getId(), Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                (2024, 5, 14), LocalTime.of(12, 0, 0))));
+
+    public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO2 = new FeedbackResponseDto(
+        2L,USER_NESTED_RESPONSE_DTO3,FEEDBACK_REQUEST_DTO2.getText(),FEEDBACK_REQUEST_DTO2.getGrade(),
+            TEST_TASK3.getId(), Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                (2024, 5, 14), LocalTime.of(12, 15, 0))));
+
+  public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO3 = new FeedbackResponseDto(
+        3L,USER_NESTED_RESPONSE_DTO1,FEEDBACK_REQUEST_DTO3.getText(),FEEDBACK_REQUEST_DTO3.getGrade(),
+          TEST_TASK2.getId(), Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                (2024, 5, 14), LocalTime.of(12, 30, 0))));
+
+  public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO4 = new FeedbackResponseDto(
+        4L,USER_NESTED_RESPONSE_DTO3,FEEDBACK_REQUEST_DTO4.getText(),FEEDBACK_REQUEST_DTO4.getGrade(),
+          TEST_TASK4.getId(), Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                (2024, 5, 14), LocalTime.of(12, 30, 0))));
+
+  public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO5 = new FeedbackResponseDto(
+        5L,USER_NESTED_RESPONSE_DTO2,FEEDBACK_REQUEST_DTO5.getText(),FEEDBACK_REQUEST_DTO5.getGrade(),
+          TEST_TASK1.getId(), Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                (2024, 5, 14), LocalTime.of(13, 0, 0))));
 
 
 
