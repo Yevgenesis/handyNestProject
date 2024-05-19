@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, WorkingTimeMapper.class, CategoryMapper.class, PerformerMapper.class})
+@Mapper(componentModel = "spring", uses = {AddressMapper.class, UserMapper.class, WorkingTimeMapper.class, CategoryMapper.class, PerformerMapper.class})
 
 public interface TaskMapper {
 

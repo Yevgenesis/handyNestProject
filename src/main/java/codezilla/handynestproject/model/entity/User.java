@@ -47,9 +47,9 @@ public class User {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Task> tasks = new HashSet<>();
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
+//            orphanRemoval = true, fetch = FetchType.LAZY)
+//    private Set<Task> tasks = new HashSet<>();
 
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")

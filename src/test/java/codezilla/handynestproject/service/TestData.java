@@ -38,7 +38,7 @@ public class TestData {
             .id(3L).title("с 16 до 22").build();
 
     public static final WorkingTime TEST_WORKING_TIME4 = WorkingTime.builder()
-            .id(1L).title("в любое время").build();
+            .id(4L).title("в любое время").build();
 
 
     /**
@@ -275,7 +275,7 @@ public class TestData {
                     (2024, 4, 29), LocalTime.of(13, 0, 0))));
 
     public static final UserResponseDto USER_RESPONSE_DTO5 = new UserResponseDto(
-            1L, "Ева", "Браун", "eva.brown@example.com",
+            5L, "Ева", "Браун", "eva.brown@example.com",
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(14, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -401,14 +401,14 @@ public class TestData {
     public static final PerformerRequestDto PERFORMER_REQUEST_DTO4 = new PerformerRequestDto(
             4L,
             "+49123456789",
-            "Опытный сантехник с большим опытом работы",
+            "Опытный сантехник, умею делать качественный ремонт сантехники",
             List.of(TEST_CATEGORY18.getId(), TEST_CATEGORY35.getId()),
             TEST_ADDRESS_DTO4);
 
     public static final PerformerRequestDto PERFORMER_REQUEST_DTO5 = new PerformerRequestDto(
             5L,
             "+49123456789",
-            "Опытный сантехник с большим опытом работы",
+            "Опытный строитель, предоставляю услуги по строительству домов и квартир",
             List.of(TEST_CATEGORY40.getId(), TEST_CATEGORY28.getId()),
             TEST_ADDRESS_DTO5
     );
@@ -680,6 +680,10 @@ public class TestData {
             .user(USER_RESPONSE_DTO1)
             .performer(null)
             .isPublish(true)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .build();
 
     public static final TaskResponseDto TASK_RESPONSE_DTO2 = TaskResponseDto.builder()
@@ -694,6 +698,10 @@ public class TestData {
             .user(USER_RESPONSE_DTO2)
             .performer(PERFORMER_RESPONSE_DTO4)
             .isPublish(true)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .build();
 
     public static final TaskResponseDto TASK_RESPONSE_DTO3 = TaskResponseDto.builder()
@@ -708,10 +716,14 @@ public class TestData {
             .user(USER_RESPONSE_DTO3)
             .performer(PERFORMER_RESPONSE_DTO5)
             .isPublish(true)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .build();
 
     public static final TaskResponseDto TASK_RESPONSE_DTO4 = TaskResponseDto.builder()
-            .id(1L)
+            .id(4L)
             .title(TASK_REQUEST_DTO4.title())
             .description(TASK_REQUEST_DTO4.description())
             .price(TASK_REQUEST_DTO4.price())
@@ -722,10 +734,14 @@ public class TestData {
             .user(USER_RESPONSE_DTO4)
             .performer(PERFORMER_RESPONSE_DTO2)
             .isPublish(true)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .build();
 
     public static final TaskResponseDto TASK_RESPONSE_DTO5 = TaskResponseDto.builder()
-            .id(1L)
+            .id(5L)
             .title(TASK_REQUEST_DTO5.title())
             .description(TASK_REQUEST_DTO5.description())
             .price(TASK_REQUEST_DTO5.price())
@@ -736,6 +752,10 @@ public class TestData {
             .user(USER_RESPONSE_DTO5)
             .performer(PERFORMER_RESPONSE_DTO1)
             .isPublish(true)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .build();
 
 
@@ -761,6 +781,10 @@ public class TestData {
             .category(TEST_CATEGORY19)
             .user(TEST_USER1)
             .performer(null)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .build();
 
     public static final Task TEST_TASK2 = Task.builder()
@@ -781,6 +805,10 @@ public class TestData {
             .category(TEST_CATEGORY8)
             .user(TEST_USER2)
             .performer(TEST_PERFORMER4)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .build();
 
     public static final Task TEST_TASK3 = Task.builder()
@@ -801,6 +829,10 @@ public class TestData {
             .category(TEST_CATEGORY2)
             .user(TEST_USER3)
             .performer(TEST_PERFORMER5)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .build();
 
     public static final Task TEST_TASK4 = Task.builder()
@@ -821,6 +853,10 @@ public class TestData {
             .category(TEST_CATEGORY28)
             .user(TEST_USER4)
             .performer(TEST_PERFORMER2)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .build();
 
     public static final Task TEST_TASK5 = Task.builder()
@@ -836,11 +872,15 @@ public class TestData {
                     .zip(TASK_REQUEST_DTO5.zip())
                     .build())
             .taskStatus(TaskStatus.CANCELED)
-            .isPublish(TASK_REQUEST_DTO1.isPublish())
+            .isPublish(TASK_REQUEST_DTO5.isPublish())
             .workingTime(TEST_WORKING_TIME4)
             .category(TEST_CATEGORY18)
             .user(TEST_USER5)
             .performer(TEST_PERFORMER1)
+            .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
+            .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                    (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .build();
 
     /**

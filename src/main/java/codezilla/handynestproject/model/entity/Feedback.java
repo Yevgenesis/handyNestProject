@@ -40,6 +40,7 @@ public class Feedback {
     private Grade grade;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id")
     private Task task;
 
     @CreatedDate

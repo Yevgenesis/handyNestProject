@@ -3,14 +3,10 @@ package codezilla.handynestproject.service.impl;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
-import codezilla.handynestproject.exception.CategoryNotFoundException;
 import codezilla.handynestproject.exception.PerformerNotFoundException;
 import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
-import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
-import codezilla.handynestproject.mapper.CategoryMapper;
-import codezilla.handynestproject.mapper.PerformerMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
@@ -24,11 +20,15 @@ import codezilla.handynestproject.repository.PerformerRepository;
 import codezilla.handynestproject.repository.TaskRepository;
 import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.repository.WorkingTimeRepository;
-import codezilla.handynestproject.service.CategoryService;
 import codezilla.handynestproject.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,33 +48,57 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
+    @Transactional
     public TaskResponseDto createTask(TaskRequestDto dto) {
         Task task = Task.builder()
                 .title(dto.title())
                 .description(dto.description())
                 .price(dto.price())
-                .address(getAddressFromDto(dto))
+                .address(Address.builder()
+                        .street(dto.street())
+                        .city(dto.city())
+                        .zip(dto.zip())
+                        .country(dto.country())
+                        .build())
                 .taskStatus(TaskStatus.OPEN)
                 .isPublish(dto.isPublish())
-                .workingTime(getWorkingTimeFromDto(dto))
-                .category(getCategoryFromDto(dto))
-                .user(getUserFromTaskDto(dto))
+                .workingTime(workingTimeRepository.findWorkingTimeById(dto.workingTimeId()))
+                .category(categoryRepository.findById(dto.categoryId()).get())
+                .user(userRepository.findById(dto.userId()).get())
+                .createdOn(Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)))
+                .updatedOn(Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)))
                 .build();
 
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
     @Override
+    @Transactional
     public TaskResponseDto createTaskByUserId(Long userId, TaskRequestDto dto) {
         Optional<User> user = userRepository.findById(userId);
         Task task = Task.builder()
                 .title(dto.title())
                 .description(dto.description())
                 .price(dto.price())
-                .address(getAddressFromDto(dto))
+                .address(Address.builder()
+                        .street(dto.street())
+                        .city(dto.city())
+                        .zip(dto.zip())
+                        .country(dto.country())
+                        .build())
                 .taskStatus(TaskStatus.OPEN)
                 .isPublish(dto.isPublish())
-                .workingTime(getWorkingTimeFromDto(dto))
-                .category(getCategoryFromDto(dto))
+                .workingTime(WorkingTime.builder()
+                        .id(dto.workingTimeId())
+                        .title(workingTimeRepository
+                                .findWorkingTimeById(dto.workingTimeId())
+                                .getTitle())
+                        .build())
+                .category(Category.builder()
+                        .id(dto.categoryId())
+                        .title(categoryRepository
+                                .findById(dto.categoryId())
+                                        .get().getTitle())
+                        .build())
                 .user(user.get()) // ToDo check
                 .build();
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
@@ -82,6 +106,7 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
+    @Transactional
     public TaskResponseDto updateTask(TaskUpdateRequestDto dto) {
         Long workingTimeId = dto.getWorkingTimeId();
 
@@ -102,7 +127,6 @@ public class TaskServiceImpl implements TaskService {
                     " and can't be updated");
         }
 
-
         return  taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
 
@@ -114,13 +138,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public List<TaskResponseDto> getAllTasks() {
-        return taskMapper.toTaskResponseDtoList(taskRepository.findAll());
+        List<Task> tasks = taskRepository.findAll();
+        return taskMapper.toTaskResponseDtoList(tasks);
     }
 
 
 
     @Override
+    @Transactional
     public TaskResponseDto getTaskById(Long taskId) {
         Optional<Task> task = Optional.of(taskRepository.findById(taskId)
                 .orElseThrow(TaskNotFoundException::new));
@@ -128,6 +155,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public List<TaskResponseDto> getAvailableTasks() {
         List<Task> tasks = taskRepository.findTaskByTaskStatus(TaskStatus.OPEN);
         return taskMapper.toTaskResponseDtoList(tasks);
@@ -135,9 +163,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskResponseDto> getTasksByUserId(Long userId) {
-        Optional<Task> task = Optional.ofNullable(taskRepository.findByUserId(userId).
-                orElseThrow(TaskNotFoundException::new));
-        return taskMapper.toTaskResponseDtoList(task.stream().toList());
+        List<Task> tasks = taskRepository.findByUserId(userId);
+        return taskMapper.toTaskResponseDtoList(tasks);
     }
 
     @Override
@@ -150,11 +177,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public List<TaskResponseDto> getTasksByStatus(TaskStatus status) {
         return taskMapper.toTaskResponseDtoList(taskRepository.findTaskByTaskStatus(status));
     }
 //TODO проверить корректность написания эксепшенов
     @Override
+    @Transactional
     public TaskResponseDto addPerformerToTask(Long taskId, Long performerId) {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         Performer performer = performerRepository.findById(performerId)
@@ -170,6 +199,7 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
     @Override
+    @Transactional
     public TaskResponseDto removePerformerFromTask(Long taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         if(task.getPerformer() == null)
@@ -180,6 +210,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public TaskResponseDto updateTaskStatusById(Long taskId, TaskStatus status){
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
                 if(task.getTaskStatus().equals(TaskStatus.CANCELED)
@@ -190,30 +221,4 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
 
-    private User getUserFromTaskDto(TaskRequestDto dto) {
-       return userRepository.findById(dto.userId())
-               .orElseThrow(() -> new UserNotFoundException("User not found"));
-    }
-
-    private WorkingTime getWorkingTimeFromDto(TaskRequestDto dto) {
-
-        return workingTimeRepository.findById(dto.workingTimeId())
-                .orElseThrow(WorkingTimeNotFoundException::new)
-                ;
-    }
-
-    private Category getCategoryFromDto(TaskRequestDto dto) {
-        Long categoryId = dto.categoryId();
-        return categoryRepository.findById(categoryId)
-                .orElseThrow(CategoryNotFoundException::new);
-    }
-
-    private Address getAddressFromDto(TaskRequestDto dto) {
-        return Address.builder()
-                .country(dto.country())
-                .city(dto.city())
-                .street(dto.street())
-                .zip(dto.zip())
-                .build();
-    }
 }

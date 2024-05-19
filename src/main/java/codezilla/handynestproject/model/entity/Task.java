@@ -1,7 +1,23 @@
 package codezilla.handynestproject.model.entity;//package codezilla.hendynestproject.model.entity;
 
 import codezilla.handynestproject.model.enums.TaskStatus;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,9 +32,17 @@ import java.util.Set;
 @Entity
 @Data
 @Builder(toBuilder = true)
-@Table(name = "task")
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "task")
+//@NamedEntityGraph(name = "Task.withAddressAndCategoryAndUserAndPerformerAndFeedbacks",
+//                attributeNodes = {
+//                        @NamedAttributeNode("address"),
+//                        @NamedAttributeNode("category"),
+//                        @NamedAttributeNode("user"),
+//                        @NamedAttributeNode("performer"),
+//                        @NamedAttributeNode("feedbacks")
+//                })
 @EntityListeners(AuditingEntityListener.class)
 public class Task {
 
@@ -39,17 +63,20 @@ public class Task {
     @Builder.Default
     private boolean isPublish = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "working_time_id")
     private WorkingTime workingTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "performer_id")
     private Performer performer;
 
 

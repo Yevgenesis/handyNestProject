@@ -2,6 +2,7 @@ package codezilla.handynestproject.repository;
 
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,10 +12,12 @@ import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-
+//    @EntityGraph(value = "Task.withAddressAndCategoryAndUserAndPerformerAndFeedbacks",
+//            type = EntityGraph.EntityGraphType.LOAD)
     List<Task> findAll();
     Optional<Task> findById(Long id);
-    Optional<Task> findByUserId(Long userId);
+
+    List<Task> findByUserId(Long userId);
     List<Task> findTaskByTaskStatus(TaskStatus taskStatus);
     List<Task> findTasksByPerformerId(Long performerId);
 
