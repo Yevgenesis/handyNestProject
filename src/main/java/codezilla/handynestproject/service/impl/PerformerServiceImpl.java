@@ -94,6 +94,7 @@ public class PerformerServiceImpl implements PerformerService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public PerformerResponseDto getPerformerById(Long id) {
         Optional<Performer> performer = performerRepository.findById(id);
         PerformerResponseDto dtos = performerMapper.performerToDto(performer.get()); // ToDo exception
