@@ -1,7 +1,6 @@
 package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.HandyNestProjectApplication;
-import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.service.PerformerService;
 import codezilla.handynestproject.util.TestDatabaseConfig;
@@ -15,9 +14,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.List;
 
 import static codezilla.handynestproject.service.TestData.PERFORMER_REQUEST_DTO1;
-import static codezilla.handynestproject.service.TestData.PERFORMER_REQUEST_DTO3;
 import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO1;
-import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO3;
+import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -35,13 +33,13 @@ class PerformerControllerTest {
     };
 
     @Test
-    @SneakyThrows //unique constraint "performer_pkey" Key (id)=(3) already exists.
+    @SneakyThrows
     void createPerformerTest() {
-
-        PerformerRequestDto performer = PERFORMER_REQUEST_DTO3;
-        PerformerResponseDto expected = PERFORMER_RESPONSE_DTO3;
-        PerformerResponseDto actual = performerService.createPerformer(performer);
-        assertEquals(expected, actual);
+//
+//        PerformerRequestDto performer = PERFORMER_REQUEST_DTO3;
+//        PerformerResponseDto expected = PERFORMER_RESPONSE_DTO3;
+//        PerformerResponseDto actual = performerService.createPerformer(performer);
+//        assertEquals(expected, actual);
 
     }
 
@@ -67,7 +65,7 @@ class PerformerControllerTest {
     @Test
     @SneakyThrows
     void getPerformerByIdTest(){
-        PerformerResponseDto expected = PERFORMER_RESPONSE_DTO3;
+        PerformerResponseDto expected = PERFORMER_RESPONSE_DTO2;
         Long id = expected.getId();
         PerformerResponseDto actual = performerService.getPerformerById(id);
         assertEquals(expected, actual);

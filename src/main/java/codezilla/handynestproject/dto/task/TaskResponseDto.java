@@ -3,6 +3,7 @@ package codezilla.handynestproject.dto.task;//package codezilla.hendynestproject
 import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
+import codezilla.handynestproject.dto.user.UserNestedResponseDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.WorkingTime;
@@ -29,7 +30,7 @@ public class TaskResponseDto {
     private TaskStatus taskStatus;
     private WorkingTime workingTime;
     private CategoryTitleDto category;
-    private UserResponseDto user;
+    private UserNestedResponseDto user;
     private PerformerResponseDto performer;
     @Builder.Default
     private boolean isPublish = true;

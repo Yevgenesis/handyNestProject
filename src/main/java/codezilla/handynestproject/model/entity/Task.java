@@ -35,14 +35,13 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "task")
-//@NamedEntityGraph(name = "Task.withAddressAndCategoryAndUserAndPerformerAndFeedbacks",
-//                attributeNodes = {
-//                        @NamedAttributeNode("address"),
-//                        @NamedAttributeNode("category"),
-//                        @NamedAttributeNode("user"),
-//                        @NamedAttributeNode("performer"),
-//                        @NamedAttributeNode("feedbacks")
-//                })
+@NamedEntityGraph(name = "Task.withAddressAndCategoryAndUserAndPerformer",
+                attributeNodes = {
+                        @NamedAttributeNode("address"),
+                        @NamedAttributeNode("category"),
+                        @NamedAttributeNode("user"),
+                        @NamedAttributeNode("performer")
+})
 @EntityListeners(AuditingEntityListener.class)
 public class Task {
 
@@ -63,7 +62,7 @@ public class Task {
     @Builder.Default
     private boolean isPublish = true;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "working_time_id")
     private WorkingTime workingTime;
 
@@ -80,12 +79,12 @@ public class Task {
     private Performer performer;
 
 
-    @OneToMany(
-            mappedBy = "task",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Feedback> feedbacks;
+//    @OneToMany(
+//            mappedBy = "task",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private Set<Feedback> feedbacks;
 
     @CreatedDate
     @Column(name = "created_on", updatable = false, nullable = false)

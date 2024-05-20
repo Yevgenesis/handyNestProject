@@ -677,7 +677,7 @@ public class TestData {
             .taskStatus(TaskStatus.OPEN)
             .workingTime(TEST_WORKING_TIME1)
             .category(CATEGORY_TITLE_DTO19)
-            .user(USER_RESPONSE_DTO1)
+            .user(USER_NESTED_RESPONSE_DTO1)
             .performer(null)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -695,7 +695,7 @@ public class TestData {
             .taskStatus(TaskStatus.IN_PROGRESS)
             .workingTime(TEST_WORKING_TIME2)
             .category(CATEGORY_TITLE_DTO8)
-            .user(USER_RESPONSE_DTO2)
+            .user(USER_NESTED_RESPONSE_DTO2)
             .performer(PERFORMER_RESPONSE_DTO4)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -713,7 +713,7 @@ public class TestData {
             .taskStatus(TaskStatus.COMPLETED)
             .workingTime(TEST_WORKING_TIME3)
             .category(CATEGORY_TITLE_DTO2)
-            .user(USER_RESPONSE_DTO3)
+            .user(USER_NESTED_RESPONSE_DTO3)
             .performer(PERFORMER_RESPONSE_DTO5)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -731,7 +731,7 @@ public class TestData {
             .taskStatus(TaskStatus.OPEN)
             .workingTime(TEST_WORKING_TIME4)
             .category(CATEGORY_TITLE_DTO28)
-            .user(USER_RESPONSE_DTO4)
+            .user(USER_NESTED_RESPONSE_DTO4)
             .performer(PERFORMER_RESPONSE_DTO2)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -749,7 +749,7 @@ public class TestData {
             .taskStatus(TaskStatus.CANCELED)
             .workingTime(TEST_WORKING_TIME4)
             .category(CATEGORY_TITLE_DTO18)
-            .user(USER_RESPONSE_DTO5)
+            .user(USER_NESTED_RESPONSE_DTO5)
             .performer(PERFORMER_RESPONSE_DTO1)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -951,7 +951,7 @@ public class TestData {
             TEST_USER1.getId(),null,Grade.STAR3,TEST_TASK2.getId());
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO4 = new FeedbackCreateRequestDto(
-            TEST_USER3.getId(),"Отличный исполнитель!",Grade.STAR5,TEST_TASK5.getId());
+            TEST_USER3.getId(),"Отличный заказчик!",Grade.STAR5,TEST_TASK5.getId());
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO5 = new FeedbackCreateRequestDto(
             TEST_USER2.getId(),"Требуется улучшение",Grade.STAR1,TEST_TASK1.getId());

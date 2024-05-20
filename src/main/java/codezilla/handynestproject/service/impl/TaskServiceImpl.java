@@ -9,11 +9,8 @@ import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Address;
-import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
-import codezilla.handynestproject.model.entity.User;
-import codezilla.handynestproject.model.entity.WorkingTime;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.CategoryRepository;
 import codezilla.handynestproject.repository.PerformerRepository;
@@ -27,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskResponseDto createTask(TaskRequestDto dto) {
+    public TaskResponseDto create(TaskRequestDto dto) {
         Task task = Task.builder()
                 .title(dto.title())
                 .description(dto.description())
@@ -71,43 +67,10 @@ public class TaskServiceImpl implements TaskService {
 
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
-    @Override
-    @Transactional
-    public TaskResponseDto createTaskByUserId(Long userId, TaskRequestDto dto) {
-        Optional<User> user = userRepository.findById(userId);
-        Task task = Task.builder()
-                .title(dto.title())
-                .description(dto.description())
-                .price(dto.price())
-                .address(Address.builder()
-                        .street(dto.street())
-                        .city(dto.city())
-                        .zip(dto.zip())
-                        .country(dto.country())
-                        .build())
-                .taskStatus(TaskStatus.OPEN)
-                .isPublish(dto.isPublish())
-                .workingTime(WorkingTime.builder()
-                        .id(dto.workingTimeId())
-                        .title(workingTimeRepository
-                                .findWorkingTimeById(dto.workingTimeId())
-                                .getTitle())
-                        .build())
-                .category(Category.builder()
-                        .id(dto.categoryId())
-                        .title(categoryRepository
-                                .findById(dto.categoryId())
-                                        .get().getTitle())
-                        .build())
-                .user(user.get()) // ToDo check
-                .build();
-        return taskMapper.toTaskResponseDto(taskRepository.save(task));
-    }
-
 
     @Override
     @Transactional
-    public TaskResponseDto updateTask(TaskUpdateRequestDto dto) {
+    public TaskResponseDto update(TaskUpdateRequestDto dto) {
         Long workingTimeId = dto.getWorkingTimeId();
 
         Task task = taskRepository.findById(dto.getId())
@@ -132,14 +95,14 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public void deleteTaskById(Long taskId) {
+    public void deleteById(Long taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         taskRepository.delete(task);
     }
 
     @Override
     @Transactional
-    public List<TaskResponseDto> getAllTasks() {
+    public List<TaskResponseDto> getAll() {
         List<Task> tasks = taskRepository.findAll();
         return taskMapper.toTaskResponseDtoList(tasks);
     }
@@ -148,7 +111,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskResponseDto getTaskById(Long taskId) {
+    public TaskResponseDto getById(Long taskId) {
         Optional<Task> task = Optional.of(taskRepository.findById(taskId)
                 .orElseThrow(TaskNotFoundException::new));
         return  taskMapper.toTaskResponseDto(task.get());
@@ -162,13 +125,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponseDto> getTasksByUserId(Long userId) {
+    public List<TaskResponseDto> getByUserId(Long userId) {
         List<Task> tasks = taskRepository.findByUserId(userId);
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
     @Override
-    public List<TaskResponseDto> getTasksByPerformerId(Long performerId) {
+    public List<TaskResponseDto> getByPerformerId(Long performerId) {
 
        List<Task> tasks = taskRepository.findTasksByPerformerId(performerId);
         return taskMapper.toTaskResponseDtoList(tasks);
@@ -178,13 +141,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public List<TaskResponseDto> getTasksByStatus(TaskStatus status) {
+    public List<TaskResponseDto> getByStatus(TaskStatus status) {
         return taskMapper.toTaskResponseDtoList(taskRepository.findTaskByTaskStatus(status));
     }
 //TODO проверить корректность написания эксепшенов
     @Override
     @Transactional
-    public TaskResponseDto addPerformerToTask(Long taskId, Long performerId) {
+    public TaskResponseDto addPerformer(Long taskId, Long performerId) {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         Performer performer = performerRepository.findById(performerId)
                 .orElseThrow(()->new PerformerNotFoundException("Performer can't be same as user"));
@@ -200,7 +163,7 @@ public class TaskServiceImpl implements TaskService {
     }
     @Override
     @Transactional
-    public TaskResponseDto removePerformerFromTask(Long taskId) {
+    public TaskResponseDto removePerformer(Long taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         if(task.getPerformer() == null)
             throw new PerformerNotFoundException("Performer not found");

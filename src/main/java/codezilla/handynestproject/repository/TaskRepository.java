@@ -12,9 +12,11 @@ import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-//    @EntityGraph(value = "Task.withAddressAndCategoryAndUserAndPerformerAndFeedbacks",
-//            type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(value = "Task.withAddressAndCategoryAndUserAndPerformer",
+            type = EntityGraph.EntityGraphType.LOAD)
     List<Task> findAll();
+    @EntityGraph(value = "Task.withAddressAndCategoryAndUserAndPerformer",
+            type = EntityGraph.EntityGraphType.LOAD)
     Optional<Task> findById(Long id);
 
     List<Task> findByUserId(Long userId);

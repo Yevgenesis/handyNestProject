@@ -26,8 +26,8 @@ public class Role {
     @Column(name = "role_name", nullable = false, length = 20)
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
-    @Builder.Default
-    private Set<User> users = new HashSet<>();
+//    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+//    @Builder.Default
+//    private Set<User> users = new HashSet<>();
 
 }
