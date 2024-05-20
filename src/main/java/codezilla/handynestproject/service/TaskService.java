@@ -11,7 +11,7 @@ public interface TaskService {
 
     TaskResponseDto create(TaskRequestDto dto);
     TaskResponseDto update(TaskUpdateRequestDto dto);
-    void deleteById(Long taskId);
+    void cancelById(Long taskId);
     TaskResponseDto getById(Long taskId);
     List<TaskResponseDto> getAll();
     List<TaskResponseDto> getByStatus(TaskStatus status);

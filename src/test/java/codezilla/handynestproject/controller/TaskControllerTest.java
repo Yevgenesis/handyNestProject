@@ -211,16 +211,16 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
-    void deleteTask() {
+    void cancelTask() {
         TaskResponseDto task = TASK_RESPONSE_DTO1;
         Long taskId = task.getId();
         assertTrue(taskRepository.findById(taskId).isPresent());
-        taskService.deleteById(taskId);
+        taskService.cancelById(taskId);
         assertFalse(taskRepository.findById(taskId).isPresent());
 
         Long nonExistentTaskId = 999L;
         assertThrows(TaskNotFoundException.class, () -> taskService.
-                deleteById(nonExistentTaskId));
+                cancelById(nonExistentTaskId));
 
 
 

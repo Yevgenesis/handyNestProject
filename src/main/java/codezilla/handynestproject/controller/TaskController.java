@@ -84,9 +84,9 @@ public class TaskController {
         return taskService.updateTaskStatusById(taskId, status);
     }
 
-    @DeleteMapping("/delete/{taskId}")
-    public void delete(@PathVariable Long taskId) {
-        taskService.deleteById(taskId);
+    @DeleteMapping("/cancel/{taskId}")
+    public void cancel(@PathVariable Long taskId) {
+        taskService.cancelById(taskId);
     }
 
 }

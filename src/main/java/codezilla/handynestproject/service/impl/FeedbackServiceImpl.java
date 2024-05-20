@@ -26,7 +26,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final FeedbackMapper feedbackMapper;
     private final TaskRepository taskRepository;
 
-    public List<FeedbackResponseDto> getAllFeedback() {
+    public List<FeedbackResponseDto> getAllFeedback () {
         List<Feedback> feedbackRepositoryList = feedbackRepository.findAll();
         List<FeedbackResponseDto> feedbackResponseDtoList = feedbackMapper.feedbackToListDto(feedbackRepositoryList);
         return feedbackResponseDtoList;

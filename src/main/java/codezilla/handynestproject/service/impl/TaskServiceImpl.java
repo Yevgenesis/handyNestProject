@@ -95,9 +95,9 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public void deleteById(Long taskId) {
+    public void cancelById(Long taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
-        taskRepository.delete(task);
+        task.setTaskStatus(TaskStatus.CANCELED);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class TaskServiceImpl implements TaskService {
         if ( performer.getId().equals(task.getUser().getId()))
             throw new PerformerNotFoundException("Performer can't be same as user");
         if(performer.getUser().isDeleted())
-            throw new UserNotFoundException("User is delete");
+            throw new UserNotFoundException("User is cancel");
          if(!task.getTaskStatus().equals(TaskStatus.OPEN))
             throw new TaskNotFoundException("Status must be OPEN");
         task.setTaskStatus(TaskStatus.IN_PROGRESS);

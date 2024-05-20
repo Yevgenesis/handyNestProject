@@ -57,7 +57,7 @@ class TaskServiceImplTest {
     //TODO проверить написание теста
 
     @Test
-    void deleteByIdTest() {
+    void cancelByIdTest() {
 
         Long taskId = TEST_TASK1.getId();
 
