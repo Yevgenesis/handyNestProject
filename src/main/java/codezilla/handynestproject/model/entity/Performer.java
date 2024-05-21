@@ -97,7 +97,7 @@ public class Performer {
     @Column(name = "updated_on", nullable = false)
     private Timestamp updatedOn;
 
-    public void increaseCounter() {
+    public void increaseTaskCounter() {
         this.taskCount++;
     }
 

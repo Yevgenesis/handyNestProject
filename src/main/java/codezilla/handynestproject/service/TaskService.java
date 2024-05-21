@@ -17,6 +17,8 @@ public interface TaskService {
     List<TaskResponseDto> getAllTasks();
     List<TaskResponseDto> getTasksByStatus(TaskStatus status);
 
+    Task getTaskEntityByIdAndParticipantsId(Long taskId, Long userId);
+
     List<TaskResponseDto> getAvailableTasks();
 
     List<TaskResponseDto> getTasksByUserId(Long userId);

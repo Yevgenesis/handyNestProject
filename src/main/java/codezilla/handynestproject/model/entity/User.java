@@ -81,7 +81,7 @@ public class User {
     private Set<Feedback> sentFeedbacks = new HashSet<>();
 
 
-    public void increaseCounter() {
+    public void increaseTaskCounter() {
         this.taskCount++;
     }
 }

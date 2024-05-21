@@ -113,6 +113,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Task getTaskEntityByIdAndParticipantsId(Long taskId, Long userId) {
+        Optional<Task> task = Optional.of(taskRepository.findTaskByIdAndStatusIsNotOPENAndPerformerOrUser(taskId, userId)
+                .orElseThrow(TaskNotFoundException::new));
+        return task.get();
+    }
+    @Override
     public List<TaskResponseDto> getAvailableTasks() {
         List<Task> tasks = taskRepository.findTaskByTaskStatus(TaskStatus.OPEN);
         return taskMapper.toTaskResponseDtoList(tasks);
@@ -187,8 +193,8 @@ public class TaskServiceImpl implements TaskService {
     private void participantsTaskCounterUp(Task task) {
         User user = task.getUser();
         Performer performer = task.getPerformer();
-        user.increaseCounter();
-        performer.increaseCounter();
+        user.increaseTaskCounter();
+        performer.increaseTaskCounter();
         userRepository.save(user);
         performerRepository.save(performer);
     }

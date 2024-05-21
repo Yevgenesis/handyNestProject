@@ -35,7 +35,6 @@ public class Feedback {
 
     private String text;
 
-    //    @Enumerated(EnumType.STRING)
     private Long grade;
 
     @ManyToOne(fetch = FetchType.LAZY)
