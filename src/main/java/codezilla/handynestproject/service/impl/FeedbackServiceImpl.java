@@ -89,8 +89,9 @@ public class FeedbackServiceImpl implements FeedbackService {
                 .build();
         Feedback savedFeedback = feedbackRepository.save(feedback);
 
-        // Если после добавления feedback высчитать средний рейтинг и записать юзеру/перформеру
-
+        // после добавления feedback обновить рейтинги и записать юзеру и перформеру
+        userService.updateRating(task.getUser());
+        performerService.updateRating(task.getPerformer());
 
         return feedbackMapper.feedbackToDto(savedFeedback);
     }

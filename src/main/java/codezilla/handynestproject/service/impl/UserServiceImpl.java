@@ -35,4 +35,18 @@ public class UserServiceImpl implements UserService {
         return userResponseDto;
     }
 
+    @Override
+    public void updateRating(User user) {
+        Double newRating = userRepository.findAverageRatingByUserId(user.getId());
+        user.setPositiveFeedbackPercent(newRating);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void increaseTaskCounterUp(User user) {
+        user.increaseTaskCounter();
+        userRepository.save(user);
+    }
 }
+
+

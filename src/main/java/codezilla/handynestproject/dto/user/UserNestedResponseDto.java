@@ -16,6 +16,8 @@ public class UserNestedResponseDto {
     private String lastName;
 
     private Long taskCount;
+    private Double positiveFeedbackPercent;
+
 
 }
 

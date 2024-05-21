@@ -57,7 +57,6 @@ public class User {
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "created_on", nullable = false, updatable = false)
-
     private Timestamp created_on;
 
     @LastModifiedDate
@@ -79,6 +78,10 @@ public class User {
             orphanRemoval = true, fetch = FetchType.LAZY
     )
     private Set<Feedback> sentFeedbacks = new HashSet<>();
+
+    @Column(name = "user_rating")
+    @Builder.Default
+    private Double positiveFeedbackPercent = 0.0;
 
 
     public void increaseTaskCounter() {

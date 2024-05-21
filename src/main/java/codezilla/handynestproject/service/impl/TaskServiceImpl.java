@@ -9,7 +9,9 @@ import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.*;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.*;
+import codezilla.handynestproject.service.PerformerService;
 import codezilla.handynestproject.service.TaskService;
+import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +30,8 @@ public class TaskServiceImpl implements TaskService {
     private final PerformerRepository performerRepository;
     private final TaskMapper taskMapper;
     private final AddressMapper addressMapper;
-
-
+    private final UserService userService;
+    private final PerformerService performerService;
 
 
     @Override
@@ -184,20 +186,13 @@ public class TaskServiceImpl implements TaskService {
 
         // Если таск COMPLETED, то увеличить счётчики выполненных заданий у перформера и юзера
         if (status.equals(TaskStatus.COMPLETED)) {
-            participantsTaskCounterUp(task);
+            userService.increaseTaskCounterUp(task.getUser());
+            performerService.increaseTaskCounterUp(task.getPerformer());
         }
 
         return taskMapper.toTaskResponseDto(updatedTask);
     }
 
-    private void participantsTaskCounterUp(Task task) {
-        User user = task.getUser();
-        Performer performer = task.getPerformer();
-        user.increaseTaskCounter();
-        performer.increaseTaskCounter();
-        userRepository.save(user);
-        performerRepository.save(performer);
-    }
 
     private User getUserFromTaskDto(TaskRequestDto dto) {
        return userRepository.findById(dto.userId())
