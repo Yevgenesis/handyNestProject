@@ -16,68 +16,92 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
+/*POST
 
+TASK ← create
+
+   PUT
+
+TASK ← updateByID
+
+TASK ← addPerformer
+
+TASK ← RemovePerformer
+
+TASK ← updatePublish
+
+TASK ← updateStateByID
+
+   GET
+
+List<TASK> ← findAll
+
+List<TASK> ← findByUserID
+
+List<TASK> ← findAvailable
+
+List<TASK> ← findByPerformerID*/
 
     @GetMapping
-    public List<TaskResponseDto> getAllTasks() {
+    public List<TaskResponseDto> getAll() {
         return taskService.getAllTasks();
     }
 
     @GetMapping("/{id}")
-    public TaskResponseDto getTaskById(@PathVariable("id") Long id) {
+    public TaskResponseDto getById(@PathVariable("id") Long id) {
         return taskService.getTaskById(id);
     }
 
     @GetMapping("/open")
-    public List<TaskResponseDto> getAvailableTasks() {
+    public List<TaskResponseDto> getAvailable() {
         return taskService.getAvailableTasks();
     }
 
     @GetMapping("/byUser/{id}")
-    public List<TaskResponseDto> getTasksByUserId(@PathVariable Long id) {
+    public List<TaskResponseDto> getByUserId(@PathVariable Long id) {
         return taskService.getTasksByUserId(id);
     }
 
     @GetMapping("/byPerformer/{id}")
-    public List<TaskResponseDto> getTasksByPerformerId(@PathVariable Long id) {
+    public List<TaskResponseDto> getByPerformerId(@PathVariable Long id) {
         return taskService.getTasksByPerformerId(id);
     }
 
     @GetMapping("/status")
-    public List<TaskResponseDto> getTasksByStatus(@RequestParam TaskStatus status) {
+    public List<TaskResponseDto> getByStatus(@RequestParam TaskStatus status) {
         return taskService.getTasksByStatus(status);
     }
 
     @PostMapping
-    public TaskResponseDto createTask(@RequestBody TaskRequestDto taskRequestDto) {
+    public TaskResponseDto create(@RequestBody TaskRequestDto taskRequestDto) {
         return taskService.createTask(taskRequestDto);
     }
 
 
     @PutMapping("/update/{id}")
-    public TaskResponseDto updateTask(@PathVariable("id") Long id,
-                                      @RequestBody TaskUpdateRequestDto taskUpdateRequestDto) {
+    public TaskResponseDto update(@PathVariable("id") Long id,
+                                  @RequestBody TaskUpdateRequestDto taskUpdateRequestDto) {
         return taskService.updateTask(taskUpdateRequestDto);
     }
 
     @PutMapping("/add/{taskId}/{performerId}")
-    public TaskResponseDto addPerformerToTask(@PathVariable("taskId") Long taskId,
-                                              @PathVariable("performerId") Long performerId) {
+    public TaskResponseDto addPerformer(@PathVariable("taskId") Long taskId,
+                                        @PathVariable("performerId") Long performerId) {
         return taskService.addPerformerToTask(taskId, performerId);
     }
 
     @PutMapping("/removePerformer/{taskId}")
-    public TaskResponseDto removePerformerFromTask(@PathVariable Long taskId) {
+    public TaskResponseDto removePerformer(@PathVariable Long taskId) {
         return taskService.removePerformerFromTask(taskId);
     }
 
     @PutMapping("/updateStatus/{taskId}/{status}")
-    public TaskResponseDto updateTaskStatus(@PathVariable Long taskId, @PathVariable TaskStatus status) {
+    public TaskResponseDto updateStatus(@PathVariable Long taskId, @PathVariable TaskStatus status) {
         return taskService.updateTaskStatusById(taskId, status);
     }
 
     @DeleteMapping("/delete/{taskId}")
-    public void deleteTask(@PathVariable Long taskId) {
+    public void delete(@PathVariable Long taskId) {
         taskService.deleteTaskById(taskId);
     }
 

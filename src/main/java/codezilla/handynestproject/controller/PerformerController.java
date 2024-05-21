@@ -20,25 +20,31 @@ public class PerformerController {
 
     //POST
     @PostMapping
-    public PerformerResponseDto createPerformer(@RequestBody @Valid PerformerRequestDto performerDto) {
+    public PerformerResponseDto create(@RequestBody @Valid PerformerRequestDto performerDto) {
         return performerService.createPerformer(performerDto);
     }
 
     //PUT
     @PutMapping
-    public PerformerResponseDto updatePerformer(@RequestBody PerformerRequestDto updateDto) {
+    public PerformerResponseDto update(@RequestBody PerformerRequestDto updateDto) {
         return performerService.updatePerformer(updateDto);
     }
+
+    @PutMapping("/{id}")
+    public PerformerResponseDto updateAvailability(@PathVariable Long id, @RequestParam Boolean isPublish) {
+        return performerService.updateAvailability(id, isPublish);
+    }
+
 
 
     //GET
     @GetMapping
-    public List<PerformerResponseDto> getAllPerformers() {
+    public List<PerformerResponseDto> findAll() {
         return performerService.getPerformers();
     }
 
     @GetMapping("/{id}")
-    public PerformerResponseDto getPerformerById(@PathVariable Long id) {
+    public PerformerResponseDto findById(@PathVariable Long id) {
         return performerService.getPerformerById(id);
     }
 

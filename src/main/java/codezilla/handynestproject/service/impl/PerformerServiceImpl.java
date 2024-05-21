@@ -3,6 +3,7 @@ package codezilla.handynestproject.service.impl;
 import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.exception.CategoryNotFoundException;
+import codezilla.handynestproject.exception.PerformerNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.PerformerMapper;
@@ -102,6 +103,15 @@ public class PerformerServiceImpl implements PerformerService {
     }
 
     @Override
+    public PerformerResponseDto updateAvailability(Long id, boolean isPublish) {
+        Performer performer = performerRepository.findById(id).orElseThrow(() -> new PerformerNotFoundException("Not Found Performer id: " + id));
+        performer.setAvailable(isPublish);
+        return performerMapper.performerToDto(performerRepository.save(performer));
+    }
+
+    // ---------------------------------------------------------------------------------
+
+    @Override
     public void updateRating(Performer performer) {
         Double newRating = performerRepository.findAverageRatingByPerformerId(performer.getId());
         performer.setPositiveFeedbackPercent(newRating);
@@ -113,5 +123,6 @@ public class PerformerServiceImpl implements PerformerService {
         performer.increaseTaskCounter();
         performerRepository.save(performer);
     }
+
 
 }

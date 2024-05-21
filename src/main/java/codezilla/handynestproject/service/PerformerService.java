@@ -20,4 +20,6 @@ public interface PerformerService {
     void updateRating(Performer performer);
 
     void increaseTaskCounterUp(Performer performer);
+
+    PerformerResponseDto updateAvailability(Long id, boolean isPublish);
 }
