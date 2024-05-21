@@ -3,31 +3,16 @@ package codezilla.handynestproject.service.impl;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
-import codezilla.handynestproject.exception.CategoryNotFoundException;
-import codezilla.handynestproject.exception.PerformerNotFoundException;
-import codezilla.handynestproject.exception.TaskNotFoundException;
-import codezilla.handynestproject.exception.UserNotFoundException;
-import codezilla.handynestproject.exception.WorkingTimeNotFoundException;
+import codezilla.handynestproject.exception.*;
 import codezilla.handynestproject.mapper.AddressMapper;
-import codezilla.handynestproject.mapper.CategoryMapper;
-import codezilla.handynestproject.mapper.PerformerMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
-import codezilla.handynestproject.model.entity.Address;
-import codezilla.handynestproject.model.entity.Category;
-import codezilla.handynestproject.model.entity.Performer;
-import codezilla.handynestproject.model.entity.Task;
-import codezilla.handynestproject.model.entity.User;
-import codezilla.handynestproject.model.entity.WorkingTime;
+import codezilla.handynestproject.model.entity.*;
 import codezilla.handynestproject.model.enums.TaskStatus;
-import codezilla.handynestproject.repository.CategoryRepository;
-import codezilla.handynestproject.repository.PerformerRepository;
-import codezilla.handynestproject.repository.TaskRepository;
-import codezilla.handynestproject.repository.UserRepository;
-import codezilla.handynestproject.repository.WorkingTimeRepository;
-import codezilla.handynestproject.service.CategoryService;
+import codezilla.handynestproject.repository.*;
 import codezilla.handynestproject.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -180,14 +165,32 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public TaskResponseDto updateTaskStatusById(Long taskId, TaskStatus status){
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
                 if(task.getTaskStatus().equals(TaskStatus.CANCELED)
                         || task.getTaskStatus().equals(TaskStatus.COMPLETED)){
                     throw new TaskNotFoundException("Task have status: " + task.getTaskStatus());
                 }
+        // только заказчик может изменить статус на COMPLETED
         task.setTaskStatus(status);
-        return taskMapper.toTaskResponseDto(taskRepository.save(task));
+        Task updatedTask = taskRepository.save(task);
+
+        // Если таск COMPLETED, то увеличить счётчики выполненных заданий у перформера и юзера
+        if (status.equals(TaskStatus.COMPLETED)) {
+            participantsTaskCounterUp(task);
+        }
+
+        return taskMapper.toTaskResponseDto(updatedTask);
+    }
+
+    private void participantsTaskCounterUp(Task task) {
+        User user = task.getUser();
+        Performer performer = task.getPerformer();
+        user.increaseCounter();
+        performer.increaseCounter();
+        userRepository.save(user);
+        performerRepository.save(performer);
     }
 
     private User getUserFromTaskDto(TaskRequestDto dto) {

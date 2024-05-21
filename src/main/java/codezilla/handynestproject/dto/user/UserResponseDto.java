@@ -21,6 +21,9 @@ public class UserResponseDto {
 
     private String email;
 
+    private Long taskCount;
+
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH.mm.ss")
     private Timestamp created_on;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH.mm.ss")

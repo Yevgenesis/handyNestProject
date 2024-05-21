@@ -2,9 +2,8 @@ package codezilla.handynestproject.dto.task;//package codezilla.hendynestproject
 
 import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
-import codezilla.handynestproject.dto.performer.PerformerResponseDto;
-import codezilla.handynestproject.dto.user.UserResponseDto;
-import codezilla.handynestproject.model.entity.Address;
+import codezilla.handynestproject.dto.performer.PerformerNestedResponseDto;
+import codezilla.handynestproject.dto.user.UserNestedResponseDto;
 import codezilla.handynestproject.model.entity.WorkingTime;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -29,8 +28,8 @@ public class TaskResponseDto {
     private TaskStatus taskStatus;
     private WorkingTime workingTime;
     private CategoryTitleDto category;
-    private UserResponseDto user;
-    private PerformerResponseDto performer;
+    private UserNestedResponseDto user;
+    private PerformerNestedResponseDto performer;
     @Builder.Default
     private boolean isPublish = true;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")

@@ -14,6 +14,7 @@ import codezilla.handynestproject.repository.TaskRepository;
 import codezilla.handynestproject.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +57,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     // ToDo оптимизировать запросы
     @Override
+    @Transactional
     public FeedbackResponseDto addFeedback(FeedbackCreateRequestDto dto) {
         // ToDo сделать подробное исключение
         Optional<Task> task = Optional.ofNullable(taskRepository.findTaskByIdAndStatusIsNotOPENAndPerformerOrUser(dto.getTaskId(), dto.getSenderId())
@@ -71,8 +73,11 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
 
         User sender;
-        if (task.get().getUser().getId().equals(dto.getSenderId())) sender = task.get().getUser();
-        else sender = task.get().getPerformer().getUser();
+        if (task.get().getUser().getId().equals(dto.getSenderId())) {
+            sender = task.get().getUser();
+        } else {
+            sender = task.get().getPerformer().getUser();
+        }
 
         Feedback feedback = Feedback.builder()
                 .task(task.orElseThrow(TaskNotFoundException::new))
@@ -81,6 +86,9 @@ public class FeedbackServiceImpl implements FeedbackService {
                 .sender(sender)
                 .build();
         Feedback savedFeedback = feedbackRepository.save(feedback);
+
+        // после добавления feedback высчитать средний рейтинг и записать юзеру/перформеру
+
         return feedbackMapper.feedbackToDto(savedFeedback);
     }
 

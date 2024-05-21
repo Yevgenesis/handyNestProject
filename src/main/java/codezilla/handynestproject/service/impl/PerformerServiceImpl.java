@@ -101,4 +101,10 @@ public class PerformerServiceImpl implements PerformerService {
         return dtos;
     }
 
+    public void updatePerformerRating(Performer performer) {
+        Double newRating = performerRepository.findAverageRatingByPerformerId(performer.getId());
+        performer.setPositiveFeedbackPercent(newRating);
+        performerRepository.save(performer);
+    }
+
 }
