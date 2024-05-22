@@ -4,18 +4,21 @@ import codezilla.handynestproject.HandyNestProjectApplication;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
-import codezilla.handynestproject.exception.PerformerNotFoundException;
-import codezilla.handynestproject.exception.TaskNotFoundException;
-import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.model.enums.TaskStatus;
-import codezilla.handynestproject.repository.TaskRepository;
 import codezilla.handynestproject.service.TaskService;
 import codezilla.handynestproject.util.TestDatabaseConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -29,149 +32,155 @@ import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO1;
 import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO2;
 import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO3;
 import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO4;
+import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO5;
 import static codezilla.handynestproject.service.TestData.TEST_ADDRESS_DTO1;
+import static codezilla.handynestproject.service.TestData.TEST_ADDRESS_DTO2;
 import static codezilla.handynestproject.service.TestData.TEST_PERFORMER2;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @Testcontainers
+@AutoConfigureMockMvc
 @ContextConfiguration(classes = {TestDatabaseConfig.class, HandyNestProjectApplication.class})
-
+@ExtendWith(SpringExtension.class)
 class TaskControllerTest {
 
-    private final TaskService taskService;
-    private final TaskRepository taskRepository;
+    @Autowired
+    private MockMvc mockMvc;
 
     @Autowired
-    TaskControllerTest(TaskService taskService, TaskRepository taskRepository) {
-        this.taskService = taskService;
-        this.taskRepository = taskRepository;
-    }
+    private TaskService taskService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+
 
     @Test
     @Transactional
-    void getAllTest() {
+    @SneakyThrows
+    void findAllTest() {
 
-        List<TaskResponseDto> actual = taskService.findAll();
-        assertEquals(5, actual.size());
-
+       mockMvc.perform(get("/tasks"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.size()").value(5));
     }
 
     @Test
     @SneakyThrows
-    void getByIdTest() {
+    void findByIdTest() {
 
         TaskResponseDto expectedTask = TASK_RESPONSE_DTO3;
         Long taskId = expectedTask.getId();
 
-        TaskResponseDto actualTask = taskService.findById(taskId);
-        assertEquals(expectedTask, actualTask);
+       mockMvc.perform(get("/tasks/{id}", taskId))
+               .andExpect(status().isOk())
+               .andExpect(content().json(objectMapper.writeValueAsString(expectedTask)));
 
         Long notExistingTaskId = 999L;
-        assertThrows(TaskNotFoundException.class, () -> taskService.findById(notExistingTaskId));
+        mockMvc.perform(get("/tasks/{id}", notExistingTaskId))
+                .andExpect(status().isNotFound());
     }
 
     @Test
     @SneakyThrows
-    void getAvailableTest() {
+    void findAvailableTest() {
 
         List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO1, TASK_RESPONSE_DTO4);
-        List<TaskResponseDto> actualTasks = taskService.findAvailableTasks();
-        assertEquals(expectedTasks, actualTasks);
+       mockMvc.perform(get("/tasks/open"))
+               .andExpect(status().isOk())
+               .andExpect(content().json(objectMapper.writeValueAsString(expectedTasks)));
+
     }
 
     @Test
     @SneakyThrows
     void getByUserIdTest() {
 
-        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO2);
-        Long userId = TASK_RESPONSE_DTO2.getUser().getId();
-        List<TaskResponseDto> actualTasks = taskService.findByUserId(userId);
-        assertEquals(expectedTasks, actualTasks);
+        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO4);
+        Long userId = TASK_RESPONSE_DTO4.getUser().getId();
+       mockMvc.perform(get("/tasks/user/{userId}", userId))
+               .andExpect(status().isOk())
+               .andExpect(content().json(objectMapper.writeValueAsString(expectedTasks)));
 
-        Long notExistingTaskId = 999L;
-        assertThrows(UserNotFoundException.class, () -> taskService.findByUserId(notExistingTaskId));
-
-    }
-
-    @Test
-    @SneakyThrows
-    void getByPerformerId() {
-        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO2);
-        Long performerId = TASK_RESPONSE_DTO2.getPerformer().getId();
-        List<TaskResponseDto> actualTasks = taskService.findByPerformerId(performerId);
-        assertEquals(expectedTasks, actualTasks);
-
-        Long notExistingTaskId = 999L;
-        assertThrows(PerformerNotFoundException.class, () -> taskService
-                .findByPerformerId(notExistingTaskId));
+        Long notExistingUserId = 999L;
+        mockMvc.perform(get("/tasks/user/{userId}", notExistingUserId))
+                .andExpect(status().isNotFound());
 
     }
 
     @Test
     @SneakyThrows
-    void getByStatus() {
+    void findByPerformerIdTest() {
+        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO5);
+        Long id = TASK_RESPONSE_DTO5.getPerformer().getId();
+        mockMvc.perform(get("/tasks/performer/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedTasks)));
 
-        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO2);
-        TaskStatus taskStatus = TaskStatus.IN_PROGRESS;
-        List<TaskResponseDto> actualTasks = taskService.findByStatus(taskStatus);
-        assertEquals(expectedTasks.size(), actualTasks.size());//если не сравнивать размеры листов, то не проходит
+        Long notExistingUserId = 999L;
+        mockMvc.perform(get("/tasks/performer/{id}", notExistingUserId))
+                .andExpect(status().isNotFound());
 
-//        TaskStatus invalidStatus = TaskStatus.CANCELED;
-//        assertThrows(TaskWrongStatusException.class, () -> taskService.getByStatus(invalidStatus));
     }
 
     @Test
     @SneakyThrows
-    void create() {
+    void findByStatusTest() {
 
-        TaskRequestDto task = TASK_REQUEST_DTO1;
+        List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO3);
+        TaskStatus taskStatus = TaskStatus.COMPLETED;
+       mockMvc.perform(get("/tasks/status")
+                       .param("status", taskStatus.name()))
+               .andExpect(status().isOk())
+               .andExpect(content().json(objectMapper.writeValueAsString(expectedTasks)));
+    }
+
+    @Test
+    @SneakyThrows
+    void createTest() {
+        TaskRequestDto taskRequest = TASK_REQUEST_DTO1;
         TaskResponseDto expectedTask = TASK_RESPONSE_DTO1;
-        Long taskId = expectedTask.getId();
-        Long newId = taskId + 5L;
-        expectedTask.setId(newId);
-        TaskResponseDto actualTask = taskService.create(task);
+        expectedTask.setId(6L);
+        Timestamp createdOn = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+        expectedTask.setCreatedOn(createdOn);
+        Timestamp updatedOn = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+        expectedTask.setUpdatedOn(updatedOn);
 
-        Timestamp createdOn1 = Timestamp.valueOf(LocalDateTime.now()
-                .truncatedTo(ChronoUnit.MINUTES));
-        expectedTask.setCreatedOn(createdOn1);
-        Timestamp updatedOn1 = Timestamp.valueOf(LocalDateTime.now()
-                .truncatedTo(ChronoUnit.MINUTES));
-        expectedTask.setUpdatedOn(updatedOn1);
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/tasks")
+                .content(objectMapper.writeValueAsString(taskRequest)))
 
-        Timestamp createdOn = Timestamp.valueOf(LocalDateTime.now()
-                .truncatedTo(ChronoUnit.MINUTES));
-        actualTask.setCreatedOn(createdOn);
-        Timestamp updatedOn = Timestamp.valueOf(LocalDateTime.now()
-                .truncatedTo(ChronoUnit.MINUTES));
-        actualTask.setUpdatedOn(updatedOn);
+                .andExpect(status().isCreated())
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedTask)));
 
-        assertEquals(expectedTask, actualTask);
     }
-
-
-
 
     @Test
     @SneakyThrows
     void updateTest() {
         TaskUpdateRequestDto task = new TaskUpdateRequestDto(
-                1L,
-                "Test Title",
-                "Test Description",
-                0.0,
-                TEST_ADDRESS_DTO1,
+                2L,
+                "Покрасить комнату",
+                "Нужно покрасить стены в гостиной",
+                260.0,
+                TEST_ADDRESS_DTO2,
                 2L);
 
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO1;
-        TaskResponseDto actualTask = taskService.update(task);
-        assertEquals(expectedTask, actualTask);
-
-
+        TaskResponseDto expectedTask = TASK_RESPONSE_DTO2;
+        expectedTask.setPrice(260.0);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/tasks/update/{id}", expectedTask.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(task)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedTask)));
     }
+
 
     @Test
     @SneakyThrows
@@ -179,21 +188,37 @@ class TaskControllerTest {
         TaskResponseDto task = TASK_RESPONSE_DTO1;
         Long taskId = task.getId();
         Long performerId = TEST_PERFORMER2.getId();
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO4;
-        TaskResponseDto actualTask = taskService.addPerformer(taskId, performerId);
-        assertEquals(expectedTask.getPerformer(), actualTask.getPerformer());
 
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/tasks/add/{TaskId}/{performerId}", taskId, performerId))
+                .andExpect(status().isOk());
+
+        Long notExistingPerformerId = 999L;
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/tasks/add/{TaskId}/{performerId}", taskId, notExistingPerformerId))
+                .andExpect(status().isNotFound());
+
+        Long notExistingTaskId = 999L;
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/tasks/add/{TaskId}/{performerId}", taskId, notExistingTaskId))
+                .andExpect(status().isNotFound());
 
     }
 
     @Test
     @SneakyThrows
     void removePerformer() {
-        TaskResponseDto task = TASK_RESPONSE_DTO1;
+        TaskResponseDto task = TASK_RESPONSE_DTO2;
         Long taskId = task.getId();
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO2;
-        TaskResponseDto actualTask = taskService.removePerformer(taskId);
-        assertEquals(expectedTask, actualTask);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/tasks/removePerformer/{taskId}", taskId))
+                .andExpect(status().isOk());
+
+        Long notExistingTaskId = 999L;
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/tasks/removePerformer/{taskId}", notExistingTaskId))
+                .andExpect(status().isNotFound());
 
     }
 
@@ -203,26 +228,28 @@ class TaskControllerTest {
         TaskResponseDto task = TASK_RESPONSE_DTO1;
         Long taskId = task.getId();
         TaskStatus taskStatus = TaskStatus.IN_PROGRESS;
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO2;
-        TaskResponseDto actualTask = taskService.updateStatusById(taskId, taskStatus);
-        assertEquals(expectedTask, actualTask);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/tasks/updateStatus/{taskId}/{status}", taskId, taskStatus))
+                .andExpect(status().isOk());
+
+        Long notExistingTaskId = 999L;
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/tasks/removePerformer/{taskId}", notExistingTaskId))
+                .andExpect(status().isNotFound());
 
     }
 
     @Test
     @SneakyThrows
     void cancelTask() {
-        TaskResponseDto task = TASK_RESPONSE_DTO1;
+        TaskResponseDto task = TASK_RESPONSE_DTO5;
         Long taskId = task.getId();
-        assertTrue(taskRepository.findById(taskId).isPresent());
-        taskService.cancelById(taskId);
-        assertFalse(taskRepository.findById(taskId).isPresent());
+        mockMvc.perform(delete("/tasks/cancel/{taskId}", taskId))
+                .andExpect(status().isOk());
 
         Long nonExistentTaskId = 999L;
-        assertThrows(TaskNotFoundException.class, () -> taskService.
-                cancelById(nonExistentTaskId));
-
-
+       mockMvc.perform(delete("/tasks/cancel/{taskId}", nonExistentTaskId))
+               .andExpect(status().isNotFound());
 
 
     }

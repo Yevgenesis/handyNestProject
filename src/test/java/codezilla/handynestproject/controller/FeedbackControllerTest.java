@@ -8,10 +8,14 @@ import codezilla.handynestproject.service.FeedbackService;
 import codezilla.handynestproject.util.TestDatabaseConfig;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.junit.jupiter.TestcontainersExtension;
 
 import java.util.List;
 
@@ -24,7 +28,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Testcontainers
+@AutoConfigureMockMvc
 @ContextConfiguration(classes = {TestDatabaseConfig.class, HandyNestProjectApplication.class})
+@ExtendWith({SpringExtension.class, TestcontainersExtension.class})
 class FeedbackControllerTest {
 
 

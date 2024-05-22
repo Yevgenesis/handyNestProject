@@ -6,7 +6,15 @@ import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.service.TaskService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -19,32 +27,32 @@ public class TaskController {
 
 
     @GetMapping
-    public List<TaskResponseDto> getAll() {
+    public List<TaskResponseDto> findAll() {
         return taskService.findAll();
     }
 
     @GetMapping("/{id}")
-    public TaskResponseDto getById(@PathVariable("id") Long id) {
+    public TaskResponseDto findById(@PathVariable("id") Long id) {
         return taskService.findById(id);
     }
 
     @GetMapping("/open")
-    public List<TaskResponseDto> getAvailable() {
+    public List<TaskResponseDto> findAvailable() {
         return taskService.findAvailableTasks();
     }
 
-    @GetMapping("/byUser/{id}")
-    public List<TaskResponseDto> getTasksByUserId(@PathVariable Long id) {
+    @GetMapping("/user/{id}")
+    public List<TaskResponseDto> findByUserId(@PathVariable Long id) {
         return taskService.findByUserId(id);
     }
 
     @GetMapping("/performer/{id}")
-    public List<TaskResponseDto> getByPerformerId(@PathVariable Long id) {
+    public List<TaskResponseDto> findByPerformerId(@PathVariable Long id) {
         return taskService.findByPerformerId(id);
     }
 
     @GetMapping("/status")
-    public List<TaskResponseDto> getByStatus(@RequestParam TaskStatus status) {
+    public List<TaskResponseDto> findByStatus(@RequestParam TaskStatus status) {
         return taskService.findByStatus(status);
     }
 

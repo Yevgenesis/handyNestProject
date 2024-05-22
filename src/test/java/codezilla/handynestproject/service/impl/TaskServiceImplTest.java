@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.List;
+
 import static codezilla.handynestproject.service.TestData.TASK_REQUEST_DTO1;
 import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO1;
 import static codezilla.handynestproject.service.TestData.TEST_ADDRESS_DTO1;
@@ -71,7 +73,9 @@ class TaskServiceImplTest {
 
 
     @Test
-    void findAllTasksTest() {
+    void findAllTest() {
+        List<TaskResponseDto> actual = taskService.findAll();
+        assertEquals(5, actual.size());
 
     }
 

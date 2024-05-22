@@ -716,7 +716,7 @@ public class TestData {
             .taskStatus(TaskStatus.OPEN)
             .workingTime(TEST_WORKING_TIME1)
             .category(CATEGORY_TITLE_DTO19)
-            .user(USER_NESTED_RESPONSE_DTO1)
+            .user(USER_NESTED_RESPONSE_DTO4)
             .performer(null)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -734,7 +734,7 @@ public class TestData {
             .taskStatus(TaskStatus.IN_PROGRESS)
             .workingTime(TEST_WORKING_TIME2)
             .category(CATEGORY_TITLE_DTO8)
-            .user(USER_NESTED_RESPONSE_DTO2)
+            .user(USER_NESTED_RESPONSE_DTO5)
             .performer(PERFORMER_NESTED_RESPONSE_DTO4)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -770,8 +770,8 @@ public class TestData {
             .taskStatus(TaskStatus.OPEN)
             .workingTime(TEST_WORKING_TIME4)
             .category(CATEGORY_TITLE_DTO28)
-            .user(USER_NESTED_RESPONSE_DTO4)
-            .performer(PERFORMER_NESTED_RESPONSE_DTO2)
+            .user(USER_NESTED_RESPONSE_DTO1)
+            .performer(PERFORMER_NESTED_RESPONSE_DTO3)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 0, 0))))
@@ -788,7 +788,7 @@ public class TestData {
             .taskStatus(TaskStatus.CANCELED)
             .workingTime(TEST_WORKING_TIME4)
             .category(CATEGORY_TITLE_DTO18)
-            .user(USER_NESTED_RESPONSE_DTO5)
+            .user(USER_NESTED_RESPONSE_DTO2)
             .performer(PERFORMER_NESTED_RESPONSE_DTO1)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -818,7 +818,7 @@ public class TestData {
             .isPublish(TASK_REQUEST_DTO1.isPublish())
             .workingTime(TEST_WORKING_TIME1)
             .category(TEST_CATEGORY19)
-            .user(TEST_USER1)
+            .user(TEST_USER4)
             .performer(null)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 0, 0))))
@@ -842,7 +842,7 @@ public class TestData {
             .isPublish(TASK_REQUEST_DTO2.isPublish())
             .workingTime(TEST_WORKING_TIME2)
             .category(TEST_CATEGORY8)
-            .user(TEST_USER2)
+            .user(TEST_USER5)
             .performer(TEST_PERFORMER4)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 0, 0))))
@@ -890,8 +890,8 @@ public class TestData {
             .isPublish(TASK_REQUEST_DTO4.isPublish())
             .workingTime(TEST_WORKING_TIME4)
             .category(TEST_CATEGORY28)
-            .user(TEST_USER4)
-            .performer(TEST_PERFORMER2)
+            .user(TEST_USER1)
+            .performer(TEST_PERFORMER3)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 0, 0))))
             .updatedOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -914,7 +914,7 @@ public class TestData {
             .isPublish(TASK_REQUEST_DTO5.isPublish())
             .workingTime(TEST_WORKING_TIME4)
             .category(TEST_CATEGORY18)
-            .user(TEST_USER5)
+            .user(TEST_USER2)
             .performer(TEST_PERFORMER1)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 0, 0))))
