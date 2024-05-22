@@ -3,6 +3,7 @@ package codezilla.handynestproject.service;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
+import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
 
 import java.util.List;

@@ -5,6 +5,7 @@ import codezilla.handynestproject.dto.category.CategoryResponseDto;
 import codezilla.handynestproject.dto.category.CategoryTitleDto;
 import codezilla.handynestproject.dto.feedback.FeedbackCreateRequestDto;
 import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
+import codezilla.handynestproject.dto.performer.PerformerNestedResponseDto;
 import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
@@ -12,7 +13,6 @@ import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.user.UserNestedResponseDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.model.entity.*;
-import codezilla.handynestproject.model.enums.Grade;
 import codezilla.handynestproject.model.enums.TaskStatus;
 
 import java.sql.Timestamp;
@@ -247,35 +247,35 @@ public class TestData {
      */
 
     public static final UserResponseDto USER_RESPONSE_DTO1 = new UserResponseDto(
-            1L, "Джон", "Доу", "john.doe@example.com",
+            1L, "Джон", "Доу", "john.doe@example.com",5L,100.0,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(10, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(10, 0, 0))));
 
     public static final UserResponseDto USER_RESPONSE_DTO2 = new UserResponseDto(
-            2L, "Джейн", "Смит", "jane.smith@example.com",
+            2L, "Джейн", "Смит", "jane.smith@example.com", 6L,50.0,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(11, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(11, 0, 0))));
 
     public static final UserResponseDto USER_RESPONSE_DTO3 = new UserResponseDto(
-            3L, "Алиса", "Джонсон", "alice.johnson@example.com",
+            3L, "Алиса", "Джонсон", "alice.johnson@example.com",7L,80.0,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(12, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(12, 0, 0))));
 
     public static final UserResponseDto USER_RESPONSE_DTO4 = new UserResponseDto(
-            4L, "Боб", "Уильямс", "bob.williams@example.com",
+            4L, "Боб", "Уильямс", "bob.williams@example.com",8L,75.0,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(13, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(13, 0, 0))));
 
     public static final UserResponseDto USER_RESPONSE_DTO5 = new UserResponseDto(
-            5L, "Ева", "Браун", "eva.brown@example.com",
+            5L, "Ева", "Браун", "eva.brown@example.com",9L,95.0,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(14, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -286,19 +286,19 @@ public class TestData {
      */
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO1 = new UserNestedResponseDto(
-            1L, "Джон","Доу");
+            1L, "Джон","Доу",5L,100.0);
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO2 = new UserNestedResponseDto(
-            2L, "Джейн","Смит");
+            2L, "Джейн","Смит",6L,50.0);
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO3 = new UserNestedResponseDto(
-            3L, "Алиса","Джонсон");
+            3L, "Алиса","Джонсон",7L,80.0);
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO4 = new UserNestedResponseDto(
-            4L, "Боб","Уильямс");
+            4L, "Боб","Уильямс",8L, 75.0);
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO5 = new UserNestedResponseDto(
-            5L, "Ева","Браун");
+            5L, "Ева","Браун",9L,95.0);
 
     /**
      * test data User
@@ -500,6 +500,45 @@ public class TestData {
                     (2024, 4, 29), LocalTime.of(16, 0, 0))));
 
     /**
+     * PerformerNestedResponseDto
+     */
+
+    public static final PerformerNestedResponseDto PERFORMER_NESTED_RESPONSE_DTO1 = new PerformerNestedResponseDto(
+            TEST_USER1.getId(),
+            TEST_USER1.getFirstName(),
+            TEST_USER1.getLastName(),
+            4.5,
+            100L);
+
+    public static final PerformerNestedResponseDto PERFORMER_NESTED_RESPONSE_DTO2 = new PerformerNestedResponseDto(
+            TEST_USER2.getId(),
+            TEST_USER2.getFirstName(),
+            TEST_USER2.getLastName(),
+            4.8,
+            150L);
+
+    public static final PerformerNestedResponseDto PERFORMER_NESTED_RESPONSE_DTO3 = new PerformerNestedResponseDto(
+            TEST_USER3.getId(),
+            TEST_USER3.getFirstName(),
+            TEST_USER3.getLastName(),
+            4.0,
+            80L);
+
+    public static final PerformerNestedResponseDto PERFORMER_NESTED_RESPONSE_DTO4 = new PerformerNestedResponseDto(
+            TEST_USER4.getId(),
+            TEST_USER4.getFirstName(),
+            TEST_USER4.getLastName(),
+            4.7,
+            120L);
+
+    public static final PerformerNestedResponseDto PERFORMER_NESTED_RESPONSE_DTO5 = new PerformerNestedResponseDto(
+            TEST_USER5.getId(),
+            TEST_USER5.getFirstName(),
+            TEST_USER5.getLastName(),
+            4.2,
+            90L);
+
+    /**
      * test data Performer
      */
 
@@ -510,7 +549,7 @@ public class TestData {
             .description(PERFORMER_RESPONSE_DTO1.getDescription())
             .isAvailable(true)
             .positiveFeedbackPercent(PERFORMER_RESPONSE_DTO1.getPositiveFeedbackPercent())
-            .feedbackCount(PERFORMER_RESPONSE_DTO1.getFeedbackCount())
+            .taskCount(PERFORMER_RESPONSE_DTO1.getTaskCount())
             .user(TEST_USER1)
             .categories(Set.of(TEST_CATEGORY2, TEST_CATEGORY4))
             .address(TEST_ADDRESS1)
@@ -528,7 +567,7 @@ public class TestData {
             .description(PERFORMER_RESPONSE_DTO2.getDescription())
             .isAvailable(true)
             .positiveFeedbackPercent(PERFORMER_RESPONSE_DTO2.getPositiveFeedbackPercent())
-            .feedbackCount(PERFORMER_RESPONSE_DTO2.getFeedbackCount())
+            .taskCount(PERFORMER_RESPONSE_DTO2.getTaskCount())
             .user(TEST_USER2)
             .categories(Set.of(TEST_CATEGORY8, TEST_CATEGORY19, TEST_CATEGORY20))
             .address(TEST_ADDRESS2)
@@ -546,7 +585,7 @@ public class TestData {
             .description(PERFORMER_RESPONSE_DTO3.getDescription())
             .isAvailable(true)
             .positiveFeedbackPercent(PERFORMER_RESPONSE_DTO3.getPositiveFeedbackPercent())
-            .feedbackCount(PERFORMER_RESPONSE_DTO1.getFeedbackCount())
+            .taskCount(PERFORMER_RESPONSE_DTO3.getTaskCount())
             .user(TEST_USER3)
             .categories(Set.of(TEST_CATEGORY8))
             .address(TEST_ADDRESS3)
@@ -564,7 +603,7 @@ public class TestData {
             .description(PERFORMER_RESPONSE_DTO4.getDescription())
             .isAvailable(true)
             .positiveFeedbackPercent(PERFORMER_RESPONSE_DTO4.getPositiveFeedbackPercent())
-            .feedbackCount(PERFORMER_RESPONSE_DTO4.getFeedbackCount())
+            .taskCount(PERFORMER_RESPONSE_DTO4.getTaskCount())
             .user(TEST_USER4)
             .categories(Set.of(TEST_CATEGORY18, TEST_CATEGORY35, TEST_CATEGORY40))
             .address(TEST_ADDRESS4)
@@ -582,7 +621,7 @@ public class TestData {
             .description(PERFORMER_RESPONSE_DTO5.getDescription())
             .isAvailable(true)
             .positiveFeedbackPercent(PERFORMER_RESPONSE_DTO5.getPositiveFeedbackPercent())
-            .feedbackCount(PERFORMER_RESPONSE_DTO5.getFeedbackCount())
+            .taskCount(PERFORMER_RESPONSE_DTO5.getTaskCount())
             .user(TEST_USER5)
             .categories(Set.of(TEST_CATEGORY28, TEST_CATEGORY40))
             .address(TEST_ADDRESS5)
@@ -696,7 +735,7 @@ public class TestData {
             .workingTime(TEST_WORKING_TIME2)
             .category(CATEGORY_TITLE_DTO8)
             .user(USER_NESTED_RESPONSE_DTO2)
-            .performer(PERFORMER_RESPONSE_DTO4)
+            .performer(PERFORMER_NESTED_RESPONSE_DTO4)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 0, 0))))
@@ -714,7 +753,7 @@ public class TestData {
             .workingTime(TEST_WORKING_TIME3)
             .category(CATEGORY_TITLE_DTO2)
             .user(USER_NESTED_RESPONSE_DTO3)
-            .performer(PERFORMER_RESPONSE_DTO5)
+            .performer(PERFORMER_NESTED_RESPONSE_DTO5)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 0, 0))))
@@ -732,7 +771,7 @@ public class TestData {
             .workingTime(TEST_WORKING_TIME4)
             .category(CATEGORY_TITLE_DTO28)
             .user(USER_NESTED_RESPONSE_DTO4)
-            .performer(PERFORMER_RESPONSE_DTO2)
+            .performer(PERFORMER_NESTED_RESPONSE_DTO2)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 0, 0))))
@@ -750,7 +789,7 @@ public class TestData {
             .workingTime(TEST_WORKING_TIME4)
             .category(CATEGORY_TITLE_DTO18)
             .user(USER_NESTED_RESPONSE_DTO5)
-            .performer(PERFORMER_RESPONSE_DTO1)
+            .performer(PERFORMER_NESTED_RESPONSE_DTO1)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 0, 0))))
@@ -891,7 +930,7 @@ public class TestData {
             .id(1L)
             .text("Отличная работа!")
             .sender(TEST_USER1)
-            .grade(Grade.STAR5)
+            .grade(5L)
             .task(TEST_TASK4)
             .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 0, 0))))
@@ -900,7 +939,7 @@ public class TestData {
             .id(2L)
             .sender(TEST_USER3)
             .text("Очень впечатляющая работа!")
-            .grade(Grade.STAR4)
+            .grade(4L)
             .task(TEST_TASK3)
             .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 15, 0))))
@@ -910,7 +949,7 @@ public class TestData {
             .id(3L)
             .sender(TEST_USER1)
             .text(null)
-            .grade(Grade.STAR3)
+            .grade(3L)
             .task(TEST_TASK2)
             .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 30, 0))))
@@ -920,7 +959,7 @@ public class TestData {
             .id(4L)
             .sender(TEST_USER3)
             .text("Отличный исполнитель!")
-            .grade(Grade.STAR5)
+            .grade(5L)
             .task(TEST_TASK3)
             .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(12, 30, 0))))
@@ -931,7 +970,7 @@ public class TestData {
             .id(5L)
             .sender(TEST_USER2)
             .text("Требуется улучшение")
-            .grade(Grade.STAR1)
+            .grade(1L)
             .task(TEST_TASK1)
             .createdOn( Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 5, 14), LocalTime.of(13, 0, 0))))
@@ -942,19 +981,19 @@ public class TestData {
      */
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO1 = new FeedbackCreateRequestDto(
-            TEST_USER1.getId(),"Отличная работа!",Grade.STAR5,TEST_TASK4.getId());
+            TEST_USER1.getId(),"Отличная работа!",5L,TEST_TASK4.getId());
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO2 = new FeedbackCreateRequestDto(
-            TEST_USER3.getId(),"Очень впечатляющая работа!",Grade.STAR4,TEST_TASK3.getId());
+            TEST_USER3.getId(),"Очень впечатляющая работа!",4L,TEST_TASK3.getId());
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO3 = new FeedbackCreateRequestDto(
-            TEST_USER1.getId(),null,Grade.STAR3,TEST_TASK2.getId());
+            TEST_USER1.getId(),null,3L,TEST_TASK2.getId());
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO4 = new FeedbackCreateRequestDto(
-            TEST_USER3.getId(),"Отличный заказчик!",Grade.STAR5,TEST_TASK5.getId());
+            TEST_USER3.getId(),"Отличный заказчик!",5L,TEST_TASK5.getId());
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO5 = new FeedbackCreateRequestDto(
-            TEST_USER2.getId(),"Требуется улучшение",Grade.STAR1,TEST_TASK1.getId());
+            TEST_USER2.getId(),"Требуется улучшение",1L,TEST_TASK1.getId());
 
 /**
  * FeedbackResponseDto

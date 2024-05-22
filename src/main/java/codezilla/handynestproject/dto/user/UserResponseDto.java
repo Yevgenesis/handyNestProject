@@ -22,6 +22,7 @@ public class UserResponseDto {
     private String email;
 
     private Long taskCount;
+
     private Double positiveFeedbackPercent;
 
 
