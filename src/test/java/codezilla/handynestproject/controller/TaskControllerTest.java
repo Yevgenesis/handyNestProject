@@ -34,7 +34,6 @@ import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO3;
 import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO4;
 import static codezilla.handynestproject.service.TestData.TASK_RESPONSE_DTO5;
 import static codezilla.handynestproject.service.TestData.TEST_ADDRESS_DTO1;
-import static codezilla.handynestproject.service.TestData.TEST_ADDRESS_DTO2;
 import static codezilla.handynestproject.service.TestData.TEST_PERFORMER2;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -164,15 +163,15 @@ class TaskControllerTest {
     @SneakyThrows
     void updateTest() {
         TaskUpdateRequestDto task = new TaskUpdateRequestDto(
-                2L,
-                "Покрасить комнату",
-                "Нужно покрасить стены в гостиной",
-                260.0,
-                TEST_ADDRESS_DTO2,
-                2L);
+                1L,
+                "Починить кран",
+                "Требуется починить кран на кухне",
+                60.0,
+                TEST_ADDRESS_DTO1,
+                1L);
 
-        TaskResponseDto expectedTask = TASK_RESPONSE_DTO2;
-        expectedTask.setPrice(260.0);
+        TaskResponseDto expectedTask = TASK_RESPONSE_DTO1;
+        expectedTask.setPrice(60.0);
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/tasks/update/{id}", expectedTask.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -180,6 +179,8 @@ class TaskControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedTask)));
     }
+
+
 
 
     @Test
