@@ -84,9 +84,9 @@ public class Performer {
     @Builder.Default
     private Double positiveFeedbackPercent = 0.0;
 
-    @Column(name = "feedback_count")
     @Builder.Default
-    private Long feedbackCount = 0L;
+    @Column(name = "task_count", nullable = false)
+    private Long taskCount = 0L;
 
 
     @CreatedDate
@@ -97,6 +97,9 @@ public class Performer {
     @Column(name = "updated_on", nullable = false)
     private Timestamp updatedOn;
 
+    public void increaseTaskCounter() {
+        this.taskCount++;
+    }
 
     //     установка значений по умолчанию при добавлении в базу
 //    @PrePersist

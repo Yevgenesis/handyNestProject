@@ -1,6 +1,5 @@
 package codezilla.handynestproject.model.entity;
 
-import codezilla.handynestproject.model.enums.Grade;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +35,7 @@ public class Feedback {
 
     private String text;
 
-    @Enumerated(EnumType.STRING)
-    private Grade grade;
+    private Long grade;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Task task;

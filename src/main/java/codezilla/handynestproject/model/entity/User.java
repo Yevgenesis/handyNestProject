@@ -43,6 +43,9 @@ public class User {
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
+    @Builder.Default
+    @Column(name = "task_count", nullable = false)
+    private Long taskCount = 0L;
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
@@ -54,7 +57,6 @@ public class User {
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "created_on", nullable = false, updatable = false)
-
     private Timestamp created_on;
 
     @LastModifiedDate
@@ -77,5 +79,12 @@ public class User {
     )
     private Set<Feedback> sentFeedbacks = new HashSet<>();
 
+    @Column(name = "user_rating")
+    @Builder.Default
+    private Double positiveFeedbackPercent = 0.0;
 
+
+    public void increaseTaskCounter() {
+        this.taskCount++;
+    }
 }

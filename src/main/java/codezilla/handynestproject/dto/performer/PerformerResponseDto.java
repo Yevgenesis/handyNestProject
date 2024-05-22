@@ -40,7 +40,7 @@ public class PerformerResponseDto {
 
     private Double positiveFeedbackPercent;
 
-    private Long feedbackCount;
+    private Long taskCount;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Timestamp createdOn;

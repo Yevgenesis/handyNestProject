@@ -1,6 +1,7 @@
 package codezilla.handynestproject.mapper;
 
 
+import codezilla.handynestproject.dto.performer.PerformerNestedResponseDto;
 import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.model.entity.Performer;
@@ -15,6 +16,10 @@ public interface PerformerMapper {
     @Mapping(source = "user.firstName", target = "firstName")
     @Mapping(source = "user.lastName", target = "lastName")
     PerformerResponseDto performerToDto(Performer performer);
+
+    @Mapping(source = "user.firstName", target = "firstName")
+    @Mapping(source = "user.lastName", target = "lastName")
+    PerformerNestedResponseDto performerNestedToDto(Performer performer);
 
     List<PerformerResponseDto> performersToListDto(List<Performer> performers);
 

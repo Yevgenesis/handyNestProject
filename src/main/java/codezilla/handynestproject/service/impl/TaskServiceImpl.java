@@ -3,28 +3,19 @@ package codezilla.handynestproject.service.impl;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
-import codezilla.handynestproject.exception.PerformerNotFoundException;
-import codezilla.handynestproject.exception.TaskNotFoundException;
-import codezilla.handynestproject.exception.UserNotFoundException;
+import codezilla.handynestproject.exception.*;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
-import codezilla.handynestproject.model.entity.Address;
-import codezilla.handynestproject.model.entity.Performer;
-import codezilla.handynestproject.model.entity.Task;
+import codezilla.handynestproject.model.entity.*;
 import codezilla.handynestproject.model.enums.TaskStatus;
-import codezilla.handynestproject.repository.CategoryRepository;
-import codezilla.handynestproject.repository.PerformerRepository;
-import codezilla.handynestproject.repository.TaskRepository;
-import codezilla.handynestproject.repository.UserRepository;
-import codezilla.handynestproject.repository.WorkingTimeRepository;
+import codezilla.handynestproject.repository.*;
+import codezilla.handynestproject.service.PerformerService;
 import codezilla.handynestproject.service.TaskService;
+import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +30,8 @@ public class TaskServiceImpl implements TaskService {
     private final PerformerRepository performerRepository;
     private final TaskMapper taskMapper;
     private final AddressMapper addressMapper;
-
-
+    private final UserService userService;
+    private final PerformerService performerService;
 
 
     @Override
@@ -61,13 +52,14 @@ public class TaskServiceImpl implements TaskService {
                 .workingTime(workingTimeRepository.findWorkingTimeById(dto.workingTimeId()))
                 .category(categoryRepository.findById(dto.categoryId()).get())
                 .user(userRepository.findById(dto.userId()).get())
-                .createdOn(Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)))
-                .updatedOn(Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)))
+
                 .build();
 
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
 
+
+    // ToDo Исправить,
     @Override
     @Transactional
     public TaskResponseDto update(TaskUpdateRequestDto dto) {
@@ -89,6 +81,7 @@ public class TaskServiceImpl implements TaskService {
             throw new TaskNotFoundException("Task have status: " + task.getTaskStatus()+
                     " and can't be updated");
         }
+
 
         return  taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
@@ -117,6 +110,12 @@ public class TaskServiceImpl implements TaskService {
         return  taskMapper.toTaskResponseDto(task.get());
     }
 
+    @Override
+    public Task getTaskEntityByIdAndParticipantsId(Long taskId, Long userId) {
+        Optional<Task> task = Optional.of(taskRepository.findTaskByIdAndStatusIsNotOPENAndPerformerOrUser(taskId, userId)
+                .orElseThrow(TaskNotFoundException::new));
+        return task.get();
+    }
     @Override
     @Transactional
     public List<TaskResponseDto> getAvailableTasks() {
@@ -180,8 +179,18 @@ public class TaskServiceImpl implements TaskService {
                         || task.getTaskStatus().equals(TaskStatus.COMPLETED)){
                     throw new TaskNotFoundException("Task have status: " + task.getTaskStatus());
                 }
+        // только заказчик может изменить статус на COMPLETED
         task.setTaskStatus(status);
-        return taskMapper.toTaskResponseDto(taskRepository.save(task));
+        Task updatedTask = taskRepository.save(task);
+
+        // Если таск COMPLETED, то увеличить счётчики выполненных заданий у перформера и юзера
+        if (status.equals(TaskStatus.COMPLETED)) {
+            userService.increaseTaskCounterUp(task.getUser());
+            performerService.increaseTaskCounterUp(task.getPerformer());
+        }
+
+        return taskMapper.toTaskResponseDto(updatedTask);
     }
+
 
 }

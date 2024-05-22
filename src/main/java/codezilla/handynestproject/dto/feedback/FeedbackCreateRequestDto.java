@@ -1,6 +1,7 @@
 package codezilla.handynestproject.dto.feedback;
 
-import codezilla.handynestproject.model.enums.Grade;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,9 @@ public class FeedbackCreateRequestDto {
 
     private String text;
 
-    private Grade grade;
+    @Min(0)
+    @Max(5)
+    private Long grade;
 
     private Long taskId;
 
