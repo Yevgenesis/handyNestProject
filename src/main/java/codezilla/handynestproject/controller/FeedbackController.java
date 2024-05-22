@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/feedback")
+@RequestMapping(path = "/feedbacks")
 @RequiredArgsConstructor
 public class FeedbackController {
 
@@ -19,35 +19,35 @@ public class FeedbackController {
     //GET
     @GetMapping
     public List<FeedbackResponseDto> findAll() {
-        return feedbackService.getAllFeedback();
+        return feedbackService.findAll();
     }
 
     @GetMapping("/{id}")
     public FeedbackResponseDto findById(@PathVariable Long id) {
-        return feedbackService.getFeedbackById(id);
+        return feedbackService.findById(id);
     }
 
     @GetMapping("/task/{taskId}")
     public List<FeedbackResponseDto> findByTaskID(@PathVariable Long taskId) {
-        return feedbackService.getFeedbackByTaskId(taskId);
+        return feedbackService.findByTaskId(taskId);
     }
 
     // ToDo сделать правильный запрос в базу
     @GetMapping("/user/{senderId}")
     public List<FeedbackResponseDto> findByUserID(@PathVariable Long senderId) {
-        return feedbackService.getFeedbackBySenderId(senderId);
+        return feedbackService.findBySenderId(senderId);
     }
 
     // ToDo сделать правильный запрос в базу
     @GetMapping("/performer/{senderId}")
     public List<FeedbackResponseDto> findByPerformerID(@PathVariable Long senderId) {
-        return feedbackService.getFeedbackBySenderId(senderId);
+        return feedbackService.findBySenderId(senderId);
     }
 
     //POST
     @PostMapping
     public FeedbackResponseDto addFeedback(@RequestBody FeedbackCreateRequestDto requestDto) {
-        return feedbackService.addFeedback(requestDto);
+        return feedbackService.add(requestDto);
 
     }
 

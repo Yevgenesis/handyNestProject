@@ -33,7 +33,7 @@ class UserControllerTest {
     @SneakyThrows
     void getAllUsersTest() {
 
-       List<UserResponseDto> actual = userService.getUsers();
+       List<UserResponseDto> actual = userService.findAll();
        assertEquals(11, actual.size());
     }
 
@@ -43,7 +43,7 @@ class UserControllerTest {
         UserResponseDto expected = USER_RESPONSE_DTO3;
         Long id = expected.getId();
 
-        UserResponseDto actual = userService.getUserById(id);
+        UserResponseDto actual = userService.findById(id);
         assertEquals(expected, actual);
     }
 }

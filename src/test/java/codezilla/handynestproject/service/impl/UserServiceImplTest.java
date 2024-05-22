@@ -33,15 +33,15 @@ class UserServiceImplTest {
 
     @Test
     @SneakyThrows
-    void getUsers() {
-        List<UserResponseDto> users = userService.getUsers();
+    void findAll() {
+        List<UserResponseDto> users = userService.findAll();
         assertEquals(11, users.size());
     }
 
     @Test
     @SneakyThrows
-    void getUserById() {
-        UserResponseDto user = userService.getUserById(1L);
+    void findById() {
+        UserResponseDto user = userService.findById(1L);
         assertEquals(USER_RESPONSE_DTO1, user);
     }
 }

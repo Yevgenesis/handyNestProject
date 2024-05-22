@@ -55,7 +55,7 @@ class TaskControllerTest {
     @Transactional
     void getAllTest() {
 
-        List<TaskResponseDto> actual = taskService.getAll();
+        List<TaskResponseDto> actual = taskService.findAll();
         assertEquals(5, actual.size());
 
     }
@@ -67,11 +67,11 @@ class TaskControllerTest {
         TaskResponseDto expectedTask = TASK_RESPONSE_DTO3;
         Long taskId = expectedTask.getId();
 
-        TaskResponseDto actualTask = taskService.getById(taskId);
+        TaskResponseDto actualTask = taskService.findById(taskId);
         assertEquals(expectedTask, actualTask);
 
         Long notExistingTaskId = 999L;
-        assertThrows(TaskNotFoundException.class, () -> taskService.getById(notExistingTaskId));
+        assertThrows(TaskNotFoundException.class, () -> taskService.findById(notExistingTaskId));
     }
 
     @Test
@@ -79,7 +79,7 @@ class TaskControllerTest {
     void getAvailableTest() {
 
         List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO1, TASK_RESPONSE_DTO4);
-        List<TaskResponseDto> actualTasks = taskService.getAvailableTasks();
+        List<TaskResponseDto> actualTasks = taskService.findAvailableTasks();
         assertEquals(expectedTasks, actualTasks);
     }
 
@@ -89,11 +89,11 @@ class TaskControllerTest {
 
         List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO2);
         Long userId = TASK_RESPONSE_DTO2.getUser().getId();
-        List<TaskResponseDto> actualTasks = taskService.getByUserId(userId);
+        List<TaskResponseDto> actualTasks = taskService.findByUserId(userId);
         assertEquals(expectedTasks, actualTasks);
 
         Long notExistingTaskId = 999L;
-        assertThrows(UserNotFoundException.class, () -> taskService.getByUserId(notExistingTaskId));
+        assertThrows(UserNotFoundException.class, () -> taskService.findByUserId(notExistingTaskId));
 
     }
 
@@ -102,12 +102,12 @@ class TaskControllerTest {
     void getByPerformerId() {
         List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO2);
         Long performerId = TASK_RESPONSE_DTO2.getPerformer().getId();
-        List<TaskResponseDto> actualTasks = taskService.getByPerformerId(performerId);
+        List<TaskResponseDto> actualTasks = taskService.findByPerformerId(performerId);
         assertEquals(expectedTasks, actualTasks);
 
         Long notExistingTaskId = 999L;
         assertThrows(PerformerNotFoundException.class, () -> taskService
-                .getByPerformerId(notExistingTaskId));
+                .findByPerformerId(notExistingTaskId));
 
     }
 
@@ -117,7 +117,7 @@ class TaskControllerTest {
 
         List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO2);
         TaskStatus taskStatus = TaskStatus.IN_PROGRESS;
-        List<TaskResponseDto> actualTasks = taskService.getByStatus(taskStatus);
+        List<TaskResponseDto> actualTasks = taskService.findByStatus(taskStatus);
         assertEquals(expectedTasks.size(), actualTasks.size());//если не сравнивать размеры листов, то не проходит
 
 //        TaskStatus invalidStatus = TaskStatus.CANCELED;
@@ -204,7 +204,7 @@ class TaskControllerTest {
         Long taskId = task.getId();
         TaskStatus taskStatus = TaskStatus.IN_PROGRESS;
         TaskResponseDto expectedTask = TASK_RESPONSE_DTO2;
-        TaskResponseDto actualTask = taskService.updateTaskStatusById(taskId, taskStatus);
+        TaskResponseDto actualTask = taskService.updateStatusById(taskId, taskStatus);
         assertEquals(expectedTask, actualTask);
 
     }

@@ -22,14 +22,14 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserResponseDto> getUsers() {
+    public List<UserResponseDto> findAll() {
         List<User> users = userRepository.findAll();
         List<UserResponseDto> userResponseDtos = userMapper.usersToListDto(users);
         return userResponseDtos;
     }
 
     @Override
-    public UserResponseDto getUserById(Long id) {
+    public UserResponseDto findById(Long id) {
         Optional<User> user = userRepository.findById(id);
         UserResponseDto userResponseDto = userMapper.userToDto(user.orElseThrow(UserNotFoundException::new));
         return userResponseDto;

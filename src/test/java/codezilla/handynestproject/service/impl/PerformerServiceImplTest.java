@@ -26,23 +26,23 @@ class PerformerServiceImplTest {
 
 
     @Test
-    void createPerformer() {
+    void create() {
 
     }
 
     @Test
-    void updatePerformer() {
+    void update() {
     }
 
     @Test
-    void getPerformers() {
-        var performers = performerService.getPerformers();
+    void findAll() {
+        var performers = performerService.findAll();
         assertEquals(5, performers.size());
     }
 
     @Test
-    void getPerformerById() {
-        var performer = performerService.getPerformerById(1L);
+    void findById() {
+        var performer = performerService.findById(1L);
         assertNotNull(performer);
     }
 }

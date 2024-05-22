@@ -44,7 +44,7 @@ class PerformerControllerTest {
         performer.setUserId(6L);
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO3;
         expected.setId(6L);
-        PerformerResponseDto actual = performerService.createPerformer(performer);
+        PerformerResponseDto actual = performerService.create(performer);
         assertEquals(expected, actual);
 
     }
@@ -56,7 +56,7 @@ class PerformerControllerTest {
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO1;
 
         PerformerResponseDto actual =
-                performerService.updatePerformer(PERFORMER_REQUEST_DTO1);
+                performerService.update(PERFORMER_REQUEST_DTO1);
             assertEquals(expected, actual);
     }
 
@@ -64,7 +64,7 @@ class PerformerControllerTest {
     @SneakyThrows
     void getAllPerformersTest() {
 
-        List<PerformerResponseDto> actual = performerService.getPerformers();
+        List<PerformerResponseDto> actual = performerService.findAll();
         assertEquals(5, actual.size());
     }
 
@@ -73,7 +73,7 @@ class PerformerControllerTest {
     void getPerformerByIdTest(){
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO2;
         Long id = expected.getId();
-        PerformerResponseDto actual = performerService.getPerformerById(id);
+        PerformerResponseDto actual = performerService.findById(id);
         assertEquals(expected, actual);
     }
 }

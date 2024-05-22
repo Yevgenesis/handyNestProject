@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface FeedbackService {
 
-    List<FeedbackResponseDto> getAllFeedback();
+    List<FeedbackResponseDto> findAll();
 
-    FeedbackResponseDto getFeedbackById(Long id);
+    FeedbackResponseDto findById(Long id);
 
-    List<FeedbackResponseDto> getFeedbackByTaskId(Long taskId);
+    List<FeedbackResponseDto> findByTaskId(Long taskId);
 
-    List<FeedbackResponseDto> getFeedbackBySenderId(Long senderId);
+    List<FeedbackResponseDto> findBySenderId(Long senderId);
 
-    FeedbackResponseDto addFeedback(FeedbackCreateRequestDto requestDto);
+    FeedbackResponseDto add(FeedbackCreateRequestDto requestDto);
 }

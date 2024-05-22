@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface PerformerService {
 
-    PerformerResponseDto createPerformer(PerformerRequestDto performerDto);
+    PerformerResponseDto create(PerformerRequestDto performerDto);
 
-    PerformerResponseDto getPerformerById(Long id);
+    PerformerResponseDto findById(Long id);
 
-    List<PerformerResponseDto> getPerformers();
+    List<PerformerResponseDto> findAll();
 
-    PerformerResponseDto updatePerformer(PerformerRequestDto performerDto);
+    PerformerResponseDto update(PerformerRequestDto performerDto);
 
 
     void updateRating(Performer performer);

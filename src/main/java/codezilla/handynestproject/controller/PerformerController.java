@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/performer")
+@RequestMapping(path = "/performers")
 @RequiredArgsConstructor
 @Validated
 public class PerformerController {
@@ -21,13 +21,13 @@ public class PerformerController {
     //POST
     @PostMapping
     public PerformerResponseDto create(@RequestBody @Valid PerformerRequestDto performerDto) {
-        return performerService.createPerformer(performerDto);
+        return performerService.create(performerDto);
     }
 
     //PUT
     @PutMapping
     public PerformerResponseDto update(@RequestBody PerformerRequestDto updateDto) {
-        return performerService.updatePerformer(updateDto);
+        return performerService.update(updateDto);
     }
 
     @PutMapping("/{id}")
@@ -40,12 +40,12 @@ public class PerformerController {
     //GET
     @GetMapping
     public List<PerformerResponseDto> findAll() {
-        return performerService.getPerformers();
+        return performerService.findAll();
     }
 
     @GetMapping("/{id}")
     public PerformerResponseDto findById(@PathVariable Long id) {
-        return performerService.getPerformerById(id);
+        return performerService.findById(id);
     }
 
 }

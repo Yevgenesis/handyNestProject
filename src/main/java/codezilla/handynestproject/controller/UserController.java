@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/user")
+@RequestMapping(path = "/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -19,12 +19,12 @@ public class UserController {
 
     @GetMapping
     public List<UserResponseDto> findAll() {
-        return userService.getUsers();
+        return userService.findAll();
     }
 
     @GetMapping("/{id}")
     public UserResponseDto findById(@PathVariable Long id) {
-        return userService.getUserById(id);
+        return userService.findById(id);
     }
 
 }

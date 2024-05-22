@@ -6,9 +6,9 @@ import codezilla.handynestproject.model.entity.User;
 import java.util.List;
 
 public interface UserService {
-    List<UserResponseDto> getUsers();
+    List<UserResponseDto> findAll();
 
-    UserResponseDto getUserById(Long id);
+    UserResponseDto findById(Long id);
 
     void updateRating(User user);
 

@@ -13,19 +13,19 @@ public interface TaskService {
     TaskResponseDto create(TaskRequestDto dto);
     TaskResponseDto update(TaskUpdateRequestDto dto);
     void cancelById(Long taskId);
-    TaskResponseDto getById(Long taskId);
-    List<TaskResponseDto> getAll();
-    List<TaskResponseDto> getByStatus(TaskStatus status);
+    TaskResponseDto findById(Long taskId);
+    List<TaskResponseDto> findAll();
+    List<TaskResponseDto> findByStatus(TaskStatus status);
 
-    Task getTaskEntityByIdAndParticipantsId(Long taskId, Long userId);
+    Task findTaskEntityByIdAndParticipantsId(Long taskId, Long userId);
 
-    List<TaskResponseDto> getAvailableTasks();
+    List<TaskResponseDto> findAvailableTasks();
 
-    List<TaskResponseDto> getByUserId(Long userId);
-    List<TaskResponseDto> getByPerformerId(Long performerId);
+    List<TaskResponseDto> findByUserId(Long userId);
+    List<TaskResponseDto> findByPerformerId(Long performerId);
     TaskResponseDto addPerformer(Long taskId, Long performerId);
     TaskResponseDto removePerformer(Long taskId);
-    TaskResponseDto updateTaskStatusById(Long taskId, TaskStatus status);
+    TaskResponseDto updateStatusById(Long taskId, TaskStatus status);
 
 
 

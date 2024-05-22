@@ -20,32 +20,32 @@ public class TaskController {
 
     @GetMapping
     public List<TaskResponseDto> getAll() {
-        return taskService.getAll();
+        return taskService.findAll();
     }
 
     @GetMapping("/{id}")
     public TaskResponseDto getById(@PathVariable("id") Long id) {
-        return taskService.getById(id);
+        return taskService.findById(id);
     }
 
     @GetMapping("/open")
     public List<TaskResponseDto> getAvailable() {
-        return taskService.getAvailableTasks();
+        return taskService.findAvailableTasks();
     }
 
     @GetMapping("/byUser/{id}")
     public List<TaskResponseDto> getTasksByUserId(@PathVariable Long id) {
-        return taskService.getByUserId(id);
+        return taskService.findByUserId(id);
     }
 
     @GetMapping("/performer/{id}")
     public List<TaskResponseDto> getByPerformerId(@PathVariable Long id) {
-        return taskService.getByPerformerId(id);
+        return taskService.findByPerformerId(id);
     }
 
     @GetMapping("/status")
     public List<TaskResponseDto> getByStatus(@RequestParam TaskStatus status) {
-        return taskService.getByStatus(status);
+        return taskService.findByStatus(status);
     }
 
     @PostMapping
@@ -73,7 +73,7 @@ public class TaskController {
 
     @PutMapping("/updateStatus/{taskId}/{status}")
     public TaskResponseDto updateStatus(@PathVariable Long taskId, @PathVariable TaskStatus status) {
-        return taskService.updateTaskStatusById(taskId, status);
+        return taskService.updateStatusById(taskId, status);
     }
 
     @DeleteMapping("/cancel/{taskId}")

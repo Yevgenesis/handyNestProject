@@ -30,28 +30,28 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final PerformerService performerService;
     private final UserService userService;
 
-    public List<FeedbackResponseDto> getAllFeedback () {
+    public List<FeedbackResponseDto> findAll() {
         List<Feedback> feedbackRepositoryList = feedbackRepository.findAll();
         List<FeedbackResponseDto> feedbackResponseDtoList = feedbackMapper.feedbackToListDto(feedbackRepositoryList);
         return feedbackResponseDtoList;
     }
 
     @Override
-    public FeedbackResponseDto getFeedbackById(Long id) {
+    public FeedbackResponseDto findById(Long id) {
         Optional<Feedback> feedbackResponse = feedbackRepository.findById(id);
         FeedbackResponseDto feedbackResponseDto = feedbackMapper.feedbackToDto(feedbackResponse.orElseThrow(FeedbackNotFoundException::new));
         return feedbackResponseDto;
     }
 
     @Override
-    public List<FeedbackResponseDto> getFeedbackByTaskId(Long taskId) {
+    public List<FeedbackResponseDto> findByTaskId(Long taskId) {
         List<Feedback> feedbacks = feedbackRepository.findFeedbackByTaskId(taskId);
         List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
         return feedbacksDtos;
     }
 
     @Override
-    public List<FeedbackResponseDto> getFeedbackBySenderId(Long senderId) {
+    public List<FeedbackResponseDto> findBySenderId(Long senderId) {
         List<Feedback> feedbacks = feedbackRepository.findFeedbackBySenderId(senderId);
         List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
         return feedbacksDtos;
@@ -61,9 +61,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     // ToDo оптимизировать запросы
     @Override
     @Transactional
-    public FeedbackResponseDto addFeedback(FeedbackCreateRequestDto dto) {
+    public FeedbackResponseDto add(FeedbackCreateRequestDto dto) {
         // ToDo сделать подробное исключение
-        Task task = taskService.getTaskEntityByIdAndParticipantsId(dto.getTaskId(), dto.getSenderId());
+        Task task = taskService.findTaskEntityByIdAndParticipantsId(dto.getTaskId(), dto.getSenderId());
         List<Feedback> feedbacks = feedbackRepository.findFeedbackByTaskId(dto.getTaskId());
 
         if (task.getPerformer() == null)

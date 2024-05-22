@@ -65,37 +65,37 @@ class TaskServiceImplTest {
     }
 
     @Test
-    void getByIdTest() {
+    void findByIdTest() {
         Task task = TEST_TASK1;
     }
 
 
     @Test
-    void getAllTasksTest() {
+    void findAllTasksTest() {
 
     }
 
 
     @Test
-    void getByStatusTest() {
+    void findByStatusTest() {
 
 
 
     }
 
     @Test
-    void getAvailableTasksTest() {
+    void findAvailableTasksTest() {
 
     }
 
     @Test
-    void getByUserIdTest() {
+    void findByUserIdTest() {
 
     }
 
     //TODO найти ошибку!!! ;
     @Test
-    void getByPerformerId() {
+    void findByPerformerId() {
 
 
 

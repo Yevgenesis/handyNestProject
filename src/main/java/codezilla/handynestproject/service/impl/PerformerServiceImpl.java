@@ -38,7 +38,7 @@ public class PerformerServiceImpl implements PerformerService {
 
     @Override
     @Transactional
-    public PerformerResponseDto createPerformer(@RequestBody PerformerRequestDto performerDTO) {
+    public PerformerResponseDto create(@RequestBody PerformerRequestDto performerDTO) {
         User user = userRepository.findById(performerDTO.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("Not Found User with id: " + performerDTO.getUserId()));
         Set<Category> categories = categoryRepository.findCategoriesByIdIn(performerDTO.getCategoryIDs());
@@ -61,7 +61,7 @@ public class PerformerServiceImpl implements PerformerService {
 
     @Override
     @Transactional
-    public PerformerResponseDto updatePerformer(PerformerRequestDto performerDto) {
+    public PerformerResponseDto update(PerformerRequestDto performerDto) {
         User user = userRepository.findById(performerDto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("Not Found User with id: " + performerDto.getUserId()));
         Set<Category> categories = categoryRepository.findCategoriesByIdIn(performerDto.getCategoryIDs());
@@ -87,7 +87,7 @@ public class PerformerServiceImpl implements PerformerService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<PerformerResponseDto> getPerformers() {
+    public List<PerformerResponseDto> findAll() {
         List<Performer> performers = performerRepository.findAll();
         List<PerformerResponseDto> dtos = performerMapper.performersToListDto(performers);
         return dtos;
@@ -96,7 +96,7 @@ public class PerformerServiceImpl implements PerformerService {
 
     @Override
     @Transactional(readOnly = true)
-    public PerformerResponseDto getPerformerById(Long id) {
+    public PerformerResponseDto findById(Long id) {
         Optional<Performer> performer = performerRepository.findById(id);
         PerformerResponseDto dtos = performerMapper.performerToDto(performer.get()); // ToDo exception
         return dtos;

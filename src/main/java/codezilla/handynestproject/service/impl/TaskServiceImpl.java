@@ -95,7 +95,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public List<TaskResponseDto> getAll() {
+    public List<TaskResponseDto> findAll() {
         List<Task> tasks = taskRepository.findAll();
         return taskMapper.toTaskResponseDtoList(tasks);
     }
@@ -104,14 +104,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskResponseDto getById(Long taskId) {
+    public TaskResponseDto findById(Long taskId) {
         Optional<Task> task = Optional.of(taskRepository.findById(taskId)
                 .orElseThrow(TaskNotFoundException::new));
         return  taskMapper.toTaskResponseDto(task.get());
     }
 
     @Override
-    public Task getTaskEntityByIdAndParticipantsId(Long taskId, Long userId) {
+    public Task findTaskEntityByIdAndParticipantsId(Long taskId, Long userId) {
         Optional<Task> task = Optional.of(taskRepository
                 .findTaskByIdAndStatusIsNotOPENAndPerformerOrUser(taskId, userId)
                 .orElseThrow(TaskNotFoundException::new));
@@ -119,19 +119,19 @@ public class TaskServiceImpl implements TaskService {
     }
     @Override
     @Transactional
-    public List<TaskResponseDto> getAvailableTasks() {
+    public List<TaskResponseDto> findAvailableTasks() {
         List<Task> tasks = taskRepository.findTaskByTaskStatus(TaskStatus.OPEN);
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
     @Override
-    public List<TaskResponseDto> getByUserId(Long userId) {
+    public List<TaskResponseDto> findByUserId(Long userId) {
         List<Task> tasks = taskRepository.findByUserId(userId);
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
     @Override
-    public List<TaskResponseDto> getByPerformerId(Long performerId) {
+    public List<TaskResponseDto> findByPerformerId(Long performerId) {
 
        List<Task> tasks = taskRepository.findTasksByPerformerId(performerId);
         return taskMapper.toTaskResponseDtoList(tasks);
@@ -141,7 +141,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public List<TaskResponseDto> getByStatus(TaskStatus status) {
+    public List<TaskResponseDto> findByStatus(TaskStatus status) {
         return taskMapper.toTaskResponseDtoList(taskRepository.findTaskByTaskStatus(status));
     }
 //TODO проверить корректность написания эксепшенов
@@ -174,7 +174,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskResponseDto updateTaskStatusById(Long taskId, TaskStatus status){
+    public TaskResponseDto updateStatusById(Long taskId, TaskStatus status){
         Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
                 if(task.getTaskStatus().equals(TaskStatus.CANCELED)
                         || task.getTaskStatus().equals(TaskStatus.COMPLETED)){
