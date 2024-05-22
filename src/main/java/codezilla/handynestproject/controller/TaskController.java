@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/task")
+@RequestMapping(path = "/tasks")
 @RequiredArgsConstructor
 public class TaskController {
 
@@ -41,12 +41,12 @@ public class TaskController {
         return taskService.getAvailableTasks();
     }
 
-    @GetMapping("/byUser/{id}")
+    @GetMapping("/user/{id}")
     public List<TaskResponseDto> getByUserId(@PathVariable Long id) {
         return taskService.getByUserId(id);
     }
 
-    @GetMapping("/byPerformer/{id}")
+    @GetMapping("/performer/{id}")
     public List<TaskResponseDto> getByPerformerId(@PathVariable Long id) {
         return taskService.getByPerformerId(id);
     }

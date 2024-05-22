@@ -1,6 +1,7 @@
 package codezilla.handynestproject.model.entity;//package codezilla.hendynestproject.model.entity;
 
 import codezilla.handynestproject.model.enums.TaskStatus;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
-import java.util.Set;
 
 @Entity
 @Data
@@ -35,6 +34,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "task")
+@JsonInclude(JsonInclude.Include.NON_NULL)// если есть поля null, чтобы они не высвечивались.
+// Например Перформер в открытом таске.
 @NamedEntityGraph(name = "Task.withAddressAndCategoryAndUserAndPerformer",
                 attributeNodes = {
                         @NamedAttributeNode("address"),
@@ -53,7 +54,7 @@ public class Task {
     private String description;
     private Double price;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
 
     @Enumerated(EnumType.STRING)
@@ -66,15 +67,15 @@ public class Task {
     @JoinColumn(name = "working_time_id")
     private WorkingTime workingTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "performer_id")
     private Performer performer;
 
