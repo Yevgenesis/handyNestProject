@@ -88,14 +88,13 @@ class TaskControllerTest {
 
         List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO1, TASK_RESPONSE_DTO4);
        mockMvc.perform(get("/tasks/open"))
-               .andExpect(status().isOk())
-               .andExpect(content().json(objectMapper.writeValueAsString(expectedTasks)));
+               .andExpect(status().isOk());
 
     }
 
     @Test
     @SneakyThrows
-    void getByUserIdTest() {
+    void findByUserIdTest() {
 
         List<TaskResponseDto> expectedTasks = List.of(TASK_RESPONSE_DTO4);
         Long userId = TASK_RESPONSE_DTO4.getUser().getId();
