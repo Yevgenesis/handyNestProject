@@ -31,9 +31,9 @@ public class PerformerController {
         return performerService.update(updateDto);
     }
 
-    @PutMapping("/{id}")
-    public PerformerResponseDto updateAvailability(@PathVariable Long id, @RequestParam Boolean isPublish) {
-        return performerService.updateAvailability(id, isPublish);
+    @PutMapping("/{id}/{isAvailable}")
+    public PerformerResponseDto updateAvailability(@PathVariable Long id, @PathVariable Boolean isAvailable) {
+        return performerService.updateAvailability(id, isAvailable);
     }
 
 
