@@ -2,6 +2,7 @@ package codezilla.handynestproject.service.impl;
 
 import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
+import codezilla.handynestproject.dto.performer.PerformerUpdateRequestDto;
 import codezilla.handynestproject.exception.CategoryNotFoundException;
 import codezilla.handynestproject.exception.PerformerNotFoundException;
 import codezilla.handynestproject.exception.UserNotFoundException;
@@ -61,25 +62,26 @@ public class PerformerServiceImpl implements PerformerService {
 
     @Override
     @Transactional
-    public PerformerResponseDto update(PerformerRequestDto performerDto) {
-        User user = userRepository.findById(performerDto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("Not Found User with id: " + performerDto.getUserId()));
-        Set<Category> categories = categoryRepository.findCategoriesByIdIn(performerDto.getCategoryIDs());
+    public PerformerResponseDto update(PerformerUpdateRequestDto updateDto) {
+        User user = userRepository.findById(updateDto.getPerformerId())
+                .orElseThrow(() -> new UserNotFoundException("Not Found Performer with id: " + updateDto.getPerformerId()));
 
         // ToDo тут должна быть проверка роли (performerRole)
 
-        Performer performer = performerRepository.findById(performerDto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("Not Found Performer with id: " + performerDto.getUserId()));
+        Set<Category> categories = categoryRepository.findCategoriesByIdIn(updateDto.getCategoryIDs());
 
-        performer.setPhoneNumber(performerDto.getPhoneNumber());
-        performer.setDescription(performerDto.getDescription());
+        Performer performer = performerRepository.findById(updateDto.getPerformerId())
+                .orElseThrow(() -> new UserNotFoundException("Not Found Performer with id: " + updateDto.getPerformerId()));
+
+        performer.setPhoneNumber(updateDto.getPhoneNumber());
+        performer.setDescription(updateDto.getDescription());
         performer.setCategories(categories);
 
         Address address = performer.getAddress();
-        address.setCity(performerDto.getAddressDto().getCity());
-        address.setCountry(performerDto.getAddressDto().getCountry());
-        address.setStreet(performerDto.getAddressDto().getStreet());
-        address.setZip(performerDto.getAddressDto().getZip());
+        address.setCity(updateDto.getAddressDto().getCity());
+        address.setCountry(updateDto.getAddressDto().getCountry());
+        address.setStreet(updateDto.getAddressDto().getStreet());
+        address.setZip(updateDto.getAddressDto().getZip());
 
         Performer responsePerformer = performerRepository.save(performer);
         return performerMapper.performerToDto(responsePerformer);
@@ -113,7 +115,7 @@ public class PerformerServiceImpl implements PerformerService {
 
     @Override
     public void updateRating(Performer performer) {
-        Double newRating = performerRepository.findAverageRatingByPerformerId(performer.getId());
+        Double newRating = performerRepository.getRatingByPerformerId(performer.getId());
         performer.setPositiveFeedbackPercent(newRating);
         performerRepository.save(performer);
     }

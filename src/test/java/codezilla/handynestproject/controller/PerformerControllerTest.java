@@ -14,11 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
-import static codezilla.handynestproject.service.TestData.PERFORMER_REQUEST_DTO1;
-import static codezilla.handynestproject.service.TestData.PERFORMER_REQUEST_DTO3;
-import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO1;
-import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO2;
-import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO3;
+import static codezilla.handynestproject.service.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -56,7 +52,7 @@ class PerformerControllerTest {
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO1;
 
         PerformerResponseDto actual =
-                performerService.update(PERFORMER_REQUEST_DTO1);
+                performerService.update(PERFORMER_UPDATE_REQUEST_DTO1);
             assertEquals(expected, actual);
     }
 

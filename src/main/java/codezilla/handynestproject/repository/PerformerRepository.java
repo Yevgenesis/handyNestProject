@@ -26,6 +26,11 @@ public interface PerformerRepository extends JpaRepository<Performer, Long> {
     @EntityGraph(value = "Performer.withUserAndCategoriesAndAddress", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Performer> findById(Long id);
 
-    @Query("SELECT AVG(f.grade) FROM Feedback f join Task t on f.task.id=t.id WHERE t.performer.id = :performerId")
-    Double findAverageRatingByPerformerId(@Param("performerId") Long performerId);
+    @Query(value =
+            "SELECT (COUNT(f) FILTER (WHERE f.grade >= 4) * 100.0 / COUNT(f)) " +
+                    "FROM feedback f " +
+                    "JOIN task t ON f.task_id = t.id " +
+                    "WHERE t.performer_id = :performerId AND f.sender_id != :performerId",
+            nativeQuery = true)
+    Double getRatingByPerformerId(@Param("performerId") Long performerId);
 }

@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface FeedbackService {
 
+    FeedbackResponseDto add(FeedbackCreateRequestDto requestDto);
+
     List<FeedbackResponseDto> findAll();
 
     FeedbackResponseDto findById(Long id);
@@ -16,5 +18,7 @@ public interface FeedbackService {
 
     List<FeedbackResponseDto> findBySenderId(Long senderId);
 
-    FeedbackResponseDto add(FeedbackCreateRequestDto requestDto);
+    List<FeedbackResponseDto> findAllForPerformerId(Long performerId);
+
+    List<FeedbackResponseDto> findAllForUserId(Long userId);
 }

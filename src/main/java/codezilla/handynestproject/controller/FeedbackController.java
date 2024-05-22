@@ -32,16 +32,16 @@ public class FeedbackController {
         return feedbackService.findByTaskId(taskId);
     }
 
-    // ToDo сделать правильный запрос в базу
-    @GetMapping("/user/{senderId}")
-    public List<FeedbackResponseDto> findByUserID(@PathVariable Long senderId) {
-        return feedbackService.findBySenderId(senderId);
+    // Достать все фитбеки полученные конкретным юзером
+    @GetMapping("/user/{userId}")
+    public List<FeedbackResponseDto> findReceivedByUserId(@PathVariable Long userId) {
+        return feedbackService.findAllForUserId(userId);
     }
 
-    // ToDo сделать правильный запрос в базу
-    @GetMapping("/performer/{senderId}")
-    public List<FeedbackResponseDto> findByPerformerID(@PathVariable Long senderId) {
-        return feedbackService.findBySenderId(senderId);
+    // Достать все фитбеки полученные конкретным перформером
+    @GetMapping("/performer/{performerId}")
+    public List<FeedbackResponseDto> findReceivedByPerformerId(@PathVariable Long performerId) {
+        return feedbackService.findAllForPerformerId(performerId);
     }
 
     //POST
