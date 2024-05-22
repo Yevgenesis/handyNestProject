@@ -34,8 +34,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "task")
-@JsonInclude(JsonInclude.Include.NON_NULL)// если есть поля null, чтобы они не высвечивались.
-// Например Перформер в открытом таске.
 @NamedEntityGraph(name = "Task.withAddressAndCategoryAndUserAndPerformer",
                 attributeNodes = {
                         @NamedAttributeNode("address"),
