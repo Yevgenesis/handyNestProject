@@ -984,7 +984,7 @@ public class TestData {
             TEST_USER1.getId(),"Отличная работа!",5L,TEST_TASK4.getId());
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO2 = new FeedbackCreateRequestDto(
-            TEST_USER3.getId(),"Очень впечатляющая работа!",4L,TEST_TASK3.getId());
+            TEST_USER3.getId(),"Очень впечатляющая работа!",4L,TEST_TASK5.getId());
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO3 = new FeedbackCreateRequestDto(
             TEST_USER1.getId(),null,3L,TEST_TASK2.getId());
@@ -994,6 +994,9 @@ public class TestData {
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO5 = new FeedbackCreateRequestDto(
             TEST_USER2.getId(),"Требуется улучшение",1L,TEST_TASK1.getId());
+
+    public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO6 = new FeedbackCreateRequestDto(
+            TEST_USER2.getId(),"Отличный заказчик!",5L,TEST_TASK4.getId());
 
 /**
  * FeedbackResponseDto
@@ -1006,7 +1009,7 @@ public class TestData {
 
     public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO2 = new FeedbackResponseDto(
         2L,USER_NESTED_RESPONSE_DTO3,FEEDBACK_REQUEST_DTO2.getText(),FEEDBACK_REQUEST_DTO2.getGrade(),
-            TEST_TASK3.getId(), Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+            TEST_TASK5.getId(), Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                 (2024, 5, 14), LocalTime.of(12, 15, 0))));
 
   public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO3 = new FeedbackResponseDto(
@@ -1023,6 +1026,11 @@ public class TestData {
         5L,USER_NESTED_RESPONSE_DTO2,FEEDBACK_REQUEST_DTO5.getText(),FEEDBACK_REQUEST_DTO5.getGrade(),
           TEST_TASK1.getId(), Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                 (2024, 5, 14), LocalTime.of(13, 0, 0))));
+
+  public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO6 = new FeedbackResponseDto(
+        6L,USER_NESTED_RESPONSE_DTO2,FEEDBACK_REQUEST_DTO6.getText(),FEEDBACK_REQUEST_DTO6.getGrade(),
+          TEST_TASK4.getId(), Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+                (2024, 5, 14), LocalTime.of(12, 30, 0))));
 
 
 

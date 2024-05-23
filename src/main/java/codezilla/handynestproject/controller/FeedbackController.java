@@ -46,7 +46,7 @@ public class FeedbackController {
 
     //POST
     @PostMapping
-    public FeedbackResponseDto addFeedback(@RequestBody FeedbackCreateRequestDto requestDto) {
+    public FeedbackResponseDto add(@RequestBody FeedbackCreateRequestDto requestDto) {
         return feedbackService.add(requestDto);
 
     }

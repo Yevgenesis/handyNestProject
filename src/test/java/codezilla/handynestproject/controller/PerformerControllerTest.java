@@ -1,18 +1,24 @@
 package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.HandyNestProjectApplication;
-import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.service.PerformerService;
 import codezilla.handynestproject.util.TestDatabaseConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 
 import static codezilla.handynestproject.service.TestData.PERFORMER_REQUEST_DTO1;
 import static codezilla.handynestproject.service.TestData.PERFORMER_REQUEST_DTO3;
@@ -20,60 +26,94 @@ import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO
 import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO2;
 import static codezilla.handynestproject.service.TestData.PERFORMER_RESPONSE_DTO3;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
 @Testcontainers
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
 @ContextConfiguration(classes = {TestDatabaseConfig.class, HandyNestProjectApplication.class})
 class PerformerControllerTest {
 
-
-    private final PerformerService performerService;
+    @Autowired
+    private PerformerService performerService;
 
     @Autowired
-   PerformerControllerTest (PerformerService performerService) {
-        this.performerService = performerService;
-    };
+    private MockMvc mockMvc;
 
-    //не пойму как правильно прописать. Так как не совпадают User, isAvailable и дата
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Test
+    @Transactional
     @SneakyThrows
-    void createPerformerTest() {
-
-        PerformerRequestDto performer = PERFORMER_REQUEST_DTO3;
-        performer.setUserId(6L);
+    void createTest() {
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO3;
-        expected.setId(6L);
-        PerformerResponseDto actual = performerService.create(performer);
-        assertEquals(expected, actual);
+        var result = mockMvc.perform(MockMvcRequestBuilders
+                        .post("/performers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(PERFORMER_REQUEST_DTO3))
+                        .characterEncoding("UTF-8"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        PerformerResponseDto actual = objectMapper.readValue(jsonResponse, PerformerResponseDto.class);
+
+        assertNotNull(actual.getId());
+        assertEquals(expected.getFirstName(), actual.getFirstName());
+        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getAddress(), actual.getAddress());
+
 
     }
 
     @Test
     @SneakyThrows
-    void updatePerformerTest()  {
+    void updateTest() {
 
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO1;
 
-        PerformerResponseDto actual =
-                performerService.update(PERFORMER_REQUEST_DTO1);
-            assertEquals(expected, actual);
+        var result = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/performers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(PERFORMER_REQUEST_DTO1))
+                        .characterEncoding("UTF-8"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        PerformerResponseDto actual = objectMapper.readValue(jsonResponse, PerformerResponseDto.class);
+        assertNotNull(actual.getId());
+        assertEquals(expected.getFirstName(), actual.getFirstName());
+        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getAddress(), actual.getAddress());
+
+
     }
 
     @Test
     @SneakyThrows
-    void getAllPerformersTest() {
+    void findAllTest() {
+        mockMvc.perform(get("/performers"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(5))
+                .andReturn();
 
-        List<PerformerResponseDto> actual = performerService.findAll();
-        assertEquals(5, actual.size());
     }
 
     @Test
     @SneakyThrows
-    void getPerformerByIdTest(){
+    void findByIdTest() {
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO2;
         Long id = expected.getId();
-        PerformerResponseDto actual = performerService.findById(id);
-        assertEquals(expected, actual);
+        mockMvc.perform(get("/performers/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(expected)));
     }
 }

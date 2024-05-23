@@ -62,9 +62,8 @@ class TaskControllerTest {
     void findByIdTest() {
 
         TaskResponseDto expectedTask = TASK_RESPONSE_DTO3;
-        Long taskId = expectedTask.getId();
 
-       mockMvc.perform(get("/tasks/{id}", taskId))
+       mockMvc.perform(get("/tasks/{id}", expectedTask.getId()))
                .andExpect(status().isOk())
                .andExpect(content().json(objectMapper.writeValueAsString(expectedTask)));
 
@@ -93,9 +92,9 @@ class TaskControllerTest {
                .andExpect(status().isOk())
                .andExpect(content().json(objectMapper.writeValueAsString(expectedTasks)));
 
-//        Long notExistingUserId = 999L;
-//        mockMvc.perform(get("/tasks/user/{userId}", notExistingUserId))
-//                .andExpect(status().isNotFound());
+        Long notExistingUserId = 999L;
+        mockMvc.perform(get("/tasks/user/{userId}", notExistingUserId))
+                .andExpect(status().isNotFound());
 
     }
 
@@ -125,27 +124,6 @@ class TaskControllerTest {
                .andExpect(status().isOk())
                .andExpect(content().json(objectMapper.writeValueAsString(expectedTasks)));
     }
-
-//    @Test
-//    @Transactional
-//    @SneakyThrows
-//    void createTest_OLD() {
-//        TaskRequestDto taskRequest = TASK_REQUEST_DTO1;
-//        TaskResponseDto expectedTask = TASK_RESPONSE_DTO1;
-//        expectedTask.setId(6L);
-//        Timestamp createdOn = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
-//        expectedTask.setCreatedOn(createdOn);
-//        Timestamp updatedOn = Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
-//        expectedTask.setUpdatedOn(updatedOn);
-//
-//        mockMvc.perform(MockMvcRequestBuilders
-//                .post("/tasks")
-//                .content(objectMapper.writeValueAsString(taskRequest)))
-//
-//                .andExpect(status().isCreated())
-//                .andExpect(content().json(objectMapper.writeValueAsString(expectedTask)));
-//
-//    }
 
     @Test
     @Transactional
@@ -178,28 +156,6 @@ class TaskControllerTest {
         assertTrue(Math.abs(actualTask.getCreatedOn().getTime() - System.currentTimeMillis()) < 1000);
         assertTrue(Math.abs(actualTask.getUpdatedOn().getTime() - System.currentTimeMillis()) < 1000);
     }
-
-//    @Test
-//    @Transactional
-//    @SneakyThrows
-//    void updateTest() {
-//        TaskUpdateRequestDto task = new TaskUpdateRequestDto(
-//                1L,
-//                "Починить кран",
-//                "Требуется починить кран на кухне",
-//                60.0,
-//                TEST_ADDRESS_DTO1,
-//                1L);
-//
-//        TaskResponseDto expectedTask = TASK_RESPONSE_DTO1;
-//        expectedTask.setPrice(60.0);
-//        mockMvc.perform(MockMvcRequestBuilders
-//                        .put("/tasks/update/{id}", expectedTask.getId())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(task)))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(objectMapper.writeValueAsString(expectedTask)));
-//    }
 
     @Test
     @Transactional

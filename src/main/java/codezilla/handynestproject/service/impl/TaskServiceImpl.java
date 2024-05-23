@@ -118,6 +118,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task findTaskEntityByIdAndParticipantsId(Long taskId, Long userId) {
+
         Optional<Task> task = Optional.of(taskRepository
                 .findTaskByIdAndStatusIsNotOPENAndPerformerOrUser(taskId, userId)
                 .orElseThrow(()->new TaskNotFoundException("Task with id:"+taskId+" not found")));
