@@ -124,7 +124,7 @@ VALUES (2, 1),
 -- Task
 INSERT INTO task (title, description, price, task_status, is_publish, address_id, working_time_id, category_id, user_id,
                   performer_id, created_on, updated_on)
-VALUES ('Починить кран', 'Требуется починить кран на кухне', 50.00, 'OPEN', true, 1, 1, 19, 4, null,
+VALUES ('Починить кран', 'Требуется починить кран на кухне', 50.00, 'OPEN', true, 1, 1, 19, 1, null,
         '2024-05-14 12:00:00', '2024-05-14 12:00:00'),
        ('Покрасить комнату', 'Нужно покрасить стены в гостиной', 200.00, 'IN_PROGRESS', true, 2, 2, 8, 5, 4,
         '2024-05-14 12:00:00', '2024-05-14 12:00:00'),
