@@ -19,6 +19,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             type = EntityGraph.EntityGraphType.LOAD)
     Optional<Task> findById(Long id);
 
+    Task save(Task task);
     List<Task> findByUserId(Long userId);
     List<Task> findTaskByTaskStatus(TaskStatus taskStatus);
     List<Task> findTasksByPerformerId(Long performerId);

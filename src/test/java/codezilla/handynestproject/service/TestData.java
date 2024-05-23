@@ -639,7 +639,7 @@ public class TestData {
     public static final TaskRequestDto TASK_REQUEST_DTO1 = new TaskRequestDto(
             "Починить кран",
             "Требуется починить кран на кухне",
-            50.0,
+            60.0,
             TEST_ADDRESS1.getCountry(),
             TEST_ADDRESS1.getCity(),
             TEST_ADDRESS1.getStreet(),
@@ -716,7 +716,7 @@ public class TestData {
             .taskStatus(TaskStatus.OPEN)
             .workingTime(TEST_WORKING_TIME1)
             .category(CATEGORY_TITLE_DTO19)
-            .user(USER_NESTED_RESPONSE_DTO4)
+            .user(USER_NESTED_RESPONSE_DTO1)
             .performer(null)
             .isPublish(true)
             .createdOn(Timestamp.valueOf(LocalDateTime.of(LocalDate.of
