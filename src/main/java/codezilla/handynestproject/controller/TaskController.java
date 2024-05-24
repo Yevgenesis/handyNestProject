@@ -68,6 +68,7 @@ public class TaskController {
         return taskService.update(taskUpdateRequestDto);
     }
 
+
     @PutMapping("/add/{taskId}/{performerId}")
     public TaskResponseDto addPerformer(@PathVariable("taskId") Long taskId,
                                         @PathVariable("performerId") Long performerId) {
@@ -79,7 +80,7 @@ public class TaskController {
         return taskService.removePerformer(taskId);
     }
 
-    @PutMapping("/updateStatus/{taskId}/{status}")
+    @PutMapping("{taskId}/status/{status}")
     public TaskResponseDto updateStatus(@PathVariable Long taskId, @PathVariable TaskStatus status) {
         return taskService.updateStatusById(taskId, status);
     }

@@ -2,6 +2,7 @@ package codezilla.handynestproject.service;
 
 import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
+import codezilla.handynestproject.dto.performer.PerformerUpdateRequestDto;
 import codezilla.handynestproject.model.entity.Performer;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface PerformerService {
 
     List<PerformerResponseDto> findAll();
 
-    PerformerResponseDto update(PerformerRequestDto performerDto);
+    PerformerResponseDto update(PerformerUpdateRequestDto performerDto);
 
 
     void updateRating(Performer performer);

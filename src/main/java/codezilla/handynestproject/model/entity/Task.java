@@ -36,7 +36,7 @@ public class Task {
     private String description;
     private Double price;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Address address;
 
     @Enumerated(EnumType.STRING)

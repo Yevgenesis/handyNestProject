@@ -8,6 +8,7 @@ import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 import codezilla.handynestproject.dto.performer.PerformerNestedResponseDto;
 import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
+import codezilla.handynestproject.dto.performer.PerformerUpdateRequestDto;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.user.UserNestedResponseDto;
@@ -378,6 +379,13 @@ public class TestData {
      */
 
     public static final PerformerRequestDto PERFORMER_REQUEST_DTO1 = new PerformerRequestDto(
+            1L,
+            "+49123456789",
+            "Опытный сантехник с большим опытом работы",
+            List.of(TEST_CATEGORY2.getId(), TEST_CATEGORY4.getId()),
+            TEST_ADDRESS_DTO1);
+
+    public static final PerformerUpdateRequestDto PERFORMER_UPDATE_REQUEST_DTO1 = new PerformerUpdateRequestDto(
             1L,
             "+49123456789",
             "Опытный сантехник с большим опытом работы",

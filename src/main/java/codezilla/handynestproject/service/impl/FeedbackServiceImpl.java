@@ -45,14 +45,14 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<FeedbackResponseDto> findByTaskId(Long taskId) {
-        List<Feedback> feedbacks = feedbackRepository.findFeedbackByTaskId(taskId);
+        List<Feedback> feedbacks = feedbackRepository.findByTaskId(taskId);
         List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
         return feedbacksDtos;
     }
 
     @Override
     public List<FeedbackResponseDto> findBySenderId(Long senderId) {
-        List<Feedback> feedbacks = feedbackRepository.findFeedbackBySenderId(senderId);
+        List<Feedback> feedbacks = feedbackRepository.findBySenderId(senderId);
         List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
         return feedbacksDtos;
     }
@@ -64,7 +64,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     public FeedbackResponseDto add(FeedbackCreateRequestDto dto) {
         // ToDo сделать подробное исключение
         Task task = taskService.findTaskEntityByIdAndParticipantsId(dto.getTaskId(), dto.getSenderId());
-        List<Feedback> feedbacks = feedbackRepository.findFeedbackByTaskId(dto.getTaskId());
+        List<Feedback> feedbacks = feedbackRepository.findByTaskId(dto.getTaskId());
 
         if (task.getPerformer() == null)
             throw new FeedbackErrorException("You can't send feedback for task with status " + task.getTaskStatus());
@@ -95,5 +95,18 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         return feedbackMapper.feedbackToDto(savedFeedback);
     }
+
+    @Override
+    public List<FeedbackResponseDto> findAllForPerformerId(Long performerId) {
+        List<Feedback> feedbacks = feedbackRepository.findAllForPerformerId(performerId);
+        return feedbackMapper.feedbackToListDto(feedbacks);
+    }
+
+    @Override
+    public List<FeedbackResponseDto> findAllForUserId(Long userId) {
+        List<Feedback> feedbacks = feedbackRepository.findAllForUserId(userId);
+        return feedbackMapper.feedbackToListDto(feedbacks);
+    }
+
 
 }

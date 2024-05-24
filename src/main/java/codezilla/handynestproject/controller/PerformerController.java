@@ -2,6 +2,7 @@ package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
+import codezilla.handynestproject.dto.performer.PerformerUpdateRequestDto;
 import codezilla.handynestproject.service.PerformerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +27,13 @@ public class PerformerController {
 
     //PUT
     @PutMapping
-    public PerformerResponseDto update(@RequestBody PerformerRequestDto updateDto) {
+    public PerformerResponseDto update(@RequestBody PerformerUpdateRequestDto updateDto) {
         return performerService.update(updateDto);
     }
 
-    @PutMapping("/{id}")
-    public PerformerResponseDto updateAvailability(@PathVariable Long id, @RequestParam Boolean isPublish) {
-        return performerService.updateAvailability(id, isPublish);
+    @PutMapping("/{id}/{isAvailable}")
+    public PerformerResponseDto updateAvailability(@PathVariable Long id, @PathVariable Boolean isAvailable) {
+        return performerService.updateAvailability(id, isAvailable);
     }
 
 
