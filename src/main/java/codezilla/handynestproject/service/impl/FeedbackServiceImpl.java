@@ -70,8 +70,10 @@ public class FeedbackServiceImpl implements FeedbackService {
             throw new FeedbackErrorException("You can't send feedback for task with status " + task.getTaskStatus());
 
         // Проверка запрещает, если для этого таска уже оставлены 2 фидбека или участник хочет оставить ещё одни отзыв
-        if (feedbacks.size() == 2 || feedbacks.get(0).getSender().getId().equals(dto.getSenderId())) {
-            throw new FeedbackErrorException("You can't send feedback more than once for this task");
+        if (feedbacks.size() != 0) {
+            if (feedbacks.size() == 2 || feedbacks.get(0).getSender().getId().equals(dto.getSenderId())) {
+                throw new FeedbackErrorException("You can't send feedback more than once for this task");
+            }
         }
 
         User sender;

@@ -28,6 +28,7 @@ public interface TaskService {
     TaskResponseDto updateStatusById(Long taskId, TaskStatus status);
 
 
+    List<TaskResponseDto> findUnrefereedByUserId(Long userId);
 
-
+    List<TaskResponseDto> findUnrefereedByPerformerId(Long performerId);
 }

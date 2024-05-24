@@ -989,10 +989,10 @@ public class TestData {
      */
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO1 = new FeedbackCreateRequestDto(
-            TEST_USER1.getId(),"Отличная работа!",5L,TEST_TASK4.getId());
+            TEST_USER1.getId(),"Хреновый заказчик! Не угостил чаем",5L,TEST_TASK4.getId());
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO2 = new FeedbackCreateRequestDto(
-            TEST_USER3.getId(),"Очень впечатляющая работа!",4L,TEST_TASK5.getId());
+            TEST_USER3.getId(),"Заказчица бомба!",4L,TEST_TASK5.getId());
 
     public static final FeedbackCreateRequestDto FEEDBACK_REQUEST_DTO3 = new FeedbackCreateRequestDto(
             TEST_USER1.getId(),null,3L,TEST_TASK2.getId());
@@ -1011,8 +1011,12 @@ public class TestData {
  */
 
     public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO1 = new FeedbackResponseDto(
-        1L,USER_NESTED_RESPONSE_DTO1,FEEDBACK_REQUEST_DTO1.getText(),FEEDBACK_REQUEST_DTO1.getGrade(),
-        TEST_TASK4.getId(), Timestamp.valueOf(LocalDateTime.of(LocalDate.of
+        1L,
+        USER_NESTED_RESPONSE_DTO1,
+        FEEDBACK_REQUEST_DTO1.getText(),
+        FEEDBACK_REQUEST_DTO1.getGrade(),
+        TEST_TASK4.getId(),
+        Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                 (2024, 5, 14), LocalTime.of(12, 0, 0))));
 
     public static final FeedbackResponseDto FEEDBACK_RESPONSE_DTO2 = new FeedbackResponseDto(

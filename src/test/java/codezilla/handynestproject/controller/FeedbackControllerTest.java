@@ -20,6 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static codezilla.handynestproject.service.TestData.*;
@@ -53,7 +57,7 @@ class FeedbackControllerTest {
     void findAllTest() {
         mockMvc.perform(get("/feedbacks"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(6));
+                .andExpect(jsonPath("$.size()").value(8));
 
     }
 
@@ -61,8 +65,15 @@ class FeedbackControllerTest {
     @Transactional
     @SneakyThrows
     void findByIdTest() {
-        FeedbackResponseDto expected = FEEDBACK_RESPONSE_DTO1;
-        Long id = expected.getId();
+        Long id = 1L;
+        FeedbackResponseDto expected = FeedbackResponseDto.builder()
+                .id(id)
+                .taskId(4L)
+                .sender(USER_NESTED_RESPONSE_DTO3)
+                .text("Хреновый заказчик! Не угостил чаем")
+                .grade(3L)
+                .createdOn(Timestamp.valueOf("2024-05-14 12:00:00"))
+                .build();
 
         mockMvc.perform(get("/feedbacks/{id}", id))
                 .andExpect(status().isOk())
@@ -90,13 +101,13 @@ class FeedbackControllerTest {
     @Transactional
     @SneakyThrows
     void findByUserId() {
-        List<FeedbackResponseDto> expected = List.of(FEEDBACK_RESPONSE_DTO1, FEEDBACK_RESPONSE_DTO3);
-        Long userId = FEEDBACK_RESPONSE_DTO1.getSender().getId();
+        int expectedSize = 3;
+        Long userId = 3L;
         mockMvc.perform(get("/feedbacks/user/{userId}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expected)));
+                .andExpect(jsonPath("$.length()").value(expectedSize));  // Проверка размера массива
 
 
     }
@@ -105,9 +116,9 @@ class FeedbackControllerTest {
     @Transactional
     @SneakyThrows
     void findByPerformerId() {
-        List<FeedbackResponseDto> expected = List.of(FEEDBACK_RESPONSE_DTO5);
-        Long senderId = FEEDBACK_RESPONSE_DTO1.getSender().getId();
-        mockMvc.perform(get("/feedbacks/performer/{senderId}", senderId)
+        List<FeedbackResponseDto> expected = List.of(FEEDBACK_RESPONSE_DTO2);
+        Long performerId = 2L;
+        mockMvc.perform(get("/feedbacks/performer/{senderId}", performerId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isOk())

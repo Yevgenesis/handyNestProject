@@ -1,5 +1,6 @@
 package codezilla.handynestproject.controller;
 
+import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
@@ -88,6 +89,18 @@ public class TaskController {
     @DeleteMapping("/cancel/{taskId}")
     public void cancel(@PathVariable Long taskId) {
         taskService.cancelById(taskId);
+    }
+
+    // Достать все таски юзера на которые нужно отправить фитбеки
+    @GetMapping("/user/{userId}/unrefereed")
+    public List<TaskResponseDto> findUnrefereedByUserId(@PathVariable Long userId) {
+        return taskService.findUnrefereedByUserId(userId);
+    }
+
+    // Достать все таски перформера на которые нужно отправить фитбеки
+    @GetMapping("/performer/{performerId}/unrefereed")
+    public List<TaskResponseDto> findUnrefereedByPerformerId(@PathVariable Long performerId) {
+        return taskService.findUnrefereedByPerformerId(performerId);
     }
 
 }

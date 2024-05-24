@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
 @Data
@@ -59,12 +60,12 @@ public class Task {
     private Performer performer;
 
 
-//    @OneToMany(
-//            mappedBy = "task",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private Set<Feedback> feedbacks;
+    @OneToMany(
+            mappedBy = "task",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<Feedback> feedbacks;
 
     @CreatedDate
     @Column(name = "created_on", updatable = false, nullable = false)

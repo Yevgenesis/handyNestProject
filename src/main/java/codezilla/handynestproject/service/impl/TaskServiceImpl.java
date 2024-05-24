@@ -205,5 +205,19 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDto(updatedTask);
     }
 
+    // Достать все завершенные таски юзера на которые нужно отправить фитбеки
+    @Override
+    public List<TaskResponseDto> findUnrefereedByUserId(Long userId) {
+        List<Task> tasks = taskRepository.findUnrefereedByUserId(userId);
+        return taskMapper.toTaskResponseDtoList(tasks);
+    }
+
+    // Достать все завершенные таски перформера на которые нужно отправить фитбеки
+    @Override
+    public List<TaskResponseDto> findUnrefereedByPerformerId(Long performerId) {
+        List<Task> tasks = taskRepository.findUnrefereedByPerformerId(performerId);
+        return taskMapper.toTaskResponseDtoList(tasks);
+    }
+
 
 }

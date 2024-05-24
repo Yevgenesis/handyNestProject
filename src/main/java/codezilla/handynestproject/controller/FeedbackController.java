@@ -34,15 +34,16 @@ public class FeedbackController {
 
     // Достать все фитбеки полученные конкретным юзером
     @GetMapping("/user/{userId}")
-    public List<FeedbackResponseDto> findReceivedByUserId(@PathVariable Long userId) {
+    public List<FeedbackResponseDto> findReceivedForUserId(@PathVariable Long userId) {
         return feedbackService.findAllForUserId(userId);
     }
 
     // Достать все фитбеки полученные конкретным перформером
     @GetMapping("/performer/{performerId}")
-    public List<FeedbackResponseDto> findReceivedByPerformerId(@PathVariable Long performerId) {
+    public List<FeedbackResponseDto> findReceivedForPerformerId(@PathVariable Long performerId) {
         return feedbackService.findAllForPerformerId(performerId);
     }
+
 
     //POST
     @PostMapping
