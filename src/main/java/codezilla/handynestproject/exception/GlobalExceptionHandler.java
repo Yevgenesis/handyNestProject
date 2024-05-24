@@ -23,6 +23,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
 
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody ErrorResponse UserAlreadyExistException(UserAlreadyExistsException ex, WebRequest request) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody ErrorResponse handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
@@ -54,12 +60,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-    Method für @Nullable
-    */
+     * Method für @Nullable
+     */
 //    @Override
     protected ResponseEntity<Object> handleArgumentNotValid
-            (MethodArgumentNotValidException ex, HttpHeaders headers,
-             HttpStatus status, WebRequest request) {
+    (MethodArgumentNotValidException ex, HttpHeaders headers,
+     HttpStatus status, WebRequest request) {
         return new ResponseEntity<>(
                 new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
                         getMessageConcat(ex)), HttpStatus.BAD_REQUEST
@@ -73,7 +79,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .filter(Objects::nonNull)
                 .toList().toString();
     }
-
 
 
 }

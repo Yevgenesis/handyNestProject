@@ -2,6 +2,7 @@ package codezilla.handynestproject.service.impl;
 
 import codezilla.handynestproject.dto.user.UserRequestDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
+import codezilla.handynestproject.exception.UserAlreadyExistsException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.exception.WrongConfirmationPasswordException;
 import codezilla.handynestproject.mapper.UserMapper;
@@ -9,6 +10,7 @@ import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,8 +57,12 @@ public class UserServiceImpl implements UserService {
         if (!dto.isPasswordsMatch()) throw new WrongConfirmationPasswordException();
 
         User user = userMapper.dtoToUser(dto);
-        User savedUser = userRepository.save(user);
-        UserResponseDto userResponseDto = userMapper.userToDto(savedUser);
+        try {
+            user = userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new UserAlreadyExistsException("User with this email already exists");
+        }
+        UserResponseDto userResponseDto = userMapper.userToDto(user);
         return userResponseDto;
     }
 }
