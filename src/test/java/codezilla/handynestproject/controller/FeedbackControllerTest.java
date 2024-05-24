@@ -1,6 +1,7 @@
 package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.HandyNestProjectApplication;
+import codezilla.handynestproject.dto.feedback.FeedbackCreateRequestDto;
 import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 import codezilla.handynestproject.service.FeedbackService;
 import codezilla.handynestproject.util.TestDatabaseConfig;
@@ -15,22 +16,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static codezilla.handynestproject.service.TestData.FEEDBACK_REQUEST_DTO1;
-import static codezilla.handynestproject.service.TestData.FEEDBACK_REQUEST_DTO2;
-import static codezilla.handynestproject.service.TestData.FEEDBACK_REQUEST_DTO3;
-import static codezilla.handynestproject.service.TestData.FEEDBACK_REQUEST_DTO4;
-import static codezilla.handynestproject.service.TestData.FEEDBACK_REQUEST_DTO6;
-import static codezilla.handynestproject.service.TestData.FEEDBACK_RESPONSE_DTO1;
-import static codezilla.handynestproject.service.TestData.FEEDBACK_RESPONSE_DTO2;
-import static codezilla.handynestproject.service.TestData.FEEDBACK_RESPONSE_DTO3;
-import static codezilla.handynestproject.service.TestData.FEEDBACK_RESPONSE_DTO4;
-import static codezilla.handynestproject.service.TestData.FEEDBACK_RESPONSE_DTO5;
-import static codezilla.handynestproject.service.TestData.FEEDBACK_RESPONSE_DTO6;
+import static codezilla.handynestproject.service.TestData.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -56,6 +48,7 @@ class FeedbackControllerTest {
 
 
     @Test
+    @Transactional
     @SneakyThrows
     void findAllTest() {
         mockMvc.perform(get("/feedbacks"))
@@ -65,6 +58,7 @@ class FeedbackControllerTest {
     }
 
     @Test
+    @Transactional
     @SneakyThrows
     void findByIdTest() {
         FeedbackResponseDto expected = FEEDBACK_RESPONSE_DTO1;
@@ -81,6 +75,7 @@ class FeedbackControllerTest {
     }
 
     @Test
+    @Transactional
     @SneakyThrows
     void findByTaskId() {
         List<FeedbackResponseDto> expected = List.of(FEEDBACK_RESPONSE_DTO3, FEEDBACK_RESPONSE_DTO5);
@@ -92,6 +87,7 @@ class FeedbackControllerTest {
     }
 
     @Test
+    @Transactional
     @SneakyThrows
     void findByUserId() {
         List<FeedbackResponseDto> expected = List.of(FEEDBACK_RESPONSE_DTO1, FEEDBACK_RESPONSE_DTO3);
@@ -106,10 +102,11 @@ class FeedbackControllerTest {
     }
 
     @Test
+    @Transactional
     @SneakyThrows
     void findByPerformerId() {
-        List<FeedbackResponseDto> expected = List.of(FEEDBACK_RESPONSE_DTO2);
-        Long senderId = FEEDBACK_RESPONSE_DTO2.getSender().getId();
+        List<FeedbackResponseDto> expected = List.of(FEEDBACK_RESPONSE_DTO5);
+        Long senderId = FEEDBACK_RESPONSE_DTO1.getSender().getId();
         mockMvc.perform(get("/feedbacks/performer/{senderId}", senderId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8"))
@@ -119,14 +116,29 @@ class FeedbackControllerTest {
 
 
     @Test
+    @Transactional
     @SneakyThrows
     void addTest() {
+        FeedbackCreateRequestDto requestDto = FeedbackCreateRequestDto.builder()
+                .senderId(1L)
+                .text("feedback test")
+                .taskId(5L)
+                .grade(4L)
+                .build();
 
-        FeedbackResponseDto expected = FEEDBACK_RESPONSE_DTO1;
+        FeedbackResponseDto expected = FeedbackResponseDto.builder()
+                .id(7L)
+                .sender(USER_NESTED_RESPONSE_DTO1)
+                .text("feedback test")
+                .taskId(5L)
+                .grade(4L)
+                .createdOn(null)
+                .build();
+
         var result = mockMvc.perform(MockMvcRequestBuilders
                         .post("/feedbacks")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(FEEDBACK_REQUEST_DTO1))
+                        .content(objectMapper.writeValueAsString(requestDto))
                         .characterEncoding("UTF-8"))
                 .andExpect(status().isOk())
                 .andReturn();
