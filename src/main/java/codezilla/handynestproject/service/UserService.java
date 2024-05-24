@@ -1,5 +1,6 @@
 package codezilla.handynestproject.service;
 
+import codezilla.handynestproject.dto.user.UserRequestDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.model.entity.User;
 
@@ -13,4 +14,6 @@ public interface UserService {
     void updateRating(User user);
 
     void increaseTaskCounterUp(User user);
+
+    UserResponseDto create(UserRequestDto userRequestDto);
 }

@@ -26,7 +26,13 @@ public class TaskController {
 
     private final TaskService taskService;
 
+    // POST
+    @PostMapping
+    public TaskResponseDto create(@RequestBody TaskRequestDto taskRequestDto) {
+        return taskService.create(taskRequestDto);
+    }
 
+    // GET
     @GetMapping
     public List<TaskResponseDto> findAll() {
         return taskService.findAll();
@@ -57,40 +63,6 @@ public class TaskController {
         return taskService.findByStatus(status);
     }
 
-    @PostMapping
-    public TaskResponseDto create(@RequestBody TaskRequestDto taskRequestDto) {
-        return taskService.create(taskRequestDto);
-    }
-
-
-    @PutMapping("/update/{id}")
-    public TaskResponseDto update(@PathVariable("id") Long id,
-                                  @RequestBody TaskUpdateRequestDto taskUpdateRequestDto) {
-        return taskService.update(taskUpdateRequestDto);
-    }
-
-
-    @PutMapping("/add/{taskId}/{performerId}")
-    public TaskResponseDto addPerformer(@PathVariable("taskId") Long taskId,
-                                        @PathVariable("performerId") Long performerId) {
-        return taskService.addPerformer(taskId, performerId);
-    }
-
-    @PutMapping("/removePerformer/{taskId}")
-    public TaskResponseDto removePerformer(@PathVariable Long taskId) {
-        return taskService.removePerformer(taskId);
-    }
-
-    @PutMapping("{taskId}/status/{status}")
-    public TaskResponseDto updateStatus(@PathVariable Long taskId, @PathVariable TaskStatus status) {
-        return taskService.updateStatusById(taskId, status);
-    }
-
-    @DeleteMapping("/cancel/{taskId}")
-    public void cancel(@PathVariable Long taskId) {
-        taskService.cancelById(taskId);
-    }
-
     // Достать все таски юзера на которые нужно отправить фитбеки
     @GetMapping("/user/{userId}/unrefereed")
     public List<TaskResponseDto> findUnrefereedByUserId(@PathVariable Long userId) {
@@ -102,5 +74,36 @@ public class TaskController {
     public List<TaskResponseDto> findUnrefereedByPerformerId(@PathVariable Long performerId) {
         return taskService.findUnrefereedByPerformerId(performerId);
     }
+
+
+    // PUT
+    @PutMapping("/update/{id}")
+    public TaskResponseDto update(@PathVariable("id") Long id,
+                                  @RequestBody TaskUpdateRequestDto taskUpdateRequestDto) {
+        return taskService.update(taskUpdateRequestDto);
+    }
+
+    @PutMapping("/{taskId}/addPerformer/{performerId}")
+    public TaskResponseDto addPerformer(@PathVariable("taskId") Long taskId,
+                                        @PathVariable("performerId") Long performerId) {
+        return taskService.addPerformer(taskId, performerId);
+    }
+
+    @PutMapping("/{taskId}/removePerformer/")
+    public TaskResponseDto removePerformer(@PathVariable Long taskId) {
+        return taskService.removePerformer(taskId);
+    }
+
+    @PutMapping("{taskId}/status/{status}")
+    public TaskResponseDto updateStatus(@PathVariable Long taskId, @PathVariable TaskStatus status) {
+        return taskService.updateStatusById(taskId, status);
+    }
+
+    // DELETE
+    @DeleteMapping("/cancel/{taskId}")
+    public void cancel(@PathVariable Long taskId) {
+        taskService.cancelById(taskId);
+    }
+
 
 }

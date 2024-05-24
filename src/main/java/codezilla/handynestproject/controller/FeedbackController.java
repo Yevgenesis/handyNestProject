@@ -16,6 +16,12 @@ public class FeedbackController {
     private final FeedbackService feedbackService;
 
 
+    //POST
+    @PostMapping
+    public FeedbackResponseDto add(@RequestBody FeedbackCreateRequestDto requestDto) {
+        return feedbackService.add(requestDto);
+    }
+
     //GET
     @GetMapping
     public List<FeedbackResponseDto> findAll() {
@@ -42,14 +48,6 @@ public class FeedbackController {
     @GetMapping("/performer/{performerId}")
     public List<FeedbackResponseDto> findReceivedForPerformerId(@PathVariable Long performerId) {
         return feedbackService.findAllForPerformerId(performerId);
-    }
-
-
-    //POST
-    @PostMapping
-    public FeedbackResponseDto add(@RequestBody FeedbackCreateRequestDto requestDto) {
-        return feedbackService.add(requestDto);
-
     }
 
 }

@@ -25,19 +25,6 @@ public class PerformerController {
         return performerService.create(performerDto);
     }
 
-    //PUT
-    @PutMapping
-    public PerformerResponseDto update(@RequestBody PerformerUpdateRequestDto updateDto) {
-        return performerService.update(updateDto);
-    }
-
-    @PutMapping("/{id}/{isAvailable}")
-    public PerformerResponseDto updateAvailability(@PathVariable Long id, @PathVariable Boolean isAvailable) {
-        return performerService.updateAvailability(id, isAvailable);
-    }
-
-
-
     //GET
     @GetMapping
     public List<PerformerResponseDto> findAll() {
@@ -47,6 +34,18 @@ public class PerformerController {
     @GetMapping("/{id}")
     public PerformerResponseDto findById(@PathVariable Long id) {
         return performerService.findById(id);
+    }
+
+
+    //PUT
+    @PutMapping
+    public PerformerResponseDto update(@RequestBody PerformerUpdateRequestDto updateDto) {
+        return performerService.update(updateDto);
+    }
+
+    @PutMapping("/{id}/{isAvailable}")
+    public PerformerResponseDto updateAvailability(@PathVariable Long id, @PathVariable Boolean isAvailable) {
+        return performerService.updateAvailability(id, isAvailable);
     }
 
 }

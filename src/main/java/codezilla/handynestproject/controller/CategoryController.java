@@ -17,6 +17,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
 
+    // GET
     @GetMapping
     public List<CategoryResponseDto> findAll() {
         return categoryService.getListCategoryResponseDto();

@@ -10,13 +10,17 @@ public record TaskRequestDto(
         @NotBlank @Size(min = 8, max = 200)
         String description,
         Double price,
+        @NotBlank @Size(min = 2, max = 50)
         String country,
         String city,
         String street,
         String zip,
         Long workingTimeId,
+        @NotBlank
         Long userId,
+        @NotBlank
         Long categoryId,
+        @NotBlank
         boolean isPublish
 ) {
 }

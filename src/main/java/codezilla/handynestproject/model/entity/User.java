@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ import java.util.Set;
 @Table(name = "handy_user")
 //@EqualsAndHashCode(exclude = {"tasks", "roles", "sentFeedbacks","receivedFeedbacks"})
 //@ToString(exclude = {"tasks", "roles", "sentFeedbacks","receivedFeedbacks"})
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
@@ -50,9 +52,9 @@ public class User {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
-//            orphanRemoval = true, fetch = FetchType.LAZY)
-//    private Set<Task> tasks = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Task> tasks = new HashSet<>();
 
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
@@ -81,7 +83,8 @@ public class User {
 
     @Column(name = "user_rating")
     @Builder.Default
-    private Double positiveFeedbackPercent = 0.0;
+    private Double positiveFeedbackPercent = 100.0;
+
 
 
     public void increaseTaskCounter() {

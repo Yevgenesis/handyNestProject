@@ -17,6 +17,12 @@ import java.util.Objects;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(WrongConfirmationPasswordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ErrorResponse handleWrongConfirmationPasswordException(WrongConfirmationPasswordException ex, WebRequest request) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody ErrorResponse handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {

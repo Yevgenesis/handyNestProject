@@ -1,7 +1,9 @@
 package codezilla.handynestproject.service.impl;
 
+import codezilla.handynestproject.dto.user.UserRequestDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.exception.UserNotFoundException;
+import codezilla.handynestproject.exception.WrongConfirmationPasswordException;
 import codezilla.handynestproject.mapper.UserMapper;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.repository.UserRepository;
@@ -46,6 +48,16 @@ public class UserServiceImpl implements UserService {
     public void increaseTaskCounterUp(User user) {
         user.increaseTaskCounter();
         userRepository.save(user);
+    }
+
+    @Override
+    public UserResponseDto create(UserRequestDto dto) {
+        if (!dto.isPasswordsMatch()) throw new WrongConfirmationPasswordException();
+
+        User user = userMapper.dtoToUser(dto);
+        User savedUser = userRepository.save(user);
+        UserResponseDto userResponseDto = userMapper.userToDto(savedUser);
+        return userResponseDto;
     }
 }
 
