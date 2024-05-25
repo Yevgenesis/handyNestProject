@@ -33,7 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("code", HttpStatus.BAD_REQUEST.value());
         errorResponse.put("messages", errors);
-        return ResponseEntity.of(Optional.of(errorResponse)); // ToDo исправить Exception
+        return ResponseEntity.of(Optional.of(errorResponse));
     }
 
     @ExceptionHandler(WrongConfirmationPasswordException.class)
@@ -77,27 +77,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public @ResponseBody ErrorResponse handlePerformerNotFoundException(PerformerNotFoundException ex) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
-
-    /**
-     * Method für @Nullable
-     */
-//    @Override
-//    protected ResponseEntity<Object> handleArgumentNotValid
-//    (MethodArgumentNotValidException ex, HttpHeaders headers,
-//     HttpStatus status, WebRequest request) {
-//        return new ResponseEntity<>(
-//                new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
-//                        getMessageConcat(ex)), HttpStatus.BAD_REQUEST
-//        );
-//    }
-
-//    private String getMessageConcat(MethodArgumentNotValidException ex) {
-//        return ex.getBindingResult()
-//                .getAllErrors().stream()
-//                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-//                .filter(Objects::nonNull)
-//                .toList().toString();
-//    }
-
-
+    @ExceptionHandler(FeedbackNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ErrorResponse handleFeedbackNotFoundException(FeedbackNotFoundException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
 }
