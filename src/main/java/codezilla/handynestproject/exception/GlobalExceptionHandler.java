@@ -31,7 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("errors", HttpStatus.BAD_REQUEST.value());
+        errorResponse.put("code", HttpStatus.BAD_REQUEST.value());
         errorResponse.put("messages", errors);
         return ResponseEntity.of(Optional.of(errorResponse)); // ToDo исправить Exception
     }
