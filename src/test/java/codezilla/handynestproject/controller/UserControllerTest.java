@@ -77,7 +77,7 @@ class UserControllerTest {
 
         UserRequestDto requestDto = new UserRequestDto(
                 "TestName", "TestLastName", "test.test@example.com",
-                "test123", "test123");
+                "Test121314#", "Test121314#");
         var result = mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -101,7 +101,7 @@ class UserControllerTest {
 
         UserRequestDto requestDto = new UserRequestDto(
                 "Алиса", "Джонсон", "alice.johnson@example.com",
-                "test123", "test123");
+                "Test121314#", "Test121314#");
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -116,7 +116,7 @@ class UserControllerTest {
 
         UserRequestDto requestDto = new UserRequestDto(
                 "Алиса", "Джонсон", "test.johnson@example.com",
-                "test123", "123test");
+                "Test121314#", "Test12131#4");
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto))

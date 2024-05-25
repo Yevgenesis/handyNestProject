@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 
-@Mapper(componentModel = "spring", uses = {AddressMapper.class, UserMapper.class, WorkingTimeMapper.class, CategoryMapper.class, PerformerMapper.class})
+@Mapper(componentModel = "spring", uses = {AddressMapper.class, UserMapper.class, CategoryMapper.class, PerformerMapper.class})
 
 public interface TaskMapper {
 
@@ -18,14 +18,11 @@ public interface TaskMapper {
     @Mapping(target = "address.city", source = "city")
     @Mapping(target = "address.zip", source = "zip")
     @Mapping(target = "address.country", source = "country")
-       Task toTask(TaskRequestDto taskRequestDto);
+    Task toTask(TaskRequestDto taskRequestDto);
+
     Task toTaskUpdate(TaskUpdateRequestDto taskUpdateRequestDto);
+
     TaskResponseDto toTaskResponseDto(Task task);
 
-
     List<TaskResponseDto> toTaskResponseDtoList(List<Task> tasks);
-
-
-
-
 }

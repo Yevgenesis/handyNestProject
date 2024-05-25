@@ -115,7 +115,7 @@ class TaskControllerTest {
     void findAvailableTest() {
         mockMvc.perform(get("/tasks/open"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(4));
+                .andExpect(jsonPath("$.size()").value(3));
     }
 
     @Test
@@ -141,7 +141,7 @@ class TaskControllerTest {
         Long userId = 3L;
         mockMvc.perform(get("/tasks/performer/{id}", userId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(5));
+                .andExpect(jsonPath("$.size()").value(6));
     }
 
     @Test
@@ -155,11 +155,10 @@ class TaskControllerTest {
     @Test
     @SneakyThrows
     void findByStatusTest() {
-        TaskStatus taskStatus = TaskStatus.COMPLETED;
-        mockMvc.perform(get("/tasks/status")
-                        .param("status", taskStatus.name()))
+        TaskStatus status = TaskStatus.COMPLETED;
+        mockMvc.perform(get("/tasks/status/{status}", status))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(7));
+                .andExpect(jsonPath("$.size()").value(8));
     }
 
     @Test

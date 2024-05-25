@@ -59,8 +59,8 @@ public class TaskController {
         return taskService.findByPerformerId(id);
     }
 
-    @GetMapping("/status")
-    public List<TaskResponseDto> findByStatus(@RequestParam TaskStatus status) {
+    @GetMapping("/status/{status}")
+    public List<TaskResponseDto> findByStatus(@PathVariable TaskStatus status) {
         return taskService.findByStatus(status);
     }
 
