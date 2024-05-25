@@ -1,16 +1,12 @@
 package codezilla.handynestproject.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
-
+@Data
 @Entity
 @Builder
 @AllArgsConstructor
@@ -19,11 +15,16 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class WorkingTime {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "title", nullable = false)
     private String title;
+
+//    @OneToMany(mappedBy = "workingTime",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//    private Set<Task> tasks = new HashSet<>();
 
 
 

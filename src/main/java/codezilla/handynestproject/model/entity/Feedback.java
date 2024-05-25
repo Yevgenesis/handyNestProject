@@ -3,15 +3,26 @@ package codezilla.handynestproject.model.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.sql.Timestamp;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Builder
-@Table(name = "feedback")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "feedback")
+@NamedEntityGraph(name = "FeedbackWithUserAndTask", attributeNodes = {
+        @NamedAttributeNode("sender"),
+        @NamedAttributeNode("task")
+})
+@EntityListeners(AuditingEntityListener.class)
 public class Feedback {
 
     @Id
@@ -19,12 +30,19 @@ public class Feedback {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User sender_id;
+    @JoinColumn(name = "sender_id")
+    private User sender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User receiver_id;
+    private String text;
+
+    private Long grade;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Task task;
+
+    @CreatedDate
+    @Column(name = "created_on", updatable = false, nullable = false)
+    private Timestamp createdOn;
+
 
 }

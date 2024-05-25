@@ -1,6 +1,6 @@
 package codezilla.handynestproject.model.entity;
 
-import codezilla.handynestproject.model.entity.enums.Rating;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,17 +8,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @Data
-@Entity
 @Builder
-@AllArgsConstructor
+@Entity
 @NoArgsConstructor
-@Table(name = "\"user\"")
+@AllArgsConstructor
+@Table(name = "handy_user")
+//@EqualsAndHashCode(exclude = {"tasks", "roles", "sentFeedbacks","receivedFeedbacks"})
+//@ToString(exclude = {"tasks", "roles", "sentFeedbacks","receivedFeedbacks"})
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
@@ -31,10 +36,6 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    /**
-     * Email используется для авторизации как Username
-     */
-
     @Column(name = "email", updatable = false, nullable = false, length = 50, unique = true)
     private String email;
 
@@ -44,72 +45,49 @@ public class User {
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
-    @CreatedDate
-    @Column(name = "created_on", nullable = false, updatable = false)
-    private Timestamp created_on;
-
-    @LastModifiedDate
-    @Column(name = "updated_on", nullable = false)
-    private Timestamp updated_on;
+    @Builder.Default
+    @Column(name = "task_count", nullable = false)
+    private Long taskCount = 0L;
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
-    @Column(name = "phone_number", length = 20)
-    private String phoneNumber;
-
-    @Column(name = "is_phone_verified")
-    private boolean isPhoneVerified;
-
-    @Column(name = "is_passport_verified")
-    private boolean isPassportVerified;
-
-    @Column(name = "rating")
-    @Enumerated(EnumType.STRING)
-    private Rating rating;
-
-    @Column(name = "country", length = 70)
-    private String country;
-
-    @Column(name = "city", length = 70)
-    private String city;
-
-
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
 
+    @CreatedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    @Column(name = "created_on", nullable = false, updatable = false)
+    private Timestamp created_on;
 
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Attachment> attachments = new HashSet<>();
+    @LastModifiedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    @Column(name = "updated_on", nullable = false)
+
+    private Timestamp updated_on;
 
     @ManyToMany
     @JoinTable(
             name = "user_roles",
-            joinColumns = @JoinColumn (name = "user_id"),
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(
-            mappedBy = "sender_id",
+            mappedBy = "sender",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true, fetch = FetchType.LAZY
     )
     private Set<Feedback> sentFeedbacks = new HashSet<>();
 
+    @Column(name = "user_rating")
+    @Builder.Default
+    private Double positiveFeedbackPercent = 100.0;
 
-    @OneToMany(
-            mappedBy = "receiver_id",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Feedback> receivedFeedbacks = new HashSet<>();
 
+
+    public void increaseTaskCounter() {
+        this.taskCount++;
+    }
 }

@@ -1,6 +1,13 @@
 package codezilla.handynestproject.model.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,27 +22,29 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "category")
+//@EqualsAndHashCode(exclude = {"tasks", "performers"})
+//@ToString(exclude = {"tasks", "performers"})
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
+
 
     @Column(name = "parent_id")
     private Long parentId;
 
     private int weight;
+//
+//    @OneToMany(mappedBy = "category",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//    private Set<Task> tasks = new HashSet<>();
 
-    @OneToMany(mappedBy = "category",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    @Builder.Default
-    private Set<Task> tasks = new HashSet<>();
-
-
-
-
+//
+//    @ManyToMany
+//    private Set<Performer> performers = new HashSet<>();
 
 }

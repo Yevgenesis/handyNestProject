@@ -1,6 +1,6 @@
 package codezilla.handynestproject.service.impl;
 
-import codezilla.handynestproject.dto.CategoryResponseDto;
+import codezilla.handynestproject.dto.category.CategoryResponseDto;
 import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.repository.CategoryRepository;
 import codezilla.handynestproject.service.CategoryService;
@@ -17,11 +17,12 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private List<Category> rootCategories;
 
     @Override
     @Transactional(readOnly = true)
     public List<CategoryResponseDto> getListCategoryResponseDto() {
-        List<Category> rootCategories = categoryRepository.findAll();
+        rootCategories = categoryRepository.findAll();
         return rootCategories.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
@@ -30,14 +31,16 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryResponseDto mapToDTO(Category category) {
         CategoryResponseDto dto = new CategoryResponseDto();
         dto.setId(category.getId());
-        dto.setName(category.getName());
+        dto.setTitle(category.getTitle());
         dto.setWeight(category.getWeight());
         dto.setChildren(getChildrenDTO(category.getId()));
         return dto;
     }
 
     private List<CategoryResponseDto> getChildrenDTO(Long parentId) {
-        List<Category> children = categoryRepository.findByParentId(parentId);
+        List<Category> children = rootCategories.stream()
+                .filter(category -> category.getParentId() != null && category.getParentId().equals(parentId))
+                .toList();
         return children.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
