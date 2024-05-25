@@ -14,9 +14,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
-
 import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO1;
-import static codezilla.handynestproject.testData.TaskTestData.*;
+import static codezilla.handynestproject.testData.TaskTestData.TASK_REQUEST_DTO1;
+import static codezilla.handynestproject.testData.TaskTestData.TASK_RESPONSE_DTO1;
+import static codezilla.handynestproject.testData.TaskTestData.TEST_TASK1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest

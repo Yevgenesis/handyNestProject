@@ -45,6 +45,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<FeedbackResponseDto> findByTaskId(Long taskId) {
+        taskService.findById(taskId);
         List<Feedback> feedbacks = feedbackRepository.findByTaskId(taskId);
         List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
         return feedbacksDtos;
@@ -100,12 +101,14 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<FeedbackResponseDto> findAllForPerformerId(Long performerId) {
+        performerService.findById(performerId);
         List<Feedback> feedbacks = feedbackRepository.findAllForPerformerId(performerId);
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
     @Override
     public List<FeedbackResponseDto> findAllForUserId(Long userId) {
+        userService.findById(userId);
         List<Feedback> feedbacks = feedbackRepository.findAllForUserId(userId);
         return feedbackMapper.feedbackToListDto(feedbacks);
     }

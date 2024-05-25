@@ -90,7 +90,7 @@ public class TaskController {
         return taskService.addPerformer(taskId, performerId);
     }
 
-    @PutMapping("/{taskId}/removePerformer/")
+    @PutMapping("/{taskId}/removePerformer")
     public TaskResponseDto removePerformer(@PathVariable Long taskId) {
         return taskService.removePerformer(taskId);
     }

@@ -11,6 +11,7 @@ import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
+import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.CategoryRepository;
 import codezilla.handynestproject.repository.PerformerRepository;
@@ -208,6 +209,8 @@ public class TaskServiceImpl implements TaskService {
     // Достать все завершенные таски юзера на которые нужно отправить фитбеки
     @Override
     public List<TaskResponseDto> findUnrefereedByUserId(Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(()->new UserNotFoundException("User with id:"+userId+" not found"));
         List<Task> tasks = taskRepository.findUnrefereedByUserId(userId);
         return taskMapper.toTaskResponseDtoList(tasks);
     }
@@ -215,6 +218,8 @@ public class TaskServiceImpl implements TaskService {
     // Достать все завершенные таски перформера на которые нужно отправить фитбеки
     @Override
     public List<TaskResponseDto> findUnrefereedByPerformerId(Long performerId) {
+        performerRepository.findById(performerId)
+                .orElseThrow(()->new PerformerNotFoundException("Performer with id:"+performerId+" not found"));
         List<Task> tasks = taskRepository.findUnrefereedByPerformerId(performerId);
         return taskMapper.toTaskResponseDtoList(tasks);
     }

@@ -11,10 +11,10 @@ public record TaskRequestDto(
         String description,
         Double price,
         @NotBlank @Size(min = 2, max = 50)
-        String country,
-        String city,
         String street,
+        String city,
         String zip,
+        String country,
         Long workingTimeId,
         @NotBlank
         Long userId,

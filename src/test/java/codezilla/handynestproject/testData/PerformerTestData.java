@@ -188,36 +188,36 @@ public class PerformerTestData {
             1L,
             "Джон",
             "Доу",
-            5.0,
+            4.5,
             100L);
 
     public static final PerformerNestedResponseDto PERFORMER_NESTED_RESPONSE_DTO2 = new PerformerNestedResponseDto(
             2L,
             "Джейн",
             "Смит",
-            6.0,
-            50L);
+            4.8,
+            150L);
 
     public static final PerformerNestedResponseDto PERFORMER_NESTED_RESPONSE_DTO3 = new PerformerNestedResponseDto(
             3L,
             "Алиса",
             "Джонсон",
-            7.0,
+            4.0,
             80L);
 
     public static final PerformerNestedResponseDto PERFORMER_NESTED_RESPONSE_DTO4 = new PerformerNestedResponseDto(
             4L,
             "Боб",
             "Уильямс",
-            8.0,
-            75L);
+            4.7,
+            120L);
 
     public static final PerformerNestedResponseDto PERFORMER_NESTED_RESPONSE_DTO5 = new PerformerNestedResponseDto(
             5L,
             "Ева",
             "Браун",
-            9.0,
-            95L);
+            4.2,
+            90L);
 
     /**
      * test data Performer
