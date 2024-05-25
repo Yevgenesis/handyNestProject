@@ -26,7 +26,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import static codezilla.handynestproject.service.TestData.*;
+import static codezilla.handynestproject.testData.FeedbackTestData.*;
+import static codezilla.handynestproject.testData.UserTestData.USER_NESTED_RESPONSE_DTO1;
+import static codezilla.handynestproject.testData.UserTestData.USER_NESTED_RESPONSE_DTO3;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

@@ -23,7 +23,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static codezilla.handynestproject.service.TestData.*;
+import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO1;
+import static codezilla.handynestproject.testData.PerformerTestData.TEST_PERFORMER2;
+import static codezilla.handynestproject.testData.TaskTestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

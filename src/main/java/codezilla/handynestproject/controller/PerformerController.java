@@ -6,7 +6,6 @@ import codezilla.handynestproject.dto.performer.PerformerUpdateRequestDto;
 import codezilla.handynestproject.service.PerformerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,14 +13,13 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/performers")
 @RequiredArgsConstructor
-@Validated
 public class PerformerController {
 
     private final PerformerService performerService;
 
     //POST
     @PostMapping
-    public PerformerResponseDto create(@RequestBody @Valid PerformerRequestDto performerDto) {
+    public PerformerResponseDto create(@Valid @RequestBody  PerformerRequestDto performerDto) {
         return performerService.create(performerDto);
     }
 
