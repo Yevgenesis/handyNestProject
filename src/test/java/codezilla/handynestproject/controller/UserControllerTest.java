@@ -7,7 +7,6 @@ import codezilla.handynestproject.service.UserService;
 import codezilla.handynestproject.util.TestDatabaseConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,7 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.nio.charset.StandardCharsets;
 
 import static codezilla.handynestproject.testData.UserTestData.USER_RESPONSE_DTO3;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -67,9 +66,9 @@ class UserControllerTest {
     @Test
     @SneakyThrows
     void findByIdExistingUserIdTest() {
-       Long existingUserId = 999L;
-       mockMvc.perform(get("/users/{id}", existingUserId))
-               .andExpect(status().isNotFound());
+        Long existingUserId = 999L;
+        mockMvc.perform(get("/users/{id}", existingUserId))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -78,7 +77,7 @@ class UserControllerTest {
 
         UserRequestDto requestDto = new UserRequestDto(
                 "TestName", "TestLastName", "test.test@example.com",
-                 "test123","test123");
+                "test123", "test123");
         var result = mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -95,13 +94,14 @@ class UserControllerTest {
         assertNotNull(actual.getEmail());
 
     }
+
     @Test
     @SneakyThrows
     void saveAlreadyExistingEmailTest() {
 
         UserRequestDto requestDto = new UserRequestDto(
                 "Алиса", "Джонсон", "alice.johnson@example.com",
-                 "test123","test123");
+                "test123", "test123");
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -109,13 +109,14 @@ class UserControllerTest {
                 .andExpect(status().isConflict())
                 .andReturn();
     }
+
     @Test
     @SneakyThrows
     void saveWrongConfirmationPasswordTest() {
 
         UserRequestDto requestDto = new UserRequestDto(
                 "Алиса", "Джонсон", "test.johnson@example.com",
-                 "test123","123test");
+                "test123", "123test");
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto))
