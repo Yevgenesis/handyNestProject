@@ -100,13 +100,15 @@ public class PerformerServiceImpl implements PerformerService {
     @Transactional(readOnly = true)
     public PerformerResponseDto findById(Long id) {
         Optional<Performer> performer = performerRepository.findById(id);
-        PerformerResponseDto dtos = performerMapper.performerToDto(performer.get()); // ToDo exception
+        PerformerResponseDto dtos = performerMapper.performerToDto(performer
+                .orElseThrow(() -> new PerformerNotFoundException("Not Found Performer id: " + id)));
         return dtos;
     }
 
     @Override
     public PerformerResponseDto updateAvailability(Long id, boolean isPublish) {
-        Performer performer = performerRepository.findById(id).orElseThrow(() -> new PerformerNotFoundException("Not Found Performer id: " + id));
+        Performer performer = performerRepository.findById(id)
+                .orElseThrow(() -> new PerformerNotFoundException("Not Found Performer id: " + id));
         performer.setAvailable(isPublish);
         return performerMapper.performerToDto(performerRepository.save(performer));
     }
