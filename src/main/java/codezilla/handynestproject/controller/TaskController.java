@@ -6,6 +6,7 @@ import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ public class TaskController {
 
     // POST
     @PostMapping
-    public TaskResponseDto create(@RequestBody TaskRequestDto taskRequestDto) {
+    public TaskResponseDto create(@RequestBody @Valid TaskRequestDto taskRequestDto) {
         return taskService.create(taskRequestDto);
     }
 
@@ -79,7 +80,7 @@ public class TaskController {
     // PUT
     @PutMapping("/update/{id}")
     public TaskResponseDto update(@PathVariable("id") Long id,
-                                  @RequestBody TaskUpdateRequestDto taskUpdateRequestDto) {
+                                  @RequestBody @Valid TaskUpdateRequestDto taskUpdateRequestDto) {
         return taskService.update(taskUpdateRequestDto);
     }
 

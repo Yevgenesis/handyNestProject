@@ -3,6 +3,7 @@ package codezilla.handynestproject.controller;
 import codezilla.handynestproject.dto.user.UserRequestDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class UserController {
 
     // POST
     @PostMapping
-    public UserResponseDto save(@RequestBody UserRequestDto userRequestDto) {
+    public UserResponseDto save(@RequestBody @Valid UserRequestDto userRequestDto) {
         return userService.create(userRequestDto);
     }
 

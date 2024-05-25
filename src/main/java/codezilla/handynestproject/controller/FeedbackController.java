@@ -3,6 +3,7 @@ package codezilla.handynestproject.controller;
 import codezilla.handynestproject.dto.feedback.FeedbackCreateRequestDto;
 import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 import codezilla.handynestproject.service.FeedbackService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class FeedbackController {
 
     //POST
     @PostMapping
-    public FeedbackResponseDto add(@RequestBody FeedbackCreateRequestDto requestDto) {
+    public FeedbackResponseDto add(@RequestBody @Valid FeedbackCreateRequestDto requestDto) {
         return feedbackService.add(requestDto);
     }
 

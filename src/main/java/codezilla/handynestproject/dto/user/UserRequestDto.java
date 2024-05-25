@@ -17,7 +17,7 @@ public record UserRequestDto(
         String passwordConfirmation
 ) {
     private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
-    private static final String BAD_PASSWORD_MESSAGE = "Muss be min 8 symbols, contains lower case," +
+    private static final String BAD_PASSWORD_MESSAGE = "Password must be min 8 symbols, contains lower case," +
             "digit and specials symbols (@#$%^&+=) ";
 
     // проверка совпадения password и passwordConfirmation
