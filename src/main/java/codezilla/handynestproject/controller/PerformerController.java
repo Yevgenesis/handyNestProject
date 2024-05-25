@@ -19,7 +19,7 @@ public class PerformerController {
 
     //POST
     @PostMapping
-    public PerformerResponseDto create(@Valid @RequestBody  PerformerRequestDto performerDto) {
+    public PerformerResponseDto create(@RequestBody @Valid PerformerRequestDto performerDto) {
         return performerService.create(performerDto);
     }
 
@@ -37,7 +37,7 @@ public class PerformerController {
 
     //PUT
     @PutMapping
-    public PerformerResponseDto update(@RequestBody PerformerUpdateRequestDto updateDto) {
+    public PerformerResponseDto update(@RequestBody @Valid PerformerUpdateRequestDto updateDto) {
         return performerService.update(updateDto);
     }
 
