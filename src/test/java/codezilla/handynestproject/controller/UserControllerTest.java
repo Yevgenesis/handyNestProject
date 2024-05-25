@@ -15,7 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static codezilla.handynestproject.service.TestData.USER_RESPONSE_DTO3;
+import static codezilla.handynestproject.testData.UserTestData.USER_RESPONSE_DTO3;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,7 +32,7 @@ class UserControllerTest {
     private UserService userService;
 
     @Autowired
-   private MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -42,20 +42,20 @@ class UserControllerTest {
     @SneakyThrows
     void findAllTest() {
 
-       mockMvc.perform(get("/users"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.size()").value(11));
+        mockMvc.perform(get("/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(11));
 
     }
 
     @Test
     @SneakyThrows
     void findByIdTest() {
-      UserResponseDto expected = USER_RESPONSE_DTO3;
-      mockMvc.perform(get("/users/" + expected.getId()))
-              .andExpect(status().isOk())
-              .andExpect(jsonPath("$.id").value(expected.getId()))
-              .andExpect(content().json(objectMapper.writeValueAsString(expected)));
+        UserResponseDto expected = USER_RESPONSE_DTO3;
+        mockMvc.perform(get("/users/" + expected.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(expected.getId()))
+                .andExpect(content().json(objectMapper.writeValueAsString(expected)));
 
     }
 }

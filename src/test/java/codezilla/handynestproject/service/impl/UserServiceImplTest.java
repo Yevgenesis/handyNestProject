@@ -13,7 +13,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
-import static codezilla.handynestproject.service.TestData.USER_RESPONSE_DTO1;
+import static codezilla.handynestproject.testData.UserTestData.USER_RESPONSE_DTO1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 

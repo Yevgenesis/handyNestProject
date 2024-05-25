@@ -1,5 +1,6 @@
 package codezilla.handynestproject.testData;
 
+import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.model.entity.Address;
@@ -113,7 +114,8 @@ public class TaskTestData {
             .title("Починить кран")
             .description("Требуется починить кран на кухне")
             .price(50.00)
-            .address(TEST_ADDRESS_DTO1)
+            .address(
+                    new AddressDto("123 Unter den Linden", "Berlin", "10117", "Germany"))
             .taskStatus(TaskStatus.OPEN)
             .workingTime(TEST_WORKING_TIME1)
             .category(CATEGORY_TITLE_DTO19)
@@ -131,7 +133,8 @@ public class TaskTestData {
             .title("Покрасить комнату")
             .description("Нужно покрасить стены в гостиной")
             .price(200.00)
-            .address(TEST_ADDRESS_DTO2)
+            .address(new AddressDto(
+                    "456 Königsallee", "Düsseldorf", "40212", "Germany"))
             .taskStatus(TaskStatus.IN_PROGRESS)
             .workingTime(TEST_WORKING_TIME2)
             .category(CATEGORY_TITLE_DTO8)
@@ -149,7 +152,8 @@ public class TaskTestData {
             .title("Установить светильники")
             .description("Требуется установить новые светильники в коридоре")
             .price(100.00)
-            .address(TEST_ADDRESS_DTO3)
+            .address(new AddressDto(
+                    "789 Karl-Liebknecht-Strasse", "Leipzig", "04109", "Germany"))
             .taskStatus(TaskStatus.COMPLETED)
             .workingTime(TEST_WORKING_TIME3)
             .category(CATEGORY_TITLE_DTO2)
@@ -167,7 +171,8 @@ public class TaskTestData {
             .title("Офисный переезд")
             .description("Требуется упаковать мебель и вещи")
             .price(500.00)
-            .address(TEST_ADDRESS_DTO4)
+            .address(new AddressDto(
+                    "321 Maximilianstrasse", "Munich", "80539", "Germany"))
             .taskStatus(TaskStatus.OPEN)
             .workingTime(TEST_WORKING_TIME4)
             .category(CATEGORY_TITLE_DTO28)
@@ -185,7 +190,8 @@ public class TaskTestData {
             .title("Установить светильники")
             .description("Хочу установить старые светильники в сарае")
             .price(100.00)
-            .address(TEST_ADDRESS_DTO5)
+            .address(new AddressDto(
+                    "555 Friedrichstrasse", "Berlin", "10117", "Germany"))
             .taskStatus(TaskStatus.CANCELED)
             .workingTime(TEST_WORKING_TIME4)
             .category(CATEGORY_TITLE_DTO18)

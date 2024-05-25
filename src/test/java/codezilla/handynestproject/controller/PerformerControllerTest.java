@@ -1,7 +1,6 @@
 package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.HandyNestProjectApplication;
-import codezilla.handynestproject.dto.performer.PerformerRequestDto;
 import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.service.PerformerService;
 import codezilla.handynestproject.util.TestDatabaseConfig;
@@ -21,7 +20,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.nio.charset.StandardCharsets;
 
-import static codezilla.handynestproject.service.TestData.*;
+import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_REQUEST_DTO1;
+import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_REQUEST_DTO3;
+import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_RESPONSE_DTO1;
+import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_RESPONSE_DTO2;
+import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_RESPONSE_DTO3;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -72,7 +75,7 @@ class PerformerControllerTest {
 
     @Test
     @SneakyThrows
-    void updatePerformerTest()  {
+    void updatePerformerTest() {
 
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO1;
 
