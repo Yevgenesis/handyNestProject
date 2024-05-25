@@ -7,6 +7,7 @@ public class AddressTestData {
     /**
      * AddressDto
      */
+
     public static final AddressDto TEST_ADDRESS_DTO1 = new AddressDto(
             "123 Unter den Linden", "Berlin", "10117", "Germany");
 
