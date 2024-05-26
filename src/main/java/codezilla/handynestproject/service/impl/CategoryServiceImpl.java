@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,7 +33,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Set<Category> findCategoriesByIdIn(List<Long> ids) {
-        return (Set<Category>) categoryRepository.findAllById(ids);
+        Set<Category> categories = new HashSet<>();
+        for (Long id : ids) {
+            categories.add(categoryRepository.findById(id)
+                    .orElseThrow(() -> new CategoryNotFoundException("Category not found")));
+        }
+        return categories;
     }
 
     @Override

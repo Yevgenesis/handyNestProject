@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WorkingTimeServiceImpl implements WorkingTimeService {
 
-    private WorkingTimeRepository workingTimeRepository;
+    private final WorkingTimeRepository workingTimeRepository;
 
     @Override
     public WorkingTime findWorkingTimeById(Long id) {
