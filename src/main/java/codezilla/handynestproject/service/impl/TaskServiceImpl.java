@@ -9,6 +9,7 @@ import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Address;
+import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
@@ -22,8 +23,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -215,6 +216,15 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskResponseDto> findUnrefereedByPerformerId(Long performerId) {
         performerService.findById(performerId);
         List<Task> tasks = taskRepository.findUnrefereedByPerformerId(performerId);
+        return taskMapper.toTaskResponseDtoList(tasks);
+    }
+
+    // Достать все таски, которые совпадают по категориям конкретного перформера
+    @Override
+    public List<TaskResponseDto> findAvailableForPerformer(Long performerId) {
+        Performer performer = performerService.findByIdReturnPerformer(performerId);
+
+        List<Task> tasks = taskRepository.findAllByTaskStatusAndCategoryIn(TaskStatus.OPEN, performer.getCategories());
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 

@@ -47,6 +47,13 @@ public class TaskController {
         return taskService.findAvailableTasks();
     }
 
+    // Достать все открытые таски, которые совпадают по категориям для конкретного перформера
+    @GetMapping("/open/{performerId}")
+    public List<TaskResponseDto> findAvailableForPerformer(@PathVariable("performerId") Long performerId) {
+
+        return taskService.findAvailableForPerformer(performerId);
+    }
+
     @GetMapping("/user/{id}")
     public List<TaskResponseDto> findByUserId(@PathVariable Long id) {
         return taskService.findByUserId(id);

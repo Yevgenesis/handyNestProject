@@ -40,4 +40,6 @@ public interface TaskService {
     List<TaskResponseDto> findUnrefereedByUserId(Long userId);
 
     List<TaskResponseDto> findUnrefereedByPerformerId(Long performerId);
+
+    List<TaskResponseDto> findAvailableForPerformer(Long performerId);
 }

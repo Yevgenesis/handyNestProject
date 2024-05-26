@@ -1,5 +1,6 @@
 package codezilla.handynestproject.repository;
 
+import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,4 +46,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             "WHERE t.taskStatus != 'OPEN' AND t.user.id = :userId " +
             "AND f.id IS NULL")
     List<Task> findUnrefereedByUserId(Long userId);
+
+    // Достать все ОТКРЫТЫЕ таски, которые совпадают по категориям из переданной коллекции
+    List<Task> findAllByTaskStatusAndCategoryIn(TaskStatus taskStatus, Collection<Category> category);
 }

@@ -16,6 +16,7 @@ public class UserTestData {
 
     public static final UserResponseDto USER_RESPONSE_DTO1 = new UserResponseDto(
             1L, "Джон", "Доу", "john.doe@example.com", 5L, 100.0,
+            null,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(10, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -23,6 +24,7 @@ public class UserTestData {
 
     public static final UserResponseDto USER_RESPONSE_DTO2 = new UserResponseDto(
             2L, "Джейн", "Смит", "jane.smith@example.com", 6L, 50.0,
+            null,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(11, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -30,6 +32,7 @@ public class UserTestData {
 
     public static final UserResponseDto USER_RESPONSE_DTO3 = new UserResponseDto(
             3L, "Алиса", "Джонсон", "alice.johnson@example.com", 7L, 80.0,
+            null,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(12, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -37,6 +40,7 @@ public class UserTestData {
 
     public static final UserResponseDto USER_RESPONSE_DTO4 = new UserResponseDto(
             4L, "Боб", "Уильямс", "bob.williams@example.com", 8L, 75.0,
+            null,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(13, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -44,6 +48,7 @@ public class UserTestData {
 
     public static final UserResponseDto USER_RESPONSE_DTO5 = new UserResponseDto(
             5L, "Ева", "Браун", "eva.brown@example.com", 9L, 95.0,
+            null,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(14, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -54,19 +59,19 @@ public class UserTestData {
      */
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO1 = new UserNestedResponseDto(
-            1L, "Джон", "Доу", 5L, 100.0);
+            1L, "Джон", "Доу", 5L, 100.0,null);
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO2 = new UserNestedResponseDto(
-            2L, "Джейн", "Смит", 6L, 50.0);
+            2L, "Джейн", "Смит", 6L, 50.0,null);
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO3 = new UserNestedResponseDto(
-            3L, "Алиса", "Джонсон", 7L, 80.0);
+            3L, "Алиса", "Джонсон", 7L, 80.0,null);
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO4 = new UserNestedResponseDto(
-            4L, "Боб", "Уильямс", 8L, 75.0);
+            4L, "Боб", "Уильямс", 8L, 75.0,null);
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO5 = new UserNestedResponseDto(
-            5L, "Ева", "Браун", 9L, 95.0);
+            5L, "Ева", "Браун", 9L, 95.0,null);
 
     /**
      * test data User
