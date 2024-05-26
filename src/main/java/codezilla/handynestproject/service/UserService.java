@@ -11,9 +11,14 @@ public interface UserService {
 
     UserResponseDto findById(Long id);
 
+
     void updateRating(User user);
 
     void increaseTaskCounterUp(User user);
 
     UserResponseDto create(UserRequestDto userRequestDto);
+
+    User findByIdReturnUser(Long id);
+
+    boolean existsById(Long id);
 }

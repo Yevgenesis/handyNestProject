@@ -17,7 +17,6 @@ import static codezilla.handynestproject.testData.UserTestData.TEST_USER2;
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER3;
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER4;
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER5;
-import static codezilla.handynestproject.testData.UserTestData.USER_NESTED_RESPONSE_DTO1;
 import static codezilla.handynestproject.testData.UserTestData.USER_NESTED_RESPONSE_DTO2;
 import static codezilla.handynestproject.testData.UserTestData.USER_NESTED_RESPONSE_DTO3;
 import static codezilla.handynestproject.testData.UserTestData.USER_NESTED_RESPONSE_DTO4;

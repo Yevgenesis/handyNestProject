@@ -13,6 +13,8 @@ public interface PerformerService {
 
     PerformerResponseDto findById(Long id);
 
+    Performer findByIdReturnPerformer(Long id);
+
     List<PerformerResponseDto> findAll();
 
     PerformerResponseDto update(PerformerUpdateRequestDto performerDto);
@@ -23,4 +25,6 @@ public interface PerformerService {
     void increaseTaskCounterUp(Performer performer);
 
     PerformerResponseDto updateAvailability(Long id, boolean isPublish);
+
+    boolean existsById(Long id);
 }

@@ -40,6 +40,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByIdReturnUser(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
     public void updateRating(User user) {
         Double newRating = userRepository.findAverageRatingByUserId(user.getId());
         user.setPositiveFeedbackPercent(newRating);

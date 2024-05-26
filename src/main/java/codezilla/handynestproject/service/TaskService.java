@@ -11,10 +11,15 @@ import java.util.List;
 public interface TaskService {
 
     TaskResponseDto create(TaskRequestDto dto);
+
     TaskResponseDto update(TaskUpdateRequestDto dto);
+
     void cancelById(Long taskId);
+
     TaskResponseDto findById(Long taskId);
+
     List<TaskResponseDto> findAll();
+
     List<TaskResponseDto> findByStatus(TaskStatus status);
 
     Task findTaskEntityByIdAndParticipantsId(Long taskId, Long userId);
@@ -22,9 +27,13 @@ public interface TaskService {
     List<TaskResponseDto> findAvailableTasks();
 
     List<TaskResponseDto> findByUserId(Long userId);
+
     List<TaskResponseDto> findByPerformerId(Long performerId);
+
     TaskResponseDto addPerformer(Long taskId, Long performerId);
+
     TaskResponseDto removePerformer(Long taskId);
+
     TaskResponseDto updateStatusById(Long taskId, TaskStatus status);
 
 

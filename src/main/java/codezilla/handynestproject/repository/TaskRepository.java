@@ -1,6 +1,5 @@
 package codezilla.handynestproject.repository;
 
-import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import org.springframework.data.jpa.repository.EntityGraph;

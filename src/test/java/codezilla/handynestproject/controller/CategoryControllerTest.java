@@ -38,9 +38,9 @@ class CategoryControllerTest {
     @SneakyThrows
     void findAllTest() {
 
-       mockMvc.perform(get("/categories"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.size()").value(47));
+        mockMvc.perform(get("/categories"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(47));
 
     }
 }

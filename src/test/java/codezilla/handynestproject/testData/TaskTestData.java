@@ -12,11 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO1;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO2;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO3;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO4;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO5;
 import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO18;
 import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO19;
 import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO2;
@@ -27,9 +22,7 @@ import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY
 import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY2;
 import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY28;
 import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY8;
-import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_NESTED_RESPONSE_DTO1;
 import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_NESTED_RESPONSE_DTO2;
-import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_NESTED_RESPONSE_DTO3;
 import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_NESTED_RESPONSE_DTO4;
 import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_NESTED_RESPONSE_DTO5;
 import static codezilla.handynestproject.testData.PerformerTestData.TEST_PERFORMER2;
@@ -38,7 +31,6 @@ import static codezilla.handynestproject.testData.PerformerTestData.TEST_PERFORM
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER1;
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER2;
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER3;
-import static codezilla.handynestproject.testData.UserTestData.TEST_USER4;
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER5;
 import static codezilla.handynestproject.testData.UserTestData.USER_NESTED_RESPONSE_DTO1;
 import static codezilla.handynestproject.testData.UserTestData.USER_NESTED_RESPONSE_DTO2;
