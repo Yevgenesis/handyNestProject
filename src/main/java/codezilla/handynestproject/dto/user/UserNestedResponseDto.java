@@ -19,6 +19,7 @@ public class UserNestedResponseDto {
 
     private Double positiveFeedbackPercent;
 
+    private String logo;
 
 }
 

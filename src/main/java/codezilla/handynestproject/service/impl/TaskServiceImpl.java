@@ -70,6 +70,8 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(dto.getId())
                 .orElseThrow(() -> new TaskNotFoundException("Task not found"));
 
+        // ToDo исправить. не нужно спрашивать присутствие поля
+        // Нужно просто добавлять то, что пришло из DTO
         if (task.getTaskStatus().equals(TaskStatus.OPEN)) {
             Optional.ofNullable(dto.getTitle()).ifPresent(task::setTitle);
             Optional.ofNullable(dto.getDescription()).ifPresent(task::setDescription);

@@ -25,6 +25,8 @@ public class UserResponseDto {
 
     private Double positiveFeedbackPercent;
 
+    private String logo;
+
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH.mm.ss")
     private Timestamp created_on;

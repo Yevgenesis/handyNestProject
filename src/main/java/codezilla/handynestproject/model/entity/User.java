@@ -68,6 +68,9 @@ public class User {
             orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
 
+    @Column(name = "logo")
+    private String logo;
+
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "created_on", nullable = false, updatable = false)

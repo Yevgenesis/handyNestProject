@@ -1,6 +1,7 @@
 package codezilla.handynestproject.service;
 
 import codezilla.handynestproject.dto.user.UserRequestDto;
+import codezilla.handynestproject.dto.user.UserRequestUpdateDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.model.entity.User;
 
@@ -21,4 +22,6 @@ public interface UserService {
     User findByIdReturnUser(Long id);
 
     boolean existsById(Long id);
+
+    UserResponseDto update(UserRequestUpdateDto updateDto);
 }
