@@ -14,7 +14,11 @@ import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +26,7 @@ import java.util.Optional;
 
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -38,9 +43,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        UserResponseDto userResponseDto = userMapper.userToDto(user.orElseThrow(UserNotFoundException::new));
-        return userResponseDto;
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userMapper.userToDto(user);
     }
 
     @Override
@@ -69,6 +73,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void checkExists(Long id) {
+        UserResponseDto user = findById(id);
+        log.debug("User {} with id {} exists", user, id);
+    }
+
+    @Override
     public void updateRating(User user) {
         Double newRating = userRepository.findAverageRatingByUserId(user.getId());
         user.setPositiveFeedbackPercent(newRating);
@@ -93,6 +103,30 @@ public class UserServiceImpl implements UserService {
         }
         UserResponseDto userResponseDto = userMapper.userToDto(user);
         return userResponseDto;
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UserNotFoundException("User with email " + email + " not found"));
+    }
+
+    @Override
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new SecurityException("User is not authenticated");
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            String email = ((UserDetails) principal).getUsername();
+            User user = getByEmail(email);
+            return user.getId();
+        } else {
+            throw new IllegalArgumentException("The primary authentication object cannot be used to obtain the ID");
+        }
     }
 }
 

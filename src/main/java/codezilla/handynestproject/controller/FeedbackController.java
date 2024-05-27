@@ -50,6 +50,12 @@ public class FeedbackController {
         return feedbackService.findAllForUserId(userId);
     }
 
+    // Достать все фитбеки полученные конкретным юзером
+    @GetMapping("/current")
+    public List<FeedbackResponseDto> findReceivedForCurrentUser() {
+        return feedbackService.findAllForCurrentUser();
+    }
+
     // Достать все фитбеки полученные конкретным перформером
     @GetMapping("/performer/{performerId}")
     public List<FeedbackResponseDto> findReceivedForPerformerId(@PathVariable Long performerId) {
