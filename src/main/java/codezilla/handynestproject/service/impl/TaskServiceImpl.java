@@ -42,16 +42,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public TaskResponseDto create(TaskRequestDto dto) {
+
+        Address address = dto.address() != null ? addressMapper.dtoToAddress(dto.address()) : null;
         Task task = Task.builder()
                 .title(dto.title())
                 .description(dto.description())
                 .price(dto.price())
-                .address(Address.builder()
-                        .street(dto.street())
-                        .city(dto.city())
-                        .zip(dto.zip())
-                        .country(dto.country())
-                        .build())
+                .address(address)
                 .taskStatus(TaskStatus.OPEN)
                 .isPublish(dto.isPublish())
                 .workingTime(workingTimeService.findWorkingTimeById(dto.workingTimeId()))
