@@ -14,7 +14,7 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @GetMapping("/unread/{userId}")
-    public List<Message> getUnreadMessages(@PathVariable Long userId) {
+    public List<codezilla.handynestmessenger.model.entity.Message> getUnreadMessages(@PathVariable Long userId) {
         return notificationService.getUnreadMessages(userId);
     }
 }

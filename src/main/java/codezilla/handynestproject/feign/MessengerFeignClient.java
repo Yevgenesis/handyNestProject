@@ -17,12 +17,12 @@ public interface MessengerFeignClient {
     @RequestMapping(method = RequestMethod.GET,value = "/messages")
 
     @PostMapping("/send")
-    Message sendMessage(@RequestParam Long senderId,
+    codezilla.handynestmessenger.model.entity.Message sendMessage(@RequestParam Long senderId,
                         @RequestParam Long receiverId,
                         @RequestParam String content);
 
     @GetMapping("/unread/{receiverId}")
-    List<Message> getUnreadMessages(@PathVariable Long receiverId);
+    List<codezilla.handynestmessenger.model.entity.Message> getUnreadMessages(@PathVariable Long receiverId);
 
     @PostMapping("/read/{messageId}")
     void markAsRead(@PathVariable Long messageId);
