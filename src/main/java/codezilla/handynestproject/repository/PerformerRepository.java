@@ -26,7 +26,8 @@ public interface PerformerRepository extends JpaRepository<Performer, Long> {
     @EntityGraph(value = "Performer.withUserAndCategoriesAndAddress", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Performer> findById(Long id);
 
-    // Возвращает процент позитивных отзывов с оценкой 4 или 5.
+    // Возвращает процент позитивных отзывов с оценкой 4 или 5
+    // И округляет ответ до одного знака после запятой
     @Query(value =
             "SELECT COALESCE(ROUND(COUNT(f) FILTER (WHERE f.grade >= 4) * 100.0 / NULLIF(COUNT(f), 0), 1),100)" +
                     "FROM feedback f " +
