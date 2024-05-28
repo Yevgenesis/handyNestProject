@@ -37,7 +37,7 @@ public class MessageServiceImpl implements MessageService {
         Notification notification = Notification.builder()
                 .user(userMapper.toUser(userService.findById(receiverId)))
                 .content("You have a new message")
-                .isRead(false)
+                .read(false)
                 .build();
         notificationService.save(notification);
 
@@ -45,8 +45,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> findBySenderIdOrReceiverId(Long id) {
-        return messageRepository.findBySenderIdOrReceiverId(id);
+    public List<Message> findByUserId(Long id) {
+        return messageRepository.findBySenderOrReceiverId(id);
     }
 
     @Override

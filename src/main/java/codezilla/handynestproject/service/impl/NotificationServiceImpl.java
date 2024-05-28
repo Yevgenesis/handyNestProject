@@ -24,7 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<Notification> findUnread(Long userId) {
-        return notificationRepository.findByUserIdAndIsRead(userId, false);
+        return notificationRepository.findByUserIdAndRead(userId, false);
     }
 
     @Override

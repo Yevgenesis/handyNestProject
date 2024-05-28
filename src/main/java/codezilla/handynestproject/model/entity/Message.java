@@ -26,7 +26,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "messages")
+@Table(name = "user_messages")
 @NamedEntityGraph(name = "MessageWithSenderAndReceiverAndTask", attributeNodes = {
         @NamedAttributeNode("sender"),
         @NamedAttributeNode("receiver"),

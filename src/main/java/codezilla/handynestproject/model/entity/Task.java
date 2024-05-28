@@ -82,6 +82,13 @@ public class Task {
     )
     private Set<Feedback> feedbacks;
 
+    @OneToMany(
+            mappedBy = "task",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<Message> messages;
+
     @CreatedDate
     @Column(name = "created_on", updatable = false, nullable = false)
     private Timestamp createdOn;

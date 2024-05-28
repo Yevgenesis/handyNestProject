@@ -32,5 +32,5 @@ public class Notification {
     private String content;
 
     @Column(nullable = false)
-    private boolean isRead;
+    private boolean read;
 }

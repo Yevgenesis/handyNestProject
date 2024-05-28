@@ -28,7 +28,7 @@ public class MessageController {
 
     @GetMapping("/{id}")
     public List<Message> findAllByUser(@PathVariable Long id) {
-        return messageService.findBySenderIdOrReceiverId(id);
+        return messageService.findByUserId(id);
     }
 
     @PutMapping("/{messageId}/read")

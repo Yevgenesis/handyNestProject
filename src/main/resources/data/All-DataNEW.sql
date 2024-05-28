@@ -175,11 +175,13 @@ VALUES
     (3, 'Быстрая оплата от клиента, лайк!', 4, 10, '2024-05-15 12:30:00'),
     (4, 'Хороший заказчик', 5, 11, '2024-05-15 13:30:00');
 
-INSERT INTO messages(sender_id,receiver_id,task_id,text,time,is_read)
+--Сообщения
+INSERT INTO user_messages (sender_id,receiver_id,task_id,text,time,read)
 VALUES
        (1,3,1,'Здравствуйте, когда можно будет приступить к работе?','2024-05-28 10:00:00',false),
        (3,1,1,'Здравствуйте, как и написано в заказе. С 9 до 11.','2024-05-28 10:10:00',false);
 
-INSERT INTO notifications(user_id,text,is_read)
-VALUES (1,'Здравствуйте, когда можно будет приступить к работе?',false),
-       (3,'Здравствуйте, как и написано в заказе. С 9 до 11.',false);
+--Уведомления
+INSERT INTO notifications (user_id,content,read)
+VALUES (1,'У вас есть не прочитанное сообщение',false),
+       (3,'У вас есть не прочитанное сообщение',false);
