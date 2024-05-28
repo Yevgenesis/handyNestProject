@@ -6,7 +6,13 @@ import codezilla.handynestproject.dto.performer.PerformerUpdateRequestDto;
 import codezilla.handynestproject.service.PerformerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -19,7 +25,7 @@ public class PerformerController {
 
     //POST
     @PostMapping
-    public PerformerResponseDto create(@Valid @RequestBody  PerformerRequestDto performerDto) {
+    public PerformerResponseDto create(@RequestBody @Valid PerformerRequestDto performerDto) {
         return performerService.create(performerDto);
     }
 
@@ -37,7 +43,7 @@ public class PerformerController {
 
     //PUT
     @PutMapping
-    public PerformerResponseDto update(@RequestBody PerformerUpdateRequestDto updateDto) {
+    public PerformerResponseDto update(@RequestBody @Valid PerformerUpdateRequestDto updateDto) {
         return performerService.update(updateDto);
     }
 

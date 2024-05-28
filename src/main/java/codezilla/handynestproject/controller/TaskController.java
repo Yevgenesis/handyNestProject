@@ -1,6 +1,5 @@
 package codezilla.handynestproject.controller;
 
-import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -49,6 +47,13 @@ public class TaskController {
         return taskService.findAvailableTasks();
     }
 
+    // Достать все открытые таски, которые совпадают по категориям для конкретного перформера
+    @GetMapping("/open/{performerId}")
+    public List<TaskResponseDto> findAvailableForPerformer(@PathVariable("performerId") Long performerId) {
+
+        return taskService.findAvailableForPerformer(performerId);
+    }
+
     @GetMapping("/user/{id}")
     public List<TaskResponseDto> findByUserId(@PathVariable Long id) {
         return taskService.findByUserId(id);
@@ -59,8 +64,8 @@ public class TaskController {
         return taskService.findByPerformerId(id);
     }
 
-    @GetMapping("/status")
-    public List<TaskResponseDto> findByStatus(@RequestParam TaskStatus status) {
+    @GetMapping("/status/{status}")
+    public List<TaskResponseDto> findByStatus(@PathVariable TaskStatus status) {
         return taskService.findByStatus(status);
     }
 
@@ -90,12 +95,12 @@ public class TaskController {
         return taskService.addPerformer(taskId, performerId);
     }
 
-    @PutMapping("/{taskId}/removePerformer/")
+    @PutMapping("/{taskId}/removePerformer")
     public TaskResponseDto removePerformer(@PathVariable Long taskId) {
         return taskService.removePerformer(taskId);
     }
 
-    @PutMapping("{taskId}/status/{status}")
+    @PutMapping("/{taskId}/status/{status}")
     public TaskResponseDto updateStatus(@PathVariable Long taskId, @PathVariable TaskStatus status) {
         return taskService.updateStatusById(taskId, status);
     }

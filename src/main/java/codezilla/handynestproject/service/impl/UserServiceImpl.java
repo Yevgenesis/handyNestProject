@@ -1,12 +1,16 @@
 package codezilla.handynestproject.service.impl;
 
 import codezilla.handynestproject.dto.user.UserRequestDto;
+import codezilla.handynestproject.dto.user.UserRequestUpdateDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
+import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.exception.UserAlreadyExistsException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.exception.WrongConfirmationPasswordException;
 import codezilla.handynestproject.mapper.UserMapper;
+import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.entity.User;
+import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +41,31 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
         UserResponseDto userResponseDto = userMapper.userToDto(user.orElseThrow(UserNotFoundException::new));
         return userResponseDto;
+    }
+
+    @Override
+    public User findByIdReturnUser(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
+    public UserResponseDto update(UserRequestUpdateDto updateDto) {
+
+        User user = userRepository.findById(updateDto.id())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        user.setFirstName(updateDto.firstName());
+        user.setLastName(updateDto.lastName());
+        user.setLogo(updateDto.logo());
+
+        return userMapper.userToDto(userRepository.save(user));
+
     }
 
     @Override

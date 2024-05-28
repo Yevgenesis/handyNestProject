@@ -1,6 +1,7 @@
 package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.dto.user.UserRequestDto;
+import codezilla.handynestproject.dto.user.UserRequestUpdateDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.service.UserService;
 import jakarta.validation.Valid;
@@ -31,6 +32,12 @@ public class UserController {
     @PostMapping
     public UserResponseDto save(@RequestBody @Valid UserRequestDto userRequestDto) {
         return userService.create(userRequestDto);
+    }
+
+    // PUT
+    @PutMapping
+    public UserResponseDto update(@RequestBody @Valid UserRequestUpdateDto updateDto) {
+        return userService.update(updateDto);
     }
 
 

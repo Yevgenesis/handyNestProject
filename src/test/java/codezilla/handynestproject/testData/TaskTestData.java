@@ -1,5 +1,6 @@
 package codezilla.handynestproject.testData;
 
+import codezilla.handynestproject.dto.address.AddressDto;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.model.entity.Address;
@@ -11,11 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO1;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO2;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO3;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO4;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO5;
 import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO18;
 import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO19;
 import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO2;
@@ -26,9 +22,7 @@ import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY
 import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY2;
 import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY28;
 import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY8;
-import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_NESTED_RESPONSE_DTO1;
 import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_NESTED_RESPONSE_DTO2;
-import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_NESTED_RESPONSE_DTO3;
 import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_NESTED_RESPONSE_DTO4;
 import static codezilla.handynestproject.testData.PerformerTestData.PERFORMER_NESTED_RESPONSE_DTO5;
 import static codezilla.handynestproject.testData.PerformerTestData.TEST_PERFORMER2;
@@ -37,7 +31,6 @@ import static codezilla.handynestproject.testData.PerformerTestData.TEST_PERFORM
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER1;
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER2;
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER3;
-import static codezilla.handynestproject.testData.UserTestData.TEST_USER4;
 import static codezilla.handynestproject.testData.UserTestData.TEST_USER5;
 import static codezilla.handynestproject.testData.UserTestData.USER_NESTED_RESPONSE_DTO1;
 import static codezilla.handynestproject.testData.UserTestData.USER_NESTED_RESPONSE_DTO2;
@@ -113,7 +106,8 @@ public class TaskTestData {
             .title("Починить кран")
             .description("Требуется починить кран на кухне")
             .price(50.00)
-            .address(TEST_ADDRESS_DTO1)
+            .address(
+                    new AddressDto("123 Unter den Linden", "Berlin", "10117", "Germany"))
             .taskStatus(TaskStatus.OPEN)
             .workingTime(TEST_WORKING_TIME1)
             .category(CATEGORY_TITLE_DTO19)
@@ -131,7 +125,8 @@ public class TaskTestData {
             .title("Покрасить комнату")
             .description("Нужно покрасить стены в гостиной")
             .price(200.00)
-            .address(TEST_ADDRESS_DTO2)
+            .address(new AddressDto(
+                    "456 Königsallee", "Düsseldorf", "40212", "Germany"))
             .taskStatus(TaskStatus.IN_PROGRESS)
             .workingTime(TEST_WORKING_TIME2)
             .category(CATEGORY_TITLE_DTO8)
@@ -149,7 +144,8 @@ public class TaskTestData {
             .title("Установить светильники")
             .description("Требуется установить новые светильники в коридоре")
             .price(100.00)
-            .address(TEST_ADDRESS_DTO3)
+            .address(new AddressDto(
+                    "789 Karl-Liebknecht-Strasse", "Leipzig", "04109", "Germany"))
             .taskStatus(TaskStatus.COMPLETED)
             .workingTime(TEST_WORKING_TIME3)
             .category(CATEGORY_TITLE_DTO2)
@@ -167,7 +163,8 @@ public class TaskTestData {
             .title("Офисный переезд")
             .description("Требуется упаковать мебель и вещи")
             .price(500.00)
-            .address(TEST_ADDRESS_DTO4)
+            .address(new AddressDto(
+                    "321 Maximilianstrasse", "Munich", "80539", "Germany"))
             .taskStatus(TaskStatus.OPEN)
             .workingTime(TEST_WORKING_TIME4)
             .category(CATEGORY_TITLE_DTO28)
@@ -185,7 +182,8 @@ public class TaskTestData {
             .title("Установить светильники")
             .description("Хочу установить старые светильники в сарае")
             .price(100.00)
-            .address(TEST_ADDRESS_DTO5)
+            .address(new AddressDto(
+                    "555 Friedrichstrasse", "Berlin", "10117", "Germany"))
             .taskStatus(TaskStatus.CANCELED)
             .workingTime(TEST_WORKING_TIME4)
             .category(CATEGORY_TITLE_DTO18)
