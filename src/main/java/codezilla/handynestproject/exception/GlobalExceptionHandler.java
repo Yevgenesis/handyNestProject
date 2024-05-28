@@ -85,4 +85,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public @ResponseBody ErrorResponse handleFeedbackNotFoundException(FeedbackNotFoundException ex) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
+
+    @ExceptionHandler(MessageNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ErrorResponse handleMessageNotFoundException(MessageNotFoundException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+    @ExceptionHandler(NotificationNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ErrorResponse handleNotificationNotFoundException(NotificationNotFoundException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
 }
