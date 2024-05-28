@@ -99,6 +99,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackMapper.feedbackToDto(savedFeedback);
     }
 
+    // Достать все фитбеки полученные конкретным перформером
     @Override
     public List<FeedbackResponseDto> findAllForPerformerId(Long performerId) {
         performerService.findById(performerId);
@@ -106,6 +107,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
+    // Достать все фитбеки полученные конкретным юзером
     @Override
     public List<FeedbackResponseDto> findAllForUserId(Long userId) {
         userService.findById(userId);
