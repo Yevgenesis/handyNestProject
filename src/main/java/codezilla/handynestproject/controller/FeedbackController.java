@@ -53,6 +53,11 @@ public class FeedbackController {
     }
 
     // Достать все фитбеки полученные конкретным юзером
+    @PreAuthorize("hasAnyRole('USER', 'PERFORMER')")
+    @GetMapping("/current")
+    public List<FeedbackResponseDto> findReceivedForCurrentUser() {
+        return feedbackService.findAllForCurrentUser();
+    }
 
     // Достать все фитбеки полученные конкретным перформером
     @GetMapping("/performer/{performerId}")
