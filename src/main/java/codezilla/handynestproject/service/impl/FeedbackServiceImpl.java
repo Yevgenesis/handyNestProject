@@ -101,17 +101,17 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     // Достать все фитбеки полученные конкретным перформером
     @Override
-    public List<FeedbackResponseDto> findAllForPerformerId(Long performerId) {
+    public List<FeedbackResponseDto> findReceivedByPerformerId(Long performerId) {
         performerService.findById(performerId);
-        List<Feedback> feedbacks = feedbackRepository.findAllForPerformerId(performerId);
+        List<Feedback> feedbacks = feedbackRepository.findReceivedByPerformerId(performerId);
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
     // Достать все фитбеки полученные конкретным юзером
     @Override
-    public List<FeedbackResponseDto> findAllForUserId(Long userId) {
+    public List<FeedbackResponseDto> findReceivedByUserId(Long userId) {
         userService.findById(userId);
-        List<Feedback> feedbacks = feedbackRepository.findAllForUserId(userId);
+        List<Feedback> feedbacks = feedbackRepository.findReceivedByUserId(userId);
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 

@@ -28,11 +28,15 @@ public interface PerformerRepository extends JpaRepository<Performer, Long> {
 
     // Возвращает процент позитивных отзывов с оценкой 4 или 5
     // И округляет ответ до одного знака после запятой
-    @Query(value =
-            "SELECT COALESCE(ROUND(COUNT(f) FILTER (WHERE f.grade >= 4) * 100.0 / NULLIF(COUNT(f), 0), 1),100)" +
-                    "FROM feedback f " +
-                    "JOIN task t ON f.task_id = t.id " +
-                    "WHERE t.performer_id = :performerId AND f.sender_id != :performerId",
-            nativeQuery = true)
+    @Query(value = """
+            SELECT COALESCE(
+                        ROUND(
+                            COUNT(f) FILTER (WHERE f.grade >= 4) * 100.0 / NULLIF(COUNT(f), 0)
+                        ,1)
+                    ,100)
+            FROM feedback f
+            JOIN task t ON f.task_id = t.id
+            WHERE t.performer_id = :performerId AND f.sender_id != :performerId
+            """, nativeQuery = true)
     Double getRatingByPerformerId(@Param("performerId") Long performerId);
 }

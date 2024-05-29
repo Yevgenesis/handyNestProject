@@ -18,7 +18,7 @@ public interface FeedbackService {
 
     List<FeedbackResponseDto> findBySenderId(Long senderId);
 
-    List<FeedbackResponseDto> findAllForPerformerId(Long performerId);
+    List<FeedbackResponseDto> findReceivedByPerformerId(Long performerId);
 
-    List<FeedbackResponseDto> findAllForUserId(Long userId);
+    List<FeedbackResponseDto> findReceivedByUserId(Long userId);
 }

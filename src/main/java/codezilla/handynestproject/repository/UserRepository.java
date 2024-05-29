@@ -17,12 +17,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User save(User user);
 
     // Возвращает процент позитивных отзывов с оценкой 4 или 5
-    // И округляет ответ до одного знака после запятой
-    @Query(value =
-            "SELECT COALESCE(ROUND(COUNT(f) FILTER (WHERE f.grade >= 4) * 100.0 / NULLIF(COUNT(f), 0), 1),100)" +
-                    "FROM feedback f " +
-                    "JOIN task t ON f.task_id = t.id " +
-                    "WHERE t.user_id = :userId AND f.sender_id != :userId",
-            nativeQuery = true)
+    // И округляет ответ до одного знака после запятой.
+    // Сделали подсчёт через запрос только для практики
+    @Query(value = """
+            SELECT COALESCE(
+                ROUND(
+                    COUNT(f) FILTER (WHERE f.grade >= 4) * 100.0 / NULLIF(COUNT(f), 0)
+                ,1)
+            ,100)
+            FROM feedback f
+            JOIN task t ON f.task_id = t.id
+            WHERE t.user_id = :userId AND f.sender_id != :userId
+            """, nativeQuery = true)
     Double getRatingByUserId(@Param("userId") Long userId);
+
 }

@@ -97,16 +97,15 @@ public class PerformerServiceImpl implements PerformerService {
     @Override
     @Transactional(readOnly = true)
     public PerformerResponseDto findById(Long id) {
-        Optional<Performer> performer = performerRepository.findById(id);
-        PerformerResponseDto dtos = performerMapper.performerToDto(performer
-                .orElseThrow(() -> new PerformerNotFoundException("Not Found Performer id: " + id)));
-        return dtos;
+        Performer performer = performerRepository.findById(id)
+                .orElseThrow(() -> new PerformerNotFoundException("Not Found Performer id: " + id));
+        return performerMapper.performerToDto(performer);
     }
 
     @Override
     public Performer findByIdReturnPerformer(Long id) {
-        Optional<Performer> performer = performerRepository.findById(id);
-        return performer.orElseThrow(() -> new PerformerNotFoundException("Not Found Performer id: " + id));
+        return performerRepository.findById(id)
+                .orElseThrow(() -> new PerformerNotFoundException("Not Found Performer id: " + id));
     }
 
     @Override
