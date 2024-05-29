@@ -33,7 +33,7 @@ public class JwtService {
         if (userDetails instanceof User userEntity) {
             claims.put("userId", userEntity);
             claims.put("login", userEntity.getEmail());
-            claims.put("role", "USER"); // ToDo поместить список ролей
+            claims.put("role", ((User) userDetails).getRoles()); // ToDo поместить список ролей
         }
         return generateToken(claims, userDetails);
     }

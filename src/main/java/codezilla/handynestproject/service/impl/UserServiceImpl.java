@@ -10,6 +10,7 @@ import codezilla.handynestproject.mapper.UserMapper;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -89,6 +90,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponseDto create(UserRequestDto dto) {
         if (!dto.isPasswordsMatch()) throw new WrongConfirmationPasswordException();
 
