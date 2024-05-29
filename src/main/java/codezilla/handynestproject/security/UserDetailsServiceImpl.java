@@ -1,6 +1,7 @@
 package codezilla.handynestproject.security;
 
 import codezilla.handynestproject.model.entity.User;
+import codezilla.handynestproject.model.enums.RoleName;
 import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -22,10 +24,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.getByEmail(username);
 
+        Set<RoleName> roleNameSet = user.getRoles();
+
         return new org.springframework.security.core.userdetails.User(user.getEmail(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority("USER"))); // подтянуть все роли юзера
-//                user.getRoles().stream().map(auth -> new SimpleGrantedAuthority(auth.getRoleName()))
-//                        .collect(Collectors.toList()));
+//                List.of(new SimpleGrantedAuthority("PERFORMER"), new SimpleGrantedAuthority("USER"))); // подтянуть все роли юзера
+                user.getRoles().stream().map(auth -> new SimpleGrantedAuthority(auth.name()))
+                        .collect(Collectors.toList()));
     }
 }

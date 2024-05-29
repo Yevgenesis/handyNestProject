@@ -72,7 +72,7 @@ public class User {
     private Timestamp updated_on;
 
 
-    @ElementCollection(targetClass = RoleName.class, fetch = FetchType.LAZY)
+    @ElementCollection(targetClass = RoleName.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_name"}))
     @Column(name = "role_name")
