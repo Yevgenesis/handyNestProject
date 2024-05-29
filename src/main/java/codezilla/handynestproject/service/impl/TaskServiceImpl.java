@@ -110,6 +110,33 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public boolean existsById(Long taskId) {
+        return taskRepository.existsById(taskId);
+    }
+
+    @Override
+    public boolean completed(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found"));
+        task.getTaskStatus().equals(TaskStatus.COMPLETED);
+        return true;
+    }
+
+    @Override
+    public boolean cancelled(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found"));
+        task.getTaskStatus().equals(TaskStatus.CANCELED);
+        return true;
+    }
+
+    @Override
+    public boolean canceledOrCompleted(Long taskId) {
+        return cancelled(taskId) || completed(taskId);
+
+    }
+
+    @Override
     public Task findTaskEntityByIdAndParticipantsId(Long taskId, Long userId) {
 
         Optional<Task> task = Optional.of(taskRepository

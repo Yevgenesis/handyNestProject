@@ -87,7 +87,7 @@ public class Task {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private Set<Message> messages;
+    private Set<Chat> chats;
 
     @CreatedDate
     @Column(name = "created_on", updatable = false, nullable = false)

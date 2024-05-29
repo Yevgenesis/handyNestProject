@@ -176,12 +176,16 @@ VALUES
     (4, 'Хороший заказчик', 5, 11, '2024-05-15 13:30:00');
 
 --Сообщения
-INSERT INTO user_messages (sender_id,receiver_id,task_id,text,time,read)
+INSERT INTO user_messages (sender_id,receiver_id,chat_id,text,create_on, update_on,read)
 VALUES
-       (1,3,1,'Здравствуйте, когда можно будет приступить к работе?','2024-05-28 10:00:00',false),
-       (3,1,1,'Здравствуйте, как и написано в заказе. С 9 до 11.','2024-05-28 10:10:00',false);
+       (1,3,1,'Здравствуйте, когда можно будет приступить к работе?','2024-05-28 10:00:00','2024-05-28 10:00:00',false),
+       (3,1,1,'Здравствуйте, как и написано в заказе. С 9 до 11.','2024-05-28 10:10:00','2024-05-28 10:10:00',false);
 
 --Уведомления
 INSERT INTO notifications (user_id,content,read)
 VALUES (1,'У вас есть не прочитанное сообщение',false),
        (3,'У вас есть не прочитанное сообщение',false);
+
+--Chat
+INSERT INTO chat (task_id, create_on, update_on,deleted)
+VALUES (1,'2024-05-28 10:00:00','2024-05-28 10:00:00',false)

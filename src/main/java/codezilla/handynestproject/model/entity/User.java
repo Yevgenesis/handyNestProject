@@ -117,6 +117,7 @@ public class User {
     )
     private Set<Notification> notifications = new HashSet<>();
 
+
     @Column(name = "user_rating")
     @Builder.Default
     private Double positiveFeedbackPercent = 100.0;

@@ -1,5 +1,6 @@
 package codezilla.handynestproject.controller;
 
+import codezilla.handynestproject.dto.message.MessageRequestDto;
 import codezilla.handynestproject.model.entity.Message;
 import codezilla.handynestproject.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,7 @@ public class WebSocketController {
 
     @MessageMapping("/sendMessage")
     @SendTo("/topic/messages")
-    public Message sendMessage(Message message) {
-        return messageService.send(message.getSender().getId(),
-                message.getReceiver().getId(),
-                message.getText());
+    public Message sendMessage(MessageRequestDto messageRequestDto) {
+        return messageService.send(messageRequestDto);
     }
 }

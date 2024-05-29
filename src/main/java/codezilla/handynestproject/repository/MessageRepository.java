@@ -12,18 +12,14 @@ import java.util.Optional;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    @EntityGraph(value = "MessageWithSenderAndReceiverAndTask", type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(value = "MessageWithSenderAndReceiverAndChat", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Message> findById(Long id);
 
-    @EntityGraph(value = "MessageWithSenderAndReceiverAndTask", type = EntityGraph.EntityGraphType.LOAD)
-    List<Message> findByTaskId(Long TaskId);
+    @Query("SELECT m FROM Message m WHERE m.chat.id = :chatId")
+    List<Message> findByChatId(Long chatId);
 
-    @Query("SELECT m FROM Message m " +
-            "JOIN Task t ON m.task.id = t.id " +
-            "WHERE m.sender.id = :userId AND m.sender.id != :userId " +
-            "OR m.receiver.id = :userId AND m.receiver.id != :userId")
-    List<Message> findBySenderOrReceiverId(Long userId);
-
+    @Query("SELECT m FROM Message m WHERE m.sender.id = :userId OR m.receiver.id = :userId")
+    List<Message> findByUserId(Long userId);
 
 
 }

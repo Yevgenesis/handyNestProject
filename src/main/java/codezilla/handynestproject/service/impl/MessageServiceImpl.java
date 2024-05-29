@@ -1,9 +1,12 @@
 package codezilla.handynestproject.service.impl;
 
+import codezilla.handynestproject.dto.message.MessageRequestDto;
+import codezilla.handynestproject.mapper.ChatMapper;
 import codezilla.handynestproject.mapper.UserMapper;
+import codezilla.handynestproject.model.entity.Chat;
 import codezilla.handynestproject.model.entity.Message;
-import codezilla.handynestproject.model.entity.Notification;
 import codezilla.handynestproject.repository.MessageRepository;
+import codezilla.handynestproject.service.ChatService;
 import codezilla.handynestproject.service.MessageService;
 import codezilla.handynestproject.service.NotificationService;
 import codezilla.handynestproject.service.UserService;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
@@ -20,33 +24,34 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
     private final NotificationService notificationService;
+    private final ChatService chatService;
     private final UserService userService;
     private final UserMapper userMapper;
+    private final ChatMapper chatMapper;
 
     @Override
-    public Message send(Long senderId, Long receiverId, String text) {
+    public Message send(MessageRequestDto requestDto) {
+        chatService.existsById(requestDto.getChatId());
+        userService.existsById(requestDto.getSenderId());
+        userService.existsById(requestDto.getReceiverId());
+
         Message message = Message.builder()
-                .sender(userMapper.toUser(userService.findById(senderId)))
-                .receiver(userMapper.toUser(userService.findById(receiverId)))
-                .text(text)
-                .time(Timestamp.valueOf(LocalDateTime.now()))
+                .chat(chatMapper.toChatFromDto(chatService.findById(requestDto.getChatId())))
+                .sender(userService.findByIdReturnUser(requestDto.getSenderId()))
+                .receiver(userService.findByIdReturnUser(requestDto.getReceiverId()))
+                .text(requestDto.getText())
+                .createdOn(Timestamp.valueOf(LocalDateTime.now()))
+                .updatedOn(Timestamp.valueOf(LocalDateTime.now()))
                 .read(false)
                 .build();
-        messageRepository.save(message);
 
-        Notification notification = Notification.builder()
-                .user(userMapper.toUser(userService.findById(receiverId)))
-                .content("You have a new message")
-                .read(false)
-                .build();
-        notificationService.save(notification);
-
-        return message ;
+        return messageRepository.save(message);
     }
 
     @Override
     public List<Message> findByUserId(Long id) {
-        return messageRepository.findBySenderOrReceiverId(id);
+        userService.existsById(id);
+        return messageRepository.findByUserId(id);
     }
 
     @Override

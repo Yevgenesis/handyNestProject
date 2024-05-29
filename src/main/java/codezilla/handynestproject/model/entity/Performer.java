@@ -90,7 +90,7 @@ public class Performer {
     )
     private Set<Task> tasks = new HashSet<>();
 
-    @Column(name = "is_available")
+     @Column(name = "is_available")
     private boolean isAvailable;
 
     @Column(name = "performer_rating")

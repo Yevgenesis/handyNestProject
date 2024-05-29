@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
@@ -27,10 +28,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_messages")
-@NamedEntityGraph(name = "MessageWithSenderAndReceiverAndTask", attributeNodes = {
+@NamedEntityGraph(name = "MessageWithSenderAndReceiverAndChat", attributeNodes = {
         @NamedAttributeNode("sender"),
         @NamedAttributeNode("receiver"),
-        @NamedAttributeNode("task")
+        @NamedAttributeNode("chat")
 })
 @EntityListeners(AuditingEntityListener.class)
 public class Message {
@@ -48,15 +49,19 @@ public class Message {
     private User receiver;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_id", nullable = false)
-    private Task task;
+    @JoinColumn(name = "chat_id", nullable = false)
+    private Chat chat;
 
     @Column(nullable = false)
     private String text;
 
     @CreatedDate
     @Column(nullable = false)
-    private Timestamp time;
+    private Timestamp createdOn;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private Timestamp updatedOn;
 
     @Column(nullable = false)
     private boolean read;

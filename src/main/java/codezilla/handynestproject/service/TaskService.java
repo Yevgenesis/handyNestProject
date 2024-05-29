@@ -18,6 +18,14 @@ public interface TaskService {
 
     TaskResponseDto findById(Long taskId);
 
+    boolean existsById(Long taskId);
+
+    boolean completed(Long taskId);
+
+    boolean cancelled(Long taskId);
+
+    boolean canceledOrCompleted(Long taskId);
+
     List<TaskResponseDto> findAll();
 
     List<TaskResponseDto> findByStatus(TaskStatus status);
