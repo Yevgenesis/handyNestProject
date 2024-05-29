@@ -46,7 +46,7 @@ public class FeedbackController {
     }
 
     // Достать все фитбеки полученные конкретным юзером
-    @PreAuthorize("hasAnyRole('USER','PERFORMER')")
+//    @PreAuthorize("hasAnyRole('USER','PERFORMER')")
     @GetMapping("/user/{userId}")
     public List<FeedbackResponseDto> findReceivedForUserId(@PathVariable Long userId) {
         return feedbackService.findAllForUserId(userId);
