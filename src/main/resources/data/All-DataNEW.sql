@@ -110,7 +110,8 @@ VALUES (1,'USER'),
        (2,'PERFORMER'),
        (3,'PERFORMER'),
        (4,'PERFORMER'),
-       (5,'PERFORMER');
+       (5,'PERFORMER'),
+       (3,'ADMIN');
 
 -- исполнители
 INSERT INTO performer (id, phone_number, is_phone_verified, is_passport_verified, description, is_available,

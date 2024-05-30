@@ -7,14 +7,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -31,11 +31,12 @@ public class JwtService {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         // заполняем данные о пользователе
+        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         if (userDetails instanceof User userEntity) {
             claims.put("userId", userEntity);
             claims.put("login", userEntity.getEmail());
-            claims.put("role", ((User) userDetails).getRoles());
-//            claims.put("role", "USER"); // ToDo поместить список ролей
+//            claims.put("role", roles);
+            claims.put("role", userDetails.getAuthorities()); // ToDo поместить список ролей
         }
         return generateToken(claims, userDetails);
     }
