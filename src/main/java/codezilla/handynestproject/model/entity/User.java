@@ -79,6 +79,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<RoleName> roles = new HashSet<>();
 
+
+
     @OneToMany(
             mappedBy = "sender",
             cascade = CascadeType.ALL,

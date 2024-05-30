@@ -32,9 +32,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         var res =  new org.springframework.security.core.userdetails.User(user.getEmail(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority(RoleName.USER.name()))); // подтянуть все роли юзера
-//                user.getRoles().stream().map(auth -> new SimpleGrantedAuthority(auth.name()))
-//                        .collect(Collectors.toList()));
+//                List.of(new SimpleGrantedAuthority(RoleName.USER.name()))); // подтянуть все роли юзера
+                user.getRoles().stream().map(auth -> new SimpleGrantedAuthority(auth.name()))
+                        .collect(Collectors.toList()));
         return res;
     }
 }
