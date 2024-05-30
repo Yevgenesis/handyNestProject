@@ -22,10 +22,10 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepository.save(notification);
     }
 
-    @Override
-    public List<Notification> findUnread(Long userId) {
-        return notificationRepository.findByUserIdAndRead(userId, false);
-    }
+//    @Override
+//    public List<Notification> findUnread(Long userId) {
+//        return notificationRepository.findByUserIdAndReadIs(userId, false);
+//    }
 
     @Override
     public void markAsRead(Long id) {

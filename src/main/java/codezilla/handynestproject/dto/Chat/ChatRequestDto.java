@@ -12,15 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatRequestDto {
 
-    @NotNull(message = "Sender can't be empty")
-    private Long senderId;
+    @NotNull(message = "User can't be empty")
+    private Long userId;
 
-    @NotNull(message = "Receiver can't be empty")
-    private Long receiverId;
+    @NotNull(message = "Performer can't be empty")
+    private Long performerId;
 
     @NotNull(message = "Task can't be empty")
     private Long taskId;
 
-    @NotNull(message = "Text can't be empty")
-    private String text;
 }

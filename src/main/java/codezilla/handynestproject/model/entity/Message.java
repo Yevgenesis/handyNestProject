@@ -28,9 +28,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_messages")
-@NamedEntityGraph(name = "MessageWithSenderAndReceiverAndChat", attributeNodes = {
+@NamedEntityGraph(name = "MessageWithSenderAndChat", attributeNodes = {
         @NamedAttributeNode("sender"),
-        @NamedAttributeNode("receiver"),
         @NamedAttributeNode("chat")
 })
 @EntityListeners(AuditingEntityListener.class)
@@ -43,10 +42,6 @@ public class Message {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_id", nullable = false)
-    private User receiver;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id", nullable = false)
@@ -64,6 +59,6 @@ public class Message {
     private Timestamp updatedOn;
 
     @Column(nullable = false)
-    private boolean read;
+    private boolean isRead;
 
 }

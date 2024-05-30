@@ -16,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -82,11 +83,9 @@ public class Task {
     )
     private Set<Feedback> feedbacks;
 
-    @OneToMany(
-            mappedBy = "task",
+    @OneToMany(mappedBy = "task",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+            orphanRemoval = true)
     private Set<Chat> chats;
 
     @CreatedDate

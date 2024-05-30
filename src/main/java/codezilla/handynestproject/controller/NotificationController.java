@@ -17,11 +17,11 @@ import java.util.List;
 public class NotificationController {
 
     private final NotificationService notificationService;
-
-    @GetMapping("/{notificationId}")
-    public List<Notification> findUnread(@PathVariable Long id) {
-        return notificationService.findUnread(id);
-    }
+//
+//    @GetMapping("/{notificationId}")
+//    public List<Notification> findUnread(@PathVariable Long id) {
+//        return notificationService.findUnread(id);
+//    }
 
     @PutMapping
     public void markAsRead(@PathVariable Long notificationId) {

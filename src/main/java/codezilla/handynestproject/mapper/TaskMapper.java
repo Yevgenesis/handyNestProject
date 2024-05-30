@@ -18,7 +18,7 @@ public interface TaskMapper {
 //    @Mapping(target = "address.city", source = "city")
 //    @Mapping(target = "address.zip", source = "zip")
 //    @Mapping(target = "address.country", source = "country")
-    Task toTask(TaskRequestDto taskRequestDto);
+    Task toTask(TaskResponseDto taskResponseDto);
 
     Task toTaskUpdate(TaskUpdateRequestDto taskUpdateRequestDto);
 

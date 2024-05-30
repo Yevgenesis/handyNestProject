@@ -8,10 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +20,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -36,17 +34,13 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(
-            mappedBy = "chat",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<User> senders;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToMany(
-            mappedBy = "chat",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<User> receivers;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "performer_id")
+    private Performer performer;
 
     @OneToMany(
             mappedBy = "chat",
@@ -54,20 +48,20 @@ public class Chat {
             orphanRemoval = true)
     private Set<Message> messages;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_id", nullable = false)
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn(name = "task_id")
     private Task task;
 
     @CreatedDate
     @Column(nullable = false)
-    private Timestamp createOn;
+    private Timestamp createdOn;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private Timestamp updateOn;
+    private Timestamp updatedOn;
 
     @Column(nullable = false)
-    private boolean deleted;
+    private boolean isDeleted;
 
 
 }

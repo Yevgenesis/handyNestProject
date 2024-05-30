@@ -21,10 +21,6 @@ public class MessageResponseDto {
 
     private Long senderId;
 
-    private Long receiverId;
-
-    private Long taskId;
-
     private String text;
 
     private Timestamp createdOn;

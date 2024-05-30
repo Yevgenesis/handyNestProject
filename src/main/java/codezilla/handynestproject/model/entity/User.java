@@ -104,13 +104,6 @@ public class User {
     private Set<Message> sendMessages = new HashSet<>();
 
     @OneToMany(
-            mappedBy = "receiver",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY
-    )
-    private Set<Message> receivedMessages = new HashSet<>();
-
-    @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY

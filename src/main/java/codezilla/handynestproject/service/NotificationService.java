@@ -8,6 +8,6 @@ public interface NotificationService {
 
 
     Notification save(Notification notification);
-    List<Notification> findUnread(Long userId);
+//    List<Notification> findUnread(Long userId);
     void markAsRead(Long id);
 }

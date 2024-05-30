@@ -10,6 +10,7 @@ import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Address;
 import codezilla.handynestproject.model.entity.Category;
+import codezilla.handynestproject.model.entity.Chat;
 import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
@@ -91,7 +92,13 @@ public class TaskServiceImpl implements TaskService {
     public void cancelById(Long taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found"));
+        Set<Chat> chats = task.getChats();
+        for (Chat chat : chats) {
+            chat.setDeleted(true);
+        }
+        task.setChats(chats);
         task.setTaskStatus(TaskStatus.CANCELED);
+        taskRepository.save(task);
     }
 
     @Override
@@ -114,27 +121,7 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.existsById(taskId);
     }
 
-    @Override
-    public boolean completed(Long taskId) {
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found"));
-        task.getTaskStatus().equals(TaskStatus.COMPLETED);
-        return true;
-    }
 
-    @Override
-    public boolean cancelled(Long taskId) {
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found"));
-        task.getTaskStatus().equals(TaskStatus.CANCELED);
-        return true;
-    }
-
-    @Override
-    public boolean canceledOrCompleted(Long taskId) {
-        return cancelled(taskId) || completed(taskId);
-
-    }
 
     @Override
     public Task findTaskEntityByIdAndParticipantsId(Long taskId, Long userId) {

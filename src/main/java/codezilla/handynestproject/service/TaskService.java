@@ -20,11 +20,6 @@ public interface TaskService {
 
     boolean existsById(Long taskId);
 
-    boolean completed(Long taskId);
-
-    boolean cancelled(Long taskId);
-
-    boolean canceledOrCompleted(Long taskId);
 
     List<TaskResponseDto> findAll();
 
