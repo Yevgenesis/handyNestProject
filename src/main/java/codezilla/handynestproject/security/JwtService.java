@@ -1,6 +1,7 @@
 package codezilla.handynestproject.security;
 
 import codezilla.handynestproject.model.entity.User;
+import codezilla.handynestproject.model.enums.RoleName;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -33,7 +34,8 @@ public class JwtService {
         if (userDetails instanceof User userEntity) {
             claims.put("userId", userEntity);
             claims.put("login", userEntity.getEmail());
-            claims.put("role", ((User) userDetails).getRoles()); // ToDo поместить список ролей
+//            claims.put("role", ((User) userDetails).getRoles()); // ToDo поместить список ролей
+            claims.put("role", RoleName.USER); // ToDo поместить список ролей
         }
         return generateToken(claims, userDetails);
     }

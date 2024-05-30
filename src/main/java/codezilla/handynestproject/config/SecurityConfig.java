@@ -31,8 +31,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        //.requestMatchers("/feedbacks/**").permitAll()
-                        .anyRequest().permitAll()) // ToDo .authenticated() для прода
+//                        .requestMatchers("/feedbacks/**").permitAll()
+                        .anyRequest().authenticated()) // ToDo .authenticated() для прода, а .permitAll() для дев
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);

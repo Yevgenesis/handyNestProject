@@ -24,12 +24,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.getByEmail(username);
 
-        Set<RoleName> roleNameSet = user.getRoles();
+//        Set<RoleName> roleNameSet = user.getRoles();
+//        String email = user.getEmail();
+//        String password = user.getPassword();
+//        List<SimpleGrantedAuthority> roles = user.getRoles().stream().map(auth -> new SimpleGrantedAuthority(auth.name()))
+//                .toList();
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),
+        var res =  new org.springframework.security.core.userdetails.User(user.getEmail(),
                 user.getPassword(),
-//                List.of(new SimpleGrantedAuthority("PERFORMER"), new SimpleGrantedAuthority("USER"))); // подтянуть все роли юзера
-                user.getRoles().stream().map(auth -> new SimpleGrantedAuthority(auth.name()))
-                        .collect(Collectors.toList()));
+                List.of(new SimpleGrantedAuthority(RoleName.USER.name()))); // подтянуть все роли юзера
+//                user.getRoles().stream().map(auth -> new SimpleGrantedAuthority(auth.name()))
+//                        .collect(Collectors.toList()));
+        return res;
     }
 }
