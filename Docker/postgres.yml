@@ -5,6 +5,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=handydb
+      - POSTGRES_DB=handyDB
     ports:
       - '5432:5432'
