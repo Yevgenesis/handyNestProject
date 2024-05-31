@@ -10,7 +10,6 @@ import codezilla.handynestproject.service.ChatService;
 import codezilla.handynestproject.service.MessageService;
 import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +24,6 @@ public class MessageServiceImpl implements MessageService {
     private final UserService userService;
 
     private final ChatMapper chatMapper;
-    private final SimpMessagingTemplate messagingTemplate;
 
 
     @Transactional
@@ -43,7 +41,6 @@ public class MessageServiceImpl implements MessageService {
 
         Message savedMessage = messageRepository.save(message);
 
-        notifyUsers(savedMessage);
 
         return savedMessage;
     }
@@ -57,15 +54,5 @@ public class MessageServiceImpl implements MessageService {
         messageRepository.save(message);
     }
 
-    public void notifyUsers(Message message) {
-        messagingTemplate.convertAndSend("/topic/messages", message);
-        messagingTemplate.convertAndSendToUser(message.getChat().getUser().getId().toString(),
-                "/queue/messages", message);
 
-        if (message.getChat().getPerformer() != null) {
-            messagingTemplate.convertAndSendToUser(
-                    message.getChat().getPerformer().getId().toString(),
-                    "/queue/messages", message);
-        }
-    }
 }

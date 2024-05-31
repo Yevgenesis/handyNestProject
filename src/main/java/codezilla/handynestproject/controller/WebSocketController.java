@@ -20,7 +20,7 @@ public class WebSocketController {
 
 
     @MessageMapping("/sendMessage")
-    @SendTo("/topic/chat")
+    @SendTo("/topic/messages")
     public MessageResponseDto sendMessage(MessageRequestDto messageRequestDto) {
         return messageMapper.toMessageResponseDto(messageService.send(messageRequestDto));
     }
