@@ -62,6 +62,4 @@ public class Chat {
 
     @Column(nullable = false)
     private boolean isDeleted;
-
-
 }

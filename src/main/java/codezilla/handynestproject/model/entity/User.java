@@ -103,14 +103,6 @@ public class User {
     )
     private Set<Message> sendMessages = new HashSet<>();
 
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY
-    )
-    private Set<Notification> notifications = new HashSet<>();
-
-
     @Column(name = "user_rating")
     @Builder.Default
     private Double positiveFeedbackPercent = 100.0;
