@@ -31,12 +31,10 @@ public class JwtService {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         // заполняем данные о пользователе
-        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         if (userDetails instanceof User userEntity) {
             claims.put("userId", userEntity);
             claims.put("login", userEntity.getEmail());
-//            claims.put("role", roles);
-            claims.put("role", userDetails.getAuthorities()); // ToDo поместить список ролей
+             claims.put("role", userDetails.getAuthorities()); // ToDo поместить список ролей
         }
         return generateToken(claims, userDetails);
     }

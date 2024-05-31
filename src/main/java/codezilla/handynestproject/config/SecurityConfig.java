@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
 //                        .requestMatchers("/feedbacks/**").permitAll()
-                        .anyRequest().authenticated()) // ToDo .authenticated() для прода, а .permitAll() для дев
+                        .anyRequest().permitAll()) // ToDo .authenticated() для прода, а .permitAll() для дев
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
