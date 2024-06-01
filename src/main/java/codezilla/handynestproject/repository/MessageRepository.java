@@ -19,5 +19,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findByChatId(Long chatId);
 
 
-
+    List<Message> findBySenderIdAndIsReadFalse(Long userId);
 }

@@ -4,11 +4,10 @@ import codezilla.handynestproject.dto.message.MessageRequestDto;
 import codezilla.handynestproject.dto.message.MessageResponseDto;
 import codezilla.handynestproject.model.entity.Message;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = UserMapper.class)
+@Mapper(componentModel = "spring", uses = {UserMapper.class, ChatMapper.class} )
 public interface MessageMapper {
 
 

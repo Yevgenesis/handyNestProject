@@ -12,7 +12,7 @@
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/chat', function(messageOutput) {
+                stompClient.subscribe('/topic/messages', function(messageOutput) {
                     showMessage(JSON.parse(messageOutput.body));
                 });
             });
@@ -25,7 +25,7 @@
                 senderId: 1, // Замените на ID отправителя
                 text: messageInput.value
             };
-            stompClient.send("/app/sendMessage", {}, JSON.stringify(message));
+            stompClient.send("/app/chat", {}, JSON.stringify(message));  // Маршрут должен соответствовать методу @MessageMapping в контроллере
             messageInput.value = '';
         }
 
