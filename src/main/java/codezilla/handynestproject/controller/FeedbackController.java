@@ -5,6 +5,8 @@ import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 import codezilla.handynestproject.service.FeedbackService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,9 +47,19 @@ public class FeedbackController {
     }
 
     // Достать все фитбеки полученные конкретным юзером
+//    @PreAuthorize("hasAnyRole('USER','PERFORMER')")
     @GetMapping("/user/{userId}")
     public List<FeedbackResponseDto> findReceivedForUserId(@PathVariable Long userId) {
         return feedbackService.findAllForUserId(userId);
+    }
+
+    // Достать все фитбеки полученные конкретным юзером
+//    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PreAuthorize("hasAnyAuthority('USER','PERFORMER')")
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/current")
+    public List<FeedbackResponseDto> findReceivedForCurrentUser() {
+        return feedbackService.findAllForCurrentUser();
     }
 
     // Достать все фитбеки полученные конкретным перформером

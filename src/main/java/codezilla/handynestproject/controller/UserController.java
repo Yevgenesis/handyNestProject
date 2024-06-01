@@ -3,6 +3,9 @@ package codezilla.handynestproject.controller;
 import codezilla.handynestproject.dto.user.UserRequestDto;
 import codezilla.handynestproject.dto.user.UserRequestUpdateDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
+import codezilla.handynestproject.security.AuthenticationService;
+import codezilla.handynestproject.security.model.JwtAuthenticationResponse;
+import codezilla.handynestproject.security.model.SignInRequest;
 import codezilla.handynestproject.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    private final AuthenticationService authenticationService;
 
     // GET
     @GetMapping
@@ -34,6 +39,10 @@ public class UserController {
         return userService.create(userRequestDto);
     }
 
+    @PostMapping("/login")
+    public JwtAuthenticationResponse login(@RequestBody SignInRequest request) {
+        return authenticationService.authenticate(request);
+    }
     // PUT
     @PutMapping
     public UserResponseDto update(@RequestBody @Valid UserRequestUpdateDto updateDto) {

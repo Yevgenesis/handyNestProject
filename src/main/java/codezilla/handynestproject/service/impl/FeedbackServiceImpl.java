@@ -2,6 +2,7 @@ package codezilla.handynestproject.service.impl;
 
 import codezilla.handynestproject.dto.feedback.FeedbackCreateRequestDto;
 import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
+import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.exception.FeedbackErrorException;
 import codezilla.handynestproject.exception.FeedbackNotFoundException;
 import codezilla.handynestproject.mapper.FeedbackMapper;
@@ -108,10 +109,14 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<FeedbackResponseDto> findAllForUserId(Long userId) {
-        userService.findById(userId);
+        userService.checkExists(userId);
         List<Feedback> feedbacks = feedbackRepository.findAllForUserId(userId);
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
-
+    @Override
+    public List<FeedbackResponseDto> findAllForCurrentUser() {
+        Long currentUserId = userService.getCurrentUserId();
+        return findAllForUserId(currentUserId);
+    }
 }

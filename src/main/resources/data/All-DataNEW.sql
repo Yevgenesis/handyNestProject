@@ -93,6 +93,26 @@ VALUES ('Джон', 'Доу', 'john.doe@example.com', true, 'password123',
        ('Светлана', 'Иванова', 'svetlana.ivanova@example.com', true, 'sveta123',
         '2024-05-01 15:00:00', '2024-05-01 15:00:00', false, 15,100);
 
+-- роли
+INSERT INTO user_roles(user_id, role_name)
+VALUES (1,'USER'),
+       (2,'USER'),
+       (3,'USER'),
+       (4,'USER'),
+       (5,'USER'),
+       (6,'USER'),
+       (7,'USER'),
+       (8,'USER'),
+       (9,'USER'),
+       (10,'USER'),
+       (11,'USER'),
+       (1,'PERFORMER'),
+       (2,'PERFORMER'),
+       (3,'PERFORMER'),
+       (4,'PERFORMER'),
+       (5,'PERFORMER'),
+       (3,'ADMIN');
+
 -- исполнители
 INSERT INTO performer (id, phone_number, is_phone_verified, is_passport_verified, description, is_available,
                        performer_rating, task_count, created_on, updated_on, address_id)
