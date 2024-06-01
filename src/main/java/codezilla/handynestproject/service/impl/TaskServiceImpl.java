@@ -201,7 +201,8 @@ public class TaskServiceImpl implements TaskService {
                 || task.getTaskStatus().equals(TaskStatus.COMPLETED)) {
             throw new TaskNotFoundException("Task have status: " + task.getTaskStatus());
         }
-        // только заказчик может изменить статус на COMPLETED
+        // TODO только заказчик может изменить статус на COMPLETED
+
         task.setTaskStatus(status);
         Task updatedTask = taskRepository.save(task);
 

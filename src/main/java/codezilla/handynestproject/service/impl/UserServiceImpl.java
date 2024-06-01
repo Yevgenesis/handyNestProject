@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         return userMapper.userToDto(user);
     }
-
+//TODO add User isDeleted
     @Override
     public User findByIdReturnUser(Long id) {
         Optional<User> user = userRepository.findById(id);
