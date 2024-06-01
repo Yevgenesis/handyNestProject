@@ -31,8 +31,17 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
+//                        .requestMatchers("/users/**",
+//                                "/attachments/**",
+//                                "/categories/**",
+//                                "feedbacks/**",
+//                                "/performers/**",
+//                                "/tasks/**",
+//                                "/v3/api-docs/**",
+//                                "/swagger-ui/**")
 //                        .requestMatchers("/feedbacks/**").permitAll()
-                        .anyRequest().permitAll()) // ToDo .authenticated() для прода, а .permitAll() для дев
+                        .anyRequest()
+                        .permitAll()) // ToDo .authenticated() для прода, а .permitAll() для дев
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
