@@ -1,5 +1,6 @@
 package codezilla.handynestproject.model.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,19 +41,19 @@ import java.util.Set;
         @NamedAttributeNode("address")
 }
 )
-//@EqualsAndHashCode(exclude = {"tasks", "address", "categories","user"})
-//@ToString(exclude = {"tasks", "address", "categories","user"})
 @EntityListeners(AuditingEntityListener.class)
 public class Performer {
 
     @Id
+    @Schema(name = "Performer id",example = "1", required = true)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     @MapsId
+    @Schema(name = "User id from which the performer was created",example = "1", required = true)
     private User user;
-
+    @Schema(name = "Performer phone number",example = "+4912345678978", required = true)
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
