@@ -24,7 +24,7 @@ public class TaskUpdateRequestDto {
     @NotNull(message = "Price can not be null")
     private Double price;
     @NotNull(message = "Address can not be null")
-    private AddressDto addressDto;//TODO возможно переделать адрес построчно
+    private AddressDto addressDto;// TODO возможно переделать адрес построчно
     @NotNull(message = "Address can not be null")
     private Long workingTimeId;
 

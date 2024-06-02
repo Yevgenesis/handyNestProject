@@ -19,9 +19,15 @@ public interface UserService {
 
     UserResponseDto create(UserRequestDto userRequestDto);
 
+    User getByEmail(String email);
+
+    Long getCurrentUserId();
+
     User findByIdReturnUser(Long id);
 
     boolean existsById(Long id);
 
     UserResponseDto update(UserRequestUpdateDto updateDto);
+
+    void checkExists(Long id);
 }
