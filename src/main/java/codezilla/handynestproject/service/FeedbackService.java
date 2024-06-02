@@ -14,13 +14,14 @@ public interface FeedbackService {
 
     FeedbackResponseDto findById(Long id);
 
-    List<FeedbackResponseDto> findByTaskId(Long taskId);
+    List<FeedbackResponseDto> findAllByTaskId(Long taskId);
 
-    List<FeedbackResponseDto> findBySenderId(Long senderId);
+    List<FeedbackResponseDto> findAllBySenderId(Long senderId);
 
-    List<FeedbackResponseDto> findReceivedByPerformerId(Long performerId);
+    List<FeedbackResponseDto> findAllReceivedByPerformerId(Long performerId);
 
-    List<FeedbackResponseDto> findAllForUserId(Long userId);
+    // Достать все фитбеки полученные конкретным юзером
+    List<FeedbackResponseDto> findAllReceivedByUserId(Long userId);
 
     List<FeedbackResponseDto> findAllForCurrentUser();
 }

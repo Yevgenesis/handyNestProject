@@ -9,7 +9,6 @@ import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Address;
-import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -135,11 +133,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponseDto> findByPerformerId(Long performerId) {
+    public List<TaskResponseDto> findAllByPerformerId(Long performerId) {
         if (!performerService.existsById(performerId)) {
             throw new PerformerNotFoundException("Performer with id:" + performerId + " not found");
         }
-        List<Task> tasks = taskRepository.findTasksByPerformerId(performerId);
+        List<Task> tasks = taskRepository.findAllByPerformerId(performerId);
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 

@@ -1,6 +1,7 @@
 package codezilla.handynestproject.repository;
 
 import codezilla.handynestproject.model.entity.User;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,4 +32,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             """, nativeQuery = true)
     Double getRatingByUserId(@Param("userId") Long userId);
 
+    Optional<User> findByEmail(String email);
 }
