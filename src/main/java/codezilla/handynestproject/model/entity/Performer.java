@@ -51,18 +51,22 @@ public class Performer {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     @MapsId
-    @Schema(name = "User id from which the performer was created",example = "1", required = true)
+    @Schema(description = "User id from which the performer was created", example = "1", required = true)
     private User user;
+
     @Schema(name = "Performer phone number",example = "+4912345678978", required = true)
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
+    @Schema(description = "Indicates if the phone number is verified", example = "true")
     @Column(name = "is_phone_verified")
     private boolean isPhoneVerified;
 
+    @Schema(description = "Indicates if the passport is verified", example = "true")
     @Column(name = "is_passport_verified")
     private boolean isPassportVerified;
 
+    @Schema(description = "Description of the performer", example = "Experienced plumber")
     @Column(name = "description")
     private String description;
 
@@ -73,6 +77,7 @@ public class Performer {
             joinColumns = @JoinColumn(name = "performer_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
     )
+    @Schema(description = "Categories associated with the performer")
     private Set<Category> categories = new HashSet<>();
 
 
@@ -81,6 +86,7 @@ public class Performer {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
+    @Schema(description = "Address of the performer")
     private Address address;
 
     @OneToMany(
@@ -89,26 +95,31 @@ public class Performer {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
+    @Schema(description = "Tasks assigned to the performer")
     private Set<Task> tasks = new HashSet<>();
 
-     @Column(name = "is_available")
+    @Schema(description = "Indicates if the performer is available", example = "true")
+    @Column(name = "is_available")
     private boolean isAvailable;
 
+    @Schema(description = "Positive feedback percentage of the performer", example = "0.0")
     @Column(name = "performer_rating")
     @Builder.Default
     private Double positiveFeedbackPercent = 0.0;
 
     @Builder.Default
     @Column(name = "task_count", nullable = false)
+    @Schema(description = "Number of tasks completed by the performer", example = "0")
     private Long taskCount = 0L;
 
-
+    @Schema(description = "Date when the performer was created", example = "2024-01-01T00:00:00.000Z")
     @CreatedDate
     @Column(name = "created_on", updatable = false, nullable = false)
     private Timestamp createdOn;
 
     @LastModifiedDate
     @Column(name = "updated_on", nullable = false)
+    @Schema(description = "Date when the performer was last updated", example = "2024-01-01T00:00:00.000Z")
     private Timestamp updatedOn;
 
     public void increaseTaskCounter() {
