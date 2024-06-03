@@ -90,7 +90,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void cancelById(Long taskId) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Not found task with id:" + taskId));
                 .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found"));
         Set<Chat> chats = task.getChats();
         for (Chat chat : chats) {

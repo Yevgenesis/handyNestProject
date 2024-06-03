@@ -3,8 +3,14 @@ package codezilla.handynestproject.controller;
 import codezilla.handynestproject.dto.feedback.FeedbackCreateRequestDto;
 import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
 import codezilla.handynestproject.service.FeedbackService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,9 +106,10 @@ public class FeedbackController {
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
     @GetMapping("/task/{taskId}")
     public List<FeedbackResponseDto> findByTaskID(@PathVariable Long taskId) {
-        return feedbackService.findAllByTaskId(taskId);
         log.info("Find feedback by task id: {}", taskId);
-        return feedbackService.findByTaskId(taskId);
+        return feedbackService.findAllByTaskId(taskId);
+
+
     }
 
     /**
@@ -121,10 +128,8 @@ public class FeedbackController {
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
     @GetMapping("/user/{userId}")
     public List<FeedbackResponseDto> findReceivedByUserId(@PathVariable Long userId) {
-        return feedbackService.findAllReceivedByUserId(userId);
-    public List<FeedbackResponseDto> findReceivedForUserId(@PathVariable Long userId) {
         log.info("Find received feedbacks by user id: {}", userId);
-        return feedbackService.findAllForUserId(userId);
+        return feedbackService.findAllReceivedByUserId(userId);
     }
     //TODO tests method
     // Достать все фитбеки полученные конкретным юзером
@@ -164,9 +169,8 @@ public class FeedbackController {
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
     @GetMapping("/performer/{performerId}")
     public List<FeedbackResponseDto> findReceivedForPerformerId(@PathVariable Long performerId) {
-        return feedbackService.findAllReceivedByPerformerId(performerId);
         log.info("Find received feedbacks by performer id: {}", performerId);
-        return feedbackService.findAllForPerformerId(performerId);
+        return feedbackService.findAllReceivedByPerformerId(performerId);
     }
 
 }
