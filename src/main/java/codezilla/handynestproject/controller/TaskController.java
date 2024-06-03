@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -104,6 +105,7 @@ public class TaskController {
     @GetMapping("/open")
     public List<TaskResponseDto> findAvailable() {
         log.info("Find available tasks");
+    public List<TaskResponseDto> findAllAvailable() {
         return taskService.findAvailableTasks();
     }
 
@@ -146,6 +148,7 @@ public class TaskController {
         return taskService.findByUserId(id);
     }
 
+    // Достать все таски перформера (со всеми статусами)
     /**
      * get request
      * @param id
@@ -161,6 +164,8 @@ public class TaskController {
     })
     @PreAuthorize("hasAnyAuthority('PERFORMER','ADMIN')")
     @GetMapping("/performer/{id}")
+    public List<TaskResponseDto> findAllByPerformerId(@PathVariable Long id) {
+        return taskService.findAllByPerformerId(id);
     public List<TaskResponseDto> findByPerformerId(@PathVariable Long id) {
         log.info("Find all tasks for performer: {}", id);
         return taskService.findByPerformerId(id);

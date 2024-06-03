@@ -1,7 +1,6 @@
 package codezilla.handynestproject.security;
 
 import codezilla.handynestproject.model.entity.User;
-import codezilla.handynestproject.model.enums.RoleName;
 import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor

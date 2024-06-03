@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateRating(User user) {
-        Double newRating = userRepository.findAverageRatingByUserId(user.getId());
+        Double newRating = userRepository.getRatingByUserId(user.getId());
         user.setPositiveFeedbackPercent(newRating);
         userRepository.save(user);
     }

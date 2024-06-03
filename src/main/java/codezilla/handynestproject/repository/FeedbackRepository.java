@@ -25,13 +25,15 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     @EntityGraph(value = "FeedbackWithUserAndTask", type = EntityGraph.EntityGraphType.LOAD)
     List<Feedback> findBySenderId(Long senderId);
 
+    // Достать все фитбеки полученные конкретным перформером
     @Query("SELECT f FROM Feedback f " +
             "JOIN Task t ON f.task.id = t.id " +
             "WHERE t.performer.id = :performerId AND f.sender.id != :performerId")
-    List<Feedback> findAllForPerformerId(@Param("performerId") Long performerId);
+    List<Feedback> findReceivedByPerformerId(@Param("performerId") Long performerId);
 
+    // Достать все фитбеки полученные конкретным юзером
     @Query("SELECT f FROM Feedback f " +
             "JOIN Task t ON f.task.id = t.id " +
             "WHERE t.user.id = :userId AND f.sender.id != :userId")
-    List<Feedback> findAllForUserId(Long userId);
+    List<Feedback> findReceivedByUserId(Long userId);
 }

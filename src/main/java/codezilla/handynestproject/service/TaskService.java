@@ -31,7 +31,7 @@ public interface TaskService {
 
     List<TaskResponseDto> findByUserId(Long userId);
 
-    List<TaskResponseDto> findByPerformerId(Long performerId);
+    List<TaskResponseDto> findAllByPerformerId(Long performerId);
 
     TaskResponseDto addPerformer(Long taskId, Long performerId);
 

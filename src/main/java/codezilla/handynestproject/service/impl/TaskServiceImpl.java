@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -91,6 +90,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void cancelById(Long taskId) {
         Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Not found task with id:" + taskId));
                 .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found"));
         Set<Chat> chats = task.getChats();
         for (Chat chat : chats) {
@@ -112,7 +112,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public TaskResponseDto findById(Long taskId) {
         Optional<Task> task = Optional.of(taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found")));
+                .orElseThrow(() -> new TaskNotFoundException("Not found task with id: " + taskId)));
         return taskMapper.toTaskResponseDto(task.get());
     }
 
@@ -128,7 +128,7 @@ public class TaskServiceImpl implements TaskService {
 
         Optional<Task> task = Optional.of(taskRepository
                 .findTaskByIdAndStatusIsNotOPENAndPerformerOrUser(taskId, userId)
-                .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found")));
+                .orElseThrow(() -> new TaskNotFoundException("Not found task with id: " + taskId)));
         return task.get();
     }
 
@@ -149,11 +149,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponseDto> findByPerformerId(Long performerId) {
+    public List<TaskResponseDto> findAllByPerformerId(Long performerId) {
         if (!performerService.existsById(performerId)) {
             throw new PerformerNotFoundException("Performer with id:" + performerId + " not found");
         }
-        List<Task> tasks = taskRepository.findTasksByPerformerId(performerId);
+        List<Task> tasks = taskRepository.findAllByPerformerId(performerId);
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
@@ -184,7 +184,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public TaskResponseDto removePerformer(Long taskId) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found"));
+                .orElseThrow(() -> new TaskNotFoundException("Not found task with id: " + taskId));
         if (task.getPerformer() == null)
             throw new PerformerNotFoundException("Performer not found");
         task.setTaskStatus(TaskStatus.OPEN);
@@ -196,7 +196,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public TaskResponseDto updateStatusById(Long taskId, TaskStatus status) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found"));
+                .orElseThrow(() -> new TaskNotFoundException("Not found task with id: " + taskId));
         if (task.getTaskStatus().equals(TaskStatus.CANCELED)
                 || task.getTaskStatus().equals(TaskStatus.COMPLETED)) {
             throw new TaskNotFoundException("Task have status: " + task.getTaskStatus());

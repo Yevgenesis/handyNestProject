@@ -2,7 +2,6 @@ package codezilla.handynestproject.service.impl;
 
 import codezilla.handynestproject.dto.feedback.FeedbackCreateRequestDto;
 import codezilla.handynestproject.dto.feedback.FeedbackResponseDto;
-import codezilla.handynestproject.dto.user.UserResponseDto;
 import codezilla.handynestproject.exception.FeedbackErrorException;
 import codezilla.handynestproject.exception.FeedbackNotFoundException;
 import codezilla.handynestproject.mapper.FeedbackMapper;
@@ -45,7 +44,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<FeedbackResponseDto> findByTaskId(Long taskId) {
+    public List<FeedbackResponseDto> findAllByTaskId(Long taskId) {
         taskService.findById(taskId);
         List<Feedback> feedbacks = feedbackRepository.findByTaskId(taskId);
         List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
@@ -53,7 +52,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<FeedbackResponseDto> findBySenderId(Long senderId) {
+    public List<FeedbackResponseDto> findAllBySenderId(Long senderId) {
         List<Feedback> feedbacks = feedbackRepository.findBySenderId(senderId);
         List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
         return feedbacksDtos;
@@ -100,23 +99,25 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackMapper.feedbackToDto(savedFeedback);
     }
 
+    // Достать все фитбеки полученные конкретным перформером
     @Override
-    public List<FeedbackResponseDto> findAllForPerformerId(Long performerId) {
+    public List<FeedbackResponseDto> findAllReceivedByPerformerId(Long performerId) {
         performerService.findById(performerId);
-        List<Feedback> feedbacks = feedbackRepository.findAllForPerformerId(performerId);
+        List<Feedback> feedbacks = feedbackRepository.findReceivedByPerformerId(performerId);
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
+    // Достать все фитбеки полученные конкретным юзером
     @Override
-    public List<FeedbackResponseDto> findAllForUserId(Long userId) {
+    public List<FeedbackResponseDto> findAllReceivedByUserId(Long userId) {
         userService.checkExists(userId);
-        List<Feedback> feedbacks = feedbackRepository.findAllForUserId(userId);
+        List<Feedback> feedbacks = feedbackRepository.findReceivedByUserId(userId);
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
     @Override
     public List<FeedbackResponseDto> findAllForCurrentUser() {
         Long currentUserId = userService.getCurrentUserId();
-        return findAllForUserId(currentUserId);
+        return findAllReceivedByUserId(currentUserId);
     }
 }

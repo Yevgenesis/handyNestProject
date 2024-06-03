@@ -1,6 +1,7 @@
 package codezilla.handynestproject.repository;
 
 import codezilla.handynestproject.model.entity.User;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,8 +17,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User save(User user);
 
-    @Query("SELECT AVG(f.grade) FROM Feedback f join Task t on f.task.id=t.id WHERE t.user.id = :userId")
-    Double findAverageRatingByUserId(@Param("userId") Long userId);
+    // Возвращает процент позитивных отзывов с оценкой 4 или 5
+    // И округляет ответ до одного знака после запятой.
+    // Сделали подсчёт через запрос только для практики
+    @Query(value = """
+            SELECT COALESCE(
+                ROUND(
+                    COUNT(f) FILTER (WHERE f.grade >= 4) * 100.0 / NULLIF(COUNT(f), 0)
+                ,1)
+            ,100)
+            FROM feedback f
+            JOIN task t ON f.task_id = t.id
+            WHERE t.user_id = :userId AND f.sender_id != :userId
+            """, nativeQuery = true)
+    Double getRatingByUserId(@Param("userId") Long userId);
 
     Optional<User> findByEmail(String email);
 }
