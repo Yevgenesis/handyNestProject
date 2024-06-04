@@ -54,5 +54,7 @@ public class Feedback {
     @Column(name = "created_on", updatable = false, nullable = false)
     private Timestamp createdOn;
 
+    //feedback | user_id | task_id |user_type (user, performer)
+
 
 }

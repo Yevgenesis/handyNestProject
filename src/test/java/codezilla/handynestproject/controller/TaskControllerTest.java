@@ -112,7 +112,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
-    void findAvailableTest() {
+    void findAllAvailableTest() {
         mockMvc.perform(get("/tasks/open"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(3));
@@ -137,7 +137,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
-    void findByPerformerIdTest() {
+    void findAllByPerformerIdTest() {
         Long userId = 3L;
         mockMvc.perform(get("/tasks/performer/{id}", userId))
                 .andExpect(status().isOk())
@@ -146,7 +146,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
-    void findByPerformerIdExistingUserIdTest() {
+    void findAllByPerformerIdExistingUserIdTest() {
         Long notExistingUserId = 999L;
         mockMvc.perform(get("/tasks/performer/{id}", notExistingUserId))
                 .andExpect(status().isNotFound());

@@ -7,14 +7,7 @@ import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,7 +36,7 @@ public class TaskController {
     }
 
     @GetMapping("/open")
-    public List<TaskResponseDto> findAvailable() {
+    public List<TaskResponseDto> findAllAvailable() {
         return taskService.findAvailableTasks();
     }
 
@@ -59,9 +52,10 @@ public class TaskController {
         return taskService.findByUserId(id);
     }
 
+    // Достать все таски перформера (со всеми статусами)
     @GetMapping("/performer/{id}")
-    public List<TaskResponseDto> findByPerformerId(@PathVariable Long id) {
-        return taskService.findByPerformerId(id);
+    public List<TaskResponseDto> findAllByPerformerId(@PathVariable Long id) {
+        return taskService.findAllByPerformerId(id);
     }
 
     @GetMapping("/status/{status}")

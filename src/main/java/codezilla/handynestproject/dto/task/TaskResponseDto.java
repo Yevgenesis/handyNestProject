@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
-// ToDo проверить (Тестовый DTO)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

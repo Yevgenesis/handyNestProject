@@ -44,7 +44,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<FeedbackResponseDto> findByTaskId(Long taskId) {
+    public List<FeedbackResponseDto> findAllByTaskId(Long taskId) {
         taskService.findById(taskId);
         List<Feedback> feedbacks = feedbackRepository.findByTaskId(taskId);
         List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
@@ -52,7 +52,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<FeedbackResponseDto> findBySenderId(Long senderId) {
+    public List<FeedbackResponseDto> findAllBySenderId(Long senderId) {
         List<Feedback> feedbacks = feedbackRepository.findBySenderId(senderId);
         List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
         return feedbacksDtos;
@@ -101,7 +101,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     // Достать все фитбеки полученные конкретным перформером
     @Override
-    public List<FeedbackResponseDto> findReceivedByPerformerId(Long performerId) {
+    public List<FeedbackResponseDto> findAllReceivedByPerformerId(Long performerId) {
         performerService.findById(performerId);
         List<Feedback> feedbacks = feedbackRepository.findReceivedByPerformerId(performerId);
         return feedbackMapper.feedbackToListDto(feedbacks);
@@ -109,11 +109,15 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     // Достать все фитбеки полученные конкретным юзером
     @Override
-    public List<FeedbackResponseDto> findReceivedByUserId(Long userId) {
-        userService.findById(userId);
+    public List<FeedbackResponseDto> findAllReceivedByUserId(Long userId) {
+        userService.checkExists(userId);
         List<Feedback> feedbacks = feedbackRepository.findReceivedByUserId(userId);
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
-
+    @Override
+    public List<FeedbackResponseDto> findAllForCurrentUser() {
+        Long currentUserId = userService.getCurrentUserId();
+        return findAllReceivedByUserId(currentUserId);
+    }
 }

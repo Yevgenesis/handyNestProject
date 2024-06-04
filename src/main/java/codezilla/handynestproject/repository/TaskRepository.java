@@ -28,7 +28,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findTaskByTaskStatus(TaskStatus taskStatus);
 
-    List<Task> findTasksByPerformerId(Long performerId);
+    List<Task> findAllByPerformerId(Long performerId);
 
     @Query("SELECT t FROM Task t WHERE t.id = :id AND t.taskStatus != 'OPEN' AND (t.performer.id = :userId OR t.user.id = :userId)")
     Optional<Task> findTaskByIdAndStatusIsNotOPENAndPerformerOrUser(Long id, Long userId);
