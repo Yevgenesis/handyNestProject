@@ -24,6 +24,12 @@
 - Java 17
 - Maven 3.6.6
 - Docker
+- Java Spring Boot
+- Spring Security
+- Lombok
+- Hibernate
+- Liquibase
+
 
 
 ### Установка
@@ -69,3 +75,5 @@ mvn jacoco:report
 # Отчет о покрытии будет сгенерирован в директории target/site/jacoco
 
 
+Облачная инфраструктура: 
+Amazon Web Services (можно рассмотреть другие облачные платформы)
