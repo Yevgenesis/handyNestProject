@@ -20,6 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service for managing feedback.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class FeedbackServiceImpl implements FeedbackService {
@@ -30,12 +34,23 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final PerformerService performerService;
     private final UserService userService;
 
+    /**
+     * Finds all feedback.
+     *
+     * @return A list of feedback DTOs.
+     */
     public List<FeedbackResponseDto> findAll() {
         List<Feedback> feedbackRepositoryList = feedbackRepository.findAll();
         List<FeedbackResponseDto> feedbackResponseDtoList = feedbackMapper.feedbackToListDto(feedbackRepositoryList);
         return feedbackResponseDtoList;
     }
 
+    /**
+     * Finds feedback by its ID.
+     *
+     * @param id The ID of the feedback to find.
+     * @return The found feedback DTO.
+     */
     @Override
     public FeedbackResponseDto findById(Long id) {
         Optional<Feedback> feedbackResponse = feedbackRepository.findById(id);
@@ -43,6 +58,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackResponseDto;
     }
 
+    /**
+     * Finds all feedback associated with a given task.
+     *
+     * @param taskId The ID of the task.
+     * @return A list of feedback DTOs.
+     */
     @Override
     public List<FeedbackResponseDto> findAllByTaskId(Long taskId) {
         taskService.findById(taskId);
@@ -51,6 +72,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbacksDtos;
     }
 
+    /**
+     * Finds all feedback sent by a given user.
+     *
+     * @param senderId The ID of the sender.
+     * @return A list of feedback DTOs.
+     */
     @Override
     public List<FeedbackResponseDto> findAllBySenderId(Long senderId) {
         List<Feedback> feedbacks = feedbackRepository.findBySenderId(senderId);
@@ -60,6 +87,13 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 
     // ToDo оптимизировать запросы
+
+    /**
+     * Adds a new feedback.
+     *
+     * @param dto The feedback creation DTO.
+     * @return The created feedback DTO.
+     */
     @Override
     @Transactional
     public FeedbackResponseDto add(FeedbackCreateRequestDto dto) {
@@ -99,7 +133,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackMapper.feedbackToDto(savedFeedback);
     }
 
-    // Достать все фитбеки полученные конкретным перформером
+    /**
+     * Finds all feedback received by a given performer.
+     *
+     * @param performerId The ID of the performer.
+     * @return A list of feedback DTOs.
+     */
     @Override
     public List<FeedbackResponseDto> findAllReceivedByPerformerId(Long performerId) {
         performerService.findById(performerId);
@@ -107,7 +146,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
-    // Достать все фитбеки полученные конкретным юзером
+    /**
+     * Finds all feedback received by a given user.
+     *
+     * @param userId The ID of the user.
+     * @return A list of feedback DTOs.
+     */
     @Override
     public List<FeedbackResponseDto> findAllReceivedByUserId(Long userId) {
         userService.checkExists(userId);
@@ -115,6 +159,11 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
+    /**
+     * Finds all feedback received by the current user.
+     *
+     * @return A list of feedback DTOs.
+     */
     @Override
     public List<FeedbackResponseDto> findAllForCurrentUser() {
         Long currentUserId = userService.getCurrentUserId();

@@ -1,8 +1,6 @@
 package codezilla.handynestproject.controller;
 
 import codezilla.handynestproject.dto.message.MessageRequestDto;
-import codezilla.handynestproject.repository.MessageRepository;
-import codezilla.handynestproject.service.MessageService;
 import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;

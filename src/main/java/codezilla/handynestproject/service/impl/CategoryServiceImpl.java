@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Service for managing categories.
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,11 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private List<Category> rootCategories;
 
+    /**
+     * Returns a list of all categories as a nested structure.
+     *
+     * @return A list of CategoryResponseDto objects representing the category tree.
+     */
     @Override
     @Transactional(readOnly = true)
     public List<CategoryResponseDto> getListCategoryResponseDto() {
@@ -31,6 +39,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Finds categories by their IDs.
+     *
+     * @param ids A list of category IDs.
+     * @return A set of Category objects.
+     */
     @Override
     public Set<Category> findCategoriesByIdIn(List<Long> ids) {
         Set<Category> categories = new HashSet<>();
@@ -41,12 +55,24 @@ public class CategoryServiceImpl implements CategoryService {
         return categories;
     }
 
+    /**
+     * Finds a category by its ID.
+     *
+     * @param id The ID of the category to find.
+     * @return The found Category object.
+     */
     @Override
     public Category findById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
     }
 
+    /**
+     * Maps a Category object to a CategoryResponseDto object.
+     *
+     * @param category The Category object to map.
+     * @return The mapped CategoryResponseDto object.
+     */
     private CategoryResponseDto mapToDTO(Category category) {
         CategoryResponseDto dto = new CategoryResponseDto();
         dto.setId(category.getId());
@@ -56,6 +82,12 @@ public class CategoryServiceImpl implements CategoryService {
         return dto;
     }
 
+    /**
+     * Retrieves child categories for a given parent ID.
+     *
+     * @param parentId The ID of the parent category.
+     * @return A list of CategoryResponseDto objects representing the child categories.
+     */
     private List<CategoryResponseDto> getChildrenDTO(Long parentId) {
         List<Category> children = rootCategories.stream()
                 .filter(category -> category.getParentId() != null && category.getParentId().equals(parentId))

@@ -1,7 +1,7 @@
 package codezilla.handynestproject.service.impl;
 
-import codezilla.handynestproject.dto.attachment.AttachmentRequestDto;
 import codezilla.handynestproject.dto.attachment.AttachmentDto;
+import codezilla.handynestproject.dto.attachment.AttachmentRequestDto;
 import codezilla.handynestproject.exception.AttachmentNotFoundException;
 import codezilla.handynestproject.mapper.AttachmentMapper;
 import codezilla.handynestproject.model.entity.Attachment;
@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service for managing attachments.
+ */
 @Service
 @RequiredArgsConstructor
 public class AttachmentServiceImpl implements AttachmentService {
@@ -22,6 +25,12 @@ public class AttachmentServiceImpl implements AttachmentService {
     private final AttachmentMapper attachmentMapper;
     private final PerformerService performerService;
 
+    /**
+     * Creates a new attachment.
+     *
+     * @param dto The attachment request DTO.
+     * @return The created attachment DTO.
+     */
     @Override
     public AttachmentDto create(AttachmentRequestDto dto) {
         Performer performer = performerService.findByIdReturnPerformer(dto.getPerformerId()); // проверка на перформера
@@ -36,6 +45,12 @@ public class AttachmentServiceImpl implements AttachmentService {
         return attachmentDto;
     }
 
+    /**
+     * Finds an attachment by its ID.
+     *
+     * @param attachmentId The ID of the attachment to find.
+     * @return The found attachment DTO.
+     */
     @Override
     public AttachmentDto findById(Long attachmentId) {
         Attachment attachment = attachmentRepository.findById(attachmentId)
@@ -43,16 +58,32 @@ public class AttachmentServiceImpl implements AttachmentService {
         return attachmentMapper.attachmentToDto(attachment);
     }
 
+    /**
+     * Finds all attachments.
+     *
+     * @return A list of attachment DTOs.
+     */
     @Override
     public List<AttachmentDto> findAll() {
         return attachmentMapper.attachmentsToListDto(attachmentRepository.findAll());
     }
 
+    /**
+     * Finds all attachments associated with a given performer.
+     *
+     * @param performerId The ID of the performer.
+     * @return A list of attachment DTOs.
+     */
     @Override
     public List<AttachmentDto> findByPerformerId(Long performerId) {
         return attachmentMapper.attachmentsToListDto(attachmentRepository.findAllByPerformerId(performerId));
     }
 
+    /**
+     * Removes an attachment by its ID.
+     *
+     * @param attachmentId The ID of the attachment to remove.
+     */
     @Override
     public void remove(Long attachmentId) {
         attachmentRepository.deleteById(attachmentId);

@@ -18,21 +18,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "category")
+@Schema(description = "Entity representing a category")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(name = "Category id",example = "1", required = true)
+    @Schema(description = "Category id", example = "1")
     private Long id;
 
-    @Schema(name = "Category title",example = "Ремонт", required = true)
+    @Schema(description = "Category title", example = "Ремонт")
     private String title;
 
-    @Schema(name = "Parent category id",example = "1", required = true)
+    @Schema(description = "Parent category id", example = "1")
     @Column(name = "parent_id")
     private Long parentId;
-    @Schema(name = "Weight category",example = "1", required = true)
+
+    @Schema(description = "Weight category", example = "1")
     private int weight;
-
-
 }

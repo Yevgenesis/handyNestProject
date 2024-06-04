@@ -1,11 +1,13 @@
 package codezilla.handynestproject.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -21,8 +23,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Timestamp;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
-
 @Entity
 @Builder
 @Data
@@ -34,33 +34,32 @@ import static jakarta.persistence.GenerationType.IDENTITY;
         @NamedAttributeNode("task")
 })
 @EntityListeners(AuditingEntityListener.class)
+@Schema(description = "Entity representing a feedback")
 public class Feedback {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Schema(name = "Feedback id",example = "1", required = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Feedback id", example = "1")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
-    @Schema(name = "Sender id",example = "1", required = true)
+    @Schema(description = "Sender id", example = "1")
     private User sender;
 
-    @Schema(name = "Feedback text",example = "отличная работа!", required = true)
+    @Schema(description = "Feedback text", example = "отличная работа!")
     private String text;
-    @Schema(name = "Feedback grade",example = "100", required = true)
+
+    @Schema(description = "Feedback grade", example = "100")
     private Long grade;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Schema(name = "Task to which added feedback ",example = "1", required = true)
+    @Schema(description = "Task to which feedback is added", example = "1")
     private Task task;
 
     @CreatedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "created_on", updatable = false, nullable = false)
-    @Schema(name = "When feedback was created",example = "01.01.2024", required = true)
+    @Schema(description = "Feedback creation timestamp", example = "2024-01-01")
     private Timestamp createdOn;
-
-    //feedback | user_id | task_id |user_type (user, performer)
-
-
 }

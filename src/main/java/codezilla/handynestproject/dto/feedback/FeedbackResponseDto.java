@@ -1,6 +1,7 @@
 package codezilla.handynestproject.dto.feedback;
 
 import codezilla.handynestproject.dto.user.UserNestedResponseDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,16 +15,16 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class FeedbackResponseDto {
 
+    @Schema(description = "Feedback ID")
     private Long id;
-
+    @Schema(description = "Feedback sender")
     private UserNestedResponseDto sender;
-
+    @Schema(description = "Feedback text")
     private String text;
-
+    @Schema(description = "Feedback grade")
     private Long grade;
-
+    @Schema(description = "Task ID")
     private Long taskId;
-
+    @Schema(description = "Timestamp of feedback creation")
     private Timestamp createdOn;
-
 }

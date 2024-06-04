@@ -9,7 +9,6 @@ import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Address;
-import codezilla.handynestproject.model.entity.Category;
 import codezilla.handynestproject.model.entity.Chat;
 import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
@@ -24,7 +23,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+/**
+ * Service for managing tasks.
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +43,12 @@ public class TaskServiceImpl implements TaskService {
     private final TaskMapper taskMapper;
     private final AddressMapper addressMapper;
 
-
+    /**
+     * Create a new task based on the provided TaskRequestDto.
+     *
+     * @param dto The TaskRequestDto containing task details.
+     * @return The TaskResponseDto of the created task
+     */
     @Override
     @Transactional
     public TaskResponseDto create(TaskRequestDto dto) {
@@ -59,7 +69,12 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
 
-
+    /**
+     * Update an existing task based on the provided TaskUpdateRequestDto.
+     *
+     * @param dto The TaskUpdateRequestDto containing updated task details.
+     * @return The TaskResponseDto of the updated task.
+     */
     @Override
     @Transactional
     public TaskResponseDto update(TaskUpdateRequestDto dto) {
@@ -86,7 +101,11 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
 
-
+    /**
+     * Cancel a task by its ID.
+     *
+     * @param taskId The ID of the task to cancel.
+     */
     @Override
     public void cancelById(Long taskId) {
         Task task = taskRepository.findById(taskId)
@@ -100,6 +119,11 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.save(task);
     }
 
+    /**
+     * Find all tasks.
+     *
+     * @return List of all tasks.
+     */
     @Override
     @Transactional
     public List<TaskResponseDto> findAll() {
@@ -107,6 +131,12 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
+    /**
+     * Find a task by its ID.
+     *
+     * @param taskId The ID of the task to find.
+     * @return The TaskResponseDto of the found task.
+     */
     @Override
     @Transactional
     public TaskResponseDto findById(Long taskId) {
@@ -115,13 +145,24 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDto(task.get());
     }
 
+    /**
+     * Check if a task exists by its ID.
+     *
+     * @param taskId The ID of the task to check.
+     * @return True if the task exists, false otherwise.
+     */
     @Override
     public boolean existsById(Long taskId) {
         return taskRepository.existsById(taskId);
     }
 
-
-
+    /**
+     * Find a task entity by task id and participant id.
+     *
+     * @param taskId The id of the task to find.
+     * @param userId The id of the participant to find.
+     * @return The task entity found.
+     */
     @Override
     public Task findTaskEntityByIdAndParticipantsId(Long taskId, Long userId) {
 
@@ -131,6 +172,11 @@ public class TaskServiceImpl implements TaskService {
         return task.get();
     }
 
+    /**
+     * Find all available tasks with status OPEN.
+     *
+     * @return List of available tasks.
+     */
     @Override
     @Transactional
     public List<TaskResponseDto> findAvailableTasks() {
@@ -138,6 +184,12 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
+    /**
+     * Find all tasks by user id.
+     *
+     * @param userId The id of the user to find tasks for.
+     * @return List of tasks by user id.
+     */
     @Override
     public List<TaskResponseDto> findByUserId(Long userId) {
         if (!userService.existsById(userId)) {
@@ -147,6 +199,12 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
+    /**
+     * Find all tasks by performer id.
+     *
+     * @param performerId The id of the performer to find tasks for.
+     * @return List of tasks by performer id.
+     */
     @Override
     public List<TaskResponseDto> findAllByPerformerId(Long performerId) {
         if (!performerService.existsById(performerId)) {
@@ -156,12 +214,25 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
+    /**
+     * Find tasks by task status.
+     *
+     * @param status The status of the tasks to find.
+     * @return List of tasks by status.
+     */
     @Override
     @Transactional
     public List<TaskResponseDto> findByStatus(TaskStatus status) {
         return taskMapper.toTaskResponseDtoList(taskRepository.findTaskByTaskStatus(status));
     }
 
+    /**
+     * Add performer to task.
+     *
+     * @param taskId      The id of the task to add performer to.
+     * @param performerId The id of the performer to add to the task.
+     * @return The task with performer.
+     */
     @Override
     @Transactional
     public TaskResponseDto addPerformer(Long taskId, Long performerId) {
@@ -179,6 +250,12 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
 
+    /**
+     * Remove performer from task.
+     *
+     * @param taskId The id of the task to remove performer from.
+     * @return Task without performer
+     */
     @Override
     @Transactional
     public TaskResponseDto removePerformer(Long taskId) {
@@ -191,6 +268,13 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }
 
+    /**
+     * Update task status by task id.
+     *
+     * @param taskId The id of the task to update status.
+     * @param status The new status to update to.
+     * @return The updated task response.
+     */
     @Override
     @Transactional
     public TaskResponseDto updateStatusById(Long taskId, TaskStatus status) {
@@ -214,7 +298,12 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDto(updatedTask);
     }
 
-    // Достать все завершенные таски юзера на которые нужно отправить фитбеки
+    /**
+     * Get all completed user tasks to which need to send feedbacks
+     *
+     * @param userId The ID of the user for whom the tasks need to send feedbacks
+     * @return List of tasks
+     */
     @Override
     public List<TaskResponseDto> findUnrefereedByUserId(Long userId) {
         userService.findById(userId);
@@ -222,7 +311,12 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
-    // Достать все завершенные таски перформера на которые нужно отправить фитбеки
+    /**
+     * Get all completed performer tasks to which need to send feedbacks
+     *
+     * @param performerId The ID of the performer for whom the tasks need to send feedbacks
+     * @return List of tasks
+     */
     @Override
     public List<TaskResponseDto> findUnrefereedByPerformerId(Long performerId) {
         performerService.findById(performerId);
@@ -230,7 +324,12 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toTaskResponseDtoList(tasks);
     }
 
-    // Достать все таски, которые совпадают по категориям конкретного перформера
+    /**
+     * Retrieve a list of tasks that are available for a specific performer to work on.
+     *
+     * @param performerId The ID of the performer for whom the tasks should be available.
+     * @return A list of TaskResponseDto objects representing the available tasks for the performer.
+     */
     @Override
     public List<TaskResponseDto> findAvailableForPerformer(Long performerId) {
         Performer performer = performerService.findByIdReturnPerformer(performerId);

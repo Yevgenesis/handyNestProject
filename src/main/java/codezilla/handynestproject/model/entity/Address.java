@@ -17,19 +17,22 @@ import lombok.NoArgsConstructor;
 @Table(name = "address")
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Entity representing a address")
 public class Address {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(name = "Address id", example = "1", required = true)
+    @Schema(description = "Address id", example = "1")
     private Long id;
-    @Schema(name = "Street",example = "Derebasovskay street", required = true)
-    private String street;
-    @Schema(name = "City",example = "New-York", required = true)
-    private String city;
-    @Schema(name = "Zip",example = "12345", required = true)
-    private String zip;
-    @Schema(name = "Country",example = "USA", required = true)
-    private String country;
 
+    @Schema(description = "Street", example = "Derebasovskay street")
+    private String street;
+
+    @Schema(description = "City", example = "New-York")
+    private String city;
+
+    @Schema(description = "Zip", example = "12345")
+    private String zip;
+
+    @Schema(description = "Country", example = "USA")
+    private String country;
 }

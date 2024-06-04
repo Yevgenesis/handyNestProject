@@ -1,7 +1,5 @@
 package codezilla.handynestproject.service.impl;
 
-import codezilla.handynestproject.dto.Chat.ChatRequestDto;
-import codezilla.handynestproject.dto.Chat.ChatResponseDto;
 import codezilla.handynestproject.dto.message.MessageRequestDto;
 import codezilla.handynestproject.dto.message.MessageResponseDto;
 import codezilla.handynestproject.mapper.ChatMapper;
@@ -20,6 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service for managing messages.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
@@ -34,6 +36,12 @@ public class MessageServiceImpl implements MessageService {
     private final ChatMapper chatMapper;
 
 
+    /**
+     * Sends a new message.
+     *
+     * @param requestDto The message request DTO.
+     * @return The created message.
+     */
     @Transactional
     @Override
     public Message send(MessageRequestDto requestDto) {
@@ -60,6 +68,11 @@ public class MessageServiceImpl implements MessageService {
         return savedMessage;
     }
 
+    /**
+     * Marks a message as read.
+     *
+     * @param id The ID of the message to mark as read.
+     */
     @Transactional
     @Override
     public void markAsRead(Long id) {
@@ -69,6 +82,12 @@ public class MessageServiceImpl implements MessageService {
         messageRepository.save(message);
     }
 
+    /**
+     * Retrieves unread messages for a given user.
+     *
+     * @param userId The ID of the user.
+     * @return A list of unread message DTOs.
+     */
     @Transactional(readOnly = true)
     @Override
     public List<MessageResponseDto> getUnreadMessages(Long userId) {

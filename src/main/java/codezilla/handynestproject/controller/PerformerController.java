@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping(path = "/performers")
@@ -33,6 +34,7 @@ public class PerformerController {
 
     /**
      * post request
+     *
      * @param performerDto
      * @return created performer
      */
@@ -52,6 +54,7 @@ public class PerformerController {
 
     /**
      * get request
+     *
      * @return all performers
      */
     @Operation(summary = "Find all performers",
@@ -70,6 +73,7 @@ public class PerformerController {
 
     /**
      * get request
+     *
      * @param id
      * @return performer by id
      */
@@ -90,6 +94,7 @@ public class PerformerController {
 
     /**
      * put request
+     *
      * @param updateDto
      * @return performer with updated data
      */
@@ -103,12 +108,13 @@ public class PerformerController {
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
     @PutMapping
     public PerformerResponseDto update(@RequestBody @Valid PerformerUpdateRequestDto updateDto) {
-        log.info("Update performer: {}",updateDto);
+        log.info("Update performer: {}", updateDto);
         return performerService.update(updateDto);
     }
 
     /**
      * put request
+     *
      * @param id
      * @param isAvailable
      * @return performer with updated availability
@@ -123,7 +129,7 @@ public class PerformerController {
     @PreAuthorize("hasAnyAuthority('PERFORMER','ADMIN')")
     @PutMapping("/{id}/{isAvailable}")
     public PerformerResponseDto updateAvailability(@PathVariable Long id, @PathVariable Boolean isAvailable) {
-        log.info("Update availability: {}",isAvailable);
+        log.info("Update availability: {}", isAvailable);
         return performerService.updateAvailability(id, isAvailable);
     }
 

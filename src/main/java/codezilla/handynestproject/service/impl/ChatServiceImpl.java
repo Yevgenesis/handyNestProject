@@ -22,6 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service for managing chats.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
@@ -35,7 +39,12 @@ public class ChatServiceImpl implements ChatService {
     private final TaskMapper taskMapper;
     private final ChatMapper chatMapper;
 
-
+    /**
+     * Creates a new chat.
+     *
+     * @param chatRequestDto The chat request DTO.
+     * @return The created chat DTO.
+     */
     @Override
     @Transactional
     public ChatResponseDto create(ChatRequestDto chatRequestDto) {
@@ -55,22 +64,44 @@ public class ChatServiceImpl implements ChatService {
         return chatMapper.toChatResponseDto(chatRepository.save(chat));
     }
 
+    /**
+     * Finds a chat by its ID.
+     *
+     * @param id The ID of the chat to find.
+     * @return The found chat DTO.
+     */
     @Override
     public ChatResponseDto findById(Long id) {
         return chatMapper.toChatResponseDto(chatRepository.findById(id)
                 .orElseThrow(() -> new ChatNotFoundException("Chat with id " + id + " not found")));
     }
 
+    /**
+     * Finds all chats.
+     *
+     * @return A list of chat DTOs.
+     */
     @Override
     public List<ChatResponseDto> findAll() {
         return chatMapper.toChatResponseDtoList(chatRepository.findAll());
     }
 
+    /**
+     * Checks if a chat exists by its ID.
+     *
+     * @param id The ID of the chat to check.
+     * @return True if the chat exists, false otherwise.
+     */
     @Override
     public boolean existsById(Long id) {
         return chatRepository.existsById(id);
     }
 
+    /**
+     * Closes a chat by its ID.
+     *
+     * @param id The ID of the chat to close.
+     */
     @Override
     public void closedById(Long id) {
         Chat chat = chatRepository.findById(id)
