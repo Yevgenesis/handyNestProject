@@ -4,6 +4,7 @@ import codezilla.handynestproject.dto.message.MessageRequestDto;
 import codezilla.handynestproject.dto.message.MessageResponseDto;
 import codezilla.handynestproject.mapper.MessageMapper;
 import codezilla.handynestproject.service.MessageService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/messages")
 @RequiredArgsConstructor
+@Tag(name = "Message Controller", description = "Operations related to messages")
 public class MessageController {
 
     private final MessageService messageService;
