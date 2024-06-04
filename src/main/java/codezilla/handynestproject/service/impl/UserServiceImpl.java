@@ -30,6 +30,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -101,8 +102,8 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.dtoToUser(dto);
 
-//        String encodedPassword = passwordEncoder.encode(dto.password());
-//        user.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(dto.password());
+        user.setPassword(encodedPassword);
         try {
             user = userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
