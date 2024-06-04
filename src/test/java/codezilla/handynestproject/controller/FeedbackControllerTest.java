@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -51,6 +52,7 @@ class FeedbackControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void addTest() {
         FeedbackCreateRequestDto requestDto = FeedbackCreateRequestDto.builder()
                 .senderId(1L)
@@ -86,6 +88,7 @@ class FeedbackControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findAllTest() {
         mockMvc.perform(get("/feedbacks"))
                 .andExpect(status().isOk())
@@ -95,7 +98,18 @@ class FeedbackControllerTest {
 
     @Test
     @Transactional
+    @WithMockUser(authorities = "USER")
+    void findAllTestWithUserRole() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/feedbacks")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByIdTest() {
         Long id = 1L;
         FeedbackResponseDto expected = FeedbackResponseDto.builder()
@@ -114,6 +128,7 @@ class FeedbackControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByIdExistingId() {
         Long notExistingId = 999L;
         mockMvc.perform(get("/feedbacks/{id}", notExistingId))
@@ -124,6 +139,7 @@ class FeedbackControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByTaskId() {
         Long taskId = 3L;
         mockMvc.perform(get("/feedbacks/task/{taskId}", taskId)
@@ -135,6 +151,7 @@ class FeedbackControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByTaskIdExistingTaskId() {
         Long notExistingTaskId = 999L;
         mockMvc.perform(get("/feedbacks/task/{taskId}", notExistingTaskId))
@@ -144,6 +161,7 @@ class FeedbackControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findReceivedByUserId() {
         Long userId = 3L;
         mockMvc.perform(get("/feedbacks/user/{userId}", userId)
@@ -155,6 +173,7 @@ class FeedbackControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findReceivedByUserIdExistingUserId() {
         Long notExistingUserId = 999L;
         mockMvc.perform(get("/feedbacks/user/{userId}", notExistingUserId))
@@ -164,6 +183,7 @@ class FeedbackControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findReceivedForPerformerId() {
         Long performerId = 2L;
         mockMvc.perform(get("/feedbacks/performer/{senderId}", performerId)
@@ -175,6 +195,7 @@ class FeedbackControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findReceivedForPerformerIdExistingPerformerId() {
         Long notExistingPerformerId = 999L;
         mockMvc.perform(get("/feedbacks/performer/{senderId}", notExistingPerformerId))

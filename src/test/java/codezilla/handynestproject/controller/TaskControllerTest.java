@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -56,6 +57,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void createTest() {
         TaskResponseDto expected = TASK_RESPONSE_DTO1;
         var result = mockMvc.perform(MockMvcRequestBuilders
@@ -87,6 +89,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "ADMIN")
     void findAllTest() {
         mockMvc.perform(get("/tasks"))
                 .andExpect(status().isOk())
@@ -95,6 +98,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByIdTest() {
         TaskResponseDto expectedTask = TASK_RESPONSE_DTO3;
         mockMvc.perform(get("/tasks/{id}", expectedTask.getId()))
@@ -104,6 +108,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByIdExistingTaskIdTest() {
         Long notExistingTaskId = 999L;
         mockMvc.perform(get("/tasks/{id}", notExistingTaskId))
@@ -112,6 +117,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "ADMIN")
     void findAllAvailableTest() {
         mockMvc.perform(get("/tasks/open"))
                 .andExpect(status().isOk())
@@ -120,6 +126,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByUserIdTest() {
         Long userId = 5L;
         mockMvc.perform(get("/tasks/user/{userId}", userId))
@@ -129,6 +136,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByUserIdExistingUserIdTest() {
         Long notExistingUserId = 999L;
         mockMvc.perform(get("/tasks/user/{userId}", notExistingUserId))
@@ -137,6 +145,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "PERFORMER")
     void findAllByPerformerIdTest() {
         Long userId = 3L;
         mockMvc.perform(get("/tasks/performer/{id}", userId))
@@ -146,6 +155,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "PERFORMER")
     void findAllByPerformerIdExistingUserIdTest() {
         Long notExistingUserId = 999L;
         mockMvc.perform(get("/tasks/performer/{id}", notExistingUserId))
@@ -154,6 +164,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "ADMIN")
     void findByStatusTest() {
         TaskStatus status = TaskStatus.COMPLETED;
         mockMvc.perform(get("/tasks/status/{status}", status))
@@ -163,6 +174,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByUnrefereedByUserIdTest() {
         Long userId = 5L;
         mockMvc.perform(get("/tasks/user/{userId}/unrefereed", userId))
@@ -172,6 +184,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByUnrefereedByUserIdExistingUserIdTest() {
         Long notExistingUserId = 999L;
         mockMvc.perform(get("/tasks/user/{userId}/unrefereed", notExistingUserId))
@@ -180,6 +193,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "PERFORMER")
     void findByUnrefereedByPerformerIdTest() {
         Long performerId = 3L;
         mockMvc.perform(get("/tasks/performer/{performerId}/unrefereed", performerId))
@@ -189,6 +203,7 @@ class TaskControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "PERFORMER")
     void findByUnrefereedByPerformerIdExistingPerformerIdTest() {
         Long notExistingPerformerId = 999L;
         mockMvc.perform(get("/tasks/performer/{performerId}/unrefereed", notExistingPerformerId))
@@ -198,6 +213,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void updateTest() {
         TaskUpdateRequestDto task = new TaskUpdateRequestDto(
                 1L,
@@ -234,6 +250,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "PERFORMER")
     void addPerformerTest() {
         TaskResponseDto task = TASK_RESPONSE_DTO1;
         Long taskId = task.getId();
@@ -247,6 +264,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "PERFORMER")
     void addPerformerExistingTaskIdTest() {
         Long notExistingTaskId = 999L;
         mockMvc.perform(MockMvcRequestBuilders
@@ -257,6 +275,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "PERFORMER")
     void addPerformerExistingPerformerIdTest() {
 
         Long notExistingPerformerId = 999L;
@@ -268,6 +287,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void removePerformerTest() {
         TaskResponseDto task = TASK_RESPONSE_DTO3;
         Long taskId = task.getId();
@@ -280,6 +300,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void removePerformerExistingTaskIdTest() {
         Long notExistingTaskId = 999L;
         mockMvc.perform(MockMvcRequestBuilders
@@ -290,6 +311,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void updateStatusTest() {
         TaskResponseDto task = TASK_RESPONSE_DTO1;
         Long taskId = task.getId();
@@ -302,6 +324,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void updateStatusExistingTaskIdTest() {
 
         Long notExistingTaskId = 999L;
@@ -313,6 +336,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void updateStatusExistingTaskStatusTest() {
         TaskStatus notExistingTaskStatus = TaskStatus.CANCELED;
         mockMvc.perform(MockMvcRequestBuilders
@@ -323,6 +347,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void cancel() {
         TaskResponseDto task = TASK_RESPONSE_DTO5;
         Long taskId = task.getId();
@@ -333,6 +358,7 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void cancelExistentTaskIdTest() {
 
         Long nonExistentTaskId = 999L;

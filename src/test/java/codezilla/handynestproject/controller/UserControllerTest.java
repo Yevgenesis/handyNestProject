@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,6 +47,7 @@ class UserControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "ADMIN")
     void findAllTest() {
 
         mockMvc.perform(get("/users"))
@@ -55,6 +57,7 @@ class UserControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByIdTest() {
         UserResponseDto expected = USER_RESPONSE_DTO3;
         mockMvc.perform(get("/users/" + expected.getId()))
@@ -65,6 +68,7 @@ class UserControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByIdExistingUserIdTest() {
         Long existingUserId = 999L;
         mockMvc.perform(get("/users/{id}", existingUserId))
@@ -73,6 +77,7 @@ class UserControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void saveTest() {
 
         UserRequestDto requestDto = new UserRequestDto(
@@ -97,6 +102,7 @@ class UserControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void saveAlreadyExistingEmailTest() {
 
         UserRequestDto requestDto = new UserRequestDto(
@@ -112,6 +118,7 @@ class UserControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void saveWrongConfirmationPasswordTest() {
 
         UserRequestDto requestDto = new UserRequestDto(

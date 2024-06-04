@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -39,9 +38,8 @@ public class SecurityConfig {
 //                                "/tasks/**",
 //                                "/v3/api-docs/**",
 //                                "/swagger-ui/**")
-//                        .requestMatchers("/feedbacks/**").permitAll()
-                        .anyRequest()
-                        .permitAll()) // ToDo .authenticated() для прода, а .permitAll() для дев
+                        .requestMatchers("/categories/**").permitAll()
+                        .anyRequest().authenticated()) // ToDo .authenticated() для прода, а .permitAll() для дев
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -49,12 +47,12 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    //for encode password
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-        /// return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    //for encode password
+//    public PasswordEncoder passwordEncoder() {
+////        return NoOpPasswordEncoder.getInstance();
+//         return new BCryptPasswordEncoder();
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {

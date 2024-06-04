@@ -19,7 +19,7 @@ public class CategoryController {
 
 
     // GET
-    @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
+//    @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
     @GetMapping
     public List<CategoryResponseDto> findAll() {
         return categoryService.getListCategoryResponseDto();

@@ -17,6 +17,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+
 
 
     @Override
@@ -94,7 +97,12 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto create(UserRequestDto dto) {
         if (!dto.isPasswordsMatch()) throw new WrongConfirmationPasswordException();
 
+
+
         User user = userMapper.dtoToUser(dto);
+
+//        String encodedPassword = passwordEncoder.encode(dto.password());
+//        user.setPassword(encodedPassword);
         try {
             user = userRepository.save(user);
         } catch (DataIntegrityViolationException e) {

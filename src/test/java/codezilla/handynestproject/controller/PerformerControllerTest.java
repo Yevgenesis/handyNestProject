@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -65,6 +66,7 @@ class PerformerControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void createTest() {
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO1;
         var result = mockMvc.perform(MockMvcRequestBuilders
@@ -87,6 +89,7 @@ class PerformerControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void createExistingUserIdTest() {
         PerformerRequestDto performer = PERFORMER_REQUEST_DTO4;
         performer.setUserId(999L);
@@ -101,6 +104,7 @@ class PerformerControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void createExistingCategoryIdTest() {
         PerformerRequestDto performer = PERFORMER_REQUEST_DTO3;
         performer.setCategoryIDs(List.of(999L));
@@ -116,6 +120,7 @@ class PerformerControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void updateTest() {
         PerformerUpdateRequestDto performer = new PerformerUpdateRequestDto(
                 2L, "+49111111111",
@@ -152,6 +157,7 @@ class PerformerControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void updateExistingPerformerIdTest() {
         PerformerUpdateRequestDto performer = new PerformerUpdateRequestDto(
                 999L, "+49111111111",
@@ -169,6 +175,7 @@ class PerformerControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "ADMIN")
     void findAllTest() {
         mockMvc.perform(get("/performers"))
                 .andExpect(status().isOk())
@@ -178,6 +185,7 @@ class PerformerControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByIdTest() {
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO3;
         Long id = expected.getId();
@@ -188,6 +196,7 @@ class PerformerControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "USER")
     void findByIdExistingIdTest() {
 
         Long existingId = 999L;
@@ -198,6 +207,7 @@ class PerformerControllerTest {
     @Test
     @Transactional
     @SneakyThrows
+    @WithMockUser(authorities = "ADMIN")
     void updateAvailabilityTest() {
         PerformerResponseDto expected = PERFORMER_RESPONSE_DTO5;
         Long id = expected.getId();
@@ -219,6 +229,7 @@ class PerformerControllerTest {
 
     @Test
     @SneakyThrows
+    @WithMockUser(authorities = "ADMIN")
     void updateAvailabilityExistingIdTest() {
 
         Long existingId = 999L;
