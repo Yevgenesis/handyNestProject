@@ -85,20 +85,14 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(dto.getId())
                 .orElseThrow(() -> new TaskNotFoundException("Task not found"));
 
-        // ToDo исправить. не нужно спрашивать присутствие поля
-        // Нужно просто добавлять то, что пришло из DTO
-        if (task.getTaskStatus().equals(TaskStatus.OPEN)) {
-            Optional.ofNullable(dto.getTitle()).ifPresent(task::setTitle);
-            Optional.ofNullable(dto.getDescription()).ifPresent(task::setDescription);
-            Optional.ofNullable(dto.getPrice()).ifPresent(task::setPrice);
-            Optional.ofNullable(dto.getAddressDto())
-                    .ifPresent(addressDto -> task.setAddress(addressMapper.dtoToAddress(addressDto)));
-            Optional.ofNullable(workingTimeService.findWorkingTimeById(workingTimeId))
-                    .ifPresent(task::setWorkingTime);
-        } else {
-            throw new TaskNotFoundException("Task have status: " + task.getTaskStatus() +
-                    " and can't be updated");
-        }
+        if (!task.getTaskStatus().equals(TaskStatus.OPEN))
+            throw new TaskNotFoundException(String.format("Task with ID %s has status: %s and cannot be updated", task.getId(), task.getTaskStatus()));
+
+        task.setTitle(dto.getTitle());
+        task.setDescription(dto.getDescription());
+        task.setPrice(dto.getPrice());
+        task.setAddress(addressMapper.dtoToAddress(dto.getAddressDto()));
+        task.setWorkingTime(workingTimeService.findWorkingTimeById(workingTimeId));
 
         return taskMapper.toTaskResponseDto(taskRepository.save(task));
     }

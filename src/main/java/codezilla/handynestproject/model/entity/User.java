@@ -48,7 +48,7 @@ public class User {
     @Schema(description = "Indicates if the email is verified", example = "true")
     private boolean isEmailVerified;
 
-    @Column(name = "password", nullable = false, length = 50)
+    @Column(name = "password", nullable = false, length = 100)
     @Schema(description = "Password of the user", example = "password123")
     private String password;
 

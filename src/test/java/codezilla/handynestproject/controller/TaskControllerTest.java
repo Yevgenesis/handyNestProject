@@ -226,7 +226,7 @@ class TaskControllerTest {
         TaskResponseDto expectedTask = TASK_RESPONSE_DTO1;
 
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .put("/tasks/update/{id}", expectedTask.getId())
+                        .put("/tasks/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(task))
                         .characterEncoding("UTF-8"))
