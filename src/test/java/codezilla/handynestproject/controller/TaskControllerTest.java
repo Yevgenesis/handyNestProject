@@ -341,7 +341,7 @@ class TaskControllerTest {
         TaskStatus notExistingTaskStatus = TaskStatus.CANCELED;
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/tasks/{taskId}/status//{status}", 3L, notExistingTaskStatus))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isConflict());
     }
 
     @Test
