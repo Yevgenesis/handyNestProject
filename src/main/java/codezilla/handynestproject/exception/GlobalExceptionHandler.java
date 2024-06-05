@@ -46,7 +46,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public @ResponseBody ErrorResponse UserAlreadyExistException(UserAlreadyExistsException ex, WebRequest request) {
+    public @ResponseBody ErrorResponse handleUserAlreadyExistException(UserAlreadyExistsException ex, WebRequest request) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
 
@@ -73,6 +73,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public @ResponseBody ErrorResponse handleTaskNotFoundException(TaskNotFoundException ex) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
+    @ExceptionHandler(TaskWrongStatusException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody ErrorResponse handleTaskWrongStatusException(TaskWrongStatusException ex) {
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
+    }
 
     @ExceptionHandler(PerformerNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -83,6 +88,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(FeedbackNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody ErrorResponse handleFeedbackNotFoundException(FeedbackNotFoundException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(MessageNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ErrorResponse handleMessageNotFoundException(MessageNotFoundException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(ChatNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ErrorResponse handleChatNotFoundException(ChatNotFoundException ex) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 }

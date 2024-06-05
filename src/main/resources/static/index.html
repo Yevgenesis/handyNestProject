@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HandyNestWebSocket</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script>
+        let stompClient = null;
+
+        function connect() {
+            const socket = new SockJS('/chat');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/messages', function(messageOutput) {
+                    showMessage(JSON.parse(messageOutput.body));
+                });
+            });
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message');
+            const message = {
+                chatId: 1, // Замените на ID вашего чата
+                senderId: 1, // Замените на ID отправителя
+                text: messageInput.value
+            };
+            stompClient.send("/app/chat", {}, JSON.stringify(message));  // Маршрут должен соответствовать методу @MessageMapping в контроллере
+            messageInput.value = '';
+        }
+
+        function showMessage(message) {
+            const messages = document.getElementById('messages');
+            const messageElement = document.createElement('li');
+            messageElement.appendChild(document.createTextNode(message.text));
+            messages.appendChild(messageElement);
+        }
+
+        window.onload = function() {
+            connect();
+        };
+    </script>
+</head>
+<body>
+<ul id="messages"></ul>
+<label for="message"></label><input type="text" id="message" />
+<button onclick="sendMessage()">Send</button>
+</body>
+</html>
