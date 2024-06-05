@@ -233,7 +233,7 @@ public class TaskController {
     /**
      * Updates task data.
      *
-     * @param id the ID of the task
+     * @param id                   the ID of the task
      * @param taskUpdateRequestDto the task update request DTO
      * @return the updated task response DTO
      */
@@ -244,9 +244,8 @@ public class TaskController {
             @ApiResponse(responseCode = "404", description = "Tasks not found")
     })
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    @PutMapping("/update/{id}")
-    public TaskResponseDto update(@PathVariable("id") Long id,
-                                  @RequestBody @Valid TaskUpdateRequestDto taskUpdateRequestDto) {
+    @PutMapping("/update")
+    public TaskResponseDto update(@RequestBody @Valid TaskUpdateRequestDto taskUpdateRequestDto) {
         log.info("Update task: {}", taskUpdateRequestDto);
         return taskService.update(taskUpdateRequestDto);
     }
@@ -254,7 +253,7 @@ public class TaskController {
     /**
      * Adds a performer to the task.
      *
-     * @param taskId the ID of the task
+     * @param taskId      the ID of the task
      * @param performerId the ID of the performer
      * @return the task response DTO with the added performer
      */

@@ -26,27 +26,38 @@
     <changeSet id="insert_handy_user" author="yevhenii (generated)">
         <sql>INSERT INTO handy_user (first_name, last_name, email, is_email_verified, password, created_on, updated_on,
                                      is_deleted, task_count, user_rating)
-             VALUES ('Джон', 'Доу', 'john.doe@example.com', true, 'password123', '2024-04-29 10:00:00',
+             VALUES ('Джон', 'Доу', 'john.doe@example.com', true, '$2a$10$dHPS9NsaZ94./gil66q61eZKXpcmXzI6H0bEGuWP5cOQYEkRSGb66', '2024-04-29 10:00:00',
+--                      password123
                      '2024-04-29 10:00:00', false, 5, 100.0),
-                    ('Джейн', 'Смит', 'jane.smith@example.com', true, 'qwerty123', '2024-04-29 11:00:00',
+                    ('Джейн', 'Смит', 'jane.smith@example.com', true, '$2a$10$.L4ptbMV1KZ6iKqG.jThDeNlyQHLn3bMWBy1QF9d0TfZX1YurvJ8e', '2024-04-29 11:00:00',
+--                      qwerty123
                      '2024-04-29 11:00:00', false, 6, 50.0),
-                    ('Алиса', 'Джонсон', 'alice.johnson@example.com', true, 'test123', '2024-04-29 12:00:00',
+                    ('Алиса', 'Джонсон', 'alice.johnson@example.com', true, '$2a$10$58nLlSYV5JS1GE.oNCs70ukos7HHEZF6fq1ZhKznATqhng0Tjib/a', '2024-04-29 12:00:00',
+--                      test123
                      '2024-04-29 12:00:00', false, 7, 80.0),
-                    ('Боб', 'Уильямс', 'bob.williams@example.com', true, 'password456', '2024-04-29 13:00:00',
+                    ('Боб', 'Уильямс', 'bob.williams@example.com', true, '$2a$10$eHVUGJ4Yr2ZxX10U0Z9m9.unKA6O171gu7HLLsF2vq1zQDIOzFHBq', '2024-04-29 13:00:00',
+--                      password456
                      '2024-04-29 13:00:00', false, 8, 75.0),
-                    ('Ева', 'Браун', 'eva.brown@example.com', true, 'abc123', '2024-04-29 14:00:00',
+                    ('Ева', 'Браун', 'eva.brown@example.com', true, '$2a$10$Nv5pDimRJsOvAerfOMplleaImQB9l60L/0uNTuc6RMZh.nzGYCYT2', '2024-04-29 14:00:00',
+--                      abc123
                      '2024-04-29 14:00:00', false, 9, 95.0),
-                    ('Иван', 'Иванов', 'ivan.ivanov@example.com', true, 'ivan123', '2024-05-01 10:00:00',
+                    ('Иван', 'Иванов', 'ivan.ivanov@example.com', true, '$2a$10$mR39.QY55.kwOIz55.gofOr4Y5qbW/8hlBsQ9tjzrmQNMbfGDQqQ2', '2024-05-01 10:00:00',
+--                      ivan123
                      '2024-05-01 10:00:00', false, 10, 85.0),
-                    ('Мария', 'Петрова', 'maria.petrova@example.com', true, 'maria456', '2024-05-01 11:00:00',
+                    ('Мария', 'Петрова', 'maria.petrova@example.com', true, '$2a$10$zNIOcUnIs5eMv1s04/rXwe7r.9qz3sE24uHzf1MMtUxAYpNcXO.J2', '2024-05-01 11:00:00',
+--                      maria456
                      '2024-05-01 11:00:00', false, 11, 80.0),
-                    ('Александр', 'Сидоров', 'alex.sid@example.com', true, 'sid123', '2024-05-01 12:00:00',
+                    ('Александр', 'Сидоров', 'alex.sid@example.com', true, '$2a$10$JAcIGhb0Yxl8.kgjJVAcgOpQMLGLR/HrjjMnV9uXeg6zQzqGrnvo.', '2024-05-01 12:00:00',
+--                      sid123
                      '2024-05-01 12:00:00', false, 12, 100.0),
-                    ('Ольга', 'Смирнова', 'olga.sm@example.com', true, 'olga789', '2024-05-01 13:00:00',
+                    ('Ольга', 'Смирнова', 'olga.sm@example.com', true, '$2a$10$FHF6Vs771kuyKAi5mb968eFw5z.KAcKbpgxyZt0esiONGBZLmFpZy', '2024-05-01 13:00:00',
+--                      olga789
                      '2024-05-01 13:00:00', false, 13, 80.0),
-                    ('Петр', 'Кузнецов', 'peter.kuz@example.com', true, 'peter456', '2024-05-01 14:00:00',
+                    ('Петр', 'Кузнецов', 'peter.kuz@example.com', true, '$2a$10$eaqixhssM80SBOBDYA6Qf.Ky28Z5mRIqB7.8j0XJU2i5PtBXhOfsa', '2024-05-01 14:00:00',
+--                      peter456
                      '2024-05-01 14:00:00', false, 14, 65.0),
-                    ('Светлана', 'Иванова', 'svetlana.ivanova@example.com', true, 'sveta123', '2024-05-01 15:00:00',
+                    ('Светлана', 'Иванова', 'svetlana.ivanova@example.com', true, '$2a$10$Exq9sdtwLd4iZHx6ccozFOTLcC4aaFvFLd7eIkCcQDqOLqmfQrY4m', '2024-05-01 15:00:00',
+--                      sveta123
                      '2024-05-01 15:00:00', false, 15, 100.0);
         </sql>
     </changeSet>

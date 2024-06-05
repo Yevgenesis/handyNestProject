@@ -154,10 +154,12 @@ public class UserServiceImpl implements UserService {
 
 
 
+        // Password encoding
         User user = userMapper.dtoToUser(dto);
-//
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 //        String encodedPassword = passwordEncoder.encode(dto.password());
 //        user.setPassword(encodedPassword);
+
         try {
             user = userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
