@@ -37,13 +37,13 @@ public class UserController {
     private final AuthenticationService authenticationService;
 
     /**
-     * get request
+     * Get all users.
      *
-     * @return all users
+     * @return list of all users
      */
     @Operation(summary = "Find all users",
             description = "Return all users",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            security = @SecurityRequirement(name = "users"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Not found")
@@ -56,14 +56,14 @@ public class UserController {
     }
 
     /**
-     * get request
+     * Get a user by ID.
      *
-     * @param id
-     * @return user by id
+     * @param id the ID of the user
+     * @return the user with the specified ID
      */
     @Operation(summary = "Find user by id",
-            description = "Return user per id",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            description = "Return user by id",
+            security = @SecurityRequirement(name = "users"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Not found - User not found")
@@ -76,16 +76,16 @@ public class UserController {
     }
 
     /**
-     * post request
+     * Create a new user.
      *
-     * @param userRequestDto
-     * @return created user
+     * @param userRequestDto the user request DTO
+     * @return the created user
      */
     @Operation(summary = "Create a new user",
             description = "Return created user",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            security = @SecurityRequirement(name = "users"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "200", description = "Successfully created"),
             @ApiResponse(responseCode = "400", description = "User with this email already exists")
     })
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
@@ -96,16 +96,16 @@ public class UserController {
     }
 
     /**
-     * post request
+     * User login.
      *
-     * @param request
-     * @return user have been logged in
+     * @param request the sign-in request DTO
+     * @return the JWT authentication response
      */
     @Operation(summary = "Login",
-            description = "User have been logged in",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            description = "User login",
+            security = @SecurityRequirement(name = "users"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User have been logged in")
+            @ApiResponse(responseCode = "200", description = "User has been logged in")
     })
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @PostMapping("/login")
@@ -115,16 +115,16 @@ public class UserController {
     }
 
     /**
-     * put request
+     * Update a user.
      *
-     * @param updateDto
-     * @return user with updated data
+     * @param updateDto the user update request DTO
+     * @return the updated user
      */
     @Operation(summary = "Update a user",
-            description = "User data have been updated",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            description = "Return user with updated data",
+            security = @SecurityRequirement(name = "users"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "200", description = "Successfully updated"),
             @ApiResponse(responseCode = "404", description = "Not found - User not found")
     })
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")

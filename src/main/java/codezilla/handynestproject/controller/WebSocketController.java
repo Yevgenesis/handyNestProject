@@ -20,7 +20,12 @@ public class WebSocketController {
     private final MessageService messageService;
     private final MessageMapper messageMapper;
 
-
+    /**
+     * Sends a message via WebSocket.
+     *
+     * @param messageRequestDto The message request DTO
+     * @return The response DTO after sending the message
+     */
     @MessageMapping("/chat")
     @SendTo("/topic/messages")
     public MessageResponseDto sendMessage(MessageRequestDto messageRequestDto) {

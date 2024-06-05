@@ -33,14 +33,13 @@ public class PerformerController {
     private final PerformerService performerService;
 
     /**
-     * post request
+     * Creates a new performer.
      *
-     * @param performerDto
-     * @return created performer
+     * @param performerDto the performer request DTO
+     * @return the created performer response DTO
      */
-    @Operation(summary = "Create a new performer",
-            description = "Return created performer",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Create a new performer", description = "Return created performer",
+            security = @SecurityRequirement(name = "performers"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "400", description = "User not found")
@@ -53,13 +52,12 @@ public class PerformerController {
     }
 
     /**
-     * get request
+     * Finds all performers.
      *
-     * @return all performers
+     * @return the list of all performers
      */
-    @Operation(summary = "Find all performers",
-            description = "Return all performers",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find all performers", description = "Return all performers",
+            security = @SecurityRequirement(name = "performers"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "400", description = "Not found")
@@ -72,14 +70,13 @@ public class PerformerController {
     }
 
     /**
-     * get request
+     * Finds a performer by ID.
      *
-     * @param id
-     * @return performer by id
+     * @param id the ID of the performer
+     * @return the performer response DTO
      */
-    @Operation(summary = "Find performer by id",
-            description = "Return performer by id",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find performer by id", description = "Return performer by id",
+            security = @SecurityRequirement(name = "performers"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "400", description = "User with this email already exists")
@@ -93,14 +90,13 @@ public class PerformerController {
 
 
     /**
-     * put request
+     * Updates a performer.
      *
-     * @param updateDto
-     * @return performer with updated data
+     * @param updateDto the performer update request DTO
+     * @return the performer with updated data
      */
-    @Operation(summary = "Update a performer",
-            description = "Performer data have been updated",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Update a performer", description = "Performer data have been updated",
+            security = @SecurityRequirement(name = "performers"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "400", description = "User with this email already exists")
@@ -113,15 +109,15 @@ public class PerformerController {
     }
 
     /**
-     * put request
+     * Updates the availability of a performer by ID.
      *
-     * @param id
-     * @param isAvailable
-     * @return performer with updated availability
+     * @param id the ID of the performer
+     * @param isAvailable the availability status
+     * @return the performer with updated availability
      */
     @Operation(summary = "Update availability by performer id",
-            description = "Return performer with availability von param",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            description = "Return performer with updated availability",
+            security = @SecurityRequirement(name = "performers"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "400", description = "User with this email already exists")

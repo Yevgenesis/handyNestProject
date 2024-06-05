@@ -2,6 +2,7 @@ package codezilla.handynestproject.service.impl;
 
 import codezilla.handynestproject.dto.message.MessageRequestDto;
 import codezilla.handynestproject.dto.message.MessageResponseDto;
+import codezilla.handynestproject.exception.MessageNotFoundException;
 import codezilla.handynestproject.mapper.ChatMapper;
 import codezilla.handynestproject.mapper.MessageMapper;
 import codezilla.handynestproject.model.entity.Chat;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Service for managing messages.
+ * Implementation of the MessageService interface.
  */
 
 @Service
@@ -39,8 +40,8 @@ public class MessageServiceImpl implements MessageService {
     /**
      * Sends a new message.
      *
-     * @param requestDto The message request DTO.
-     * @return The created message.
+     * @param requestDto The message request DTO
+     * @return The created message
      */
     @Transactional
     @Override
@@ -71,13 +72,14 @@ public class MessageServiceImpl implements MessageService {
     /**
      * Marks a message as read.
      *
-     * @param id The ID of the message to mark as read.
+     * @param id The ID of the message to mark as read
+     * @throws MessageNotFoundException when message not found
      */
     @Transactional
     @Override
     public void markAsRead(Long id) {
         Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Message not found"));
+                .orElseThrow(() -> new MessageNotFoundException("Message not found"));
         message.setRead(true);
         messageRepository.save(message);
     }
@@ -85,8 +87,8 @@ public class MessageServiceImpl implements MessageService {
     /**
      * Retrieves unread messages for a given user.
      *
-     * @param userId The ID of the user.
-     * @return A list of unread message DTOs.
+     * @param userId The ID of the user
+     * @return A list of unread message DTOs
      */
     @Transactional(readOnly = true)
     @Override

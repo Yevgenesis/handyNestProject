@@ -33,16 +33,14 @@ public class AttachmentController {
     private final AttachmentService attachmentService;
 
     /**
-     * post request
+     * Creates a new attachment.
      *
-     * @param attachmentRequestDto
-     * @return new attachment
+     * @param attachmentRequestDto the attachment request DTO
+     * @return the created attachment
      */
-    @Operation(summary = "Create new attachment",
-            description = "Return new attachment",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Create new attachment", description = "Return new attachment", security = @SecurityRequirement(name = "attachments"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "200", description = "Successfully created"),
             @ApiResponse(responseCode = "404", description = "Attachment not created")
     })
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
@@ -53,13 +51,11 @@ public class AttachmentController {
     }
 
     /**
-     * get request
+     * Retrieves all attachments.
      *
-     * @return all attachments
+     * @return a list of all attachments
      */
-    @Operation(summary = "Find all attachments",
-            description = "Return all attachments",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find all attachments", description = "Return all attachments", security = @SecurityRequirement(name = "attachments"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Not found")
@@ -72,14 +68,12 @@ public class AttachmentController {
     }
 
     /**
-     * get request
+     * Retrieves an attachment by its ID.
      *
-     * @param id
-     * @return attachment by id
+     * @param id the ID of the attachment
+     * @return the attachment with the given ID
      */
-    @Operation(summary = "Find attachment by id",
-            description = "Return attachment",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find attachment by id", description = "Return attachment", security = @SecurityRequirement(name = "attachments"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Attachment not found")
@@ -91,44 +85,38 @@ public class AttachmentController {
         return attachmentService.findById(id);
     }
 
-
     /**
-     * put request
+     * Retrieves attachments by performer ID.
      *
-     * @param performerId
-     * @return attachment by performer id
+     * @param performerId the ID of the performer
+     * @return a list of attachments associated with the performer
      */
-    @Operation(summary = "Find attachment by performer id",
-            description = "Return attachment by performer id",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find attachment by performer id", description = "Return attachment by performer id", security = @SecurityRequirement(name = "attachments"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Performer not found")
     })
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @PutMapping("performer/{performerId}")
+    @GetMapping("performer/{performerId}")
     public List<AttachmentDto> findByPerformerId(@PathVariable Long performerId) {
         log.info("Find Attachment by performerId: {}", performerId);
         return attachmentService.findByPerformerId(performerId);
     }
 
     /**
-     * delete request
+     * Deletes an attachment by its ID.
      *
-     * @param attachmentId
+     * @param attachmentId the ID of the attachment to delete
      */
-    @Operation(summary = "Remove attachment by id",
-            description = "Return attachment is deleted",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Remove attachment by id", description = "Attachment is deleted", security = @SecurityRequirement(name = "attachments"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Performer not found")
+            @ApiResponse(responseCode = "200", description = "Successfully deleted"),
+            @ApiResponse(responseCode = "404", description = "Attachment not found")
     })
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @DeleteMapping
+    @DeleteMapping("/{attachmentId}")
     public void delete(@PathVariable Long attachmentId) {
         log.info("Delete Attachment by id: {}", attachmentId);
         attachmentService.remove(attachmentId);
     }
-
 }

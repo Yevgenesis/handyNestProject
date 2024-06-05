@@ -35,17 +35,16 @@ public class TaskController {
     private final TaskService taskService;
 
     /**
-     * post request
+     * Creates a new task.
      *
-     * @param taskRequestDto
-     * @return cteated task
+     * @param taskRequestDto the task request DTO
+     * @return the created task response DTO
      */
-    @Operation(summary = "Create a new task",
-            description = "Return new task",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Create a new task", description = "Return new task",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Task not  created")
+            @ApiResponse(responseCode = "200", description = "Successfully created"),
+            @ApiResponse(responseCode = "404", description = "Task not created")
     })
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @PostMapping
@@ -55,13 +54,12 @@ public class TaskController {
     }
 
     /**
-     * get request
+     * Finds all tasks.
      *
-     * @return all tasks
+     * @return the list of all tasks
      */
-    @Operation(summary = "Find all tasks",
-            description = "Return all tasks",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find all tasks", description = "Return all tasks",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Not found")
@@ -74,14 +72,13 @@ public class TaskController {
     }
 
     /**
-     * get request
+     * Finds a task by ID.
      *
-     * @param id
-     * @return task by id
+     * @param id the ID of the task
+     * @return the task response DTO
      */
-    @Operation(summary = "Find task by id",
-            description = "Return task by id",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find task by id", description = "Return task by id",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Task not found")
@@ -94,13 +91,12 @@ public class TaskController {
     }
 
     /**
-     * get request
+     * Finds all opened tasks.
      *
-     * @return all opened tasks
+     * @return the list of all opened tasks
      */
-    @Operation(summary = "Find all opened tasks",
-            description = "Return all opened tasks",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find all opened tasks", description = "Return all opened tasks",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Tasks not found")
@@ -113,17 +109,15 @@ public class TaskController {
     }
 
 
-    // Достать все открытые таски, которые совпадают по категориям для конкретного перформера
-
     /**
-     * get request
+     * Finds all opened tasks that match the categories for a particular performer.
      *
-     * @param performerId
-     * @return all the open tasks that match the categories for a particular performer
+     * @param performerId the ID of the performer
+     * @return the list of tasks that match the categories for the performer
      */
     @Operation(summary = "Find all tasks that match the categories for a particular performer",
             description = "Return all tasks that match the categories for a particular performer",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Performer not found")
@@ -137,14 +131,14 @@ public class TaskController {
 
 
     /**
-     * get request
+     * Finds all tasks for a particular user.
      *
-     * @param id
-     * @return available tasks of a particular user
+     * @param id the ID of the user
+     * @return the list of tasks for the user
      */
     @Operation(summary = "Find all tasks for a particular user",
-            description = "Return all for a particular user",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            description = "Return all tasks for a particular user",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "User not found")
@@ -156,18 +150,15 @@ public class TaskController {
         return taskService.findByUserId(id);
     }
 
-    // Достать все таски перформера (со всеми статусами)
-
     /**
-     * get request
+     * Finds all tasks for a particular performer.
      *
-     * @param id
-     * @return all tasks of a particular performer
+     * @param id the ID of the performer
+     * @return the list of tasks for the performer
      */
-
-    @Operation(summary = "Find all tasks a particular performer",
-            description = "Return all tasks a particular performer",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find all tasks for a particular performer",
+            description = "Return all tasks for a particular performer",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Performer not found")
@@ -180,15 +171,14 @@ public class TaskController {
     }
 
     /**
-     * get request
+     * Finds all tasks with a particular status.
      *
-     * @param status
-     * @return all tasks with status from param
+     * @param status the status of the tasks
+     * @return the list of tasks with the specified status
      */
-
     @Operation(summary = "Find all tasks with particular status",
             description = "Return all tasks with particular status",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Tasks not found")
@@ -201,14 +191,14 @@ public class TaskController {
     }
 
     /**
-     * get request
+     * Finds all tasks of the user that need feedback.
      *
-     * @param userId
-     * @return all the tasks of the user to which need to send feedbacks
+     * @param userId the ID of the user
+     * @return the list of tasks of the user that need feedback
      */
-    @Operation(summary = "Find all the tasks of the user to which need to send feedbacks",
-            description = "Return all the tasks of the user to which need to send feedbacks",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find all tasks of the user that need feedback",
+            description = "Return all tasks of the user that need feedback",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Tasks not found")
@@ -221,14 +211,14 @@ public class TaskController {
     }
 
     /**
-     * get request
+     * Finds all tasks of the performer that need feedback.
      *
-     * @param performerId
-     * @return all the tasks of the performer to which need to send feedbacks
+     * @param performerId the ID of the performer
+     * @return the list of tasks of the performer that need feedback
      */
-    @Operation(summary = "Find all the tasks of the performer to which need to send feedbacks",
-            description = "Return all the tasks of the performer to which need to send feedbacks",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Find all tasks of the performer that need feedback",
+            description = "Return all tasks of the performer that need feedback",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Tasks not found")
@@ -241,15 +231,14 @@ public class TaskController {
     }
 
     /**
-     * put request
+     * Updates task data.
      *
-     * @param id
-     * @param taskUpdateRequestDto
-     * @return task with updated data
+     * @param id the ID of the task
+     * @param taskUpdateRequestDto the task update request DTO
+     * @return the updated task response DTO
      */
-    @Operation(summary = "Update task data",
-            description = "Return task with updated data",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Update task data", description = "Return task with updated data",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Tasks not found")
@@ -263,15 +252,14 @@ public class TaskController {
     }
 
     /**
-     * put request
+     * Adds a performer to the task.
      *
-     * @param taskId
-     * @param performerId
-     * @return task with added performer
+     * @param taskId the ID of the task
+     * @param performerId the ID of the performer
+     * @return the task response DTO with the added performer
      */
-    @Operation(summary = "Add performer to the task",
-            description = "Return task with performer",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Add performer to the task", description = "Return task with performer",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Tasks not found")
@@ -285,14 +273,14 @@ public class TaskController {
     }
 
     /**
-     * put request
+     * Removes a performer from the task.
      *
-     * @param taskId
-     * @return task without performer
+     * @param taskId the ID of the task
+     * @return the task response DTO without the performer
      */
     @Operation(summary = "Remove performer from the task",
             description = "Return task without performer",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Tasks not found")
@@ -305,15 +293,14 @@ public class TaskController {
     }
 
     /**
-     * put request
+     * Updates the status of a task.
      *
-     * @param taskId
-     * @param status
-     * @return task with status from param
+     * @param taskId the ID of the task
+     * @param status the new status of the task
+     * @return the task response DTO with the updated status
      */
-    @Operation(summary = "Update task status",
-            description = "Return task with new status",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Update task status", description = "Return task with new status",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Tasks not found")
@@ -326,13 +313,12 @@ public class TaskController {
     }
 
     /**
-     * delete request
+     * Cancels a task.
      *
-     * @param taskId
+     * @param taskId the ID of the task
      */
-    @Operation(summary = "Canceled the task",
-            description = "Return task with status canceled",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Cancel the task", description = "Return task with status canceled",
+            security = @SecurityRequirement(name = "tasks"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
             @ApiResponse(responseCode = "404", description = "Tasks not found")

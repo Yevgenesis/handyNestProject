@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Service for managing feedback.
+ * Implementation of the FeedbackService interface.
  */
 
 @Service
@@ -37,7 +37,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     /**
      * Finds all feedback.
      *
-     * @return A list of feedback DTOs.
+     * @return A list of feedback DTOs
      */
     public List<FeedbackResponseDto> findAll() {
         List<Feedback> feedbackRepositoryList = feedbackRepository.findAll();
@@ -48,8 +48,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     /**
      * Finds feedback by its ID.
      *
-     * @param id The ID of the feedback to find.
-     * @return The found feedback DTO.
+     * @param id The ID of the feedback to find
+     * @return The found feedback DTO
      */
     @Override
     public FeedbackResponseDto findById(Long id) {
@@ -61,8 +61,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     /**
      * Finds all feedback associated with a given task.
      *
-     * @param taskId The ID of the task.
-     * @return A list of feedback DTOs.
+     * @param taskId The ID of the task
+     * @return A list of feedback DTOs
      */
     @Override
     public List<FeedbackResponseDto> findAllByTaskId(Long taskId) {
@@ -75,8 +75,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     /**
      * Finds all feedback sent by a given user.
      *
-     * @param senderId The ID of the sender.
-     * @return A list of feedback DTOs.
+     * @param senderId The ID of the sender
+     * @return A list of feedback DTOs
      */
     @Override
     public List<FeedbackResponseDto> findAllBySenderId(Long senderId) {
@@ -91,8 +91,10 @@ public class FeedbackServiceImpl implements FeedbackService {
     /**
      * Adds a new feedback.
      *
-     * @param dto The feedback creation DTO.
-     * @return The created feedback DTO.
+     * @param dto The feedback creation DTO
+     * @return The created feedback DTO
+     * @throws FeedbackErrorException when task have status OPEN
+     * @throws FeedbackErrorException when task have already 2 feedbacks
      */
     @Override
     @Transactional
@@ -100,7 +102,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         // ToDo сделать подробное исключение
         Task task = taskService.findTaskEntityByIdAndParticipantsId(dto.getTaskId(), dto.getSenderId());
         List<Feedback> feedbacks = feedbackRepository.findByTaskId(dto.getTaskId());
-
+//TODO правильное исключение или правильная проверка
         if (task.getPerformer() == null)
             throw new FeedbackErrorException("You can't send feedback for task with status " + task.getTaskStatus());
 
@@ -136,8 +138,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     /**
      * Finds all feedback received by a given performer.
      *
-     * @param performerId The ID of the performer.
-     * @return A list of feedback DTOs.
+     * @param performerId The ID of the performer
+     * @return A list of feedback DTOs
      */
     @Override
     public List<FeedbackResponseDto> findAllReceivedByPerformerId(Long performerId) {
@@ -149,8 +151,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     /**
      * Finds all feedback received by a given user.
      *
-     * @param userId The ID of the user.
-     * @return A list of feedback DTOs.
+     * @param userId The ID of the user
+     * @return A list of feedback DTOs
      */
     @Override
     public List<FeedbackResponseDto> findAllReceivedByUserId(Long userId) {
@@ -162,7 +164,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     /**
      * Finds all feedback received by the current user.
      *
-     * @return A list of feedback DTOs.
+     * @return A list of feedback DTOs
      */
     @Override
     public List<FeedbackResponseDto> findAllForCurrentUser() {

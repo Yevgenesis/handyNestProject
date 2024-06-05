@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Service for managing categories.
+ * Implementation of the CategoryService interface.
  */
 
 @Service
@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * Returns a list of all categories as a nested structure.
      *
-     * @return A list of CategoryResponseDto objects representing the category tree.
+     * @return A list of CategoryResponseDto objects representing the category tree
      */
     @Override
     @Transactional(readOnly = true)
@@ -42,8 +42,9 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * Finds categories by their IDs.
      *
-     * @param ids A list of category IDs.
-     * @return A set of Category objects.
+     * @param ids A list of category IDs
+     * @return A set of Category objects
+     * @throws CategoryNotFoundException when category not found
      */
     @Override
     public Set<Category> findCategoriesByIdIn(List<Long> ids) {
@@ -58,8 +59,9 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * Finds a category by its ID.
      *
-     * @param id The ID of the category to find.
-     * @return The found Category object.
+     * @param id The ID of the category to find
+     * @return The found Category object
+     * @throws CategoryNotFoundException when category not found
      */
     @Override
     public Category findById(Long id) {
@@ -70,8 +72,8 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * Maps a Category object to a CategoryResponseDto object.
      *
-     * @param category The Category object to map.
-     * @return The mapped CategoryResponseDto object.
+     * @param category The Category object to map
+     * @return The mapped CategoryResponseDto object
      */
     private CategoryResponseDto mapToDTO(Category category) {
         CategoryResponseDto dto = new CategoryResponseDto();
@@ -85,8 +87,8 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * Retrieves child categories for a given parent ID.
      *
-     * @param parentId The ID of the parent category.
-     * @return A list of CategoryResponseDto objects representing the child categories.
+     * @param parentId The ID of the parent category
+     * @return A list of CategoryResponseDto objects representing the child categories
      */
     private List<CategoryResponseDto> getChildrenDTO(Long parentId) {
         List<Category> children = rootCategories.stream()

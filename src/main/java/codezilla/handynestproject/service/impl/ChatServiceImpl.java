@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Service for managing chats.
+ * Implementation of the ChatService interface.
  */
 
 @Service
@@ -42,8 +42,9 @@ public class ChatServiceImpl implements ChatService {
     /**
      * Creates a new chat.
      *
-     * @param chatRequestDto The chat request DTO.
-     * @return The created chat DTO.
+     * @param chatRequestDto The chat request DTO
+     * @return The created chat DTO
+     * @throws TaskWrongStatusException when task have status CANCELED or COMPLETED
      */
     @Override
     @Transactional
@@ -67,8 +68,9 @@ public class ChatServiceImpl implements ChatService {
     /**
      * Finds a chat by its ID.
      *
-     * @param id The ID of the chat to find.
-     * @return The found chat DTO.
+     * @param id The ID of the chat to find
+     * @return The found chat DTO
+     * @throws ChatNotFoundException when chat not found
      */
     @Override
     public ChatResponseDto findById(Long id) {
@@ -79,18 +81,19 @@ public class ChatServiceImpl implements ChatService {
     /**
      * Finds all chats.
      *
-     * @return A list of chat DTOs.
+     * @return A list of chat DTOs
      */
     @Override
     public List<ChatResponseDto> findAll() {
-        return chatMapper.toChatResponseDtoList(chatRepository.findAll());
+        return chatMapper
+                .toChatResponseDtoList(chatRepository.findAll());
     }
 
     /**
      * Checks if a chat exists by its ID.
      *
-     * @param id The ID of the chat to check.
-     * @return True if the chat exists, false otherwise.
+     * @param id The ID of the chat to check
+     * @return True if the chat exists, false otherwise
      */
     @Override
     public boolean existsById(Long id) {
@@ -100,7 +103,8 @@ public class ChatServiceImpl implements ChatService {
     /**
      * Closes a chat by its ID.
      *
-     * @param id The ID of the chat to close.
+     * @param id The ID of the chat to close
+     * @throws ChatNotFoundException when chat not found
      */
     @Override
     public void closedById(Long id) {

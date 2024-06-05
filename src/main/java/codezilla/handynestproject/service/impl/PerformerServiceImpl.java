@@ -5,7 +5,6 @@ import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.dto.performer.PerformerUpdateRequestDto;
 import codezilla.handynestproject.exception.CategoryNotFoundException;
 import codezilla.handynestproject.exception.PerformerNotFoundException;
-import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.PerformerMapper;
 import codezilla.handynestproject.model.entity.Address;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Service for managing performers.
+ * Implementation of the PerformerService interface.
  */
 
 @Service
@@ -41,8 +40,9 @@ public class PerformerServiceImpl implements PerformerService {
     /**
      * Creates a new performer.
      *
-     * @param performerDTO The performer request DTO.
-     * @return The created performer DTO.
+     * @param performerDTO The performer request DTO
+     * @return The created performer DTO
+     * @throws CategoryNotFoundException when category not found
      */
     @Override
     @Transactional
@@ -69,8 +69,9 @@ public class PerformerServiceImpl implements PerformerService {
     /**
      * Updates an existing performer.
      *
-     * @param updateDto The performer update DTO.
-     * @return The updated performer DTO.
+     * @param updateDto The performer update DTO
+     * @return The updated performer DTO
+     * @throws PerformerNotFoundException when performer not found
      */
     @Override
     @Transactional
@@ -82,7 +83,8 @@ public class PerformerServiceImpl implements PerformerService {
         Set<Category> categories = categoryService.findCategoriesByIdIn(updateDto.getCategoryIDs());
 
         Performer performer = performerRepository.findById(updateDto.getPerformerId())
-                .orElseThrow(() -> new UserNotFoundException("Not Found Performer with id: " + updateDto.getPerformerId()));
+                .orElseThrow(() -> new PerformerNotFoundException
+                        ("Not Found Performer with id: " + updateDto.getPerformerId()));
 
         performer.setPhoneNumber(updateDto.getPhoneNumber());
         performer.setDescription(updateDto.getDescription());
@@ -101,7 +103,7 @@ public class PerformerServiceImpl implements PerformerService {
     /**
      * Finds all performers.
      *
-     * @return A list of performer DTOs.
+     * @return A list of performer DTOs
      */
     @Override
     @Transactional(readOnly = true)
@@ -114,8 +116,9 @@ public class PerformerServiceImpl implements PerformerService {
     /**
      * Finds a performer by its ID.
      *
-     * @param id The ID of the performer to find.
-     * @return The found performer DTO.
+     * @param id The ID of the performer to find
+     * @return The found performer DTO
+     * @throws PerformerNotFoundException when performer not found
      */
     @Override
     @Transactional(readOnly = true)
@@ -128,8 +131,9 @@ public class PerformerServiceImpl implements PerformerService {
     /**
      * Finds a performer by its ID and returns the Performer entity.
      *
-     * @param id The ID of the performer to find.
-     * @return The found Performer entity.
+     * @param id The ID of the performer to find
+     * @return The found Performer entity
+     * @throws PerformerNotFoundException when performer not found
      */
     @Override
     public Performer findByIdReturnPerformer(Long id) {
@@ -140,9 +144,10 @@ public class PerformerServiceImpl implements PerformerService {
     /**
      * Updates the availability of a performer.
      *
-     * @param id        The ID of the performer to update.
-     * @param isPublish The new availability status of the performer.
-     * @return The updated performer DTO.
+     * @param id        The ID of the performer to update
+     * @param isPublish The new availability status of the performer
+     * @return The updated performer DTO
+     * @throws PerformerNotFoundException when performer not found
      */
     @Override
     public PerformerResponseDto updateAvailability(Long id, boolean isPublish) {
@@ -155,8 +160,8 @@ public class PerformerServiceImpl implements PerformerService {
     /**
      * Checks if a performer exists by its ID.
      *
-     * @param id The ID of the performer to check.
-     * @return True if the performer exists, false otherwise.
+     * @param id The ID of the performer to check
+     * @return True if the performer exists, false otherwise
      */
     @Override
     public boolean existsById(Long id) {
@@ -168,7 +173,7 @@ public class PerformerServiceImpl implements PerformerService {
     /**
      * Updates the rating of a performer.
      *
-     * @param performer The performer to update.
+     * @param performer The performer to update
      */
     @Override
     public void updateRating(Performer performer) {
@@ -180,13 +185,11 @@ public class PerformerServiceImpl implements PerformerService {
     /**
      * Increases the task counter of a performer.
      *
-     * @param performer The performer to update.
+     * @param performer The performer to update
      */
     @Override
     public void increaseTaskCounterUp(Performer performer) {
         performer.increaseTaskCounter();
         performerRepository.save(performer);
     }
-
-
 }

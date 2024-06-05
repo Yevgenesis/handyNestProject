@@ -32,17 +32,16 @@ public class FeedbackController {
 
 
     /**
-     * post request
+     * Adds new feedback.
      *
-     * @param requestDto
-     * @return created feedback
+     * @param requestDto the feedback creation request DTO
+     * @return the created feedback
      */
-    @Operation(summary = "Add feedback",
-            description = "Return added feedback",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Add feedback", description = "Return added feedback",
+            security = @SecurityRequirement(name = "feedbacks"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Not found")
+            @ApiResponse(responseCode = "200", description = "Successfully added feedback"),
+            @ApiResponse(responseCode = "404", description = "Feedback not created")
     })
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER')")
     @PostMapping
@@ -53,16 +52,15 @@ public class FeedbackController {
 
 
     /**
-     * get request
+     * Retrieves all feedbacks.
      *
-     * @return all feedbacks
+     * @return a list of all feedbacks
      */
-    @Operation(summary = "Get all feedbacks",
-            description = "Return all feedbacks",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Get all feedbacks", description = "Return all feedbacks",
+            security = @SecurityRequirement(name = "feedbacks"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-            @ApiResponse(responseCode = "404", description = "Not found")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved feedbacks"),
+            @ApiResponse(responseCode = "404", description = "Feedbacks not found")
     })
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
     @GetMapping
@@ -72,16 +70,15 @@ public class FeedbackController {
     }
 
     /**
-     * get request
+     * Retrieves feedback by ID.
      *
-     * @param id
-     * @return feedback by id
+     * @param id the feedback ID
+     * @return the feedback with the specified ID
      */
-    @Operation(summary = "Get feedback by id",
-            description = "Return feedback by id",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Get feedback by id", description = "Return feedback by id",
+            security = @SecurityRequirement(name = "feedbacks"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved feedback"),
             @ApiResponse(responseCode = "404", description = "Feedback not found")
     })
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
@@ -92,16 +89,15 @@ public class FeedbackController {
     }
 
     /**
-     * get request
+     * Retrieves all feedbacks for a specific task.
      *
-     * @param taskId
-     * @return all feedbacks by task id
+     * @param taskId the task ID
+     * @return a list of feedbacks for the specified task
      */
-    @Operation(summary = "Get feedback by task id",
-            description = "Return feedback by task id",
-            security = @SecurityRequirement(name = "swagger-ui"))
+    @Operation(summary = "Get feedback by task id", description = "Return feedback by task id",
+            security = @SecurityRequirement(name = "feedbacks"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved feedbacks"),
             @ApiResponse(responseCode = "404", description = "Task not found")
     })
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
@@ -114,16 +110,16 @@ public class FeedbackController {
     }
 
     /**
-     * get request
+     * Retrieves all feedbacks received by a specific user.
      *
-     * @param userId
-     * @return all the feedbacks of a specific user
+     * @param userId the user ID
+     * @return a list of feedbacks received by the specified user
      */
     @Operation(summary = "Get all received feedbacks by user id",
             description = "Return all received feedbacks by user id",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            security = @SecurityRequirement(name = "feedbacks"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved feedbacks"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
@@ -136,15 +132,15 @@ public class FeedbackController {
     // Достать все фитбеки полученные конкретным юзером
 
     /**
-     * get request
+     * Retrieves all feedbacks of the current authenticated user.
      *
-     * @return all feedbacks of an authorized user
+     * @return a list of feedbacks of the current user
      */
-    @Operation(summary = "Get all received feedbacks of an authorized user ",
+    @Operation(summary = "Get all received feedbacks of an authorized user",
             description = "Return all received feedbacks of an authorized user",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            security = @SecurityRequirement(name = "feedbacks"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved feedbacks"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
@@ -155,16 +151,16 @@ public class FeedbackController {
     }
 
     /**
-     * get request
+     * Retrieves all feedbacks received by a specific performer.
      *
-     * @param performerId
-     * @return all the feedbacks of a particular user
+     * @param performerId the performer ID
+     * @return a list of feedbacks received by the specified performer
      */
     @Operation(summary = "Get all received feedbacks by performer id",
             description = "Return all received feedbacks by performer id",
-            security = @SecurityRequirement(name = "swagger-ui"))
+            security = @SecurityRequirement(name = "feedbacks"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved feedbacks"),
             @ApiResponse(responseCode = "404", description = "Performer not found")
     })
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")

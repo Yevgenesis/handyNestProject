@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Service for managing attachments.
+ * Implementation of the AttachmentService interface.
  */
 @Service
 @RequiredArgsConstructor
@@ -28,8 +28,8 @@ public class AttachmentServiceImpl implements AttachmentService {
     /**
      * Creates a new attachment.
      *
-     * @param dto The attachment request DTO.
-     * @return The created attachment DTO.
+     * @param dto The attachment request DTO
+     * @return The created attachment DTO
      */
     @Override
     public AttachmentDto create(AttachmentRequestDto dto) {
@@ -48,8 +48,9 @@ public class AttachmentServiceImpl implements AttachmentService {
     /**
      * Finds an attachment by its ID.
      *
-     * @param attachmentId The ID of the attachment to find.
-     * @return The found attachment DTO.
+     * @param attachmentId The ID of the attachment to find
+     * @return The found attachment DTO
+     * @throws AttachmentNotFoundException when attachment not found
      */
     @Override
     public AttachmentDto findById(Long attachmentId) {
@@ -61,7 +62,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     /**
      * Finds all attachments.
      *
-     * @return A list of attachment DTOs.
+     * @return A list of attachment DTOs
      */
     @Override
     public List<AttachmentDto> findAll() {
@@ -71,18 +72,19 @@ public class AttachmentServiceImpl implements AttachmentService {
     /**
      * Finds all attachments associated with a given performer.
      *
-     * @param performerId The ID of the performer.
-     * @return A list of attachment DTOs.
+     * @param performerId The ID of the performer
+     * @return A list of attachment DTOs
      */
     @Override
     public List<AttachmentDto> findByPerformerId(Long performerId) {
-        return attachmentMapper.attachmentsToListDto(attachmentRepository.findAllByPerformerId(performerId));
+        return attachmentMapper.attachmentsToListDto(attachmentRepository
+                .findAllByPerformerId(performerId));
     }
 
     /**
      * Removes an attachment by its ID.
      *
-     * @param attachmentId The ID of the attachment to remove.
+     * @param attachmentId The ID of the attachment to remove
      */
     @Override
     public void remove(Long attachmentId) {
