@@ -288,7 +288,7 @@ public class TaskServiceImpl implements TaskService {
      * @param status The new status to update to
      * @return The updated task response
      * @throws TaskNotFoundException    when task not found
-     * @throws TaskWrongStatusException when task have status CANCELED or COMPLETED
+     * @throws TaskNotFoundException  when task have status CANCELED or COMPLETED
      */
     @Override
     @Transactional
@@ -297,7 +297,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new TaskNotFoundException("Not found task with id: " + taskId));
         if (task.getTaskStatus().equals(TaskStatus.CANCELED)
                 || task.getTaskStatus().equals(TaskStatus.COMPLETED)) {
-            throw new TaskWrongStatusException("Task have status: " + task.getTaskStatus());
+            throw new TaskNotFoundException("Task have status: " + task.getTaskStatus());
         }
         // TODO только заказчик может изменить статус на COMPLETED
 
