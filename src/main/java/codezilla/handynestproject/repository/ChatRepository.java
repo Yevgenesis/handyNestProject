@@ -11,9 +11,6 @@ import java.util.List;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
-
-
-
     @Query("SELECT c FROM Chat c " +
             "WHERE c.user.id = :id OR c.performer.id = :id")
     List<Chat> findAllByUserIdOrPerformerId(Long id);

@@ -58,13 +58,11 @@ public class Message {
     private String text;
 
     @CreatedDate
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(nullable = false)
     @Schema(description = "Message creation timestamp", example = "2024-05-28")
     private Timestamp createdOn;
 
     @LastModifiedDate
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(nullable = false)
     @Schema(description = "Message last update timestamp", example = "2024-05-28")
     private Timestamp updatedOn;

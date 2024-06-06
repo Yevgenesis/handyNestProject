@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    //List<Category> findByParentId(Long parentId);
-    Category findById(long id);
 
-    //Set<Category> findCategoriesByIdIn(List<Long> ids);
+    Category findById(long id);
 }

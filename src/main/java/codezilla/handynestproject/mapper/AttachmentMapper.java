@@ -19,9 +19,7 @@ public interface AttachmentMapper {
 
     Attachment dtoToAttachment(AttachmentRequestDto attachmentDto);
 
-
     List<AttachmentDto> attachmentsToListDto(List<Attachment> attachments);
-
 
     List<Attachment> dtoToListAttachment(List<AttachmentDto> attachmentDtos);
 }

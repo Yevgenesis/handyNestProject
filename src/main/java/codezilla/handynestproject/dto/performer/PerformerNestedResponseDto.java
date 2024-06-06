@@ -17,9 +17,6 @@ public class PerformerNestedResponseDto {
     private String firstName;
     @Schema(description = "Performer last name")
     private String lastName;
-
-//    private Set<CategoryTitleDto> categories = new HashSet<>();
-
     @Schema(description = "Performer positive feedback percentage")
     private Double positiveFeedbackPercent;
     @Schema(description = "Performer task count")

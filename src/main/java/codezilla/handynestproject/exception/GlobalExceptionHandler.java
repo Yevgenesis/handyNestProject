@@ -97,9 +97,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 
+    @ExceptionHandler(FeedbackErrorException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody ErrorResponse handleFeedbackErrorException(FeedbackErrorException ex) {
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
+    }
+
     @ExceptionHandler(ChatNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public @ResponseBody ErrorResponse handleChatNotFoundException(ChatNotFoundException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(AttachmentNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ErrorResponse handleAttachmentNotFoundException(AttachmentNotFoundException ex) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 }

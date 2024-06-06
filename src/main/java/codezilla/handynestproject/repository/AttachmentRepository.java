@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
+
     List<Attachment> findAllByPerformerId(Long projectId);
+
     Attachment save(Attachment attachment);
 }

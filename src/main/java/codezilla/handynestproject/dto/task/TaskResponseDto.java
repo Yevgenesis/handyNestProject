@@ -6,6 +6,7 @@ import codezilla.handynestproject.dto.performer.PerformerNestedResponseDto;
 import codezilla.handynestproject.dto.user.UserNestedResponseDto;
 import codezilla.handynestproject.model.entity.WorkingTime;
 import codezilla.handynestproject.model.enums.TaskStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,7 +45,9 @@ public class TaskResponseDto {
     @Builder.Default
     private boolean isPublish = true;
     @Schema(description = "Timestamp of task creation")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Timestamp createdOn;
     @Schema(description = "Timestamp of last task update")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Timestamp updatedOn;
 }

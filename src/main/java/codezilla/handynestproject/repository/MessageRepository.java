@@ -18,6 +18,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Query("SELECT m FROM Message m WHERE m.chat.id = :chatId")
     List<Message> findByChatId(Long chatId);
 
-
     List<Message> findBySenderIdAndIsReadFalse(Long userId);
 }

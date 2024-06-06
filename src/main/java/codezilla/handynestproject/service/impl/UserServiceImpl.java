@@ -58,9 +58,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto findById(Long id) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        //TODO add User isDeleted, проверки по ролям. Если запрос от админа, то возврат всех.
+        //   Если юзер, то себя. Перформер только не удаленных
         return userMapper.userToDto(user);
     }
-//TODO add User isDeleted
+
+
     /**
      * Finds a user by its ID and returns the User entity.
      *
@@ -152,13 +155,9 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto create(UserRequestDto dto) {
         if (!dto.isPasswordsMatch()) throw new WrongConfirmationPasswordException();
 
-
-
         // Password encoding
         User user = userMapper.dtoToUser(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        String encodedPassword = passwordEncoder.encode(dto.password());
-//        user.setPassword(encodedPassword);
 
         try {
             user = userRepository.save(user);
@@ -187,7 +186,7 @@ public class UserServiceImpl implements UserService {
      * Retrieves the current user's ID from the security context.
      *
      * @return the ID of the current user
-     * @throws SecurityException if the user is not authenticated
+     * @throws SecurityException        if the user is not authenticated
      * @throws IllegalArgumentException if the primary authentication object cannot be used to obtain the ID
      */
     @Override

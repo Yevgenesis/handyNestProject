@@ -29,8 +29,10 @@ public class UserResponseDto {
     @Schema(description = "User logo")
     private String logo;
     @Schema(description = "Timestamp of user creation")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Timestamp created_on;
     @Schema(description = "Timestamp of last user update")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Timestamp updated_on;
 }
 

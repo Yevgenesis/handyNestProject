@@ -71,13 +71,11 @@ public class User {
     private String logo;
 
     @CreatedDate
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "created_on", nullable = false, updatable = false)
     @Schema(description = "Date when the user was created", example = "2024-01-01")
     private Timestamp created_on;
 
     @LastModifiedDate
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "updated_on", nullable = false)
     @Schema(description = "Date when the user was last updated", example = "2024-01-01")
     private Timestamp updated_on;

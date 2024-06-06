@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Entity representing a attachment")
 public class Attachment {
 
+    //TODO add createdOn
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "Attachment id", example = "1")

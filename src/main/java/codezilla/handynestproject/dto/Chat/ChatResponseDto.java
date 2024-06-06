@@ -1,6 +1,7 @@
 package codezilla.handynestproject.dto.Chat;
 
 import codezilla.handynestproject.model.entity.Message;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,8 +28,10 @@ public class ChatResponseDto {
     @Schema(description = "List of messages in the chat")
     private List<Message> messages;
     @Schema(description = "Timestamp of chat creation")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Timestamp createdOn;
     @Schema(description = "Timestamp of last chat update")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm:ss")
     private Timestamp updatedOn;
     @Schema(description = "Flag indicating if chat is deleted")
     private boolean isDeleted;

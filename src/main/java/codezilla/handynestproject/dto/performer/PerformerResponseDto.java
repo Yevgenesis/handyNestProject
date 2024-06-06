@@ -26,19 +26,12 @@ public class PerformerResponseDto {
     private String lastName;
     @Schema(description = "Performer phone number")
     private String phoneNumber;
-
-//    private boolean isPhoneVerified;
-//
-//    private boolean isPassportVerified;
-
     @Schema(description = "Performer description")
     private String description;
     @Schema(description = "Performer categories")
     private Set<CategoryTitleDto> categories = new HashSet<>();
     @Schema(description = "Performer address")
-    //        @JsonFormat(shape = JsonFormat.Shape.STRING) // ToDo
     private AddressDto address;
-
     @Schema(description = "Performer availability")
     private boolean isAvailable;
     @Schema(description = "Performer positive feedback percentage")

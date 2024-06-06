@@ -10,7 +10,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {UserMapper.class, ChatMapper.class} )
 public interface MessageMapper {
 
-
     MessageResponseDto toMessageResponseDto(Message message);
 
     List<MessageResponseDto> toMessageResponseDtoList(List<Message> messages);

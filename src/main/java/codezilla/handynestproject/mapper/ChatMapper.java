@@ -12,9 +12,13 @@ public interface ChatMapper {
 
 
     ChatResponseDto toChatResponseDto(Chat chat);
+
     Chat toChatFromDto(ChatResponseDto chatResponseDto);
+
     Chat toChat(ChatRequestDto chatRequestDto);
+
     List<Chat> toChatList(List<ChatRequestDto> chatRequestDtoList);
+
     List<ChatResponseDto> toChatResponseDtoList(List<Chat> chats);
 
 

@@ -112,13 +112,11 @@ public class Performer {
     private Long taskCount = 0L;
 
     @CreatedDate
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "created_on", updatable = false, nullable = false)
     @Schema(description = "Date when the performer was created", example = "2024-01-01")
     private Timestamp createdOn;
 
     @LastModifiedDate
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     @Column(name = "updated_on", nullable = false)
     @Schema(description = "Date when the performer was last updated", example = "2024-01-01")
     private Timestamp updatedOn;

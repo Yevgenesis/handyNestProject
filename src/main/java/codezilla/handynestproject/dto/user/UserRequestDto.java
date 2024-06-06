@@ -27,7 +27,7 @@ public record UserRequestDto(
     private static final String BAD_PASSWORD_MESSAGE = "Password must be min 8 symbols, contains lower case," +
             "digit and specials symbols (@#$%^&+=) ";
 
-    // проверка совпадения password и passwordConfirmation
+    // checking the match of password and passwordConfirmation
     public boolean isPasswordsMatch() {
         return password.equals(passwordConfirmation);
     }

@@ -8,6 +8,7 @@ import codezilla.handynestproject.mapper.FeedbackMapper;
 import codezilla.handynestproject.model.entity.Feedback;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.entity.User;
+import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.FeedbackRepository;
 import codezilla.handynestproject.service.FeedbackService;
 import codezilla.handynestproject.service.PerformerService;
@@ -99,15 +100,16 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     @Transactional
     public FeedbackResponseDto add(FeedbackCreateRequestDto dto) {
-        // ToDo сделать подробное исключение
+
         Task task = taskService.findTaskEntityByIdAndParticipantsId(dto.getTaskId(), dto.getSenderId());
         List<Feedback> feedbacks = feedbackRepository.findByTaskId(dto.getTaskId());
-//TODO правильное исключение или правильная проверка
-        if (task.getPerformer() == null)
-            throw new FeedbackErrorException("You can't send feedback for task with status " + task.getTaskStatus());
 
-        // Проверка запрещает, если для этого таска уже оставлены 2 фидбека или участник хочет оставить ещё одни отзыв
-        if (feedbacks.size() != 0) {
+        if (task.getTaskStatus().equals(TaskStatus.OPEN))
+            throw new FeedbackErrorException("You can't send feedback for task with OPEN status");
+
+        // Verification is prohibited if 2 feedbacks have already been
+        // left for this task or the participant wants to leave another feedback
+        if (!feedbacks.isEmpty()) {
             if (feedbacks.size() == 2 || feedbacks.get(0).getSender().getId().equals(dto.getSenderId())) {
                 throw new FeedbackErrorException("You can't send feedback more than once for this task");
             }
@@ -128,7 +130,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                 .build();
         Feedback savedFeedback = feedbackRepository.save(feedback);
 
-        // после добавления feedback обновить рейтинги и записать юзеру и перформеру
+        // after adding feedback, update the ratings of user and performer
         userService.updateRating(task.getUser());
         performerService.updateRating(task.getPerformer());
 
