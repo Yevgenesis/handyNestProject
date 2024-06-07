@@ -10,7 +10,6 @@ import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.FeedbackRepository;
-import codezilla.handynestproject.security.UserDetailsServiceImpl;
 import codezilla.handynestproject.service.FeedbackService;
 import codezilla.handynestproject.service.PerformerService;
 import codezilla.handynestproject.service.TaskService;
@@ -35,7 +34,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final TaskService taskService;
     private final PerformerService performerService;
     private final UserService userService;
-    private final UserDetailsServiceImpl userDetailsService;
 
     /**
      * Finds all feedback.
@@ -44,8 +42,7 @@ public class FeedbackServiceImpl implements FeedbackService {
      */
     public List<FeedbackResponseDto> findAll() {
         List<Feedback> feedbackRepositoryList = feedbackRepository.findAll();
-        List<FeedbackResponseDto> feedbackResponseDtoList = feedbackMapper.feedbackToListDto(feedbackRepositoryList);
-        return feedbackResponseDtoList;
+        return feedbackMapper.feedbackToListDto(feedbackRepositoryList);
     }
 
     /**
@@ -57,8 +54,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public FeedbackResponseDto findById(Long id) {
         Optional<Feedback> feedbackResponse = feedbackRepository.findById(id);
-        FeedbackResponseDto feedbackResponseDto = feedbackMapper.feedbackToDto(feedbackResponse.orElseThrow(FeedbackNotFoundException::new));
-        return feedbackResponseDto;
+        return feedbackMapper.feedbackToDto(feedbackResponse.orElseThrow(FeedbackNotFoundException::new));
     }
 
     /**
@@ -71,8 +67,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     public List<FeedbackResponseDto> findAllByTaskId(Long taskId) {
         taskService.findById(taskId);
         List<Feedback> feedbacks = feedbackRepository.findByTaskId(taskId);
-        List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
-        return feedbacksDtos;
+        return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
     /**
@@ -84,8 +79,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public List<FeedbackResponseDto> findAllBySenderId(Long senderId) {
         List<Feedback> feedbacks = feedbackRepository.findBySenderId(senderId);
-        List<FeedbackResponseDto> feedbacksDtos = feedbackMapper.feedbackToListDto(feedbacks);
-        return feedbacksDtos;
+        return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
     /**
@@ -115,7 +109,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
 
         // Checking participants of the task
-        User currentUser = userDetailsService.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         if (!(currentUser.getId().equals(task.getUser().getId()) || currentUser.getId().equals(task.getPerformer().getId()))) {
             throw new FeedbackErrorException("You can't send feedback for this task, that doesn't belong to you");
         }

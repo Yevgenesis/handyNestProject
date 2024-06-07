@@ -16,25 +16,16 @@ import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.TaskRepository;
-import codezilla.handynestproject.security.UserDetailsServiceImpl;
 import codezilla.handynestproject.service.CategoryService;
 import codezilla.handynestproject.service.PerformerService;
 import codezilla.handynestproject.service.TaskService;
 import codezilla.handynestproject.service.UserService;
 import codezilla.handynestproject.service.WorkingTimeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.AccessDeniedException;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -53,7 +44,6 @@ public class TaskServiceImpl implements TaskService {
     private final PerformerService performerService;
     private final TaskMapper taskMapper;
     private final AddressMapper addressMapper;
-    private final UserDetailsServiceImpl userDetailsService;
 
     /**
      * Create a new task based on the provided TaskRequestDto.
@@ -314,8 +304,8 @@ public class TaskServiceImpl implements TaskService {
         }
 
         // Only task owner can change task status to COMPLETED
-        if(!userDetailsService.isCurrentUserAdmin()) {
-            if (!userDetailsService.getCurrentUser().getId().equals(task.getUser().getId())) {
+        if(!userService.isCurrentUserAdmin()) {
+            if (!userService.getCurrentUser().getId().equals(task.getUser().getId())) {
                 throw new UserAccessDeniedException("Access denied");
             }
         }

@@ -105,8 +105,6 @@ public class FeedbackController {
     public List<FeedbackResponseDto> findByTaskID(@PathVariable Long taskId) {
         log.info("Find feedback by task id: {}", taskId);
         return feedbackService.findAllByTaskId(taskId);
-
-
     }
 
     /**
@@ -129,24 +127,6 @@ public class FeedbackController {
         return feedbackService.findAllReceivedByUserId(userId);
     }
 
-    /**
-     * Retrieves all feedbacks of the current authenticated user.
-     *
-     * @return a list of feedbacks of the current user
-     */
-    @Operation(summary = "Get all received feedbacks of an authorized user",
-            description = "Return all received feedbacks of an authorized user",
-            security = @SecurityRequirement(name = "feedbacks"))
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved feedbacks"),
-            @ApiResponse(responseCode = "404", description = "User not found")
-    })
-    @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
-    @GetMapping("/current")
-    public List<FeedbackResponseDto> findReceivedForCurrentUser() {
-        log.info("Find received feedbacks of current user");
-        return feedbackService.findAllForCurrentUser();
-    }
 
     /**
      * Retrieves all feedbacks received by a specific performer.

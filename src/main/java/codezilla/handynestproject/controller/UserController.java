@@ -3,7 +3,7 @@ package codezilla.handynestproject.controller;
 import codezilla.handynestproject.dto.user.UserRequestDto;
 import codezilla.handynestproject.dto.user.UserRequestUpdateDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
-import codezilla.handynestproject.security.AuthenticationService;
+import codezilla.handynestproject.security.service.AuthenticationService;
 import codezilla.handynestproject.security.model.JwtAuthenticationResponse;
 import codezilla.handynestproject.security.model.SignInRequest;
 import codezilla.handynestproject.service.UserService;
