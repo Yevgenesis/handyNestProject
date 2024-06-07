@@ -95,24 +95,6 @@ public class UserController {
         return userService.create(userRequestDto);
     }
 
-    /**
-     * User login.
-     *
-     * @param request the sign-in request DTO
-     * @return the JWT authentication response
-     */
-    @Operation(summary = "Login",
-            description = "User login",
-            security = @SecurityRequirement(name = "users"))
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User has been logged in")
-    })
-    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    @PostMapping("/login")
-    public JwtAuthenticationResponse login(@RequestBody SignInRequest request) {
-        log.info("Login request: {}", request);
-        return authenticationService.authenticate(request);
-    }
 
     /**
      * Update a user.

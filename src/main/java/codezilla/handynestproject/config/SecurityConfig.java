@@ -32,7 +32,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
 //                        .requestMatchers("/users/**",
 //                                "/attachments/**",
-//                                "/categories/**",
 //                                "feedbacks/**",
 //                                "/performers/**",
 //                                "/tasks/**",
@@ -47,13 +46,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder) throws Exception {
-//        auth.inMemoryAuthentication()
-//                .withUser("user")
-//                .password(passwordEncoder.encode("password"))
-//                .roles("ADMIN");
-//    }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
