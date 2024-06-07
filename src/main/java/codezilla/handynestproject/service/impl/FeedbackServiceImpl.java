@@ -10,6 +10,7 @@ import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.FeedbackRepository;
+import codezilla.handynestproject.security.UserDetailsServiceImpl;
 import codezilla.handynestproject.service.FeedbackService;
 import codezilla.handynestproject.service.PerformerService;
 import codezilla.handynestproject.service.TaskService;
@@ -34,6 +35,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final TaskService taskService;
     private final PerformerService performerService;
     private final UserService userService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     /**
      * Finds all feedback.
@@ -86,9 +88,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbacksDtos;
     }
 
-
-    // ToDo оптимизировать запросы
-
     /**
      * Adds a new feedback.
      *
@@ -113,6 +112,11 @@ public class FeedbackServiceImpl implements FeedbackService {
             if (feedbacks.size() == 2 || feedbacks.get(0).getSender().getId().equals(dto.getSenderId())) {
                 throw new FeedbackErrorException("You can't send feedback more than once for this task");
             }
+        }
+        // Checking participants of the task
+        Long currentUserId = userDetailsService.getCurrentUserId();
+        if (!(currentUserId.equals(task.getUser().getId()) || currentUserId.equals(task.getPerformer().getId()))) {
+            throw new FeedbackErrorException("You can't send feedback for this task, that doesn't belong to you");
         }
 
         User sender;

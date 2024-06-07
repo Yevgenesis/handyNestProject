@@ -5,6 +5,7 @@ import codezilla.handynestproject.dto.performer.PerformerResponseDto;
 import codezilla.handynestproject.dto.performer.PerformerUpdateRequestDto;
 import codezilla.handynestproject.exception.CategoryNotFoundException;
 import codezilla.handynestproject.exception.PerformerNotFoundException;
+import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.PerformerMapper;
 import codezilla.handynestproject.model.entity.Address;
@@ -48,13 +49,15 @@ public class PerformerServiceImpl implements PerformerService {
     @Transactional
     public PerformerResponseDto create(@RequestBody PerformerRequestDto performerDTO) {
         User user = userService.findByIdReturnUser(performerDTO.getUserId());
+        if (user.isDeleted()){
+            throw new UserNotFoundException("User is deleted");
+        }
         Set<Category> categories = categoryService.findCategoriesByIdIn(performerDTO.getCategoryIDs());
 
-        // проверяем все ли категории нашлись
+        // checking categories is available
         if (categories.size() != performerDTO.getCategoryIDs().size())
             throw new CategoryNotFoundException("Wrong Category IDs");
 
-        // ToDo оптимизировать запрос
         Performer performer = Performer.builder()
                 .phoneNumber(performerDTO.getPhoneNumber())
                 .description(performerDTO.getDescription())
@@ -77,9 +80,9 @@ public class PerformerServiceImpl implements PerformerService {
     @Transactional
     public PerformerResponseDto update(PerformerUpdateRequestDto updateDto) {
         User user = userService.findByIdReturnUser(updateDto.getPerformerId());
-
-        // ToDo тут должна быть проверка роли (performerRole)
-
+        if (user.isDeleted()){
+            throw new UserNotFoundException("User is deleted");
+        }
         Set<Category> categories = categoryService.findCategoriesByIdIn(updateDto.getCategoryIDs());
 
         Performer performer = performerRepository.findById(updateDto.getPerformerId())
@@ -109,8 +112,7 @@ public class PerformerServiceImpl implements PerformerService {
     @Transactional(readOnly = true)
     public List<PerformerResponseDto> findAll() {
         List<Performer> performers = performerRepository.findAll();
-        List<PerformerResponseDto> dtos = performerMapper.performersToListDto(performers);
-        return dtos;
+        return performerMapper.performersToListDto(performers);
     }
 
     /**

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 public class UserAlreadyExistsException extends RuntimeException {
 
     public UserAlreadyExistsException() {
-        super("User with this email already exists");
+        super();
     }
 
     public UserAlreadyExistsException(String message) {

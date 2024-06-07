@@ -162,7 +162,7 @@ class FeedbackControllerTest {
     @Transactional
     @SneakyThrows
     @WithMockUser(authorities = "USER")
-    void findReceivedByUserId() {
+    void findAllReceivedByUserId() {
         Long userId = 3L;
         mockMvc.perform(get("/feedbacks/user/{userId}", userId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -174,7 +174,7 @@ class FeedbackControllerTest {
     @Test
     @SneakyThrows
     @WithMockUser(authorities = "USER")
-    void findReceivedByUserIdExistingUserId() {
+    void findAllReceivedByUserIdExistingUserId() {
         Long notExistingUserId = 999L;
         mockMvc.perform(get("/feedbacks/user/{userId}", notExistingUserId))
                 .andExpect(status().isNotFound());

@@ -311,13 +311,13 @@ class TaskControllerTest {
     @Test
     @Transactional
     @SneakyThrows
-    @WithMockUser(authorities = "USER")
+    @WithMockUser(username = "eva.brown@example.com", authorities = "USER")
     void updateStatusTest() {
         TaskResponseDto task = TASK_RESPONSE_DTO1;
         Long taskId = task.getId();
-        TaskStatus taskStatus = TaskStatus.IN_PROGRESS;
+        TaskStatus taskStatus = TaskStatus.CANCELED;
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/tasks/{taskId}/status//{status}", taskId, taskStatus))
+                        .put("/tasks/{taskId}/status/{status}", taskId, taskStatus))
                 .andExpect(status().isOk());
     }
 

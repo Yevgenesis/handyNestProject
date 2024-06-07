@@ -124,12 +124,10 @@ public class FeedbackController {
     })
     @PreAuthorize("hasAnyAuthority('USER','PERFORMER','ADMIN')")
     @GetMapping("/user/{userId}")
-    public List<FeedbackResponseDto> findReceivedByUserId(@PathVariable Long userId) {
+    public List<FeedbackResponseDto> findAllReceivedByUserId(@PathVariable Long userId) {
         log.info("Find received feedbacks by user id: {}", userId);
         return feedbackService.findAllReceivedByUserId(userId);
     }
-    //TODO tests method
-    // Достать все фитбеки полученные конкретным юзером
 
     /**
      * Retrieves all feedbacks of the current authenticated user.

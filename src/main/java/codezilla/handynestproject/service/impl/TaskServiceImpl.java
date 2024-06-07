@@ -6,6 +6,7 @@ import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
 import codezilla.handynestproject.exception.PerformerNotFoundException;
 import codezilla.handynestproject.exception.TaskNotFoundException;
 import codezilla.handynestproject.exception.TaskWrongStatusException;
+import codezilla.handynestproject.exception.UserAccessDeniedException;
 import codezilla.handynestproject.exception.UserNotFoundException;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
@@ -15,16 +16,25 @@ import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.TaskRepository;
+import codezilla.handynestproject.security.UserDetailsServiceImpl;
 import codezilla.handynestproject.service.CategoryService;
 import codezilla.handynestproject.service.PerformerService;
 import codezilla.handynestproject.service.TaskService;
 import codezilla.handynestproject.service.UserService;
 import codezilla.handynestproject.service.WorkingTimeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -43,6 +53,7 @@ public class TaskServiceImpl implements TaskService {
     private final PerformerService performerService;
     private final TaskMapper taskMapper;
     private final AddressMapper addressMapper;
+    private final UserDetailsServiceImpl userDetailsService;
 
     /**
      * Create a new task based on the provided TaskRequestDto.
@@ -168,7 +179,8 @@ public class TaskServiceImpl implements TaskService {
 
         Optional<Task> task = Optional.of(taskRepository
                 .findTaskByIdAndStatusIsNotOPENAndPerformerOrUser(taskId, userId)
-                .orElseThrow(() -> new TaskNotFoundException("Not found task with id: " + taskId)));
+                .orElseThrow(() -> new TaskNotFoundException(String
+                        .format("Not found taskID: %s with participantID: %s",taskId,userId))));
         return task.get();
     }
 
@@ -282,7 +294,7 @@ public class TaskServiceImpl implements TaskService {
      * @param status The new status to update to
      * @return The updated task response
      * @throws TaskNotFoundException    when task not found
-     * @throws TaskWrongStatusException  when task have status CANCELED or COMPLETED
+     * @throws TaskWrongStatusException when task have status CANCELED or COMPLETED
      */
     @Override
     @Transactional
@@ -293,12 +305,24 @@ public class TaskServiceImpl implements TaskService {
                 || task.getTaskStatus().equals(TaskStatus.COMPLETED)) {
             throw new TaskWrongStatusException("Task have status: " + task.getTaskStatus());
         }
-        // TODO только заказчик может изменить статус на COMPLETED
 
+        // Can't update task status to COMPLETED or IN_PROGRESS when performer is null
+        if((status.equals(TaskStatus.COMPLETED) || status.equals(TaskStatus.IN_PROGRESS))
+                && task.getPerformer() == null){
+            throw new TaskWrongStatusException(String
+                    .format("Can't update task status to %s because performer is absent", status));
+        }
+
+        // Only task owner can change task status to COMPLETED
+        if(!userDetailsService.isCurrentUserAdmin()) {
+            if (!Objects.equals(userDetailsService.getCurrentUserId(), task.getUser().getId())) {
+                throw new UserAccessDeniedException("Access denied");
+            }
+        }
         task.setTaskStatus(status);
         Task updatedTask = taskRepository.save(task);
 
-        // Если таск COMPLETED, то увеличить счётчики выполненных заданий у перформера и юзера
+        // If the task is COMPLETED, then increase the counter of completed tasks for the performer and the user
         if (status.equals(TaskStatus.COMPLETED)) {
             userService.increaseTaskCounterUp(task.getUser());
             performerService.increaseTaskCounterUp(task.getPerformer());
@@ -347,4 +371,6 @@ public class TaskServiceImpl implements TaskService {
                 performer.getCategories());
         return taskMapper.toTaskResponseDtoList(tasks);
     }
+
+
 }

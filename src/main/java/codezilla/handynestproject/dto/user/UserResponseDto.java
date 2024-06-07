@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
-// ToDo убрать конфиденциальные поля (оставил для тестов)
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

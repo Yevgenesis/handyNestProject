@@ -3,12 +3,16 @@ package codezilla.handynestproject.security;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -27,5 +31,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.getRoles().stream().map(auth -> new SimpleGrantedAuthority(auth.name()))
                         .collect(Collectors.toList()));
         return res;
+    }
+
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            return userService.getByEmail(userDetails.getUsername()).getId();
+        }
+        return null;
+    }
+
+    public boolean isCurrentUserAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            for (GrantedAuthority authority : authorities) {
+                if (authority.getAuthority().equals("ADMIN")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

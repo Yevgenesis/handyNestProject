@@ -39,7 +39,7 @@ public class SecurityConfig {
 //                                "/v3/api-docs/**",
 //                                "/swagger-ui/**")
                         .requestMatchers("/categories/**").permitAll()
-                        .anyRequest().authenticated()) // ToDo .authenticated() для прода, а .permitAll() для дев
+                        .anyRequest().authenticated()) //  .authenticated() for production, and .permitAll() for develop
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
