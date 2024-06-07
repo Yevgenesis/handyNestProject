@@ -52,7 +52,7 @@ class FeedbackControllerTest {
     @Test
     @Transactional
     @SneakyThrows
-    @WithMockUser(authorities = "USER")
+    @WithMockUser(username = "john.doe@example.com", authorities = "USER")
     void addTest() {
         FeedbackCreateRequestDto requestDto = FeedbackCreateRequestDto.builder()
                 .senderId(1L)

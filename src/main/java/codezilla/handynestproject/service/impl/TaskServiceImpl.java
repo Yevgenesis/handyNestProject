@@ -315,10 +315,11 @@ public class TaskServiceImpl implements TaskService {
 
         // Only task owner can change task status to COMPLETED
         if(!userDetailsService.isCurrentUserAdmin()) {
-            if (!Objects.equals(userDetailsService.getCurrentUserId(), task.getUser().getId())) {
+            if (!userDetailsService.getCurrentUser().getId().equals(task.getUser().getId())) {
                 throw new UserAccessDeniedException("Access denied");
             }
         }
+
         task.setTaskStatus(status);
         Task updatedTask = taskRepository.save(task);
 

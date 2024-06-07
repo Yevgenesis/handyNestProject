@@ -106,31 +106,26 @@ public class FeedbackServiceImpl implements FeedbackService {
         if (task.getTaskStatus().equals(TaskStatus.OPEN))
             throw new FeedbackErrorException("You can't send feedback for task with OPEN status");
 
-        // Verification is prohibited if 2 feedbacks have already been
-        // left for this task or the participant wants to leave another feedback
+        // Checking if 2 feedbacks have already been left
+        // or a member wants to leave more than one feedback for this task
         if (!feedbacks.isEmpty()) {
-            if (feedbacks.size() == 2 || feedbacks.get(0).getSender().getId().equals(dto.getSenderId())) {
+            if (feedbacks.size() >= 2 || feedbacks.get(0).getSender().getId().equals(dto.getSenderId())) {
                 throw new FeedbackErrorException("You can't send feedback more than once for this task");
             }
         }
+
         // Checking participants of the task
-        Long currentUserId = userDetailsService.getCurrentUserId();
-        if (!(currentUserId.equals(task.getUser().getId()) || currentUserId.equals(task.getPerformer().getId()))) {
+        User currentUser = userDetailsService.getCurrentUser();
+        if (!(currentUser.getId().equals(task.getUser().getId()) || currentUser.getId().equals(task.getPerformer().getId()))) {
             throw new FeedbackErrorException("You can't send feedback for this task, that doesn't belong to you");
         }
 
-        User sender;
-        if (task.getUser().getId().equals(dto.getSenderId())) {
-            sender = task.getUser();
-        } else {
-            sender = task.getPerformer().getUser();
-        }
 
         Feedback feedback = Feedback.builder()
                 .task(task)
                 .grade(dto.getGrade())
                 .text(dto.getText())
-                .sender(sender)
+                .sender(currentUser)
                 .build();
         Feedback savedFeedback = feedbackRepository.save(feedback);
 

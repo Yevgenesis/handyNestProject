@@ -33,13 +33,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return res;
     }
 
-    public Long getCurrentUserId() {
+    public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            return userService.getByEmail(userDetails.getUsername()).getId();
+            return userService.getByEmail(userDetails.getUsername());
         }
         return null;
     }
