@@ -23,14 +23,20 @@
 
 - Java 17
 - Maven 3.6.6
-- Docker
-- Java Spring Boot
+- Spring Boot 3.2.5
 - Spring Security
 - Lombok
 - Hibernate
+- MapStruct
 - Liquibase
+- Docker
+- PostgreSQL (разворачивается в Docker)
+- Аутентификация и авторизация с использованием JWT
+- SpringDoc OpenAPI
+- JUnit, Testcontainers и Spring Security Test
+- JaCoCo
 
-
+Включение безопасности с помощью Spring Security.
 
 ### Установка
 
@@ -70,10 +76,9 @@ docker-compose -f postgres.yml up
 mvn clean install
 
 # Тестирование с помощью JaCoCo
-mvn clean test
-mvn jacoco:report
-# Отчет о покрытии будет сгенерирован в директории target/site/jacoco
+mvn clean test jacoco:report
+# Отчет о покрытии будет сгенерирован в файле: target/site/jacoco/index.html
 
 
 Облачная инфраструктура: 
-Amazon Web Services (можно рассмотреть другие облачные платформы)
+Amazon Web Services (ещё не реализовано)
