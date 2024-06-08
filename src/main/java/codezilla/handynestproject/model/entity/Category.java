@@ -1,5 +1,6 @@
 package codezilla.handynestproject.model.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,29 +18,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "category")
-//@EqualsAndHashCode(exclude = {"tasks", "performers"})
-//@ToString(exclude = {"tasks", "performers"})
+@Schema(description = "Entity representing a category")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Category id", example = "1")
     private Long id;
 
+    @Schema(description = "Category title", example = "Ремонт")
     private String title;
 
-
+    @Schema(description = "Parent category id", example = "1")
     @Column(name = "parent_id")
     private Long parentId;
 
+    @Schema(description = "Weight category", example = "1")
     private int weight;
-//
-//    @OneToMany(mappedBy = "category",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true)
-//    private Set<Task> tasks = new HashSet<>();
-
-//
-//    @ManyToMany
-//    private Set<Performer> performers = new HashSet<>();
-
 }

@@ -14,10 +14,6 @@ import java.util.Optional;
 @Repository
 public interface PerformerRepository extends JpaRepository<Performer, Long> {
 
-//    @Query("select p from Performer p join fetch p.categories c where p.id=:id")
-//    Optional<Performer> findPerformerWithCategoriesById(Long id);
-
-
     Performer save(Performer performer);
 
     @EntityGraph(value = "Performer.withUserAndCategoriesAndAddress", type = EntityGraph.EntityGraphType.LOAD)
@@ -26,8 +22,8 @@ public interface PerformerRepository extends JpaRepository<Performer, Long> {
     @EntityGraph(value = "Performer.withUserAndCategoriesAndAddress", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Performer> findById(Long id);
 
-    // Возвращает процент позитивных отзывов с оценкой 4 или 5
-    // И округляет ответ до одного знака после запятой
+    // Returns the percentage of positive feedbacks with a grade of 4 or 5
+    //and rounds the answer to one decimal place
     @Query(value = """
             SELECT COALESCE(
                         ROUND(

@@ -6,21 +6,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity // to work with @PreAuthorize
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -31,8 +30,16 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-//                        .requestMatchers("/feedbacks/**").permitAll()
-                        .anyRequest().permitAll()) // ToDo .authenticated() для прода, а .permitAll() для дев
+//                        .requestMatchers("/users/**",
+//                                "/attachments/**",
+//                                "/categories/**",
+//                                "feedbacks/**",
+//                                "/performers/**",
+//                                "/tasks/**",
+//                                "/v3/api-docs/**",
+//                                "/swagger-ui/**")
+                        .requestMatchers("/categories/**").permitAll()
+                        .anyRequest().authenticated()) //  .authenticated() for production, and .permitAll() for develop
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -40,13 +47,13 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    //for encode password
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-        /// return new BCryptPasswordEncoder();
-    }
-
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("user")
+//                .password(passwordEncoder.encode("password"))
+//                .roles("ADMIN");
+//    }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();

@@ -8,7 +8,9 @@ import codezilla.handynestproject.mapper.FeedbackMapper;
 import codezilla.handynestproject.model.entity.Feedback;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.entity.User;
+import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.FeedbackRepository;
+import codezilla.handynestproject.security.UserDetailsServiceImpl;
 import codezilla.handynestproject.service.FeedbackService;
 import codezilla.handynestproject.service.PerformerService;
 import codezilla.handynestproject.service.TaskService;
@@ -20,6 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of the FeedbackService interface.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class FeedbackServiceImpl implements FeedbackService {
@@ -29,13 +35,25 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final TaskService taskService;
     private final PerformerService performerService;
     private final UserService userService;
+    private final UserDetailsServiceImpl userDetailsService;
 
+    /**
+     * Finds all feedback.
+     *
+     * @return A list of feedback DTOs
+     */
     public List<FeedbackResponseDto> findAll() {
         List<Feedback> feedbackRepositoryList = feedbackRepository.findAll();
         List<FeedbackResponseDto> feedbackResponseDtoList = feedbackMapper.feedbackToListDto(feedbackRepositoryList);
         return feedbackResponseDtoList;
     }
 
+    /**
+     * Finds feedback by its ID.
+     *
+     * @param id The ID of the feedback to find
+     * @return The found feedback DTO
+     */
     @Override
     public FeedbackResponseDto findById(Long id) {
         Optional<Feedback> feedbackResponse = feedbackRepository.findById(id);
@@ -43,6 +61,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackResponseDto;
     }
 
+    /**
+     * Finds all feedback associated with a given task.
+     *
+     * @param taskId The ID of the task
+     * @return A list of feedback DTOs
+     */
     @Override
     public List<FeedbackResponseDto> findAllByTaskId(Long taskId) {
         taskService.findById(taskId);
@@ -51,6 +75,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbacksDtos;
     }
 
+    /**
+     * Finds all feedback sent by a given user.
+     *
+     * @param senderId The ID of the sender
+     * @return A list of feedback DTOs
+     */
     @Override
     public List<FeedbackResponseDto> findAllBySenderId(Long senderId) {
         List<Feedback> feedbacks = feedbackRepository.findBySenderId(senderId);
@@ -58,48 +88,60 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbacksDtos;
     }
 
-
-    // ToDo оптимизировать запросы
+    /**
+     * Adds a new feedback.
+     *
+     * @param dto The feedback creation DTO
+     * @return The created feedback DTO
+     * @throws FeedbackErrorException when task have status OPEN
+     * @throws FeedbackErrorException when task have already 2 feedbacks
+     */
     @Override
     @Transactional
     public FeedbackResponseDto add(FeedbackCreateRequestDto dto) {
-        // ToDo сделать подробное исключение
+
         Task task = taskService.findTaskEntityByIdAndParticipantsId(dto.getTaskId(), dto.getSenderId());
         List<Feedback> feedbacks = feedbackRepository.findByTaskId(dto.getTaskId());
 
-        if (task.getPerformer() == null)
-            throw new FeedbackErrorException("You can't send feedback for task with status " + task.getTaskStatus());
+        if (task.getTaskStatus().equals(TaskStatus.OPEN))
+            throw new FeedbackErrorException("You can't send feedback for task with OPEN status");
 
-        // Проверка запрещает, если для этого таска уже оставлены 2 фидбека или участник хочет оставить ещё одни отзыв
-        if (feedbacks.size() != 0) {
-            if (feedbacks.size() == 2 || feedbacks.get(0).getSender().getId().equals(dto.getSenderId())) {
+        // Checking if 2 feedbacks have already been left
+        // or a member wants to leave more than one feedback for this task
+        if (!feedbacks.isEmpty()) {
+            if (feedbacks.size() >= 2 || feedbacks.get(0).getSender().getId().equals(dto.getSenderId())) {
                 throw new FeedbackErrorException("You can't send feedback more than once for this task");
             }
         }
 
-        User sender;
-        if (task.getUser().getId().equals(dto.getSenderId())) {
-            sender = task.getUser();
-        } else {
-            sender = task.getPerformer().getUser();
+        // Checking participants of the task
+        User currentUser = userDetailsService.getCurrentUser();
+        if (!(currentUser.getId().equals(task.getUser().getId()) || currentUser.getId().equals(task.getPerformer().getId()))) {
+            throw new FeedbackErrorException("You can't send feedback for this task, that doesn't belong to you");
         }
+
 
         Feedback feedback = Feedback.builder()
                 .task(task)
                 .grade(dto.getGrade())
                 .text(dto.getText())
-                .sender(sender)
+                .sender(currentUser)
                 .build();
         Feedback savedFeedback = feedbackRepository.save(feedback);
 
-        // после добавления feedback обновить рейтинги и записать юзеру и перформеру
+        // after adding feedback, update the ratings of user and performer
         userService.updateRating(task.getUser());
         performerService.updateRating(task.getPerformer());
 
         return feedbackMapper.feedbackToDto(savedFeedback);
     }
 
-    // Достать все фитбеки полученные конкретным перформером
+    /**
+     * Finds all feedback received by a given performer.
+     *
+     * @param performerId The ID of the performer
+     * @return A list of feedback DTOs
+     */
     @Override
     public List<FeedbackResponseDto> findAllReceivedByPerformerId(Long performerId) {
         performerService.findById(performerId);
@@ -107,7 +149,12 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
-    // Достать все фитбеки полученные конкретным юзером
+    /**
+     * Finds all feedback received by a given user.
+     *
+     * @param userId The ID of the user
+     * @return A list of feedback DTOs
+     */
     @Override
     public List<FeedbackResponseDto> findAllReceivedByUserId(Long userId) {
         userService.checkExists(userId);
@@ -115,6 +162,11 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackMapper.feedbackToListDto(feedbacks);
     }
 
+    /**
+     * Finds all feedback received by the current user.
+     *
+     * @return A list of feedback DTOs
+     */
     @Override
     public List<FeedbackResponseDto> findAllForCurrentUser() {
         Long currentUserId = userService.getCurrentUserId();

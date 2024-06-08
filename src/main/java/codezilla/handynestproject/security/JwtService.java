@@ -18,25 +18,24 @@ public class JwtService {
 
     private final SecretKey secretSigningKey;
 
-    //Читаем ключ для подписи из файла проперти jwttoken.signing.key кодированного в Base64
-    //это должна быть любая комбинация символов(но не короткая), кодированная в Base64
+    //Reading the signing key from the get token.signing property file.key encoded in Base64
     public JwtService(@Value("${jwttoken.signing.key}") String jwttokenSigningKey) {
         this.secretSigningKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwttokenSigningKey));
     }
 
-    // Генерация токена
+    // Token generation
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        // заполняем данные о пользователе
+
         if (userDetails instanceof User userEntity) {
             claims.put("userId", userEntity);
             claims.put("login", userEntity.getEmail());
-             claims.put("role", userDetails.getAuthorities()); // ToDo поместить список ролей
+             claims.put("role", userDetails.getAuthorities());
         }
         return generateToken(claims, userDetails);
     }
 
-    // Метод непосредственно генерирует токен на основании набора данных о пользователе
+    // The method directly generates a token based on a set of user data
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder()
                 .claims()
@@ -49,34 +48,34 @@ public class JwtService {
                 .compact();
     }
 
-    //Извлечение имени пользователя из токена
+    // Retrieve a username from a token
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    //Проверяем что токен валиден,именно для этого пользователя и не истек срок действия
+    // Checking that the token is valid, it is for this user that the validity period has not expired
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
         return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    // Извлечение данных из токена @param claimsResolvers функция извлечения данных
+    // Retrieve data from the @param claimsResolvers token data extraction function
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
 
-    // Проверка токена на просроченность @return true, если токен просрочен
+    // Checking the token for expiration @return true if the token is expired
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    // Извлечение даты истечения токена @return дата истечения
+    // Retrieve the expiration date of the token @return expiration date
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // Извлечение всех данных из токена
+    // Retrieve all data from token
     private Claims extractAllClaims(String token) {
 
         return Jwts.parser()

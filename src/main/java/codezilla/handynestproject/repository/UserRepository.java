@@ -17,9 +17,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User save(User user);
 
-    // Возвращает процент позитивных отзывов с оценкой 4 или 5
-    // И округляет ответ до одного знака после запятой.
-    // Сделали подсчёт через запрос только для практики
+    // Returns the percentage of positive feedbacks with a grade of 4 or 5
+    // and rounds the response to one decimal place.
     @Query(value = """
             SELECT COALESCE(
                 ROUND(

@@ -17,6 +17,5 @@ public interface FeedbackMapper {
 
     List<FeedbackResponseDto> feedbackToListDto(List<Feedback> feedbacks);
 
-
     Feedback createDtoToFeedback(FeedbackCreateRequestDto requestDto);
 }

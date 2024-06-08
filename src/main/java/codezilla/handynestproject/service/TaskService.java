@@ -18,6 +18,9 @@ public interface TaskService {
 
     TaskResponseDto findById(Long taskId);
 
+    boolean existsById(Long taskId);
+
+
     List<TaskResponseDto> findAll();
 
     List<TaskResponseDto> findByStatus(TaskStatus status);
