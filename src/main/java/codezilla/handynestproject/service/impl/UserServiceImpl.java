@@ -3,9 +3,7 @@ package codezilla.handynestproject.service.impl;
 import codezilla.handynestproject.dto.user.UserRequestDto;
 import codezilla.handynestproject.dto.user.UserRequestUpdateDto;
 import codezilla.handynestproject.dto.user.UserResponseDto;
-import codezilla.handynestproject.exception.UserAlreadyExistsException;
-import codezilla.handynestproject.exception.UserNotFoundException;
-import codezilla.handynestproject.exception.WrongConfirmationPasswordException;
+import codezilla.handynestproject.exception.*;
 import codezilla.handynestproject.mapper.UserMapper;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.repository.UserRepository;
@@ -36,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+
     /**
      * Retrieves all users.
      *
@@ -44,8 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponseDto> findAll() {
         List<User> users = userRepository.findAll();
-        List<UserResponseDto> userResponseDtos = userMapper.usersToListDto(users);
-        return userResponseDtos;
+        return userMapper.usersToListDto(users);
     }
 
     /**
@@ -97,6 +95,12 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserResponseDto update(UserRequestUpdateDto updateDto) {
+
+//         Checking owner or admin
+        User currentUser = getCurrentUser();
+        if (!(currentUser.getId().equals(updateDto.id()) || isCurrentUserAdmin())) {
+            throw new UserAccessDeniedException("You can't update profile, that doesn't belong to you");
+        }
 
         User user = userRepository.findById(updateDto.id())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -164,8 +168,7 @@ public class UserServiceImpl implements UserService {
         } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyExistsException("User with this email already exists");
         }
-        UserResponseDto userResponseDto = userMapper.userToDto(user);
-        return userResponseDto;
+        return userMapper.userToDto(user);
     }
 
     /**
@@ -204,6 +207,29 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new IllegalArgumentException("The primary authentication object cannot be used to obtain the ID");
         }
+    }
+
+    @Override
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            return getByEmail(userDetails.getUsername());
+        }
+        return null;
+    }
+    @Override
+    public boolean isCurrentUserAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            return authentication.getAuthorities().stream()
+                    .anyMatch(authority -> authority.getAuthority().equals("ADMIN"));
+        }
+
+        return false;
     }
 }
 

@@ -1,4 +1,4 @@
-package codezilla.handynestproject.security;
+package codezilla.handynestproject.security.service;
 
 
 import codezilla.handynestproject.security.model.JwtAuthenticationResponse;

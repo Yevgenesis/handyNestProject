@@ -30,4 +30,8 @@ public interface UserService {
     UserResponseDto update(UserRequestUpdateDto updateDto);
 
     void checkExists(Long id);
+
+    User getCurrentUser();
+
+    boolean isCurrentUserAdmin();
 }

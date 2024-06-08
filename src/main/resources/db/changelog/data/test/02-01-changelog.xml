@@ -87,7 +87,7 @@
 
     <!-- Performers -->
 
-    <changeSet id="insert_performers" author="yourName">
+    <changeSet id="insert_performers" author="Ashurov">
         <sql>
             INSERT INTO performer (id, phone_number, is_phone_verified, is_passport_verified, description, is_available,
                                    performer_rating, task_count, created_on, updated_on, address_id)
@@ -102,7 +102,7 @@
 
     <!-- Performers Categories-->
 
-    <changeSet id="insert_performer_categories" author="yourName">
+    <changeSet id="insert_performer_categories" author="Ashurov">
         <sql>
             INSERT INTO performer_categories (category_id, performer_id)
             VALUES
@@ -121,7 +121,7 @@
 
     <!-- Tasks-->
 
-    <changeSet id="insert_tasks" author="yourName">
+    <changeSet id="insert_tasks" author="Ashurov">
         <sql>
             INSERT INTO task (title, description, price, task_status, is_publish, address_id, working_time_id, category_id, user_id,
                               performer_id, created_on, updated_on)
@@ -161,7 +161,7 @@
 
     <!-- Feedbacks-->
 
-    <changeSet id="insert_feedbacks" author="yourName">
+    <changeSet id="insert_feedbacks" author="Ashurov">
         <sql>
             INSERT INTO feedback (sender_id, text, grade, task_id, created_on)
             VALUES
@@ -179,19 +179,29 @@
                 (4, 'Хороший заказчик', 5, 11, '2024-05-15 13:30:00');
         </sql>
     </changeSet>
-    <changeSet id="insert_chat" author="yourName">
+    <changeSet id="insert_chat" author="Ashurov">
         <sql>
             INSERT INTO chat (user_id,performer_id,task_id, created_on, updated_on,is_deleted)
             VALUES (3,4,2,'2024-05-28 10:00:00','2024-05-28 10:00:00',false);
         </sql>
     </changeSet>
-    <changeSet id="insert_user_messages" author="yourName">
+    <changeSet id="insert_user_messages" author="Ashurov">
         <sql>
             INSERT INTO user_messages (sender_id,chat_id,text,created_on, updated_on,is_read)
             VALUES
                 (3,1,'Здравствуйте, когда можно будет приступить к работе?','2024-05-28 10:00:00','2024-05-28 10:00:00',false),
                 (4,1,'Здравствуйте, как и написано в заказе. С 9 до 11.','2024-05-28 10:10:00','2024-05-28 10:10:00',false);
 
+        </sql>
+    </changeSet>
+    <changeSet id="insert_attachments" author="Ashurov">
+        <sql>
+            INSERT INTO attachment(file_name, type, url, performer_id)
+            VALUES ('logo1', 'jpg', 'attachment/testAttachment1.jpg', 5),
+                   ('logo2', 'pdf', 'attachment/testAttachment2.pdf', 3),
+                   ('logo3', 'png', 'attachment/testAttachment3.png', 4),
+                   ('logo4', 'pdf', 'attachment/testAttachment4.pdf', 2),
+                   ('logo5', 'jpg', 'attachment/testAttachment5.jpg', 1);
         </sql>
     </changeSet>
 </databaseChangeLog>

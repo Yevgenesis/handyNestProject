@@ -206,4 +206,10 @@ VALUES
        (3,1,'Здравствуйте, как и написано в заказе. С 9 до 11.','2024-05-28 10:10:00','2024-05-28 10:10:00',false);
 
 
+INSERT INTO attachment(file_name, type, url, performer_id)
+VALUES ('logo1', 'jpg', 'attachment/testAttachment1.jpg', 1),
+       ('logo2', 'pdf', 'attachment/testAttachment2.jpg', 2),
+       ('logo3', 'png', 'attachment/testAttachment3.jpg', 3),
+       ('logo4', 'pdf', 'attachment/testAttachment4.jpg', 4),
+       ('logo5', 'jpg', 'attachment/testAttachment5.jpg', 5);
 
