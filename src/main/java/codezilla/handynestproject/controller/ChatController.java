@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-@Tag(name = "Chat Controller", description = "Operations related to chats")
+@Tag(name = "chat Controller", description = "Operations related to chats")
 public class ChatController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
@@ -30,7 +30,7 @@ public class ChatController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Message sent successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid message"),
-            @ApiResponse(responseCode = "404", description = "Chat not found")
+            @ApiResponse(responseCode = "404", description = "chat not found")
     })
     @MessageMapping("/chat.sendMessage")
     public void sendMessage(MessageRequestDto message) {

@@ -1,4 +1,4 @@
-package codezilla.handynestproject.dto.Chat;
+package codezilla.handynestproject.dto.chat;
 
 import codezilla.handynestproject.model.entity.Message;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ChatResponseDto {
 
-    @Schema(description = "Chat ID")
+    @Schema(description = "chat ID")
     private Long id;
     @Schema(description = "User ID")
     private Long userId;

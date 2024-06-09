@@ -1,7 +1,7 @@
 package codezilla.handynestproject.service;
 
-import codezilla.handynestproject.dto.Chat.ChatRequestDto;
-import codezilla.handynestproject.dto.Chat.ChatResponseDto;
+import codezilla.handynestproject.dto.chat.ChatRequestDto;
+import codezilla.handynestproject.dto.chat.ChatResponseDto;
 
 import java.util.List;
 

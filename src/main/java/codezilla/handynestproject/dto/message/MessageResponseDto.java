@@ -16,7 +16,7 @@ public class MessageResponseDto {
 
     @Schema(description = "Message ID")
     private Long id;
-    @Schema(description = "Chat ID")
+    @Schema(description = "chat ID")
     private Long chatId;
     @Schema(description = "Sender ID")
     private Long senderId;

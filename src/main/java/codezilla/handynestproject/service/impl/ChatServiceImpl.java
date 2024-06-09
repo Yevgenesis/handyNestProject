@@ -1,7 +1,7 @@
 package codezilla.handynestproject.service.impl;
 
-import codezilla.handynestproject.dto.Chat.ChatRequestDto;
-import codezilla.handynestproject.dto.Chat.ChatResponseDto;
+import codezilla.handynestproject.dto.chat.ChatRequestDto;
+import codezilla.handynestproject.dto.chat.ChatResponseDto;
 import codezilla.handynestproject.exception.ChatNotFoundException;
 import codezilla.handynestproject.exception.TaskWrongStatusException;
 import codezilla.handynestproject.mapper.ChatMapper;
@@ -75,7 +75,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public ChatResponseDto findById(Long id) {
         return chatMapper.toChatResponseDto(chatRepository.findById(id)
-                .orElseThrow(() -> new ChatNotFoundException("Chat with id " + id + " not found")));
+                .orElseThrow(() -> new ChatNotFoundException("chat with id " + id + " not found")));
     }
 
     /**
@@ -109,7 +109,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public void closedById(Long id) {
         Chat chat = chatRepository.findById(id)
-                .orElseThrow(() -> new ChatNotFoundException("Chat with id " + id + " not found"));
+                .orElseThrow(() -> new ChatNotFoundException("chat with id " + id + " not found"));
         chat.setDeleted(true);
     }
 }

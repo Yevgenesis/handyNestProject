@@ -81,4 +81,4 @@ mvn clean test jacoco:report
 
 
 Облачная инфраструктура: 
-Amazon Web Services (ещё не реализовано)
+Amazon Web Services (будет реализована в следующей версии)

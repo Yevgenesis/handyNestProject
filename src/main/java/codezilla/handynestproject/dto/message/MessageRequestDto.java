@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MessageRequestDto {
 
-    @Schema(description = "Chat ID")
-    @NotNull(message = "Chat can't be empty")
+    @Schema(description = "chat ID")
+    @NotNull(message = "chat can't be empty")
     private Long chatId;
     @Schema(description = "Sender ID")
     @NotNull(message = "Sender can't be empty")

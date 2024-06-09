@@ -1,18 +1,7 @@
 package codezilla.handynestproject.model.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +23,7 @@ public class Chat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Chat id", example = "1", required = true)
+    @Schema(description = "chat id", example = "1", required = true)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -58,15 +47,15 @@ public class Chat {
 
     @CreatedDate
     @Column(nullable = false)
-    @Schema(description = "Chat creation timestamp", example = "2024-05-28 10:00:00")
+    @Schema(description = "chat creation timestamp", example = "2024-05-28 10:00:00")
     private Timestamp createdOn;
 
     @LastModifiedDate
     @Column(nullable = false)
-    @Schema(description = "Chat last update timestamp", example = "2024-05-28 10:00:00")
+    @Schema(description = "chat last update timestamp", example = "2024-05-28 10:00:00")
     private Timestamp updatedOn;
 
     @Column(nullable = false)
-    @Schema(description = "Chat deletion status", example = "false")
+    @Schema(description = "chat deletion status", example = "false")
     private boolean isDeleted;
 }

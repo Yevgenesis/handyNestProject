@@ -1,7 +1,7 @@
 package codezilla.handynestproject.mapper;
 
-import codezilla.handynestproject.dto.Chat.ChatRequestDto;
-import codezilla.handynestproject.dto.Chat.ChatResponseDto;
+import codezilla.handynestproject.dto.chat.ChatRequestDto;
+import codezilla.handynestproject.dto.chat.ChatResponseDto;
 import codezilla.handynestproject.model.entity.Chat;
 import org.mapstruct.Mapper;
 

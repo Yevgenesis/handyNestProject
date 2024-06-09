@@ -53,7 +53,7 @@ public class MessageServiceImpl implements MessageService {
 //                    .performerId(requestDto.getSenderId())
 //                    .build();
 //          ChatResponseDto chatResponseDto = chatService.create(chatRequestDto);
-//          Chat chat = chatMapper.toChatFromDto(chatResponseDto);
+//          chat chat = chatMapper.toChatFromDto(chatResponseDto);
 //
 //        }
         User sender = userService.findByIdReturnUser(requestDto.getSenderId());
