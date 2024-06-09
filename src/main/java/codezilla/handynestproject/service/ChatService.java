@@ -1,5 +1,7 @@
 package codezilla.handynestproject.service;
 
-public interface ChatService {
+import codezilla.handynestproject.model.entity.Chat;
 
+public interface ChatService {
+    Chat getOrCreateChat(String username1, String username2);
 }

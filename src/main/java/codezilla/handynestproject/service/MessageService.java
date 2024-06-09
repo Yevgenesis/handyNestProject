@@ -1,17 +1,11 @@
 package codezilla.handynestproject.service;
 
-import codezilla.handynestproject.dto.message.MessageRequestDto;
-import codezilla.handynestproject.dto.message.MessageResponseDto;
 import codezilla.handynestproject.model.entity.Message;
 
 import java.util.List;
 
 public interface MessageService {
+    List<Message> getChatHistory(String username1, String username2);
 
-    Message send(MessageRequestDto messageRequestDto);
-
-    void markAsRead(Long id);
-    List<MessageResponseDto> getUnreadMessages(Long userId);
-
-
+    Message saveMessage(String senderUsername, String receiverUsername, String content);
 }

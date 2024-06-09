@@ -3,6 +3,7 @@ package codezilla.handynestproject.service.impl;
 import codezilla.handynestproject.model.entity.Chat;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.repository.ChatRepository;
+import codezilla.handynestproject.service.ChatService;
 import codezilla.handynestproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class ChatServiceImpl implements codezilla.handynestproject.service.impl.ChatService {
+public class ChatServiceImpl implements ChatService {
     @Autowired
     private ChatRepository chatRepository;
     @Autowired
