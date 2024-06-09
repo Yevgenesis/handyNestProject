@@ -6,17 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Table(name = "user_messages")
 @NamedEntityGraph(name = "MessageWithSenderAndChat", attributeNodes = {
         @NamedAttributeNode("sender"),
@@ -24,38 +21,56 @@ import java.sql.Timestamp;
 })
 @EntityListeners(AuditingEntityListener.class)
 @Schema(description = "Entity representing a message")
+@Entity
 public class Message {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Message id", example = "1")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id", nullable = false)
-    @Schema(description = "Sender id", example = "1")
-    private User sender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_id", nullable = false)
-    @Schema(description = "chat id", example = "1")
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
     private Chat chat;
 
-    @Column(nullable = false)
-    @Schema(description = "Message text", example = "Hello!")
-    private String text;
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private User sender;
 
-    @CreatedDate
-    @Column(nullable = false)
-    @Schema(description = "Message creation timestamp", example = "2024-05-28")
-    private Timestamp createdOn;
+    private String content;
+    private LocalDateTime timestamp;
 
-    @LastModifiedDate
-    @Column(nullable = false)
-    @Schema(description = "Message last update timestamp", example = "2024-05-28")
-    private Timestamp updatedOn;
-
-    @Column(nullable = false)
-    @Schema(description = "Read status of the message", example = "false")
-    private boolean isRead;
+    // геттеры и сеттеры
 }
+
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Schema(description = "Message id", example = "1")
+//    private Long id;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "sender_id", nullable = false)
+//    @Schema(description = "Sender id", example = "1")
+//    private User sender;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "chat_id", nullable = false)
+//    @Schema(description = "chat id", example = "1")
+//    private Chat chat;
+//
+//    @Column(nullable = false)
+//    @Schema(description = "Message text", example = "Hello!")
+//    private String text;
+//
+//    @CreatedDate
+//    @Column(nullable = false)
+//    @Schema(description = "Message creation timestamp", example = "2024-05-28")
+//    private Timestamp createdOn;
+//
+//    @LastModifiedDate
+//    @Column(nullable = false)
+//    @Schema(description = "Message last update timestamp", example = "2024-05-28")
+//    private Timestamp updatedOn;
+//
+//    @Column(nullable = false)
+//    @Schema(description = "Read status of the message", example = "false")
+//    private boolean isRead;
+//}
