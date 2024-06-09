@@ -47,15 +47,6 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message send(MessageRequestDto requestDto) {
         Chat chat = chatMapper.toChatFromDto(chatService.findById(requestDto.getChatId()));
-//        if(requestDto.getChatId() == null){
-//            ChatRequestDto chatRequestDto = ChatRequestDto.builder()
-//                    .userId(requestDto.getSenderId())
-//                    .performerId(requestDto.getSenderId())
-//                    .build();
-//          ChatResponseDto chatResponseDto = chatService.create(chatRequestDto);
-//          chat chat = chatMapper.toChatFromDto(chatResponseDto);
-//
-//        }
         User sender = userService.findByIdReturnUser(requestDto.getSenderId());
 
         Message message = Message.builder()
