@@ -13,39 +13,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS1;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS2;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS3;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS4;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS5;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO1;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO2;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO3;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO4;
-import static codezilla.handynestproject.testData.AddressTestData.TEST_ADDRESS_DTO5;
-import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO18;
-import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO19;
-import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO2;
-import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO20;
-import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO28;
-import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO35;
-import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO4;
-import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO40;
-import static codezilla.handynestproject.testData.CategoryTestData.CATEGORY_TITLE_DTO8;
-import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY18;
-import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY19;
-import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY2;
-import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY20;
-import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY28;
-import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY35;
-import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY4;
-import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY40;
-import static codezilla.handynestproject.testData.CategoryTestData.TEST_CATEGORY8;
-import static codezilla.handynestproject.testData.UserTestData.TEST_USER1;
-import static codezilla.handynestproject.testData.UserTestData.TEST_USER2;
-import static codezilla.handynestproject.testData.UserTestData.TEST_USER3;
-import static codezilla.handynestproject.testData.UserTestData.TEST_USER4;
-import static codezilla.handynestproject.testData.UserTestData.TEST_USER5;
+import static codezilla.handynestproject.testData.AddressTestData.*;
+import static codezilla.handynestproject.testData.CategoryTestData.*;
+import static codezilla.handynestproject.testData.UserTestData.*;
 
 public class PerformerTestData {
     /**
@@ -141,7 +111,7 @@ public class PerformerTestData {
             Set.of(CATEGORY_TITLE_DTO8),
             TEST_ADDRESS_DTO3,
             true,
-            4.0,
+            33.3,
             80L,
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(14, 0, 0))),
@@ -216,7 +186,7 @@ public class PerformerTestData {
             5L,
             "Ева",
             "Браун",
-            4.2,
+            100.0,
             90L);
 
     /**

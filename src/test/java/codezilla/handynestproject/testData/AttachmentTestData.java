@@ -10,9 +10,9 @@ public class AttachmentTestData {
     public static final AttachmentDto TEST_ATTACHMENT_DTO1 = new AttachmentDto(
             1L,
             5L,
-            "logo1",
+            "passport_1",
             "jpg",
-            "attachment/testAttachment1.jpg"
+            "attachment/img/"
     );
 
     public static final AttachmentRequestDto TEST_ATTACHMENT_REQUEST_DTO6 = new AttachmentRequestDto(

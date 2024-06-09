@@ -32,7 +32,7 @@ public class UserTestData {
 
     public static final UserResponseDto USER_RESPONSE_DTO3 = new UserResponseDto(
             3L, "Алиса", "Джонсон", "alice.johnson@example.com", 7L, 80.0,
-            null,
+            "logo/231434.jpeg",
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
                     (2024, 4, 29), LocalTime.of(12, 0, 0))),
             Timestamp.valueOf(LocalDateTime.of(LocalDate.of
@@ -65,13 +65,13 @@ public class UserTestData {
             2L, "Джейн", "Смит", 6L, 50.0,null);
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO3 = new UserNestedResponseDto(
-            3L, "Алиса", "Джонсон", 7L, 80.0,null);
+            3L, "Алиса", "Джонсон", 7L, 80.0, "logo/231434.jpeg");
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO4 = new UserNestedResponseDto(
             4L, "Боб", "Уильямс", 8L, 75.0,null);
 
     public static final UserNestedResponseDto USER_NESTED_RESPONSE_DTO5 = new UserNestedResponseDto(
-            5L, "Ева", "Браун", 9L, 95.0,null);
+            5L, "Ева", "Браун", 9L, 95.0, "logo/112233.jpeg");
 
     /**
      * test data User
