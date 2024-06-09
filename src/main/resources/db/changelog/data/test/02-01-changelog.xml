@@ -25,40 +25,40 @@
     <!-- Handy_user -->
     <changeSet id="insert_handy_user" author="yevhenii (generated)">
         <sql>INSERT INTO handy_user (first_name, last_name, email, is_email_verified, password, created_on, updated_on,
-                                     is_deleted, task_count, user_rating)
+                                     is_deleted, task_count, user_rating, logo)
              VALUES ('Джон', 'Доу', 'john.doe@example.com', true, '$2a$10$dHPS9NsaZ94./gil66q61eZKXpcmXzI6H0bEGuWP5cOQYEkRSGb66', '2024-04-29 10:00:00',
 --                      password123
-                     '2024-04-29 10:00:00', false, 5, 100.0),
+                     '2024-04-29 10:00:00', false, 5, 100.0, 'logo/121314.jpeg'),
                     ('Джейн', 'Смит', 'jane.smith@example.com', true, '$2a$10$.L4ptbMV1KZ6iKqG.jThDeNlyQHLn3bMWBy1QF9d0TfZX1YurvJ8e', '2024-04-29 11:00:00',
 --                      qwerty123
-                     '2024-04-29 11:00:00', false, 6, 50.0),
+                     '2024-04-29 11:00:00', false, 6, 50.0, 'logo/413121.jpeg'),
                     ('Алиса', 'Джонсон', 'alice.johnson@example.com', true, '$2a$10$58nLlSYV5JS1GE.oNCs70ukos7HHEZF6fq1ZhKznATqhng0Tjib/a', '2024-04-29 12:00:00',
 --                      test123
-                     '2024-04-29 12:00:00', false, 7, 80.0),
+                     '2024-04-29 12:00:00', false, 7, 80.0, 'logo/231434.jpeg'),
                     ('Боб', 'Уильямс', 'bob.williams@example.com', true, '$2a$10$eHVUGJ4Yr2ZxX10U0Z9m9.unKA6O171gu7HLLsF2vq1zQDIOzFHBq', '2024-04-29 13:00:00',
 --                      password456
-                     '2024-04-29 13:00:00', false, 8, 75.0),
+                     '2024-04-29 13:00:00', false, 8, 75.0, 'logo/513423.jpeg'),
                     ('Ева', 'Браун', 'eva.brown@example.com', true, '$2a$10$Nv5pDimRJsOvAerfOMplleaImQB9l60L/0uNTuc6RMZh.nzGYCYT2', '2024-04-29 14:00:00',
 --                      abc123
-                     '2024-04-29 14:00:00', false, 9, 95.0),
+                     '2024-04-29 14:00:00', false, 9, 95.0, 'logo/112233.jpeg'),
                     ('Иван', 'Иванов', 'ivan.ivanov@example.com', true, '$2a$10$mR39.QY55.kwOIz55.gofOr4Y5qbW/8hlBsQ9tjzrmQNMbfGDQqQ2', '2024-05-01 10:00:00',
 --                      ivan123
-                     '2024-05-01 10:00:00', false, 10, 85.0),
+                     '2024-05-01 10:00:00', false, 10, 85.0, 'logo/554433.jpeg'),
                     ('Мария', 'Петрова', 'maria.petrova@example.com', true, '$2a$10$zNIOcUnIs5eMv1s04/rXwe7r.9qz3sE24uHzf1MMtUxAYpNcXO.J2', '2024-05-01 11:00:00',
 --                      maria456
-                     '2024-05-01 11:00:00', false, 11, 80.0),
+                     '2024-05-01 11:00:00', false, 11, 80.0, 'logo/132435.jpeg'),
                     ('Александр', 'Сидоров', 'alex.sid@example.com', true, '$2a$10$JAcIGhb0Yxl8.kgjJVAcgOpQMLGLR/HrjjMnV9uXeg6zQzqGrnvo.', '2024-05-01 12:00:00',
 --                      sid123
-                     '2024-05-01 12:00:00', false, 12, 100.0),
+                     '2024-05-01 12:00:00', false, 12, 100.0, 'logo/534231.jpeg'),
                     ('Ольга', 'Смирнова', 'olga.sm@example.com', true, '$2a$10$FHF6Vs771kuyKAi5mb968eFw5z.KAcKbpgxyZt0esiONGBZLmFpZy', '2024-05-01 13:00:00',
 --                      olga789
-                     '2024-05-01 13:00:00', false, 13, 80.0),
+                     '2024-05-01 13:00:00', false, 13, 80.0, 'logo/334422.jpeg'),
                     ('Петр', 'Кузнецов', 'peter.kuz@example.com', true, '$2a$10$eaqixhssM80SBOBDYA6Qf.Ky28Z5mRIqB7.8j0XJU2i5PtBXhOfsa', '2024-05-01 14:00:00',
 --                      peter456
-                     '2024-05-01 14:00:00', false, 14, 65.0),
+                     '2024-05-01 14:00:00', false, 14, 65.0, 'logo/225533.jpeg'),
                     ('Светлана', 'Иванова', 'svetlana.ivanova@example.com', true, '$2a$10$Exq9sdtwLd4iZHx6ccozFOTLcC4aaFvFLd7eIkCcQDqOLqmfQrY4m', '2024-05-01 15:00:00',
 --                      sveta123
-                     '2024-05-01 15:00:00', false, 15, 100.0);
+                     '2024-05-01 15:00:00', false, 15, 100.0, 'logo/111155.jpeg');
         </sql>
     </changeSet>
 
@@ -91,12 +91,17 @@
         <sql>
             INSERT INTO performer (id, phone_number, is_phone_verified, is_passport_verified, description, is_available,
                                    performer_rating, task_count, created_on, updated_on, address_id)
-            VALUES
-                (1, '+49123456789', true, true, 'Опытный сантехник с большим опытом работы', true, 4.5, 100, '2024-04-29 12:00:00', '2024-04-29 12:00:00', 1),
-                (2, '+49123456789', true, true, 'Опытный маляр, предоставляю услуги качественной покраски стен', true, 4.8, 150, '2024-04-29 13:00:00', '2024-04-29 13:00:00', 2),
-                (3, '+49123456789', true, true, 'Электрик с опытом работы, устанавливаю различные светильники', true, 4.0, 80, '2024-04-29 14:00:00', '2024-04-29 14:00:00', 3),
-                (4, '+49123456789', true, true, 'Опытный сантехник, умею делать качественный ремонт сантехники', true, 4.7, 120, '2024-04-29 15:00:00', '2024-04-29 15:00:00', 4),
-                (5, '+49123456789', true, true, 'Опытный строитель, предоставляю услуги по строительству домов и квартир', true, 4.2, 90, '2024-04-29 16:00:00', '2024-04-29 16:00:00', 5);
+            VALUES (1, '+49123456789', true, true, 'Опытный сантехник с большим опытом работы', true, 100.0, 100,
+                    '2024-04-29 12:00:00', '2024-04-29 12:00:00', 1),
+                   (2, '+49123456789', true, true, 'Опытный маляр, предоставляю услуги качественной покраски стен',
+                    true, 100.0, 150, '2024-04-29 13:00:00', '2024-04-29 13:00:00', 2),
+                   (3, '+49123456789', true, true, 'Электрик с опытом работы, устанавливаю различные светильники', true,
+                    33.3, 80, '2024-04-29 14:00:00', '2024-04-29 14:00:00', 3),
+                   (4, '+49123456789', true, true, 'Опытный сантехник, умею делать качественный ремонт сантехники',
+                    true, 0, 120, '2024-04-29 15:00:00', '2024-04-29 15:00:00', 4),
+                   (5, '+49123456789', true, true,
+                    'Опытный строитель, предоставляю услуги по строительству домов и квартир', true, 100.0, 90,
+                    '2024-04-29 16:00:00', '2024-04-29 16:00:00', 5);
         </sql>
     </changeSet>
 
@@ -197,11 +202,11 @@
     <changeSet id="insert_attachments" author="Ashurov">
         <sql>
             INSERT INTO attachment(file_name, type, url, performer_id)
-            VALUES ('logo1', 'jpg', 'attachment/testAttachment1.jpg', 5),
-                   ('logo2', 'pdf', 'attachment/testAttachment2.pdf', 3),
-                   ('logo3', 'png', 'attachment/testAttachment3.png', 4),
-                   ('logo4', 'pdf', 'attachment/testAttachment4.pdf', 2),
-                   ('logo5', 'jpg', 'attachment/testAttachment5.jpg', 1);
+            VALUES ('passport_1', 'jpg', 'attachment/img/', 5),
+                   ('passport_2', 'pdf', 'attachment/docs/', 3),
+                   ('passport_3', 'png', 'attachment/img/', 4),
+                   ('passport_4', 'pdf', 'attachment/docs/', 2),
+                   ('passport_5', 'jpg', 'attachment/img/', 1);
         </sql>
     </changeSet>
 </databaseChangeLog>

@@ -1,22 +1,7 @@
 package codezilla.handynestproject.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.NamedAttributeNode;
-import jakarta.persistence.NamedEntityGraph;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -104,7 +89,7 @@ public class Performer {
     @Column(name = "performer_rating")
     @Builder.Default
     @Schema(description = "Positive feedback percentage of the performer", example = "0.0")
-    private Double positiveFeedbackPercent = 0.0;
+    private Double positiveFeedbackPercent = 100.0;
 
     @Builder.Default
     @Column(name = "task_count", nullable = false)
