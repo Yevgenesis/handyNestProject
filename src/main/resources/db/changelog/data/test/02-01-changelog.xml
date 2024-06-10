@@ -184,21 +184,21 @@
                 (4, 'Хороший заказчик', 5, 11, '2024-05-15 13:30:00');
         </sql>
     </changeSet>
-    <changeSet id="insert_chat" author="Ashurov">
-        <sql>
-            INSERT INTO chat (user_id,performer_id,task_id, created_on, updated_on,is_deleted)
-            VALUES (3,4,2,'2024-05-28 10:00:00','2024-05-28 10:00:00',false);
-        </sql>
-    </changeSet>
-    <changeSet id="insert_user_messages" author="Ashurov">
-        <sql>
-            INSERT INTO user_messages (sender_id,chat_id,text,created_on, updated_on,is_read)
-            VALUES
-                (3,1,'Здравствуйте, когда можно будет приступить к работе?','2024-05-28 10:00:00','2024-05-28 10:00:00',false),
-                (4,1,'Здравствуйте, как и написано в заказе. С 9 до 11.','2024-05-28 10:10:00','2024-05-28 10:10:00',false);
+    <!--    <changeSet id="insert_chat" author="Ashurov">-->
+    <!--        <sql>-->
+    <!--            INSERT INTO chat (user_id,performer_id,task_id, created_on, updated_on,is_deleted)-->
+    <!--            VALUES (3,4,2,'2024-05-28 10:00:00','2024-05-28 10:00:00',false);-->
+    <!--        </sql>-->
+    <!--    </changeSet>-->
+    <!--    <changeSet id="insert_user_messages" author="Ashurov">-->
+    <!--        <sql>-->
+    <!--            INSERT INTO user_messages (sender_id,chat_id,text,created_on, updated_on,is_read)-->
+    <!--            VALUES-->
+    <!--                (3,1,'Здравствуйте, когда можно будет приступить к работе?','2024-05-28 10:00:00','2024-05-28 10:00:00',false),-->
+    <!--                (4,1,'Здравствуйте, как и написано в заказе. С 9 до 11.','2024-05-28 10:10:00','2024-05-28 10:10:00',false);-->
 
-        </sql>
-    </changeSet>
+    <!--        </sql>-->
+    <!--    </changeSet>-->
     <changeSet id="insert_attachments" author="Ashurov">
         <sql>
             INSERT INTO attachment(file_name, type, url, performer_id)

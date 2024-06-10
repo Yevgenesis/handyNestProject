@@ -1,7 +1,6 @@
 package codezilla.handynestproject.model.entity;
 
 import codezilla.handynestproject.model.enums.RoleName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -96,13 +95,6 @@ public class User {
     @Schema(description = "Feedbacks sent by the user")
     private Set<Feedback> sentFeedbacks = new HashSet<>();
 
-    @OneToMany(
-            mappedBy = "sender",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY
-    )
-    @Schema(description = "Messages sent by the user")
-    private Set<Message> sendMessages = new HashSet<>();
 
     @Column(name = "user_rating")
     @Builder.Default

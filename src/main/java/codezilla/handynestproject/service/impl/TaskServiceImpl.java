@@ -3,31 +3,21 @@ package codezilla.handynestproject.service.impl;
 import codezilla.handynestproject.dto.task.TaskRequestDto;
 import codezilla.handynestproject.dto.task.TaskResponseDto;
 import codezilla.handynestproject.dto.task.TaskUpdateRequestDto;
-import codezilla.handynestproject.exception.PerformerNotFoundException;
-import codezilla.handynestproject.exception.TaskNotFoundException;
-import codezilla.handynestproject.exception.TaskWrongStatusException;
-import codezilla.handynestproject.exception.UserAccessDeniedException;
-import codezilla.handynestproject.exception.UserNotFoundException;
+import codezilla.handynestproject.exception.*;
 import codezilla.handynestproject.mapper.AddressMapper;
 import codezilla.handynestproject.mapper.TaskMapper;
 import codezilla.handynestproject.model.entity.Address;
-import codezilla.handynestproject.model.entity.Chat;
 import codezilla.handynestproject.model.entity.Performer;
 import codezilla.handynestproject.model.entity.Task;
 import codezilla.handynestproject.model.enums.TaskStatus;
 import codezilla.handynestproject.repository.TaskRepository;
-import codezilla.handynestproject.service.CategoryService;
-import codezilla.handynestproject.service.PerformerService;
-import codezilla.handynestproject.service.TaskService;
-import codezilla.handynestproject.service.UserService;
-import codezilla.handynestproject.service.WorkingTimeService;
+import codezilla.handynestproject.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Implementation of the TaskService interface.
@@ -108,11 +98,7 @@ public class TaskServiceImpl implements TaskService {
     public void cancelById(Long taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException("Task with id:" + taskId + " not found"));
-        Set<Chat> chats = task.getChats();
-        for (Chat chat : chats) {
-            chat.setDeleted(true);
-        }
-        task.setChats(chats);
+
         task.setTaskStatus(TaskStatus.CANCELED);
         taskRepository.save(task);
     }

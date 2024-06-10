@@ -1,25 +1,8 @@
 package codezilla.handynestproject.model.entity;//package codezilla.hendynestproject.model.entity;
 
 import codezilla.handynestproject.model.enums.TaskStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedAttributeNode;
-import jakarta.persistence.NamedEntityGraph;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -99,11 +82,6 @@ public class Task {
     @Schema(description = "Feedbacks associated with the task")
     private Set<Feedback> feedbacks;
 
-    @OneToMany(mappedBy = "task",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    @Schema(description = "Chats associated with the task")
-    private Set<Chat> chats;
 
     @CreatedDate
     @Column(name = "created_on", updatable = false, nullable = false)

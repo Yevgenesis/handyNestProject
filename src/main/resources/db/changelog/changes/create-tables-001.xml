@@ -44,25 +44,6 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1717410788078-4" author="Isaev (generated)">
-        <createTable tableName="chat">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_chat"/>
-            </column>
-            <column name="user_id" type="BIGINT"/>
-            <column name="performer_id" type="BIGINT"/>
-            <column name="task_id" type="BIGINT"/>
-            <column name="created_on" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updated_on" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="is_deleted" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
     <changeSet id="1717410788078-5" author="Isaev (generated)">
         <createTable tableName="feedback">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -171,31 +152,6 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="1717410788078-10" author="Isaev (generated)">
-        <createTable tableName="user_messages">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_messages"/>
-            </column>
-            <column name="sender_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="chat_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="text" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_on" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updated_on" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="is_read" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
     <changeSet id="1717410788078-11" author="Isaev (generated)">
         <createTable tableName="user_roles">
             <column name="user_id" type="BIGINT">
@@ -219,15 +175,6 @@
     </changeSet>
     <changeSet id="1717410788078-14" author="Isaev (generated)">
         <addForeignKeyConstraint baseColumnNames="performer_id" baseTableName="attachment" constraintName="FK_ATTACHMENT_ON_PERFORMER" referencedColumnNames="id" referencedTableName="performer"/>
-    </changeSet>
-    <changeSet id="1717410788078-15" author="Isaev (generated)">
-        <addForeignKeyConstraint baseColumnNames="performer_id" baseTableName="chat" constraintName="FK_CHAT_ON_PERFORMER" referencedColumnNames="id" referencedTableName="performer"/>
-    </changeSet>
-    <changeSet id="1717410788078-16" author="Isaev (generated)">
-        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="chat" constraintName="FK_CHAT_ON_TASK" referencedColumnNames="id" referencedTableName="task"/>
-    </changeSet>
-    <changeSet id="1717410788078-17" author="Isaev (generated)">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="chat" constraintName="FK_CHAT_ON_USER" referencedColumnNames="id" referencedTableName="handy_user"/>
     </changeSet>
     <changeSet id="1717410788078-18" author="Isaev (generated)">
         <addForeignKeyConstraint baseColumnNames="sender_id" baseTableName="feedback" constraintName="FK_FEEDBACK_ON_SENDER" referencedColumnNames="id" referencedTableName="handy_user"/>
@@ -256,12 +203,8 @@
     <changeSet id="1717410788078-26" author="Isaev (generated)">
         <addForeignKeyConstraint baseColumnNames="working_time_id" baseTableName="task" constraintName="FK_TASK_ON_WORKING_TIME" referencedColumnNames="id" referencedTableName="working_time"/>
     </changeSet>
-    <changeSet id="1717410788078-27" author="Isaev (generated)">
-        <addForeignKeyConstraint baseColumnNames="chat_id" baseTableName="user_messages" constraintName="FK_USER_MESSAGES_ON_CHAT" referencedColumnNames="id" referencedTableName="chat"/>
-    </changeSet>
-    <changeSet id="1717410788078-28" author="Isaev (generated)">
-        <addForeignKeyConstraint baseColumnNames="sender_id" baseTableName="user_messages" constraintName="FK_USER_MESSAGES_ON_SENDER" referencedColumnNames="id" referencedTableName="handy_user"/>
-    </changeSet>
+
+
     <changeSet id="1717410788078-29" author="Isaev (generated)">
         <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="performer_categories" constraintName="fk_percat_on_category" referencedColumnNames="id" referencedTableName="category"/>
     </changeSet>
