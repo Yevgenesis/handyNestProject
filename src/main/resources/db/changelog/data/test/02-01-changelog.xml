@@ -98,7 +98,7 @@
                    (3, '+49123456789', true, true, 'Электрик с опытом работы, устанавливаю различные светильники', true,
                     33.3, 80, '2024-04-29 14:00:00', '2024-04-29 14:00:00', 3),
                    (4, '+49123456789', true, true, 'Опытный сантехник, умею делать качественный ремонт сантехники',
-                    true, 0, 120, '2024-04-29 15:00:00', '2024-04-29 15:00:00', 4),
+                    true, 100, 120, '2024-04-29 15:00:00', '2024-04-29 15:00:00', 4),
                    (5, '+49123456789', true, true,
                     'Опытный строитель, предоставляю услуги по строительству домов и квартир', true, 100.0, 90,
                     '2024-04-29 16:00:00', '2024-04-29 16:00:00', 5);
@@ -201,12 +201,12 @@
     <!--    </changeSet>-->
     <changeSet id="insert_attachments" author="Ashurov">
         <sql>
-            INSERT INTO attachment(file_name, type, url, performer_id)
-            VALUES ('passport_1', 'jpg', 'attachment/img/', 5),
-                   ('passport_2', 'pdf', 'attachment/docs/', 3),
-                   ('passport_3', 'png', 'attachment/img/', 4),
-                   ('passport_4', 'pdf', 'attachment/docs/', 2),
-                   ('passport_5', 'jpg', 'attachment/img/', 1);
+            INSERT INTO attachment(file_name, type, url, performer_id, created_on)
+            VALUES ('passport_1', 'jpg', 'attachment/img/', 5, '2024-05-14 10:30:00'),
+                   ('passport_2', 'pdf', 'attachment/docs/', 3, '2024-05-14 11:30:00'),
+                   ('passport_3', 'png', 'attachment/img/', 4, '2024-05-14 12:30:00'),
+                   ('passport_4', 'pdf', 'attachment/docs/', 2, '2024-05-14 13:30:00'),
+                   ('passport_5', 'jpg', 'attachment/img/', 1, '2024-05-14 14:30:00');
         </sql>
     </changeSet>
 </databaseChangeLog>

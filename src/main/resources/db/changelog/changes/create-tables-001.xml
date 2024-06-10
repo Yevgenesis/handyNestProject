@@ -30,6 +30,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="performer_id" type="BIGINT"/>
+            <column name="created_on" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet id="1717410788078-3" author="Isaev (generated)">
