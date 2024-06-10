@@ -55,8 +55,7 @@ public class PerformerServiceImpl implements PerformerService {
         Set<Category> categories = categoryService.findCategoriesByIdIn(performerDTO.getCategoryIDs());
 
         // checking categories is available
-        if (categories.size() != performerDTO.getCategoryIDs().size())
-            throw new CategoryNotFoundException("Wrong Category IDs");
+        isAvailableCategories(categories, performerDTO.getCategoryIDs());
 
         Performer performer = Performer.builder()
                 .phoneNumber(performerDTO.getPhoneNumber())
@@ -85,6 +84,9 @@ public class PerformerServiceImpl implements PerformerService {
         }
         Set<Category> categories = categoryService.findCategoriesByIdIn(updateDto.getCategoryIDs());
 
+        // checking categories is available
+        isAvailableCategories(categories, updateDto.getCategoryIDs());
+
         Performer performer = performerRepository.findById(updateDto.getPerformerId())
                 .orElseThrow(() -> new PerformerNotFoundException
                         ("Not Found Performer with id: " + updateDto.getPerformerId()));
@@ -101,6 +103,11 @@ public class PerformerServiceImpl implements PerformerService {
 
         Performer responsePerformer = performerRepository.save(performer);
         return performerMapper.performerToDto(responsePerformer);
+    }
+
+    private void isAvailableCategories(Set<Category> categories, List<Long> categoryIDs) {
+        if (categories.size() != categoryIDs.size())
+            throw new CategoryNotFoundException("Wrong Category IDs");
     }
 
     /**
