@@ -74,6 +74,82 @@ mvn clean test
 mvn jacoco:report
 # Отчет о покрытии будет сгенерирован в директории target/site/jacoco
 
+## Аутентификация для тестирования API
 
-Облачная инфраструктура: 
+Для тестирования API через Postman или Swagger UI необходимо получить JWT токен.
+
+### Получение токена
+
+1. **Запустите приложение:**
+```bash
+mvn spring-boot:run
+```
+
+2. **Отправьте POST запрос для аутентификации:**
+
+**URL:** `http://localhost:8080/users/login`
+
+**Headers:**
+```
+Content-Type: application/json
+```
+
+**Body:**
+```json
+{
+  "login": "alice.johnson@example.com",
+  "password": "test123"
+}
+```
+
+3. **Получите токен из ответа:**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+### Использование токена в Swagger UI
+
+1. Откройте Swagger UI: `http://localhost:8080/swagger-ui-custom.html`
+2. Нажмите кнопку **"Authorize"** (🔒) в правом верхнем углу
+3. В поле **"Value"** вставьте: `Bearer YOUR_TOKEN_HERE`
+4. Нажмите **"Authorize"**
+
+### Использование токена в Postman
+
+1. В заголовках запроса добавьте:
+```
+Authorization: Bearer YOUR_TOKEN_HERE
+```
+
+2. Или в настройках коллекции:
+   - Перейдите в **Settings** → **Authorization**
+   - Выберите тип **Bearer Token**
+   - Вставьте токен в поле **Token**
+
+### Примеры запросов
+
+**cURL:**
+```bash
+curl -X POST http://localhost:8080/users/login \
+  -H "Content-Type: application/json" \
+  -d '{"login": "alice.johnson@example.com", "password": "test123"}'
+```
+
+**HTTPie:**
+```bash
+http POST localhost:8080/users/login \
+  login=alice.johnson@example.com \
+  password=test123
+```
+
+### Другие тестовые пользователи
+
+В системе также доступны другие пользователи для тестирования:
+- `bob.smith@example.com` / `test123`
+- `carol.wilson@example.com` / `test123`
+
+## Облачная инфраструктура
+
 Amazon Web Services (можно рассмотреть другие облачные платформы)
