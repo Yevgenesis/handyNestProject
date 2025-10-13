@@ -1,4 +1,76 @@
-# HandyNest
+# HandyNest (EN)
+
+An online platform that connects people in need of services with providers ready to offer them. The service covers a wide range of tasks, from household errands to professional services.
+
+- **Finding service providers:** Users can search for providers by service categories, location, price, and other criteria.
+
+- **Placing orders:** Users can create orders with detailed descriptions of the required service.
+
+- **Provider responses:** Providers can respond to orders, offering their services and prices.
+
+- **Rating and review system:** Customers and providers can leave feedback for each other after completing a task, helping other users make informed decisions.
+
+## Getting Started
+
+These instructions will help you run a copy of the project on your local machine for development and testing purposes.
+
+### Prerequisites
+
+You need to have the following installed on your computer:
+
+- Java 17
+- Maven 3.6.6
+- Docker
+- Java Spring Boot
+- Spring Security
+- Lombok
+- Hibernate
+- Liquibase
+
+### Installation
+
+Step-by-step guide to installation:
+
+```sh
+# Clone the repository
+git clone https://github.com/Yevgenesis/handyNestProject.git
+
+# Install Maven
+
+# For Mac OS
+brew install maven
+
+# For Linux
+sudo apt update
+sudo apt install maven
+
+# For Windows
+# Download Maven from the official website:
+https://maven.apache.org/download.cgi
+# Extract the archive to a convenient location, e.g., C:\Program Files\Apache\maven
+# Add the bin directory to the PATH environment variable:
+# Open "System" → "Advanced system settings" → "Environment Variables"
+# Under "System variables", find Path and click "Edit"
+# Add a new path, e.g., C:\Program Files\Apache\maven\bin
+
+# Start Docker
+
+# Navigate to the project directory
+cd handyNestProject/Docker
+
+# Start the container
+docker-compose -f postgres.yml up
+
+# Install dependencies and build the project
+mvn clean install
+
+# Test with JaCoCo
+mvn clean test
+mvn jacoco:report
+# Coverage report will be generated in target/site/jacoco
+```
+
+# HandyNest (RU)
 
 Онлайн-платформа, которая соединяет людей, нуждающихся в услугах, с исполнителями, готовыми их предоставить. Сервис охватывает широкий спектр задач, от бытовых поручений до профессиональных услуг.
 
