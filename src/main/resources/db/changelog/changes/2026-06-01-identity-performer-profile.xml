@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-01-01-user-profile-fields" author="codex">
+        <addColumn tableName="handy_user">
+            <column name="phone" type="VARCHAR(32)"/>
+            <column name="is_phone_verified" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(32)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_type" type="VARCHAR(32)" defaultValue="PERSONAL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_id" type="BIGINT"/>
+            <column name="city_id" type="BIGINT"/>
+            <column name="district_id" type="BIGINT"/>
+            <column name="preferred_service_radius_km" type="INT"/>
+            <column name="customer_risk_score" type="DECIMAL(5,2)" defaultValueNumeric="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="avatar_attachment_id" type="BIGINT"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="handy_user"
+                                 baseColumnNames="country_id"
+                                 constraintName="fk_handy_user_country"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="handy_user"
+                                 baseColumnNames="city_id"
+                                 constraintName="fk_handy_user_city"
+                                 referencedTableName="city"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="handy_user"
+                                 baseColumnNames="district_id"
+                                 constraintName="fk_handy_user_district"
+                                 referencedTableName="district"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="handy_user"
+                                 baseColumnNames="avatar_attachment_id"
+                                 constraintName="fk_handy_user_avatar_attachment"
+                                 referencedTableName="attachment"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2026-06-01-02-customer-business-profiles" author="codex">
+        <createTable tableName="customer_profile">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_customer_profile"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating_average" type="DECIMAL(3,2)" defaultValueNumeric="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating_count" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="completed_orders_count" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="canceled_orders_count" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dispute_count" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="no_show_count" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="business_profile">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_business_profile"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bin" type="VARCHAR(32)"/>
+            <column name="legal_address" type="VARCHAR(500)"/>
+            <column name="billing_email" type="VARCHAR(255)"/>
+            <column name="contact_person_name" type="VARCHAR(255)"/>
+            <column name="contact_person_phone" type="VARCHAR(32)"/>
+            <column name="verification_status" type="VARCHAR(32)" defaultValue="NOT_SUBMITTED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="verified_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="rejected_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="rejection_reason" type="VARCHAR(1000)"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="customer_profile"
+                             columnNames="user_id"
+                             constraintName="uc_customer_profile_user"/>
+        <addUniqueConstraint tableName="business_profile"
+                             columnNames="user_id"
+                             constraintName="uc_business_profile_user"/>
+        <addForeignKeyConstraint baseTableName="customer_profile"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_customer_profile_user"
+                                 referencedTableName="handy_user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="business_profile"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_business_profile_user"
+                                 referencedTableName="handy_user"
+                                 referencedColumnNames="id"/>
+
+        <sql>
+            INSERT INTO customer_profile (
+                user_id,
+                rating_average,
+                rating_count,
+                completed_orders_count,
+                canceled_orders_count,
+                dispute_count,
+                no_show_count,
+                created_at,
+                updated_at
+            )
+            SELECT id, 0.00, 0, 0, 0, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM handy_user;
+        </sql>
+    </changeSet>
+
+    <changeSet id="2026-06-01-03-performer-profiles" author="codex">
+        <createTable tableName="performer_profile">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_performer_profile"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uc_performer_profile_public_id"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="display_name" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(2000)"/>
+            <column name="skills_description" type="VARCHAR(2000)"/>
+            <column name="base_country_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="base_region_id" type="BIGINT"/>
+            <column name="base_city_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="base_district_id" type="BIGINT"/>
+            <column name="service_radius_km" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="works_remotely" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="works_onsite" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="travel_fee_policy" type="VARCHAR(500)"/>
+            <column name="verification_level" type="VARCHAR(32)" defaultValue="NONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="verification_status" type="VARCHAR(32)" defaultValue="NOT_SUBMITTED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating_average" type="DECIMAL(3,2)" defaultValueNumeric="0.00">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating_count" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="completed_tasks_count" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="canceled_tasks_count" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dispute_count" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_available" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_top_performer" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="approved_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="rejected_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="rejection_reason" type="VARCHAR(1000)"/>
+        </createTable>
+
+        <createTable tableName="performer_category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_performer_category"/>
+            </column>
+            <column name="performer_profile_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="experience_years" type="INT"/>
+            <column name="price_from" type="DECIMAL(12,2)"/>
+            <column name="price_to" type="DECIMAL(12,2)"/>
+            <column name="currency" type="VARCHAR(3)" defaultValue="KZT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_primary" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="performer_profile"
+                             columnNames="user_id"
+                             constraintName="uc_performer_profile_user"/>
+        <addUniqueConstraint tableName="performer_category"
+                             columnNames="performer_profile_id,category_id"
+                             constraintName="uc_performer_category_profile_category"/>
+        <addForeignKeyConstraint baseTableName="performer_profile"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_performer_profile_user"
+                                 referencedTableName="handy_user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="performer_profile"
+                                 baseColumnNames="base_country_id"
+                                 constraintName="fk_performer_profile_country"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="performer_profile"
+                                 baseColumnNames="base_region_id"
+                                 constraintName="fk_performer_profile_region"
+                                 referencedTableName="region"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="performer_profile"
+                                 baseColumnNames="base_city_id"
+                                 constraintName="fk_performer_profile_city"
+                                 referencedTableName="city"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="performer_profile"
+                                 baseColumnNames="base_district_id"
+                                 constraintName="fk_performer_profile_district"
+                                 referencedTableName="district"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="performer_category"
+                                 baseColumnNames="performer_profile_id"
+                                 constraintName="fk_performer_category_profile"
+                                 referencedTableName="performer_profile"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="performer_category"
+                                 baseColumnNames="category_id"
+                                 constraintName="fk_performer_category_category"
+                                 referencedTableName="category"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

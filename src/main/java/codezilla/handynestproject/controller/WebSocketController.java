@@ -6,7 +6,7 @@ import codezilla.handynestproject.mapper.MessageMapper;
 import codezilla.handynestproject.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.sisu.Hidden;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -32,4 +32,3 @@ public class WebSocketController {
         return messageMapper.toMessageResponseDto(messageService.send(messageRequestDto));
     }
 }
-

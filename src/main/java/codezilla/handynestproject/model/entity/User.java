@@ -1,9 +1,15 @@
 package codezilla.handynestproject.model.entity;
 
 import codezilla.handynestproject.model.enums.RoleName;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.handynest.geo.City;
+import com.handynest.geo.Country;
+import com.handynest.geo.District;
+import com.handynest.identity.AccountType;
+import com.handynest.identity.UserStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,6 +38,10 @@ public class User {
     @Schema(description = "Unique identifier of the user", example = "1")
     private Long id;
 
+    @Column(name = "public_id", nullable = false, unique = true, updatable = false, length = 26)
+    @Schema(description = "Public user id", example = "01KAE5YFES4D72W93NS1Q3D4VT")
+    private String publicId;
+
     @Column(name = "first_name", nullable = false, length = 50)
     @Schema(description = "First name of the user", example = "John")
     private String firstName;
@@ -44,9 +54,29 @@ public class User {
     @Schema(description = "Email of the user", example = "john.doe@example.com")
     private String email;
 
+    @Column(name = "phone", length = 32)
+    @Schema(description = "Phone of the user", example = "+77001234567")
+    private String phone;
+
     @Column(name = "is_email_verified", nullable = false)
     @Schema(description = "Indicates if the email is verified", example = "true")
     private boolean isEmailVerified;
+
+    @Column(name = "is_phone_verified", nullable = false)
+    @Schema(description = "Indicates if the phone is verified", example = "false")
+    private boolean isPhoneVerified;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 32)
+    @Schema(description = "User status", example = "ACTIVE")
+    private UserStatus status = UserStatus.ACTIVE;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "account_type", nullable = false, length = 32)
+    @Schema(description = "User account type", example = "PERSONAL")
+    private AccountType accountType = AccountType.PERSONAL;
 
     @Column(name = "password", nullable = false, length = 100)
     @Schema(description = "Password of the user", example = "password123")
@@ -69,6 +99,32 @@ public class User {
     @Column(name = "logo")
     @Schema(description = "Logo of the user", example = "logo.png")
     private String logo;
+
+    @Column(name = "avatar_attachment_id")
+    @Schema(description = "Avatar attachment id")
+    private Long avatarAttachmentId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id")
+    private Country country;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id")
+    private City city;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "district_id")
+    private District district;
+
+    @Column(name = "preferred_service_radius_km")
+    private Integer preferredServiceRadiusKm;
+
+    @Builder.Default
+    @Column(name = "customer_risk_score", nullable = false, precision = 5, scale = 2)
+    private BigDecimal customerRiskScore = BigDecimal.ZERO;
+
+    @Column(name = "deleted_at")
+    private Instant deletedAt;
 
     @CreatedDate
     @Column(name = "created_on", nullable = false, updatable = false)

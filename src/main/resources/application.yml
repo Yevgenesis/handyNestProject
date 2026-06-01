@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: handyNestProject
+  profiles:
+    default: local
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui-custom.html
+
+jwttoken:
+  signing:
+    key: ${HANDYNEST_JWT_SIGNING_KEY}
+
+app:
+  security:
+    jwt:
+      access-token-ttl: ${HANDYNEST_ACCESS_TOKEN_TTL:15m}
+      refresh-token-ttl: ${HANDYNEST_REFRESH_TOKEN_TTL:30d}
+    refresh-cookie:
+      name: ${HANDYNEST_REFRESH_COOKIE_NAME:handynest_refresh_token}
+      path: ${HANDYNEST_REFRESH_COOKIE_PATH:/api/v1/auth}
+      same-site: ${HANDYNEST_REFRESH_COOKIE_SAME_SITE:Lax}
+      secure: ${HANDYNEST_REFRESH_COOKIE_SECURE:false}
+    rate-limit:
+      enabled: ${HANDYNEST_RATE_LIMIT_ENABLED:true}
+      cleanup-interval: ${HANDYNEST_RATE_LIMIT_CLEANUP_INTERVAL:10m}
+      idle-entry-ttl: ${HANDYNEST_RATE_LIMIT_IDLE_ENTRY_TTL:2h}
+      register:
+        capacity: ${HANDYNEST_RATE_LIMIT_REGISTER_CAPACITY:3}
+        window: ${HANDYNEST_RATE_LIMIT_REGISTER_WINDOW:1h}
+      login:
+        capacity: ${HANDYNEST_RATE_LIMIT_LOGIN_CAPACITY:5}
+        window: ${HANDYNEST_RATE_LIMIT_LOGIN_WINDOW:10m}
+      refresh:
+        capacity: ${HANDYNEST_RATE_LIMIT_REFRESH_CAPACITY:60}
+        window: ${HANDYNEST_RATE_LIMIT_REFRESH_WINDOW:1m}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:${POSTGRES_PORT:5432}/${POSTGRES_DB:handyDB}}
+    username: ${SPRING_DATASOURCE_USERNAME:${POSTGRES_USER:postgres}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${POSTGRES_PASSWORD}}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}

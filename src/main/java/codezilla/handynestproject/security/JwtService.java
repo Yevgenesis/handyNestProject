@@ -5,83 +5,99 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import java.time.Duration;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import javax.crypto.SecretKey;
-import java.util.*;
-import java.util.function.Function;
 
 @Service
 public class JwtService {
 
     private final SecretKey secretSigningKey;
+    private final Duration accessTokenTtl;
 
-    //Reading the signing key from the get token.signing property file.key encoded in Base64
-    public JwtService(@Value("${jwttoken.signing.key}") String jwttokenSigningKey) {
+    public JwtService(
+            @Value("${jwttoken.signing.key}") String jwttokenSigningKey,
+            @Value("${app.security.jwt.access-token-ttl:15m}") Duration accessTokenTtl
+    ) {
         this.secretSigningKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwttokenSigningKey));
+        this.accessTokenTtl = accessTokenTtl;
     }
 
-    // Token generation
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", userDetails.getAuthorities().stream()
+                .map(Object::toString)
+                .collect(Collectors.toList()));
 
         if (userDetails instanceof User userEntity) {
-            claims.put("userId", userEntity);
+            claims.put("userId", userEntity.getId());
+            claims.put("publicId", userEntity.getPublicId());
             claims.put("login", userEntity.getEmail());
-             claims.put("role", userDetails.getAuthorities());
         }
-        return generateToken(claims, userDetails);
+
+        return generateToken(claims, userDetails.getUsername());
     }
 
-    // The method directly generates a token based on a set of user data
-    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public String generateToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", user.getId());
+        claims.put("publicId", user.getPublicId());
+        claims.put("login", user.getEmail());
+        claims.put("roles", user.getRoles().stream().map(Enum::name).sorted().toList());
+
+        return generateToken(claims, user.getEmail());
+    }
+
+    private String generateToken(Map<String, Object> extraClaims, String subject) {
         return Jwts.builder()
                 .claims()
                 .issuedAt(new Date(System.currentTimeMillis()))
-                // 24 hours expiration time
-                //.expiration(new Date(System.currentTimeMillis() + 100000 * 60 * 24))
-                .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
-                .subject(userDetails.getUsername())
+                .expiration(new Date(System.currentTimeMillis() + accessTokenTtl.toMillis()))
+                .subject(subject)
                 .add(extraClaims)
                 .and()
-                .signWith(secretSigningKey) // resume JwtBuilder calls
+                .signWith(secretSigningKey)
                 .compact();
     }
 
-    // Retrieve a username from a token
+    public Duration getAccessTokenTtl() {
+        return accessTokenTtl;
+    }
+
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Checking that the token is valid, it is for this user that the validity period has not expired
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
-        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        return userName.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
-    // Retrieve data from the @param claimsResolvers token data extraction function
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
 
-    // Checking the token for expiration @return true if the token is expired
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    // Retrieve the expiration date of the token @return expiration date
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // Retrieve all data from token
     private Claims extractAllClaims(String token) {
-
         return Jwts.parser()
-                .setSigningKey(secretSigningKey)
-                .build().parseSignedClaims(token).getPayload();
+                .verifyWith(secretSigningKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

@@ -1,0 +1,78 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-05-25-01-category-public-id" author="codex">
+        <addColumn tableName="category">
+            <column name="public_id" type="VARCHAR(26)"/>
+        </addColumn>
+
+        <sql>
+            UPDATE category
+            SET public_id = public_ids.public_id
+            FROM (
+                VALUES
+                    (1, '06F5Z8NMS7YQE4Q2F4R1HN9EZG'),
+                    (2, '06F5Z8NMS9ZCVNTPM12YQ8WQXM'),
+                    (3, '06F5Z8NMSD8JR2WW6ZRJF6YA34'),
+                    (4, '06F5Z8NMSK5FPJANJTMG6AW370'),
+                    (5, '06F5Z8NMSNB6AAZTFRHA2SBR4M'),
+                    (6, '06F5Z8NMSR9HKTRJ0PB3H6PQDR'),
+                    (7, '06F5Z8NMSZCK8CW2WM516BQP98'),
+                    (8, '06F5Z8NMT2F6FDSRCEXZMHNEMR'),
+                    (9, '06F5Z8NMT4JGFE1YW3WPTFC8R0'),
+                    (11, '06F5Z8NMTBE8A9HV9JC4AR9AWG'),
+                    (12, '06F5Z8NMTFT5PE9KAG61TC07P8'),
+                    (13, '06F5Z8NMTJBP9RE7TT5635GZHC'),
+                    (14, '06F5Z8NMTQXTFPQDBZRRWACB8W'),
+                    (15, '06F5Z8NMTVNAWJBW4AJRJRSE50'),
+                    (16, '06F5Z8NMTZTQRH48E0C5HXBX1C'),
+                    (17, '06F5Z8NMV3S38ATM9H6J4HC700'),
+                    (18, '06F5Z8NMV5TDNKHXT954CRCGQ8'),
+                    (19, '06F5Z8NMVAYZ53ZJXR0820Z9VM'),
+                    (20, '06F5Z8NMVFS4YVMGNCNB252Y10'),
+                    (21, '06F5Z8NMVJZN8ZE2Z9WX8S7CJC'),
+                    (22, '06F5Z8NMVPP8SCX2HX1VP5KT4M'),
+                    (23, '06F5Z8NMVV314EYTQSF49VTY9R'),
+                    (24, '06F5Z8NMVYJBFMNR6G35YA2X7M'),
+                    (25, '06F5Z8NMW0Y2KDERVWRWE4B1FM'),
+                    (26, '06F5Z8NMW4K1G4Q89BX6ADSDBG'),
+                    (27, '06F5Z8NMW9RZMW7PS4BZV81VMW'),
+                    (28, '06F5Z8NMWCH62Y5G1NAVTN3EJR'),
+                    (29, '06F5Z8NMWHN2E6GJRRG21YFKNW'),
+                    (30, '06F5Z8NMWQT3KT4XE6GKJMGQZC'),
+                    (31, '06F5Z8NMWVC4QMVMPDV1DXA5VG'),
+                    (32, '06F5Z8NMWYP6W5ZE5XW964K7E0'),
+                    (33, '06F5Z8NMX3D9HHRPH9ZBMQNX7C'),
+                    (34, '06F5Z8NMX6N13J6GRS7KNS8394'),
+                    (35, '06F5Z8NMX96E65ZC3F8MBVFW7W'),
+                    (36, '06F5Z8NMXDCYTCEW63V3C40A7G'),
+                    (37, '06F5Z8NMXGCSKRWM224Y0MAK4W'),
+                    (38, '06F5Z8NMXPYYNNJGX9SJZ5RHF4'),
+                    (39, '06F5Z8NMXT9M9M2PM880DFC04R'),
+                    (40, '06F5Z8NMXW4QEWWWKY58QE2AXW'),
+                    (41, '06F5Z8NMY0T43J6JP3FFHF7SCC'),
+                    (42, '06F5Z8NMY742B91593CYFPKBE0'),
+                    (43, '06F5Z8NMY99PFS9FNWGV35REC8'),
+                    (44, '06F5Z8NMYD6F2D3AEM4J5D9QB4'),
+                    (45, '06F5Z8NMYKS3D5KSR74DGEF9VG'),
+                    (46, '06F5Z8NMYQ37F2HBZDRC19Q8A0'),
+                    (47, '06F5Z8NMYTXQDEZSAKNMHGNM68'),
+                    (48, '06F5Z8NMYX0VEBYYWKQAKWMFVC')
+            ) AS public_ids(id, public_id)
+            WHERE category.id = public_ids.id;
+        </sql>
+
+        <sql>
+            UPDATE category SET parent_id = 11 WHERE parent_id = 10;
+        </sql>
+
+        <addNotNullConstraint tableName="category"
+                              columnName="public_id"
+                              columnDataType="VARCHAR(26)"/>
+        <addUniqueConstraint tableName="category"
+                             columnNames="public_id"
+                             constraintName="uc_category_public_id"/>
+    </changeSet>
+</databaseChangeLog>

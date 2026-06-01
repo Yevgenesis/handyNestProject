@@ -4,12 +4,14 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,25 +26,41 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
-        if (StringUtils.isEmpty(header) || !StringUtils.startsWith(header, "Bearer")) {
+        if (header == null || !header.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String jwt = header.substring("Bearer ".length());
-        String username = jwtService.extractUserName(jwt);
+        String username;
+        try {
+            username = jwtService.extractUserName(jwt);
+        } catch (JwtException | IllegalArgumentException exception) {
+            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-        if (StringUtils.isNotEmpty(username) &&
+        if (username != null && !username.isBlank() &&
                 SecurityContextHolder.getContext().getAuthentication() == null) {
             //get user from database
-            UserDetails user = userService.loadUserByUsername(username);
+            UserDetails user;
+            try {
+                user = userService.loadUserByUsername(username);
+            } catch (AuthenticationException exception) {
+                SecurityContextHolder.clearContext();
+                filterChain.doFilter(request, response);
+                return;
+            }
             //check that token is valid
-            if (jwtService.isTokenValid(jwt, user)) {
+            if (isTokenValid(jwt, user)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         user, null, user.getAuthorities());
 
@@ -51,5 +69,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isTokenValid(String jwt, UserDetails user) {
+        try {
+            return jwtService.isTokenValid(jwt, user);
+        } catch (JwtException | IllegalArgumentException exception) {
+            SecurityContextHolder.clearContext();
+            return false;
+        }
     }
 }

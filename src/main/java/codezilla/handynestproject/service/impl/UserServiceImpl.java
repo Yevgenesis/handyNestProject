@@ -10,6 +10,7 @@ import codezilla.handynestproject.mapper.UserMapper;
 import codezilla.handynestproject.model.entity.User;
 import codezilla.handynestproject.repository.UserRepository;
 import codezilla.handynestproject.service.UserService;
+import com.handynest.common.publicid.PublicIdGenerator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponseDto> findAll() {
         List<User> users = userRepository.findAll();
-        List<UserResponseDto> userResponseDtos = userMapper.usersToListDto(users);
-        return userResponseDtos;
+        return userMapper.usersToListDto(users);
     }
 
     /**
@@ -157,6 +157,7 @@ public class UserServiceImpl implements UserService {
 
         // Password encoding
         User user = userMapper.dtoToUser(dto);
+        user.setPublicId(PublicIdGenerator.defaultGenerator().newUlid());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         try {
@@ -164,8 +165,7 @@ public class UserServiceImpl implements UserService {
         } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyExistsException("User with this email already exists");
         }
-        UserResponseDto userResponseDto = userMapper.userToDto(user);
-        return userResponseDto;
+        return userMapper.userToDto(user);
     }
 
     /**
@@ -206,5 +206,3 @@ public class UserServiceImpl implements UserService {
         }
     }
 }
-
-

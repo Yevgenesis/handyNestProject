@@ -11,7 +11,19 @@
     <!--    insert static data to DB -->
     <include file="/db/changelog/data/static/create-static-data-001.xml"/>
 
+    <!--    enrich static category data with public API ids -->
+    <include file="/db/changelog/changes/2026-05-25-category-public-id.xml"/>
+
     <!--    insert test data to DB -->
     <include file="/db/changelog/data/test/02-01-changelog.xml"/>
+
+    <!--    add auth v1 session support -->
+    <include file="/db/changelog/changes/2026-05-25-auth-v1.xml"/>
+
+    <!--    add Kazakhstan geo directory and category translation metadata -->
+    <include file="/db/changelog/changes/2026-05-25-geo-category-foundation.xml"/>
+
+    <!--    add canonical identity and performer profile foundation -->
+    <include file="/db/changelog/changes/2026-06-01-identity-performer-profile.xml"/>
 
 </databaseChangeLog>

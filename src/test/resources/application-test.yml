@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:16.2:///integration-tests-db
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui-custom.html
+
+jwttoken:
+  signing:
+    key: ZHNmc2Rmc2Rmc2RmZHNmIGVyIHdyZSB0ZXdydHJ0IGV3cnQgZXJ0IGVyZ3RnIHRnZHNkZmRzZiBzZGFkIGZhc2RmNHR0NSBzcmdzIGZnNDU2IDNxNHF0NHQgZzM1eSBnd2VyZyA=

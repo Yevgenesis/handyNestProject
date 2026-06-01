@@ -91,7 +91,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @PostMapping
     public UserResponseDto save(@RequestBody @Valid UserRequestDto userRequestDto) {
-        log.info("Created new user: {}", userRequestDto);
+        log.info("Create user request for email: {}", userRequestDto.email());
         return userService.create(userRequestDto);
     }
 
@@ -110,7 +110,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @PostMapping("/login")
     public JwtAuthenticationResponse login(@RequestBody SignInRequest request) {
-        log.info("Login request: {}", request);
+        log.info("Login request for login: {}", request.getLogin());
         return authenticationService.authenticate(request);
     }
 
@@ -136,4 +136,3 @@ public class UserController {
 
 
 }
-
