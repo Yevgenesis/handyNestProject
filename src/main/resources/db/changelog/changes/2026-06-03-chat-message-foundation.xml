@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-03-04-chat-message" author="codex">
+        <createTable tableName="chat_message">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_chat_message" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_chat_message_public_id"/>
+            </column>
+            <column name="chat_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="VARCHAR(4000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="system_code" type="VARCHAR(64)"/>
+            <column name="attachment_id" type="BIGINT"/>
+            <column name="read_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="deleted_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="risk_flag" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="chat_message" baseColumnNames="chat_id"
+                                 referencedTableName="deal_chat" referencedColumnNames="id"
+                                 constraintName="fk_chat_message_chat"/>
+        <addForeignKeyConstraint baseTableName="chat_message" baseColumnNames="sender_id"
+                                 referencedTableName="handy_user" referencedColumnNames="id"
+                                 constraintName="fk_chat_message_sender"/>
+
+        <createIndex tableName="chat_message" indexName="idx_chat_message_chat_created">
+            <column name="chat_id"/>
+            <column name="created_at"/>
+        </createIndex>
+        <createIndex tableName="chat_message" indexName="idx_chat_message_unread">
+            <column name="chat_id"/>
+            <column name="read_at"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,6 +1,5 @@
 package com.handynest.catalog.category;
 
-import codezilla.handynestproject.model.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

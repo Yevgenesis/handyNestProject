@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-04-02-favorite-performer" author="codex">
+        <createTable tableName="favorite_performer">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_favorite_performer" nullable="false"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_favorite_performer_customer"
+                             referencedTableName="handy_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="performer_profile_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_favorite_performer_profile"
+                             referencedTableName="performer_profile"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="note" type="VARCHAR(500)"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="favorite_performer"
+                             columnNames="customer_id, performer_profile_id"
+                             constraintName="uk_favorite_performer_customer_performer"/>
+
+        <createIndex tableName="favorite_performer" indexName="idx_favorite_performer_customer">
+            <column name="customer_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-06-04-03-marketplace-attachment" author="codex">
+        <createTable tableName="marketplace_attachment">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_marketplace_attachment" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_marketplace_attachment_public_id"/>
+            </column>
+            <column name="owner_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_marketplace_attachment_owner"
+                             referencedTableName="handy_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints foreignKeyName="fk_marketplace_attachment_task"
+                             referencedTableName="marketplace_task"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="chat_message_id" type="BIGINT">
+                <constraints foreignKeyName="fk_marketplace_attachment_chat_message"
+                             referencedTableName="chat_message"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="dispute_case_id" type="BIGINT">
+                <constraints foreignKeyName="fk_marketplace_attachment_dispute_case"
+                             referencedTableName="dispute_case"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="verification_request_id" type="BIGINT"/>
+            <column name="attachment_type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="storage_provider" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bucket" type="VARCHAR(80)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="storage_key" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="original_filename" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content_type" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="size_bytes" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="checksum" type="VARCHAR(128)"/>
+            <column name="visibility" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <sql>
+            ALTER TABLE marketplace_attachment
+                ADD CONSTRAINT chk_marketplace_attachment_size CHECK (size_bytes > 0);
+        </sql>
+
+        <addForeignKeyConstraint baseTableName="chat_message"
+                                 baseColumnNames="attachment_id"
+                                 referencedTableName="marketplace_attachment"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_chat_message_marketplace_attachment"/>
+
+        <createIndex tableName="marketplace_attachment" indexName="idx_marketplace_attachment_task">
+            <column name="task_id"/>
+        </createIndex>
+        <createIndex tableName="marketplace_attachment" indexName="idx_marketplace_attachment_dispute">
+            <column name="dispute_case_id"/>
+        </createIndex>
+        <createIndex tableName="marketplace_attachment" indexName="idx_marketplace_attachment_owner">
+            <column name="owner_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

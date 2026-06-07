@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-06-04-idempotency-key" author="codex">
+        <createTable tableName="idempotency_key">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_idempotency_key" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints foreignKeyName="fk_idempotency_key_user"
+                             referencedTableName="handy_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="idempotency_key" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="request_hash" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="response_status" type="INT"/>
+            <column name="response_body_hash" type="VARCHAR(64)"/>
+            <column name="target_endpoint" type="VARCHAR(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <sql>
+            CREATE UNIQUE INDEX uk_idempotency_key_user_key_endpoint
+                ON idempotency_key (user_id, idempotency_key, target_endpoint)
+                WHERE user_id IS NOT NULL;
+            CREATE UNIQUE INDEX uk_idempotency_key_anonymous_key_endpoint
+                ON idempotency_key (idempotency_key, target_endpoint)
+                WHERE user_id IS NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet id="2026-06-06-05-payment-transaction" author="codex">
+        <createTable tableName="payment_transaction">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_payment_transaction" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_payment_transaction_public_id"/>
+            </column>
+            <column name="deal_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_payment_transaction_deal"
+                             referencedTableName="deal"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_payment_transaction_task"
+                             referencedTableName="marketplace_task"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_payment_transaction_customer"
+                             referencedTableName="handy_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="performer_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_payment_transaction_performer"
+                             referencedTableName="performer_profile"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="amount" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="platform_fee_amount" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="performer_amount" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency" type="VARCHAR(3)" defaultValue="KZT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(32)" defaultValue="CREATED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_mode" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="psp_provider" type="VARCHAR(80)"/>
+            <column name="psp_payment_id" type="VARCHAR(120)"/>
+            <column name="psp_reference" type="VARCHAR(160)"/>
+            <column name="idempotency_key" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="failure_reason" type="VARCHAR(1000)"/>
+            <column name="authorized_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="held_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="released_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="refunded_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="payment_transaction"
+                             columnNames="psp_provider, psp_payment_id"
+                             constraintName="uk_payment_transaction_provider_payment"/>
+
+        <createIndex tableName="payment_transaction" indexName="idx_payment_transaction_deal">
+            <column name="deal_id"/>
+        </createIndex>
+        <createIndex tableName="payment_transaction" indexName="idx_payment_transaction_customer">
+            <column name="customer_id"/>
+        </createIndex>
+        <createIndex tableName="payment_transaction" indexName="idx_payment_transaction_status_created">
+            <column name="status"/>
+            <column name="created_at"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

@@ -1,7 +1,7 @@
 package com.handynest.performer;
 
-import codezilla.handynestproject.HandyNestProjectApplication;
-import codezilla.handynestproject.util.TestDatabaseConfig;
+import com.handynest.HandyNestProjectApplication;
+import com.handynest.testsupport.TestDatabaseConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;

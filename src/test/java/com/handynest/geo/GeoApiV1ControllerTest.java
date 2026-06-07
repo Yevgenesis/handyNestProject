@@ -1,7 +1,7 @@
 package com.handynest.geo;
 
-import codezilla.handynestproject.HandyNestProjectApplication;
-import codezilla.handynestproject.util.TestDatabaseConfig;
+import com.handynest.HandyNestProjectApplication;
+import com.handynest.testsupport.TestDatabaseConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

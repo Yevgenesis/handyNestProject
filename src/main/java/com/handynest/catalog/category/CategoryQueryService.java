@@ -1,6 +1,5 @@
 package com.handynest.catalog.category;
 
-import codezilla.handynestproject.model.entity.Category;
 import com.handynest.common.error.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,5 @@
 package com.handynest.identity;
 
-import codezilla.handynestproject.model.entity.User;
 import com.handynest.common.domain.BaseAuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Table(name = "customer_profile")
@@ -80,5 +80,17 @@ public class CustomerProfile extends BaseAuditEntity {
 
     public long getNoShowCount() {
         return noShowCount;
+    }
+
+    public void applyRating(int grade, long previousRatingCount) {
+        this.ratingAverage = recalculateRatingAverage(grade, previousRatingCount);
+        this.ratingCount = previousRatingCount + 1;
+    }
+
+    private BigDecimal recalculateRatingAverage(int grade, long previousRatingCount) {
+        BigDecimal previousTotal = ratingAverage.multiply(BigDecimal.valueOf(previousRatingCount));
+        return previousTotal
+                .add(BigDecimal.valueOf(grade))
+                .divide(BigDecimal.valueOf(previousRatingCount + 1), 2, RoundingMode.HALF_UP);
     }
 }

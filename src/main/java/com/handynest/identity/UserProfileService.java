@@ -1,19 +1,22 @@
 package com.handynest.identity;
 
-import codezilla.handynestproject.model.entity.User;
-import codezilla.handynestproject.repository.UserRepository;
+import com.handynest.auth.session.RefreshTokenService;
 import com.handynest.common.error.ResourceNotFoundException;
 import com.handynest.common.error.UnauthorizedBusinessException;
+import com.handynest.common.publicid.PublicIdGenerator;
 import com.handynest.geo.City;
 import com.handynest.geo.CityRepository;
 import com.handynest.geo.Country;
 import com.handynest.geo.CountryRepository;
 import com.handynest.geo.District;
 import com.handynest.geo.DistrictRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import java.time.Instant;
 import java.util.Locale;
 import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,8 @@ public class UserProfileService {
     private final CountryRepository countryRepository;
     private final CityRepository cityRepository;
     private final DistrictRepository districtRepository;
+    private final RefreshTokenService refreshTokenService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public UserProfileResponse me(UserDetails userDetails) {
@@ -89,12 +94,39 @@ public class UserProfileService {
         return toResponse(user, customerProfile, businessProfile);
     }
 
+    @Transactional
+    public void deleteMe(UserDetails userDetails, HttpServletRequest servletRequest) {
+        User user = currentUser(userDetails);
+
+        refreshTokenService.revokeAll(user, servletRequest);
+
+        user.setDeleted(true);
+        user.setStatus(UserStatus.DELETED);
+        user.setDeletedAt(Instant.now());
+        user.setPassword(passwordEncoder.encode(PublicIdGenerator.defaultGenerator().newUlid()));
+        user.setFirstName("Deleted");
+        user.setLastName("User");
+        user.setPhone(null);
+        user.setPhoneVerified(false);
+        user.setEmailVerified(false);
+        user.setLogo(null);
+        user.setAvatarAttachmentId(null);
+        user.setCountry(null);
+        user.setCity(null);
+        user.setDistrict(null);
+        user.setPreferredServiceRadiusKm(null);
+    }
+
     public User currentUser(UserDetails userDetails) {
         if (userDetails == null) {
             throw new UnauthorizedBusinessException("Authentication required");
         }
-        return userRepository.findByEmail(normalizeEmail(userDetails.getUsername()))
+        User user = userRepository.findByEmail(normalizeEmail(userDetails.getUsername()))
                 .orElseThrow(() -> new UnauthorizedBusinessException("Authentication required"));
+        if (!UserAccountState.isSessionAllowed(user)) {
+            throw new UnauthorizedBusinessException("Authentication required");
+        }
+        return user;
     }
 
     private void applyBusinessProfile(BusinessProfile businessProfile, BusinessProfileRequest request) {

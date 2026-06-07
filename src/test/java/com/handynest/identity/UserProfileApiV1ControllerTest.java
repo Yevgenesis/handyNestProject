@@ -1,7 +1,7 @@
 package com.handynest.identity;
 
-import codezilla.handynestproject.HandyNestProjectApplication;
-import codezilla.handynestproject.util.TestDatabaseConfig;
+import com.handynest.HandyNestProjectApplication;
+import com.handynest.testsupport.TestDatabaseConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
@@ -20,9 +20,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -105,6 +108,39 @@ class UserProfileApiV1ControllerTest {
                 .andExpect(jsonPath("$.businessProfile.companyName").value("Handy Business"))
                 .andExpect(jsonPath("$.businessProfile.verificationStatus").value("NOT_SUBMITTED"))
                 .andExpect(jsonPath("$.businessProfile.id").doesNotExist());
+    }
+
+    @Test
+    void deleteMeSoftDeletesAccountRevokesRefreshTokenAndBlocksOldAccessToken() throws Exception {
+        String email = newEmail();
+        JsonNode registration = register(email);
+        String accessToken = registration.get("accessToken").asText();
+        String refreshToken = registration.get("refreshToken").asText();
+
+        mockMvc.perform(delete("/api/v1/users/me")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
+                .andExpect(status().isNoContent())
+                .andExpect(header().string(HttpHeaders.SET_COOKIE, containsString("Max-Age=0")));
+
+        mockMvc.perform(get("/api/v1/users/me")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value("UNAUTHORIZED"));
+
+        mockMvc.perform(withClientIp(post("/api/v1/auth/refresh"), newClientIp())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of("refreshToken", refreshToken))))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value("UNAUTHORIZED"));
+
+        mockMvc.perform(withClientIp(post("/api/v1/auth/login"), newClientIp())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "email", email,
+                                "password", PASSWORD
+                        ))))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.code").value("UNAUTHORIZED"));
     }
 
     private JsonNode register(String email) throws Exception {

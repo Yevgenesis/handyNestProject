@@ -11,6 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.PessimisticLockingFailureException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -110,6 +113,24 @@ public class ApiExceptionHandler {
                         HttpStatus.FORBIDDEN,
                         ApiErrorCode.ACCESS_DENIED,
                         "Access denied",
+                        request.getRequestURI()
+                ));
+    }
+
+    @ExceptionHandler({
+            DataIntegrityViolationException.class,
+            ObjectOptimisticLockingFailureException.class,
+            PessimisticLockingFailureException.class
+    })
+    public ResponseEntity<ApiErrorResponse> handlePersistenceConflictException(
+            HttpServletRequest request
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ApiErrorResponse.of(
+                        HttpStatus.CONFLICT,
+                        ApiErrorCode.CONFLICT,
+                        "Request conflicts with the current resource state",
                         request.getRequestURI()
                 ));
     }

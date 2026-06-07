@@ -1,9 +1,9 @@
 package com.handynest.auth.application;
 
-import codezilla.handynestproject.model.entity.User;
-import codezilla.handynestproject.model.enums.RoleName;
-import codezilla.handynestproject.repository.UserRepository;
-import codezilla.handynestproject.security.JwtService;
+import com.handynest.identity.User;
+import com.handynest.identity.RoleName;
+import com.handynest.identity.UserRepository;
+import com.handynest.auth.security.JwtService;
 import com.handynest.auth.api.AuthLoginRequest;
 import com.handynest.auth.api.AuthRegisterRequest;
 import com.handynest.auth.api.AuthTokenResponse;
@@ -15,6 +15,7 @@ import com.handynest.common.error.UnauthorizedBusinessException;
 import com.handynest.common.publicid.PublicIdGenerator;
 import com.handynest.common.ratelimit.RateLimitService;
 import com.handynest.identity.AccountType;
+import com.handynest.identity.UserAccountState;
 import com.handynest.identity.CustomerProfile;
 import com.handynest.identity.CustomerProfileRepository;
 import com.handynest.identity.UserStatus;
@@ -98,6 +99,9 @@ public class AuthV1Service {
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UnauthorizedBusinessException("Invalid email or password"));
+        if (!UserAccountState.isSessionAllowed(user)) {
+            throw new UnauthorizedBusinessException("Invalid email or password");
+        }
 
         return issueTokenResponse(user, servletRequest);
     }
@@ -128,6 +132,9 @@ public class AuthV1Service {
 
         User user = userRepository.findByEmail(normalizeEmail(userDetails.getUsername()))
                 .orElseThrow(() -> new UnauthorizedBusinessException("Authentication required"));
+        if (!UserAccountState.isSessionAllowed(user)) {
+            throw new UnauthorizedBusinessException("Authentication required");
+        }
 
         return userResponse(user);
     }

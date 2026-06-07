@@ -20,14 +20,65 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.xml
 
 springdoc:
+  packages-to-scan:
+    - com.handynest
+  paths-to-match:
+    - /api/v1/**
   swagger-ui:
     path: /swagger-ui-custom.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    db:
+      enabled: true
+
+logging:
+  pattern:
+    level: "%5p [requestId:%X{requestId:-} correlationId:%X{correlationId:-}]"
 
 jwttoken:
   signing:
     key: ${HANDYNEST_JWT_SIGNING_KEY}
 
 app:
+  idempotency:
+    request-ttl: ${HANDYNEST_IDEMPOTENCY_REQUEST_TTL:24h}
+    cleanup-interval: ${HANDYNEST_IDEMPOTENCY_CLEANUP_INTERVAL:1h}
+  data-retention:
+    cleanup-interval: ${HANDYNEST_DATA_RETENTION_CLEANUP_INTERVAL:24h}
+    batch-size: ${HANDYNEST_DATA_RETENTION_BATCH_SIZE:100}
+    verification-document-retention-days: ${HANDYNEST_VERIFICATION_DOCUMENT_RETENTION_DAYS:90}
+    deleted-user-anonymization-days: ${HANDYNEST_DELETED_USER_ANONYMIZATION_DAYS:30}
+    chat-retention-days: ${HANDYNEST_CHAT_RETENTION_DAYS:1095}
+    audit-log-retention-days: ${HANDYNEST_AUDIT_LOG_RETENTION_DAYS:1825}
+    attachment-retention-days: ${HANDYNEST_ATTACHMENT_RETENTION_DAYS:365}
+  payment:
+    webhook-token: ${HANDYNEST_PAYMENT_WEBHOOK_TOKEN:}
+  notifications:
+    outbox-worker:
+      fixed-delay: ${HANDYNEST_OUTBOX_WORKER_FIXED_DELAY:10s}
+      batch-size: ${HANDYNEST_OUTBOX_WORKER_BATCH_SIZE:50}
+  storage:
+    default-provider: ${HANDYNEST_STORAGE_PROVIDER:MINIO}
+    public-bucket: ${HANDYNEST_STORAGE_PUBLIC_BUCKET:handynest-public}
+    participants-bucket: ${HANDYNEST_STORAGE_PARTICIPANTS_BUCKET:handynest-private}
+    verification-bucket: ${HANDYNEST_STORAGE_VERIFICATION_BUCKET:handynest-verification}
+    endpoint: ${HANDYNEST_STORAGE_ENDPOINT:http://localhost:${MINIO_API_PORT:9000}}
+    region: ${HANDYNEST_STORAGE_REGION:us-east-1}
+    access-key: ${HANDYNEST_STORAGE_ACCESS_KEY:${MINIO_ROOT_USER:}}
+    secret-key: ${HANDYNEST_STORAGE_SECRET_KEY:${MINIO_ROOT_PASSWORD:}}
+    path-style-access: ${HANDYNEST_STORAGE_PATH_STYLE_ACCESS:true}
+    presigned-enabled: ${HANDYNEST_STORAGE_PRESIGNED_ENABLED:true}
+    upload-url-ttl: ${HANDYNEST_STORAGE_UPLOAD_URL_TTL:10m}
+    download-url-ttl: ${HANDYNEST_STORAGE_DOWNLOAD_URL_TTL:5m}
   security:
     jwt:
       access-token-ttl: ${HANDYNEST_ACCESS_TOKEN_TTL:15m}

@@ -26,4 +26,49 @@
     <!--    add canonical identity and performer profile foundation -->
     <include file="/db/changelog/changes/2026-06-01-identity-performer-profile.xml"/>
 
+    <!--    add marketplace task, offer, deal and chat foundation -->
+    <include file="/db/changelog/changes/2026-06-03-marketplace-core-foundation.xml"/>
+
+    <!--    add marketplace deal milestone foundation -->
+    <include file="/db/changelog/changes/2026-06-04-milestone-foundation.xml"/>
+
+    <!--    add canonical chat messages for marketplace deal chats -->
+    <include file="/db/changelog/changes/2026-06-03-chat-message-foundation.xml"/>
+
+    <!--    add dispute case foundation for marketplace deal chats -->
+    <include file="/db/changelog/changes/2026-06-03-dispute-case-foundation.xml"/>
+
+    <!--    add feedback foundation for completed marketplace deals -->
+    <include file="/db/changelog/changes/2026-06-04-feedback-foundation.xml"/>
+
+    <!--    add favorite performers, repeat task support and attachment metadata foundation -->
+    <include file="/db/changelog/changes/2026-06-04-favorites-repeat-attachments.xml"/>
+
+    <!--    add preferred performer metadata for repeat task flow -->
+    <include file="/db/changelog/changes/2026-06-06-rebooking-preferred-performer.xml"/>
+
+    <!--    add in-app notifications and outbox event foundation -->
+    <include file="/db/changelog/changes/2026-06-06-notifications-outbox.xml"/>
+
+    <!--    add payment transaction and idempotency foundation -->
+    <include file="/db/changelog/changes/2026-06-06-payment-idempotency.xml"/>
+
+    <!--    add replay resource reference for idempotent marketplace operations -->
+    <include file="/db/changelog/changes/2026-06-06-idempotency-resource-reference.xml"/>
+
+    <!--    add performer verification request review flow -->
+    <include file="/db/changelog/changes/2026-06-04-verification-request-foundation.xml"/>
+
+    <!--    add moderation case and complaint foundation -->
+    <include file="/db/changelog/changes/2026-06-04-moderation-foundation.xml"/>
+
+    <!--    add risk event and synchronous chat antifraud foundation -->
+    <include file="/db/changelog/changes/2026-06-04-risk-event-foundation.xml"/>
+
+    <!--    add account lifecycle data retention policy -->
+    <include file="/db/changelog/changes/2026-06-07-data-retention-policy.xml"/>
+
+    <!--    harden marketplace task-offer-deal-chat state flow -->
+    <include file="/db/changelog/changes/2026-06-07-marketplace-flow-hardening.xml"/>
+
 </databaseChangeLog>

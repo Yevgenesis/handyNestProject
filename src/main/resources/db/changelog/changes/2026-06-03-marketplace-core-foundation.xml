@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-03-01-marketplace-task" author="codex">
+        <createTable tableName="marketplace_task">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_marketplace_task" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_marketplace_task_public_id"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(160)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(4000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_mode" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="budget_min" type="DECIMAL(19,2)"/>
+            <column name="budget_max" type="DECIMAL(19,2)"/>
+            <column name="fixed_price" type="DECIMAL(19,2)"/>
+            <column name="currency" type="VARCHAR(3)" defaultValue="KZT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region_id" type="BIGINT"/>
+            <column name="city_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="district_id" type="BIGINT"/>
+            <column name="address_text" type="VARCHAR(500)"/>
+            <column name="latitude" type="DECIMAL(10,7)"/>
+            <column name="longitude" type="DECIMAL(10,7)"/>
+            <column name="status" type="VARCHAR(32)" defaultValue="OPEN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="publication_status" type="VARCHAR(32)" defaultValue="PUBLISHED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="selected_offer_id" type="BIGINT"/>
+            <column name="selected_performer_id" type="BIGINT"/>
+            <column name="repeat_of_task_id" type="BIGINT"/>
+            <column name="revision_count" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expired_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="accepted_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="submitted_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="completed_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="canceled_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="marketplace_task" baseColumnNames="customer_id"
+                                 referencedTableName="handy_user" referencedColumnNames="id"
+                                 constraintName="fk_marketplace_task_customer"/>
+        <addForeignKeyConstraint baseTableName="marketplace_task" baseColumnNames="category_id"
+                                 referencedTableName="category" referencedColumnNames="id"
+                                 constraintName="fk_marketplace_task_category"/>
+        <addForeignKeyConstraint baseTableName="marketplace_task" baseColumnNames="country_id"
+                                 referencedTableName="country" referencedColumnNames="id"
+                                 constraintName="fk_marketplace_task_country"/>
+        <addForeignKeyConstraint baseTableName="marketplace_task" baseColumnNames="region_id"
+                                 referencedTableName="region" referencedColumnNames="id"
+                                 constraintName="fk_marketplace_task_region"/>
+        <addForeignKeyConstraint baseTableName="marketplace_task" baseColumnNames="city_id"
+                                 referencedTableName="city" referencedColumnNames="id"
+                                 constraintName="fk_marketplace_task_city"/>
+        <addForeignKeyConstraint baseTableName="marketplace_task" baseColumnNames="district_id"
+                                 referencedTableName="district" referencedColumnNames="id"
+                                 constraintName="fk_marketplace_task_district"/>
+        <addForeignKeyConstraint baseTableName="marketplace_task" baseColumnNames="selected_performer_id"
+                                 referencedTableName="performer_profile" referencedColumnNames="id"
+                                 constraintName="fk_marketplace_task_selected_performer"/>
+        <addForeignKeyConstraint baseTableName="marketplace_task" baseColumnNames="repeat_of_task_id"
+                                 referencedTableName="marketplace_task" referencedColumnNames="id"
+                                 constraintName="fk_marketplace_task_repeat_of"/>
+
+        <createIndex tableName="marketplace_task" indexName="idx_marketplace_task_status_city">
+            <column name="status"/>
+            <column name="city_id"/>
+        </createIndex>
+        <createIndex tableName="marketplace_task" indexName="idx_marketplace_task_customer">
+            <column name="customer_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-06-03-02-task-offer" author="codex">
+        <createTable tableName="task_offer">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_task_offer" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_task_offer_public_id"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="performer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="VARCHAR(2000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="proposed_price" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency" type="VARCHAR(3)" defaultValue="KZT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="estimated_duration" type="VARCHAR(120)"/>
+            <column name="includes_materials" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)" defaultValue="PENDING">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expired_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="accepted_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="rejected_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="canceled_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="task_offer" baseColumnNames="task_id"
+                                 referencedTableName="marketplace_task" referencedColumnNames="id"
+                                 constraintName="fk_task_offer_task"/>
+        <addForeignKeyConstraint baseTableName="task_offer" baseColumnNames="performer_id"
+                                 referencedTableName="performer_profile" referencedColumnNames="id"
+                                 constraintName="fk_task_offer_performer"/>
+        <addUniqueConstraint tableName="task_offer" columnNames="task_id, performer_id, status"
+                             constraintName="uk_task_offer_task_performer_status"/>
+        <createIndex tableName="task_offer" indexName="idx_task_offer_task_status">
+            <column name="task_id"/>
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-06-03-03-deal-and-chat" author="codex">
+        <createTable tableName="deal">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_deal" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_deal_public_id"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="performer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accepted_offer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(32)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_mode" type="VARCHAR(32)" defaultValue="OFF_PLATFORM">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_status" type="VARCHAR(32)" defaultValue="NOT_REQUIRED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_visibility_status" type="VARCHAR(32)" defaultValue="HIDDEN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="milestone_enabled" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revision_count" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="completed_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="canceled_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="deal_chat">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_deal_chat" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_deal_chat_public_id"/>
+            </column>
+            <column name="deal_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="performer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="closed_at" type="TIMESTAMP WITH TIME ZONE"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="deal" baseColumnNames="task_id"
+                                 referencedTableName="marketplace_task" referencedColumnNames="id"
+                                 constraintName="fk_deal_task"/>
+        <addForeignKeyConstraint baseTableName="deal" baseColumnNames="customer_id"
+                                 referencedTableName="handy_user" referencedColumnNames="id"
+                                 constraintName="fk_deal_customer"/>
+        <addForeignKeyConstraint baseTableName="deal" baseColumnNames="performer_id"
+                                 referencedTableName="performer_profile" referencedColumnNames="id"
+                                 constraintName="fk_deal_performer"/>
+        <addForeignKeyConstraint baseTableName="deal" baseColumnNames="accepted_offer_id"
+                                 referencedTableName="task_offer" referencedColumnNames="id"
+                                 constraintName="fk_deal_accepted_offer"/>
+        <addUniqueConstraint tableName="deal" columnNames="task_id" constraintName="uk_deal_task"/>
+        <addUniqueConstraint tableName="deal" columnNames="accepted_offer_id" constraintName="uk_deal_accepted_offer"/>
+
+        <addForeignKeyConstraint baseTableName="deal_chat" baseColumnNames="deal_id"
+                                 referencedTableName="deal" referencedColumnNames="id"
+                                 constraintName="fk_deal_chat_deal"/>
+        <addForeignKeyConstraint baseTableName="deal_chat" baseColumnNames="task_id"
+                                 referencedTableName="marketplace_task" referencedColumnNames="id"
+                                 constraintName="fk_deal_chat_task"/>
+        <addForeignKeyConstraint baseTableName="deal_chat" baseColumnNames="customer_id"
+                                 referencedTableName="handy_user" referencedColumnNames="id"
+                                 constraintName="fk_deal_chat_customer"/>
+        <addForeignKeyConstraint baseTableName="deal_chat" baseColumnNames="performer_id"
+                                 referencedTableName="performer_profile" referencedColumnNames="id"
+                                 constraintName="fk_deal_chat_performer"/>
+        <addUniqueConstraint tableName="deal_chat" columnNames="deal_id" constraintName="uk_deal_chat_deal"/>
+
+        <addForeignKeyConstraint baseTableName="marketplace_task" baseColumnNames="selected_offer_id"
+                                 referencedTableName="task_offer" referencedColumnNames="id"
+                                 constraintName="fk_marketplace_task_selected_offer"/>
+    </changeSet>
+
+</databaseChangeLog>

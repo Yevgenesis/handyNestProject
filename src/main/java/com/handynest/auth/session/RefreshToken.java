@@ -1,6 +1,6 @@
 package com.handynest.auth.session;
 
-import codezilla.handynestproject.model.entity.User;
+import com.handynest.identity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

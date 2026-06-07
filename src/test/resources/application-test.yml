@@ -23,3 +23,9 @@ springdoc:
 jwttoken:
   signing:
     key: ZHNmc2Rmc2Rmc2RmZHNmIGVyIHdyZSB0ZXdydHJ0IGV3cnQgZXJ0IGVyZ3RnIHRnZHNkZmRzZiBzZGFkIGZhc2RmNHR0NSBzcmdzIGZnNDU2IDNxNHF0NHQgZzM1eSBnd2VyZyA=
+
+app:
+  payment:
+    webhook-token: test-payment-webhook-token
+  storage:
+    presigned-enabled: false

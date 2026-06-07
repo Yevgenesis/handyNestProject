@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-04-04-verification-request" author="codex">
+        <createTable tableName="verification_request">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_verification_request" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false"
+                             unique="true"
+                             uniqueConstraintName="uk_verification_request_public_id"/>
+            </column>
+            <column name="performer_profile_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_verification_request_performer_profile"
+                             referencedTableName="performer_profile"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="requested_by_user_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_verification_request_requested_by"
+                             referencedTableName="handy_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="requested_level" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comment" type="VARCHAR(1000)"/>
+            <column name="reviewed_by_user_id" type="BIGINT">
+                <constraints foreignKeyName="fk_verification_request_reviewed_by"
+                             referencedTableName="handy_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="reviewed_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="rejection_reason" type="VARCHAR(1000)"/>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="marketplace_attachment"
+                                 baseColumnNames="verification_request_id"
+                                 constraintName="fk_marketplace_attachment_verification_request"
+                                 referencedTableName="verification_request"
+                                 referencedColumnNames="id"/>
+
+        <createIndex tableName="verification_request" indexName="idx_verification_request_performer_profile">
+            <column name="performer_profile_id"/>
+        </createIndex>
+        <createIndex tableName="verification_request" indexName="idx_verification_request_requested_by">
+            <column name="requested_by_user_id"/>
+        </createIndex>
+        <createIndex tableName="verification_request" indexName="idx_verification_request_status">
+            <column name="status"/>
+        </createIndex>
+        <createIndex tableName="marketplace_attachment" indexName="idx_marketplace_attachment_verification_request">
+            <column name="verification_request_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

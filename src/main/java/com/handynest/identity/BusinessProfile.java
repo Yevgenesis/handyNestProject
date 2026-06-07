@@ -1,6 +1,5 @@
 package com.handynest.identity;
 
-import codezilla.handynestproject.model.entity.User;
 import com.handynest.common.domain.BaseAuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

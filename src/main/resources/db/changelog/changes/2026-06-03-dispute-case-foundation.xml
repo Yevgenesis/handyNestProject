@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-03-05-dispute-case" author="codex">
+        <createTable tableName="dispute_case">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_dispute_case" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_dispute_case_public_id"/>
+            </column>
+            <column name="deal_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="opened_by_user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reason" type="VARCHAR(160)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(4000)"/>
+            <column name="status" type="VARCHAR(32)" defaultValue="OPEN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="admin_decision" type="VARCHAR(4000)"/>
+            <column name="resolved_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="dispute_case" baseColumnNames="deal_id"
+                                 referencedTableName="deal" referencedColumnNames="id"
+                                 constraintName="fk_dispute_case_deal"/>
+        <addForeignKeyConstraint baseTableName="dispute_case" baseColumnNames="task_id"
+                                 referencedTableName="marketplace_task" referencedColumnNames="id"
+                                 constraintName="fk_dispute_case_task"/>
+        <addForeignKeyConstraint baseTableName="dispute_case" baseColumnNames="opened_by_user_id"
+                                 referencedTableName="handy_user" referencedColumnNames="id"
+                                 constraintName="fk_dispute_case_opened_by"/>
+        <addUniqueConstraint tableName="dispute_case" columnNames="deal_id"
+                             constraintName="uk_dispute_case_deal"/>
+
+        <createIndex tableName="dispute_case" indexName="idx_dispute_case_status">
+            <column name="status"/>
+        </createIndex>
+        <createIndex tableName="dispute_case" indexName="idx_dispute_case_opened_by">
+            <column name="opened_by_user_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

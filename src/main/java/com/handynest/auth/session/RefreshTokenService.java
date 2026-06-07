@@ -1,7 +1,8 @@
 package com.handynest.auth.session;
 
-import codezilla.handynestproject.model.entity.User;
+import com.handynest.identity.User;
 import com.handynest.common.error.UnauthorizedBusinessException;
+import com.handynest.identity.UserAccountState;
 import jakarta.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -11,6 +12,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.HexFormat;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,10 @@ public class RefreshTokenService {
     private Duration refreshTokenTtl;
 
     public IssuedRefreshToken issue(User user, HttpServletRequest servletRequest) {
+        if (!UserAccountState.isSessionAllowed(user)) {
+            throw new UnauthorizedBusinessException("Invalid refresh token");
+        }
+
         String rawToken = newRawToken();
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUser(user);
@@ -67,11 +73,23 @@ public class RefreshTokenService {
                 });
     }
 
+    public long revokeAll(User user, HttpServletRequest servletRequest) {
+        Instant revokedAt = Instant.now();
+        String revokedByIp = truncate(clientIp(servletRequest), IP_MAX_LENGTH);
+        List<RefreshToken> activeTokens = refreshTokenRepository.findAllByUserIdAndRevokedAtIsNull(user.getId());
+        activeTokens.forEach(refreshToken -> refreshToken.revoke(revokedAt, revokedByIp, null));
+        refreshTokenRepository.saveAll(activeTokens);
+        return activeTokens.size();
+    }
+
     private RefreshToken findActive(String rawToken) {
         RefreshToken refreshToken = refreshTokenRepository.findByTokenHash(hash(rawToken))
                 .orElseThrow(() -> new UnauthorizedBusinessException("Invalid refresh token"));
 
         if (!refreshToken.isActive(Instant.now())) {
+            throw new UnauthorizedBusinessException("Invalid refresh token");
+        }
+        if (!UserAccountState.isSessionAllowed(refreshToken.getUser())) {
             throw new UnauthorizedBusinessException("Invalid refresh token");
         }
 

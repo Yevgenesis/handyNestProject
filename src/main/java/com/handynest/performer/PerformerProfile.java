@@ -1,6 +1,6 @@
 package com.handynest.performer;
 
-import codezilla.handynestproject.model.entity.User;
+import com.handynest.identity.User;
 import com.handynest.common.domain.PublicIdEntity;
 import com.handynest.geo.City;
 import com.handynest.geo.Country;
@@ -26,6 +26,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -175,5 +176,33 @@ public class PerformerProfile extends PublicIdEntity {
             category.setPerformerProfile(this);
             this.categories.add(category);
         });
+    }
+
+    public void applyRating(int grade, long previousRatingCount) {
+        BigDecimal previousTotal = ratingAverage.multiply(BigDecimal.valueOf(previousRatingCount));
+        this.ratingAverage = previousTotal
+                .add(BigDecimal.valueOf(grade))
+                .divide(BigDecimal.valueOf(previousRatingCount + 1), 2, RoundingMode.HALF_UP);
+        this.ratingCount = previousRatingCount + 1;
+    }
+
+    public void markVerificationPending() {
+        this.verificationStatus = VerificationStatus.PENDING;
+        this.rejectedAt = null;
+        this.rejectionReason = null;
+    }
+
+    public void approveVerification(PerformerVerificationLevel level, Instant reviewedAt) {
+        this.verificationLevel = level;
+        this.verificationStatus = VerificationStatus.APPROVED;
+        this.approvedAt = reviewedAt;
+        this.rejectedAt = null;
+        this.rejectionReason = null;
+    }
+
+    public void rejectVerification(String reason, Instant reviewedAt) {
+        this.verificationStatus = VerificationStatus.REJECTED;
+        this.rejectedAt = reviewedAt;
+        this.rejectionReason = reason;
     }
 }

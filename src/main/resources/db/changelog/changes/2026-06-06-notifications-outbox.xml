@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-06-02-notification" author="codex">
+        <createTable tableName="notification">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_notification" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_notification_public_id"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_notification_user"
+                             referencedTableName="handy_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="type" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(160)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="body" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_type" type="VARCHAR(80)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_id" type="VARCHAR(80)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="read_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="delivered_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="metadata_json" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="notification" indexName="idx_notification_user_created">
+            <column name="user_id"/>
+            <column name="created_at"/>
+        </createIndex>
+
+        <createIndex tableName="notification" indexName="idx_notification_user_read">
+            <column name="user_id"/>
+            <column name="read_at"/>
+        </createIndex>
+
+        <createIndex tableName="notification" indexName="idx_notification_target">
+            <column name="target_type"/>
+            <column name="target_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-06-06-03-outbox-event" author="codex">
+        <createTable tableName="outbox_event">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_outbox_event" nullable="false"/>
+            </column>
+            <column name="event_type" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aggregate_type" type="VARCHAR(80)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aggregate_id" type="VARCHAR(80)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload_json" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(32)" defaultValue="PENDING">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attempts" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="next_attempt_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="processed_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="last_error" type="VARCHAR(1000)"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="outbox_event" indexName="idx_outbox_event_status_next_attempt">
+            <column name="status"/>
+            <column name="next_attempt_at"/>
+        </createIndex>
+
+        <createIndex tableName="outbox_event" indexName="idx_outbox_event_aggregate">
+            <column name="aggregate_type"/>
+            <column name="aggregate_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

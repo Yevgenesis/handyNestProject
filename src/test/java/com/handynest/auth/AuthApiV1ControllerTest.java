@@ -1,7 +1,7 @@
 package com.handynest.auth;
 
-import codezilla.handynestproject.HandyNestProjectApplication;
-import codezilla.handynestproject.util.TestDatabaseConfig;
+import com.handynest.HandyNestProjectApplication;
+import com.handynest.testsupport.TestDatabaseConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.handynest.auth.web.RefreshTokenCookieService;
@@ -71,6 +71,26 @@ class AuthApiV1ControllerTest {
                 )))
                 .andExpect(header().string(HttpHeaders.SET_COOKIE, containsString("HttpOnly")))
                 .andExpect(header().string(HttpHeaders.SET_COOKIE, containsString("SameSite=Lax")));
+    }
+
+    @Test
+    void registerValidationErrorReturnsUnifiedBadRequestContract() throws Exception {
+        mockMvc.perform(withClientIp(post("/api/v1/auth/register"), newClientIp())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "firstName", "",
+                                "lastName", "User",
+                                "email", "not-an-email",
+                                "password", "short",
+                                "passwordConfirmation", "different"
+                        ))))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+                .andExpect(jsonPath("$.message").value("Validation failed"))
+                .andExpect(jsonPath("$.details").isArray())
+                .andExpect(jsonPath("$.messages").doesNotExist());
     }
 
     @Test

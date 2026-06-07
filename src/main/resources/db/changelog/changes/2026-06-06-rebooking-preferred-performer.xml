@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-06-01-rebooking-preferred-performer" author="codex">
+        <addColumn tableName="marketplace_task">
+            <column name="preferred_performer_id" type="BIGINT"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="marketplace_task"
+                                 baseColumnNames="preferred_performer_id"
+                                 referencedTableName="performer_profile"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_marketplace_task_preferred_performer"/>
+
+        <createIndex tableName="marketplace_task" indexName="idx_marketplace_task_preferred_performer">
+            <column name="preferred_performer_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

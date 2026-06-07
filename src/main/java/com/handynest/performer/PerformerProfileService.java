@@ -1,7 +1,7 @@
 package com.handynest.performer;
 
-import codezilla.handynestproject.model.entity.Category;
-import codezilla.handynestproject.model.entity.User;
+import com.handynest.catalog.category.Category;
+import com.handynest.identity.User;
 import com.handynest.catalog.category.CategoryQueryRepository;
 import com.handynest.catalog.category.CategoryServiceMode;
 import com.handynest.catalog.category.CategoryTranslation;

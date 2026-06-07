@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-04-01-create-marketplace-feedback" author="codex">
+        <createTable tableName="marketplace_feedback">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_marketplace_feedback" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_marketplace_feedback_public_id"/>
+            </column>
+            <column name="task_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_marketplace_feedback_task"
+                             referencedTableName="marketplace_task"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="deal_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_marketplace_feedback_deal"
+                             referencedTableName="deal"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="sender_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_marketplace_feedback_sender"
+                             referencedTableName="handy_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="receiver_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_marketplace_feedback_receiver"
+                             referencedTableName="handy_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="grade" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="VARCHAR(2000)"/>
+            <column name="hidden_by_admin" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="moderation_status" type="VARCHAR(32)" defaultValue="VISIBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="marketplace_feedback"
+                             columnNames="deal_id, sender_id"
+                             constraintName="uk_marketplace_feedback_deal_sender"/>
+
+        <sql>
+            ALTER TABLE marketplace_feedback
+                ADD CONSTRAINT chk_marketplace_feedback_grade CHECK (grade between 1 and 5);
+        </sql>
+
+        <createIndex tableName="marketplace_feedback" indexName="idx_marketplace_feedback_task">
+            <column name="task_id"/>
+        </createIndex>
+        <createIndex tableName="marketplace_feedback" indexName="idx_marketplace_feedback_receiver">
+            <column name="receiver_id"/>
+        </createIndex>
+        <createIndex tableName="marketplace_feedback" indexName="idx_marketplace_feedback_performer_lookup">
+            <column name="deal_id"/>
+            <column name="hidden_by_admin"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

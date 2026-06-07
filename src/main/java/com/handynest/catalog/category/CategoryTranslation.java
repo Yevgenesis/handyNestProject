@@ -1,6 +1,5 @@
 package com.handynest.catalog.category;
 
-import codezilla.handynestproject.model.entity.Category;
 import com.handynest.common.domain.BaseAuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

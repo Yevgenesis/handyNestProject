@@ -1,0 +1,16 @@
+package com.handynest.notification;
+
+public enum NotificationType {
+    NEW_OFFER,
+    OFFER_ACCEPTED,
+    NEW_CHAT_MESSAGE,
+    WORK_SUBMITTED,
+    WORK_ACCEPTED,
+    REVISION_REQUESTED,
+    DISPUTE_OPENED,
+    DISPUTE_RESOLVED,
+    VERIFICATION_APPROVED,
+    VERIFICATION_REJECTED,
+    USER_BLOCKED,
+    PAYMENT_EVENT
+}

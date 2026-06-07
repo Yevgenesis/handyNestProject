@@ -1,0 +1,13 @@
+package com.handynest.risk;
+
+public enum RiskType {
+    PHONE_SHARED,
+    EMAIL_SHARED,
+    EXTERNAL_MESSENGER,
+    EXTERNAL_LINK,
+    PAYMENT_OUTSIDE_PLATFORM,
+    PROHIBITED_SERVICE,
+    SPAM,
+    SUSPICIOUS_PRICE,
+    MULTIPLE_CANCELLATIONS
+}
