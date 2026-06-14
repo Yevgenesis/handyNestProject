@@ -12,63 +12,69 @@ import jakarta.persistence.Table;
 @Table(name = "country")
 public class Country extends BaseAuditEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false, unique = true, length = 2)
-    private String code;
+  @Column(nullable = false, unique = true, length = 2)
+  private String code;
 
-    @Column(name = "name_ru", nullable = false, length = 120)
-    private String nameRu;
+  @Column(name = "name_ru", nullable = false, length = 120)
+  private String nameRu;
 
-    @Column(name = "name_kz", nullable = false, length = 120)
-    private String nameKz;
+  @Column(name = "name_kz", nullable = false, length = 120)
+  private String nameKz;
 
-    @Column(name = "name_en", nullable = false, length = 120)
-    private String nameEn;
+  @Column(name = "name_en", nullable = false, length = 120)
+  private String nameEn;
 
-    @Column(name = "phone_code", nullable = false, length = 8)
-    private String phoneCode;
+  @Column(name = "name_uz", nullable = false, length = 120)
+  private String nameUz;
 
-    @Column(name = "currency_code", nullable = false, length = 3)
-    private String currencyCode;
+  @Column(name = "phone_code", nullable = false, length = 8)
+  private String phoneCode;
 
-    @Column(name = "is_supported", nullable = false)
-    private boolean supported;
+  @Column(name = "currency_code", nullable = false, length = 3)
+  private String currencyCode;
 
-    protected Country() {
-    }
+  @Column(name = "is_supported", nullable = false)
+  private boolean supported;
 
-    public Long getId() {
-        return id;
-    }
+  protected Country() {}
 
-    public String getCode() {
-        return code;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getNameRu() {
-        return nameRu;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    public String getNameKz() {
-        return nameKz;
-    }
+  public String getNameRu() {
+    return nameRu;
+  }
 
-    public String getNameEn() {
-        return nameEn;
-    }
+  public String getNameKz() {
+    return nameKz;
+  }
 
-    public String getPhoneCode() {
-        return phoneCode;
-    }
+  public String getNameEn() {
+    return nameEn;
+  }
 
-    public String getCurrencyCode() {
-        return currencyCode;
-    }
+  public String getNameUz() {
+    return nameUz;
+  }
 
-    public boolean isSupported() {
-        return supported;
-    }
+  public String getPhoneCode() {
+    return phoneCode;
+  }
+
+  public String getCurrencyCode() {
+    return currencyCode;
+  }
+
+  public boolean isSupported() {
+    return supported;
+  }
 }

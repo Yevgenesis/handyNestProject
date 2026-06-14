@@ -1,5 +1,9 @@
 package com.handynest.marketplace;
 
+import com.handynest.common.api.ApiConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,33 +22,53 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@Tag(name = "Feedback", description = "Marketplace feedback after completed deals.")
 public class MarketplaceFeedbackApiV1Controller {
 
-    private final MarketplaceService marketplaceService;
+  private final MarketplaceService marketplaceService;
 
-    @PostMapping("/tasks/{taskId}/feedbacks")
-    @ResponseStatus(HttpStatus.CREATED)
-    public FeedbackResponse createTaskFeedback(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestHeader("Idempotency-Key") String idempotencyKey,
-            @PathVariable String taskId,
-            @RequestBody @Valid FeedbackCreateRequest request
-    ) {
-        return marketplaceService.createFeedback(userDetails, idempotencyKey, taskId, request);
-    }
+  @PostMapping("/tasks/{taskId}/feedbacks")
+  @ResponseStatus(HttpStatus.CREATED)
+  @Operation(
+      operationId = "createTaskFeedback",
+      summary = "Create task feedback",
+      description =
+          "Creates feedback after a completed marketplace deal. Requires Idempotency-Key.")
+  public FeedbackResponse createTaskFeedback(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
+      @Parameter(description = "Task publicId.") @PathVariable String taskId,
+      @RequestBody @Valid FeedbackCreateRequest request) {
+    return marketplaceService.createFeedback(userDetails, idempotencyKey, taskId, request);
+  }
 
-    @GetMapping("/tasks/{taskId}/feedbacks")
-    public List<FeedbackResponse> taskFeedbacks(@PathVariable String taskId) {
-        return marketplaceService.taskFeedbacks(taskId);
-    }
+  @GetMapping("/tasks/{taskId}/feedbacks")
+  @Operation(
+      operationId = "listTaskFeedbacks",
+      summary = "List task feedbacks",
+      description = "Returns public visible feedbacks for a task publicId.")
+  public List<FeedbackResponse> taskFeedbacks(
+      @Parameter(description = "Task publicId.") @PathVariable String taskId) {
+    return marketplaceService.taskFeedbacks(taskId);
+  }
 
-    @GetMapping("/users/{userId}/feedbacks")
-    public List<FeedbackResponse> userFeedbacks(@PathVariable String userId) {
-        return marketplaceService.userFeedbacks(userId);
-    }
+  @GetMapping("/users/{userId}/feedbacks")
+  @Operation(
+      operationId = "listUserFeedbacks",
+      summary = "List user feedbacks",
+      description = "Returns public visible feedbacks received by a user publicId.")
+  public List<FeedbackResponse> userFeedbacks(
+      @Parameter(description = "User publicId.") @PathVariable String userId) {
+    return marketplaceService.userFeedbacks(userId);
+  }
 
-    @GetMapping("/performers/{performerId}/feedbacks")
-    public List<FeedbackResponse> performerFeedbacks(@PathVariable String performerId) {
-        return marketplaceService.performerFeedbacks(performerId);
-    }
+  @GetMapping("/performers/{performerId}/feedbacks")
+  @Operation(
+      operationId = "listPerformerFeedbacks",
+      summary = "List performer feedbacks",
+      description = "Returns public visible feedbacks for a performer profile publicId.")
+  public List<FeedbackResponse> performerFeedbacks(
+      @Parameter(description = "Performer profile publicId.") @PathVariable String performerId) {
+    return marketplaceService.performerFeedbacks(performerId);
+  }
 }

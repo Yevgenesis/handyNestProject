@@ -24,24 +24,24 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Entity representing a attachment")
 public class Attachment {
 
-    //TODO add createdOn
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Attachment id", example = "1")
-    private Long id;
+  // TODO add createdOn
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Schema(description = "Attachment id", example = "1")
+  private Long id;
 
-    @Schema(description = "File name", example = "my file")
-    @Column(name = "file_name", nullable = false)
-    private String fileName;
+  @Schema(description = "File name", example = "my file")
+  @Column(name = "file_name", nullable = false)
+  private String fileName;
 
-    @Schema(description = "Attachment type", example = "type")
-    @Column(name = "type", nullable = false)
-    private String type;
+  @Schema(description = "Attachment type", example = "type")
+  @Column(name = "type", nullable = false)
+  private String type;
 
-    @Schema(description = "Attachment url", example = "http://...")
-    @Column(name = "url", nullable = false)
-    private String url;
+  @Schema(description = "Attachment url", example = "http://...")
+  @Column(name = "url", nullable = false)
+  private String url;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Performer performer;
+  @ManyToOne(fetch = FetchType.EAGER)
+  private Performer performer;
 }

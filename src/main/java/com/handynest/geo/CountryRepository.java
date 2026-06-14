@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CountryRepository extends JpaRepository<Country, Long> {
 
-    List<Country> findAllByOrderByCodeAsc();
+  List<Country> findAllBySupportedTrueOrderByCodeAsc();
 
-    Optional<Country> findByCodeIgnoreCase(String code);
+  Optional<Country> findByCodeIgnoreCase(String code);
 }

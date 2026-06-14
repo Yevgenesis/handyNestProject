@@ -15,6 +15,7 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.xml
+    contexts: test
 
 springdoc:
   swagger-ui:
@@ -25,6 +26,10 @@ jwttoken:
     key: ZHNmc2Rmc2Rmc2RmZHNmIGVyIHdyZSB0ZXdydHJ0IGV3cnQgZXJ0IGVyZ3RnIHRnZHNkZmRzZiBzZGFkIGZhc2RmNHR0NSBzcmdzIGZnNDU2IDNxNHF0NHQgZzM1eSBnd2VyZyA=
 
 app:
+  notifications:
+    outbox-worker:
+      batch-size: 1000
+      initial-delay: 24h
   payment:
     webhook-token: test-payment-webhook-token
   storage:

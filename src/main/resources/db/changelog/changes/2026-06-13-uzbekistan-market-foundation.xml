@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-13-01-uzbek-geo-columns" author="codex">
+        <addColumn tableName="country"><column name="name_uz" type="VARCHAR(120)"/></addColumn>
+        <addColumn tableName="region"><column name="name_uz" type="VARCHAR(120)"/></addColumn>
+        <addColumn tableName="city"><column name="name_uz" type="VARCHAR(120)"/></addColumn>
+        <addColumn tableName="district"><column name="name_uz" type="VARCHAR(120)"/></addColumn>
+        <sql>
+            UPDATE country SET name_uz = name_ru WHERE name_uz IS NULL;
+            UPDATE region SET name_uz = name_ru WHERE name_uz IS NULL;
+            UPDATE city SET name_uz = name_ru WHERE name_uz IS NULL;
+            UPDATE district SET name_uz = name_ru WHERE name_uz IS NULL;
+        </sql>
+        <addNotNullConstraint tableName="country" columnName="name_uz" columnDataType="VARCHAR(120)"/>
+        <addNotNullConstraint tableName="region" columnName="name_uz" columnDataType="VARCHAR(120)"/>
+        <addNotNullConstraint tableName="city" columnName="name_uz" columnDataType="VARCHAR(120)"/>
+        <addNotNullConstraint tableName="district" columnName="name_uz" columnDataType="VARCHAR(120)"/>
+    </changeSet>
+
+    <changeSet id="2026-06-13-02-uzbekistan-tashkent-seed" author="codex">
+        <sql splitStatements="false"><![CDATA[
+            UPDATE country SET is_supported = false, updated_at = CURRENT_TIMESTAMP WHERE code = 'KZ';
+            UPDATE region SET is_supported = false, updated_at = CURRENT_TIMESTAMP
+            WHERE country_id = (SELECT id FROM country WHERE code = 'KZ');
+            UPDATE city SET is_supported = false, updated_at = CURRENT_TIMESTAMP
+            WHERE country_id = (SELECT id FROM country WHERE code = 'KZ');
+            UPDATE district SET is_supported = false, updated_at = CURRENT_TIMESTAMP
+            WHERE city_id IN (SELECT id FROM city WHERE country_id = (SELECT id FROM country WHERE code = 'KZ'));
+
+            INSERT INTO country
+                (code, name_ru, name_kz, name_en, name_uz, phone_code, currency_code,
+                 is_supported, created_at, updated_at)
+            VALUES
+                ('UZ', 'Узбекистан', 'Узбекистан', 'Uzbekistan', 'O‘zbekiston', '+998', 'UZS',
+                 true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            ON CONFLICT (code) DO UPDATE SET
+                name_ru = EXCLUDED.name_ru,
+                name_en = EXCLUDED.name_en,
+                name_uz = EXCLUDED.name_uz,
+                phone_code = EXCLUDED.phone_code,
+                currency_code = EXCLUDED.currency_code,
+                is_supported = true,
+                updated_at = CURRENT_TIMESTAMP;
+
+            INSERT INTO region
+                (public_id, country_id, name_ru, name_kz, name_en, name_uz, slug,
+                 is_supported, created_at, updated_at)
+            SELECT '06UZRG00000000000000000001', id, 'город Ташкент', 'Ташкент қаласы',
+                   'Tashkent City', 'Toshkent shahri', 'tashkent-city', true,
+                   CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM country WHERE code = 'UZ'
+            ON CONFLICT (public_id) DO UPDATE SET
+                name_ru = EXCLUDED.name_ru,
+                name_en = EXCLUDED.name_en,
+                name_uz = EXCLUDED.name_uz,
+                is_supported = true,
+                updated_at = CURRENT_TIMESTAMP;
+
+            INSERT INTO city
+                (public_id, country_id, region_id, name_ru, name_kz, name_en, name_uz, slug,
+                 latitude, longitude, is_supported, sort_order, created_at, updated_at)
+            SELECT '06UZCT00000000000000000001', country.id, region.id,
+                   'Ташкент', 'Ташкент', 'Tashkent', 'Toshkent', 'tashkent',
+                   41.3110810, 69.2405620, true, 10, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM country
+            JOIN region ON region.public_id = '06UZRG00000000000000000001'
+            WHERE country.code = 'UZ'
+            ON CONFLICT (public_id) DO UPDATE SET
+                name_ru = EXCLUDED.name_ru,
+                name_en = EXCLUDED.name_en,
+                name_uz = EXCLUDED.name_uz,
+                is_supported = true,
+                sort_order = EXCLUDED.sort_order,
+                updated_at = CURRENT_TIMESTAMP;
+
+            INSERT INTO district
+                (public_id, city_id, name_ru, name_kz, name_en, name_uz, slug,
+                 is_supported, created_at, updated_at)
+            SELECT seed.public_id, city.id, seed.name_ru, seed.name_ru, seed.name_en, seed.name_uz,
+                   seed.slug, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM city
+            CROSS JOIN (VALUES
+                ('06UZDT00000000000000000001', 'Алмазарский район', 'Olmazor District', 'Olmazor tumani', 'olmazor'),
+                ('06UZDT00000000000000000002', 'Бектемирский район', 'Bektemir District', 'Bektemir tumani', 'bektemir'),
+                ('06UZDT00000000000000000003', 'Чиланзарский район', 'Chilonzor District', 'Chilonzor tumani', 'chilonzor'),
+                ('06UZDT00000000000000000004', 'Мирабадский район', 'Mirobod District', 'Mirobod tumani', 'mirobod'),
+                ('06UZDT00000000000000000005', 'Мирзо-Улугбекский район', 'Mirzo Ulugbek District', 'Mirzo Ulug‘bek tumani', 'mirzo-ulugbek'),
+                ('06UZDT00000000000000000006', 'Сергелийский район', 'Sergeli District', 'Sergeli tumani', 'sergeli'),
+                ('06UZDT00000000000000000007', 'Шайхантахурский район', 'Shaykhontohur District', 'Shayxontohur tumani', 'shayxontohur'),
+                ('06UZDT00000000000000000008', 'Учтепинский район', 'Uchtepa District', 'Uchtepa tumani', 'uchtepa'),
+                ('06UZDT00000000000000000009', 'Яккасарайский район', 'Yakkasaroy District', 'Yakkasaroy tumani', 'yakkasaroy'),
+                ('06UZDT00000000000000000010', 'Яшнабадский район', 'Yashnobod District', 'Yashnobod tumani', 'yashnobod'),
+                ('06UZDT00000000000000000011', 'Юнусабадский район', 'Yunusobod District', 'Yunusobod tumani', 'yunusobod'),
+                ('06UZDT00000000000000000012', 'Янгихаётский район', 'Yangihayot District', 'Yangihayot tumani', 'yangihayot')
+            ) AS seed(public_id, name_ru, name_en, name_uz, slug)
+            WHERE city.public_id = '06UZCT00000000000000000001'
+            ON CONFLICT (public_id) DO UPDATE SET
+                name_ru = EXCLUDED.name_ru,
+                name_en = EXCLUDED.name_en,
+                name_uz = EXCLUDED.name_uz,
+                is_supported = true,
+                updated_at = CURRENT_TIMESTAMP;
+
+            SELECT setval(pg_get_serial_sequence('country', 'id'), COALESCE((SELECT MAX(id) FROM country), 1), true);
+            SELECT setval(pg_get_serial_sequence('region', 'id'), COALESCE((SELECT MAX(id) FROM region), 1), true);
+            SELECT setval(pg_get_serial_sequence('city', 'id'), COALESCE((SELECT MAX(id) FROM city), 1), true);
+            SELECT setval(pg_get_serial_sequence('district', 'id'), COALESCE((SELECT MAX(id) FROM district), 1), true);
+        ]]></sql>
+    </changeSet>
+
+    <changeSet id="2026-06-13-03-market-settings-and-currency-defaults" author="codex">
+        <sql splitStatements="false"><![CDATA[
+            INSERT INTO platform_setting
+                (setting_key, setting_value, value_type, description, created_at, updated_at)
+            VALUES
+                ('market.default-country-code', 'UZ', 'STRING', 'Default launch market country', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('market.default-city-public-id', '06UZCT00000000000000000001', 'STRING', 'Default launch market city', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('market.default-locale', 'ru', 'STRING', 'Default public locale', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('market.supported-locales', 'ru,uz', 'STRING', 'Active public locales', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('marketplace.milestone-threshold', '5000000.00', 'DECIMAL', 'Currency-neutral launch-market milestone threshold', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            ON CONFLICT (setting_key) DO UPDATE SET
+                setting_value = EXCLUDED.setting_value,
+                value_type = EXCLUDED.value_type,
+                description = EXCLUDED.description,
+                updated_at = CURRENT_TIMESTAMP;
+        ]]></sql>
+        <sql>
+            ALTER TABLE marketplace_task ALTER COLUMN currency SET DEFAULT 'UZS';
+            ALTER TABLE task_offer ALTER COLUMN currency SET DEFAULT 'UZS';
+            ALTER TABLE milestone ALTER COLUMN currency SET DEFAULT 'UZS';
+            ALTER TABLE performer_category ALTER COLUMN currency SET DEFAULT 'UZS';
+            ALTER TABLE payment_transaction ALTER COLUMN currency SET DEFAULT 'UZS';
+        </sql>
+    </changeSet>
+
+    <changeSet id="2026-06-13-04-uzbekistan-mvp-catalog" author="codex">
+        <addColumn tableName="category">
+            <column name="requires_onsite_coordination" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_reveal_stage" type="VARCHAR(32)" defaultValue="NEVER">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <sql splitStatements="false"><![CDATA[
+            UPDATE category
+            SET active = false,
+                public_visible = false,
+                launch_phase = 'PHASE_2',
+                updated_at = CURRENT_TIMESTAMP;
+
+            UPDATE category SET parent_id = NULL WHERE slug IN ('plumber', 'electrician');
+
+            UPDATE category
+            SET active = true,
+                public_visible = true,
+                launch_phase = 'MVP',
+                risk_level = 'MEDIUM',
+                service_mode = 'ONSITE',
+                allows_remote = false,
+                allows_onsite = true,
+                allows_contact_reveal = true,
+                requires_onsite_coordination = true,
+                contact_reveal_stage = 'AFTER_DEAL_CREATED',
+                requires_verification_level = 'NONE',
+                updated_at = CURRENT_TIMESTAMP
+            WHERE slug IN (
+                'plumber', 'electrician',
+                'appliance-repair', 'large-appliance-repair', 'small-appliance-repair',
+                'computer-laptop-repair', 'phone-tablet-repair', 'tv-audio-repair',
+                'office-equipment-repair', 'appliance-repair-other',
+                'cleaning', 'apartment-cleaning', 'deep-cleaning',
+                'post-renovation-cleaning', 'house-cleaning', 'office-cleaning',
+                'window-cleaning', 'furniture-carpet-dry-cleaning', 'cleaning-other',
+                'freight-transport', 'loaders', 'moving-services',
+                'furniture-appliance-transport', 'waste-removal', 'snow-removal', 'freight-other'
+            );
+
+            UPDATE category SET sort_order = 10, weight = 10 WHERE slug = 'plumber';
+            UPDATE category SET sort_order = 20, weight = 20 WHERE slug = 'electrician';
+            UPDATE category SET sort_order = 30, weight = 30 WHERE slug = 'appliance-repair';
+            UPDATE category SET sort_order = 40, weight = 40 WHERE slug = 'cleaning';
+            UPDATE category SET sort_order = 50, weight = 50 WHERE slug = 'freight-transport';
+
+            INSERT INTO category_translation
+                (category_id, locale, name, description, created_at, updated_at)
+            SELECT category.id, 'uz', category.title, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM category
+            WHERE category.active = true AND category.public_visible = true
+            ON CONFLICT (category_id, locale) DO UPDATE SET
+                name = EXCLUDED.name,
+                updated_at = CURRENT_TIMESTAMP;
+
+            UPDATE category_translation translation SET name = mapping.name
+            FROM (VALUES
+                ('plumber', 'Santexnik'),
+                ('electrician', 'Elektrik'),
+                ('appliance-repair', 'Maishiy texnikani ta’mirlash'),
+                ('large-appliance-repair', 'Yirik maishiy texnikani ta’mirlash'),
+                ('small-appliance-repair', 'Kichik maishiy texnikani ta’mirlash'),
+                ('computer-laptop-repair', 'Kompyuter va noutbuklarni ta’mirlash'),
+                ('phone-tablet-repair', 'Telefon va planshetlarni ta’mirlash'),
+                ('tv-audio-repair', 'Televizor va audio texnikani ta’mirlash'),
+                ('office-equipment-repair', 'Ofis texnikasini ta’mirlash'),
+                ('appliance-repair-other', 'Boshqa texnika ta’miri'),
+                ('cleaning', 'Tozalash xizmatlari'),
+                ('apartment-cleaning', 'Kvartira tozalash'),
+                ('deep-cleaning', 'Umumiy tozalash'),
+                ('post-renovation-cleaning', 'Ta’mirdan keyingi tozalash'),
+                ('house-cleaning', 'Uy tozalash'),
+                ('office-cleaning', 'Ofis tozalash'),
+                ('window-cleaning', 'Deraza yuvish'),
+                ('furniture-carpet-dry-cleaning', 'Mebel va gilam kimyoviy tozalash'),
+                ('cleaning-other', 'Boshqa tozalash xizmatlari'),
+                ('freight-transport', 'Yuk tashish'),
+                ('loaders', 'Yukchilar'),
+                ('moving-services', 'Ko‘chirish xizmatlari'),
+                ('furniture-appliance-transport', 'Mebel va texnika tashish'),
+                ('waste-removal', 'Chiqindi olib chiqish'),
+                ('snow-removal', 'Qor olib chiqish'),
+                ('freight-other', 'Boshqa yuk tashish xizmatlari')
+            ) AS mapping(slug, name)
+            JOIN category ON category.slug = mapping.slug
+            WHERE translation.category_id = category.id AND translation.locale = 'uz';
+
+            INSERT INTO category_synonym
+                (category_id, locale, value, normalized_value, created_at, updated_at)
+            SELECT category.id, 'uz', translation.name, lower(translation.name), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM category
+            JOIN category_translation translation ON translation.category_id = category.id AND translation.locale = 'uz'
+            WHERE category.active = true AND category.public_visible = true
+            ON CONFLICT (category_id, locale, normalized_value) DO NOTHING;
+        ]]></sql>
+    </changeSet>
+</databaseChangeLog>

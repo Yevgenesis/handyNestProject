@@ -1,7 +1,7 @@
 package com.handynest.notification;
 
-import com.handynest.identity.User;
 import com.handynest.common.domain.PublicIdEntity;
+import com.handynest.identity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,79 +20,83 @@ import lombok.Getter;
 @Table(name = "notification")
 public class Notification extends PublicIdEntity {
 
-    @Getter
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Getter
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Getter
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+  @Getter
+  @Column(name = "source_event_id", nullable = false)
+  private Long sourceEventId;
 
-    @Getter
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 40)
-    private NotificationType type;
+  @Getter
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-    @Getter
-    @Column(nullable = false, length = 160)
-    private String title;
+  @Getter
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 40)
+  private NotificationType type;
 
-    @Getter
-    @Column(nullable = false, length = 1000)
-    private String body;
+  @Getter
+  @Column(nullable = false, length = 160)
+  private String title;
 
-    @Getter
-    @Column(name = "target_type", nullable = false, length = 80)
-    private String targetType;
+  @Getter
+  @Column(nullable = false, length = 1000)
+  private String body;
 
-    @Getter
-    @Column(name = "target_id", nullable = false, length = 80)
-    private String targetId;
+  @Getter
+  @Column(name = "target_type", nullable = false, length = 80)
+  private String targetType;
 
-    @Getter
-    @Column(name = "read_at")
-    private Instant readAt;
+  @Getter
+  @Column(name = "target_id", nullable = false, length = 80)
+  private String targetId;
 
-    @Getter
-    @Column(name = "delivered_at")
-    private Instant deliveredAt;
+  @Getter
+  @Column(name = "read_at")
+  private Instant readAt;
 
-    @Getter
-    @Column(name = "metadata_json", columnDefinition = "TEXT")
-    private String metadataJson;
+  @Getter
+  @Column(name = "delivered_at")
+  private Instant deliveredAt;
 
-    protected Notification() {
+  @Getter
+  @Column(name = "metadata_json", columnDefinition = "TEXT")
+  private String metadataJson;
+
+  protected Notification() {}
+
+  public Notification(
+      Long sourceEventId,
+      User user,
+      NotificationType type,
+      String title,
+      String body,
+      String targetType,
+      String targetId,
+      String metadataJson) {
+    this.sourceEventId = sourceEventId;
+    this.user = user;
+    this.type = type;
+    this.title = title;
+    this.body = body;
+    this.targetType = targetType;
+    this.targetId = targetId;
+    this.metadataJson = metadataJson;
+  }
+
+  public void markRead(Instant readAt) {
+    if (this.readAt == null) {
+      this.readAt = readAt;
     }
+  }
 
-    public Notification(
-            User user,
-            NotificationType type,
-            String title,
-            String body,
-            String targetType,
-            String targetId,
-            String metadataJson
-    ) {
-        this.user = user;
-        this.type = type;
-        this.title = title;
-        this.body = body;
-        this.targetType = targetType;
-        this.targetId = targetId;
-        this.metadataJson = metadataJson;
+  public void markDelivered(Instant deliveredAt) {
+    if (this.deliveredAt == null) {
+      this.deliveredAt = deliveredAt;
     }
-
-    public void markRead(Instant readAt) {
-        if (this.readAt == null) {
-            this.readAt = readAt;
-        }
-    }
-
-    public void markDelivered(Instant deliveredAt) {
-        if (this.deliveredAt == null) {
-            this.deliveredAt = deliveredAt;
-        }
-    }
+  }
 }

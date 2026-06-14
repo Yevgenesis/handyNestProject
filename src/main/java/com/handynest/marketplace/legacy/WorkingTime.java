@@ -21,12 +21,12 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Entity representing working time")
 public class WorkingTime {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "Unique identifier of the working time", example = "1")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Schema(description = "Unique identifier of the working time", example = "1")
+  private Long id;
 
-    @Column(name = "title", nullable = false)
-    @Schema(description = "Title of the working time", example = "9AM - 5PM")
-    private String title;
+  @Column(name = "title", nullable = false)
+  @Schema(description = "Title of the working time", example = "9AM - 5PM")
+  private String title;
 }

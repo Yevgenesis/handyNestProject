@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <!--
+      Full Uzbekistan city classifier for public marketplace geo selection.
+      The current official statistics report 120 cities; Tashkent keeps the publicId seeded by
+      the market-foundation changeset. Region and city names use Russian and Uzbek Latin forms.
+    -->
+    <changeSet id="2026-06-13-08-uzbekistan-all-regions-and-cities" author="codex">
+        <sql splitStatements="false"><![CDATA[
+            INSERT INTO region
+                (public_id, country_id, name_ru, name_kz, name_en, name_uz, slug,
+                 is_supported, created_at, updated_at)
+            SELECT seed.public_id, country.id, seed.name_ru, seed.name_ru, seed.name_en,
+                   seed.name_uz, seed.slug, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM country
+            CROSS JOIN (VALUES
+                ('06UZRG00000000000000000001', 'город Ташкент', 'Tashkent City', 'Toshkent shahri', 'tashkent-city'),
+                ('06UZRG00000000000000000002', 'Республика Каракалпакстан', 'Republic of Karakalpakstan', 'Qoraqalpog‘iston Respublikasi', 'karakalpakstan'),
+                ('06UZRG00000000000000000003', 'Андижанская область', 'Andijan Region', 'Andijon viloyati', 'andijan-region'),
+                ('06UZRG00000000000000000004', 'Бухарская область', 'Bukhara Region', 'Buxoro viloyati', 'bukhara-region'),
+                ('06UZRG00000000000000000005', 'Джизакская область', 'Jizzakh Region', 'Jizzax viloyati', 'jizzakh-region'),
+                ('06UZRG00000000000000000006', 'Кашкадарьинская область', 'Kashkadarya Region', 'Qashqadaryo viloyati', 'kashkadarya-region'),
+                ('06UZRG00000000000000000007', 'Навоийская область', 'Navoi Region', 'Navoiy viloyati', 'navoi-region'),
+                ('06UZRG00000000000000000008', 'Наманганская область', 'Namangan Region', 'Namangan viloyati', 'namangan-region'),
+                ('06UZRG00000000000000000009', 'Самаркандская область', 'Samarkand Region', 'Samarqand viloyati', 'samarkand-region'),
+                ('06UZRG00000000000000000010', 'Сурхандарьинская область', 'Surkhandarya Region', 'Surxondaryo viloyati', 'surkhandarya-region'),
+                ('06UZRG00000000000000000011', 'Сырдарьинская область', 'Syrdarya Region', 'Sirdaryo viloyati', 'syrdarya-region'),
+                ('06UZRG00000000000000000012', 'Ташкентская область', 'Tashkent Region', 'Toshkent viloyati', 'tashkent-region'),
+                ('06UZRG00000000000000000013', 'Ферганская область', 'Fergana Region', 'Farg‘ona viloyati', 'fergana-region'),
+                ('06UZRG00000000000000000014', 'Хорезмская область', 'Khorezm Region', 'Xorazm viloyati', 'khorezm-region')
+            ) AS seed(public_id, name_ru, name_en, name_uz, slug)
+            WHERE country.code = 'UZ'
+            ON CONFLICT (public_id) DO UPDATE SET
+                country_id = EXCLUDED.country_id,
+                name_ru = EXCLUDED.name_ru,
+                name_kz = EXCLUDED.name_kz,
+                name_en = EXCLUDED.name_en,
+                name_uz = EXCLUDED.name_uz,
+                slug = EXCLUDED.slug,
+                is_supported = true,
+                updated_at = CURRENT_TIMESTAMP;
+
+            INSERT INTO city
+                (public_id, country_id, region_id, name_ru, name_kz, name_en, name_uz, slug,
+                 latitude, longitude, is_supported, sort_order, created_at, updated_at)
+            SELECT seed.public_id, country.id, region.id, seed.name_ru, seed.name_ru,
+                   seed.name_en, seed.name_uz, seed.slug,
+                   CASE WHEN seed.slug = 'tashkent' THEN 41.3110810 ELSE NULL END,
+                   CASE WHEN seed.slug = 'tashkent' THEN 69.2405620 ELSE NULL END,
+                   true, seed.sort_order, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM country
+            CROSS JOIN (VALUES
+                ('06UZCT00000000000000000001', 'tashkent-city', 'Ташкент', 'Tashkent', 'Toshkent', 'tashkent', 10),
+                ('06UZCT00000000000000000002', 'karakalpakstan', 'Беруни', 'Beruniy', 'Beruniy', 'beruniy', 20),
+                ('06UZCT00000000000000000003', 'karakalpakstan', 'Бустан', 'Boʻston', 'Boʻston', 'boston', 30),
+                ('06UZCT00000000000000000004', 'karakalpakstan', 'Кунград', 'Qoʻngʻirot', 'Qoʻngʻirot', 'qongirot', 40),
+                ('06UZCT00000000000000000005', 'karakalpakstan', 'Мангит', 'Mangʻit', 'Mangʻit', 'mangit', 50),
+                ('06UZCT00000000000000000006', 'karakalpakstan', 'Муйнак', 'Moʻynoq', 'Moʻynoq', 'moynoq', 60),
+                ('06UZCT00000000000000000007', 'karakalpakstan', 'Нукус', 'Nukus', 'Nukus', 'nukus', 70),
+                ('06UZCT00000000000000000008', 'karakalpakstan', 'Тахиаташ', 'Taxiatosh', 'Taxiatosh', 'taxiatosh', 80),
+                ('06UZCT00000000000000000009', 'karakalpakstan', 'Турткуль', 'Toʻrtkoʻl', 'Toʻrtkoʻl', 'tortkol', 90),
+                ('06UZCT00000000000000000010', 'karakalpakstan', 'Халкабад', 'Xalqobod', 'Xalqobod', 'xalqobod', 100),
+                ('06UZCT00000000000000000011', 'karakalpakstan', 'Ходжейли', 'Xoʻjayli', 'Xoʻjayli', 'xojayli', 110),
+                ('06UZCT00000000000000000012', 'karakalpakstan', 'Чимбай', 'Chimboy', 'Chimboy', 'chimboy', 120),
+                ('06UZCT00000000000000000013', 'karakalpakstan', 'Шуманай', 'Shumanay', 'Shumanay', 'shumanay', 130),
+                ('06UZCT00000000000000000014', 'andijan-region', 'Андижан', 'Andijon', 'Andijon', 'andijon', 140),
+                ('06UZCT00000000000000000015', 'andijan-region', 'Асака', 'Asaka', 'Asaka', 'asaka', 150),
+                ('06UZCT00000000000000000016', 'andijan-region', 'Джалакудук', 'Jalaquduq', 'Jalaquduq', 'jalaquduq', 160),
+                ('06UZCT00000000000000000017', 'andijan-region', 'Карасу', 'Qorasuv', 'Qorasuv', 'qorasuv', 170),
+                ('06UZCT00000000000000000018', 'andijan-region', 'Кургантепа', 'Qoʻrgʻontepa', 'Qoʻrgʻontepa', 'qorgontepa', 180),
+                ('06UZCT00000000000000000019', 'andijan-region', 'Мархамат', 'Marhamat', 'Marhamat', 'marhamat', 190),
+                ('06UZCT00000000000000000020', 'andijan-region', 'Пайтуг', 'Poytugʻ', 'Poytugʻ', 'poytug', 200),
+                ('06UZCT00000000000000000021', 'andijan-region', 'Пахтаабад', 'Paxtaobod', 'Paxtaobod', 'paxtaobod', 210),
+                ('06UZCT00000000000000000022', 'andijan-region', 'Ханабад', 'Xonobod', 'Xonobod', 'xonobod', 220),
+                ('06UZCT00000000000000000023', 'andijan-region', 'Ходжаабад', 'Xoʻjaobod', 'Xoʻjaobod', 'xojaobod', 230),
+                ('06UZCT00000000000000000024', 'andijan-region', 'Шахрихан', 'Shahrixon', 'Shahrixon', 'shahrixon', 240),
+                ('06UZCT00000000000000000025', 'bukhara-region', 'Алат', 'Olot', 'Olot', 'olot', 250),
+                ('06UZCT00000000000000000026', 'bukhara-region', 'Бухара', 'Buxoro', 'Buxoro', 'buxoro', 260),
+                ('06UZCT00000000000000000027', 'bukhara-region', 'Вабкент', 'Vobkent', 'Vobkent', 'vobkent', 270),
+                ('06UZCT00000000000000000028', 'bukhara-region', 'Газли', 'Gazli', 'Gazli', 'gazli', 280),
+                ('06UZCT00000000000000000029', 'bukhara-region', 'Галаасия', 'Galaosiyo', 'Galaosiyo', 'galaosiyo', 290),
+                ('06UZCT00000000000000000030', 'bukhara-region', 'Гиждуван', 'Gʻijduvon', 'Gʻijduvon', 'gijduvon', 300),
+                ('06UZCT00000000000000000031', 'bukhara-region', 'Каган', 'Kogon', 'Kogon', 'kogon', 310),
+                ('06UZCT00000000000000000032', 'bukhara-region', 'Каракуль', 'Qorakoʻl', 'Qorakoʻl', 'qorakol', 320),
+                ('06UZCT00000000000000000033', 'bukhara-region', 'Караулбазар', 'Qorovulbozor', 'Qorovulbozor', 'qorovulbozor', 330),
+                ('06UZCT00000000000000000034', 'bukhara-region', 'Ромитан', 'Romitan', 'Romitan', 'romitan', 340),
+                ('06UZCT00000000000000000035', 'bukhara-region', 'Шафиркан', 'Shofirkon', 'Shofirkon', 'shofirkon', 350),
+                ('06UZCT00000000000000000036', 'jizzakh-region', 'Гагарин', 'Gagarin', 'Gagarin', 'gagarin', 360),
+                ('06UZCT00000000000000000037', 'jizzakh-region', 'Галляарал', 'Gʻallaorol', 'Gʻallaorol', 'gallaorol', 370),
+                ('06UZCT00000000000000000038', 'jizzakh-region', 'Даштабад', 'Dashtobod', 'Dashtobod', 'dashtobod', 380),
+                ('06UZCT00000000000000000039', 'jizzakh-region', 'Джизак', 'Jizzax', 'Jizzax', 'jizzax', 390),
+                ('06UZCT00000000000000000040', 'jizzakh-region', 'Дустлик', 'Doʻstlik', 'Doʻstlik', 'dostlik', 400),
+                ('06UZCT00000000000000000041', 'jizzakh-region', 'Пахтакор', 'Paxtakor', 'Paxtakor', 'paxtakor', 410),
+                ('06UZCT00000000000000000042', 'kashkadarya-region', 'Бешкент', 'Beshkent', 'Beshkent', 'beshkent', 420),
+                ('06UZCT00000000000000000043', 'kashkadarya-region', 'Гузар', 'G’uzor', 'G’uzor', 'guzor', 430),
+                ('06UZCT00000000000000000044', 'kashkadarya-region', 'Камаши', 'Qamashi', 'Qamashi', 'qamashi', 440),
+                ('06UZCT00000000000000000045', 'kashkadarya-region', 'Карши', 'Qarshi', 'Qarshi', 'qarshi', 450),
+                ('06UZCT00000000000000000046', 'kashkadarya-region', 'Касан', 'Koson', 'Koson', 'koson', 460),
+                ('06UZCT00000000000000000047', 'kashkadarya-region', 'Китаб', 'Kitob', 'Kitob', 'kitob', 470),
+                ('06UZCT00000000000000000048', 'kashkadarya-region', 'Мубарек', 'Muborak', 'Muborak', 'muborak', 480),
+                ('06UZCT00000000000000000049', 'kashkadarya-region', 'Талимарджан', 'Talimarjon', 'Talimarjon', 'talimarjon', 490),
+                ('06UZCT00000000000000000050', 'kashkadarya-region', 'Чиракчи', 'Chiroqchi', 'Chiroqchi', 'chiroqchi', 500),
+                ('06UZCT00000000000000000051', 'kashkadarya-region', 'Шахрисабз', 'Shahrisabz', 'Shahrisabz', 'shahrisabz', 510),
+                ('06UZCT00000000000000000052', 'kashkadarya-region', 'Яккабаг', 'Yakkabog’', 'Yakkabog’', 'yakkabog', 520),
+                ('06UZCT00000000000000000053', 'kashkadarya-region', 'Янги-Нишан', 'Yangi Nishon', 'Yangi Nishon', 'yangi-nishon', 530),
+                ('06UZCT00000000000000000054', 'navoi-region', 'Газган', 'G‘ozg‘on', 'G‘ozg‘on', 'gozgon', 540),
+                ('06UZCT00000000000000000055', 'navoi-region', 'Зарафшан', 'Zarafshon', 'Zarafshon', 'zarafshon', 550),
+                ('06UZCT00000000000000000056', 'navoi-region', 'Кызылтепа', 'Qiziltepa', 'Qiziltepa', 'qiziltepa', 560),
+                ('06UZCT00000000000000000057', 'navoi-region', 'Навои', 'Navoiy', 'Navoiy', 'navoiy', 570),
+                ('06UZCT00000000000000000058', 'navoi-region', 'Нурата', 'Nurota', 'Nurota', 'nurota', 580),
+                ('06UZCT00000000000000000059', 'navoi-region', 'Учкудук', 'Uchquduq', 'Uchquduq', 'uchquduq', 590),
+                ('06UZCT00000000000000000060', 'navoi-region', 'Янгирабад', 'Yangirabod', 'Yangirabod', 'yangirabod', 600),
+                ('06UZCT00000000000000000061', 'namangan-region', 'Касансай', 'Kosonsoy', 'Kosonsoy', 'kosonsoy', 610),
+                ('06UZCT00000000000000000062', 'namangan-region', 'Наманган', 'Namangan', 'Namangan', 'namangan', 620),
+                ('06UZCT00000000000000000063', 'namangan-region', 'Пап', 'Pop', 'Pop', 'pop', 630),
+                ('06UZCT00000000000000000064', 'namangan-region', 'Туракурган', 'To’raqo’rg’on', 'To’raqo’rg’on', 'toraqorgon', 640),
+                ('06UZCT00000000000000000065', 'namangan-region', 'Учкурган', 'Uchqo’rg’on', 'Uchqo’rg’on', 'uchqorgon', 650),
+                ('06UZCT00000000000000000066', 'namangan-region', 'Хаккулабад', 'Xaqqulobod', 'Xaqqulobod', 'xaqqulobod', 660),
+                ('06UZCT00000000000000000067', 'namangan-region', 'Чартак', 'Chortoq', 'Chortoq', 'chortoq', 670),
+                ('06UZCT00000000000000000068', 'namangan-region', 'Чуст', 'Chust', 'Chust', 'chust', 680),
+                ('06UZCT00000000000000000069', 'samarkand-region', 'Акташ', 'Oqtosh', 'Oqtosh', 'oqtosh', 690),
+                ('06UZCT00000000000000000070', 'samarkand-region', 'Булунгур', 'Bulungʻur', 'Bulungʻur', 'bulungur', 700),
+                ('06UZCT00000000000000000071', 'samarkand-region', 'Джамбай', 'Jomboy', 'Jomboy', 'jomboy', 710),
+                ('06UZCT00000000000000000072', 'samarkand-region', 'Джума', 'Juma', 'Juma', 'juma', 720),
+                ('06UZCT00000000000000000073', 'samarkand-region', 'Иштыхан', 'Ishtixon', 'Ishtixon', 'ishtixon', 730),
+                ('06UZCT00000000000000000074', 'samarkand-region', 'Каттакурган', 'Kattaqoʻrgʻon', 'Kattaqoʻrgʻon', 'kattaqorgon', 740),
+                ('06UZCT00000000000000000075', 'samarkand-region', 'Нурабад', 'Nurobod', 'Nurobod', 'nurobod', 750),
+                ('06UZCT00000000000000000076', 'samarkand-region', 'Пайарык', 'Payariq', 'Payariq', 'payariq', 760),
+                ('06UZCT00000000000000000077', 'samarkand-region', 'Самарканд', 'Samarqand', 'Samarqand', 'samarqand', 770),
+                ('06UZCT00000000000000000078', 'samarkand-region', 'Ургут', 'Urgut', 'Urgut', 'urgut', 780),
+                ('06UZCT00000000000000000079', 'samarkand-region', 'Челек', 'Chelak', 'Chelak', 'chelak', 790),
+                ('06UZCT00000000000000000080', 'surkhandarya-region', 'Байсун', 'Boysun', 'Boysun', 'boysun', 800),
+                ('06UZCT00000000000000000081', 'surkhandarya-region', 'Денау', 'Denov', 'Denov', 'denov', 810),
+                ('06UZCT00000000000000000082', 'surkhandarya-region', 'Джаркурган', 'Jarqoʻrgʻon', 'Jarqoʻrgʻon', 'jarqorgon', 820),
+                ('06UZCT00000000000000000083', 'surkhandarya-region', 'Кумкурган', 'Qumqoʻrgʻon', 'Qumqoʻrgʻon', 'qumqorgon', 830),
+                ('06UZCT00000000000000000084', 'surkhandarya-region', 'Термез', 'Termiz', 'Termiz', 'termiz', 840),
+                ('06UZCT00000000000000000085', 'surkhandarya-region', 'Шаргунь', 'Sharg’un', 'Sharg’un', 'shargun', 850),
+                ('06UZCT00000000000000000086', 'surkhandarya-region', 'Шерабад', 'Sherobod', 'Sherobod', 'sherobod', 860),
+                ('06UZCT00000000000000000087', 'surkhandarya-region', 'Шурчи', 'Shoʻrchi', 'Shoʻrchi', 'shorchi', 870),
+                ('06UZCT00000000000000000088', 'syrdarya-region', 'Бахт', 'Baxt', 'Baxt', 'baxt', 880),
+                ('06UZCT00000000000000000089', 'syrdarya-region', 'Гулистан', 'Guliston', 'Guliston', 'guliston', 890),
+                ('06UZCT00000000000000000090', 'syrdarya-region', 'Сырдарья', 'Sirdaryo', 'Sirdaryo', 'sirdaryo', 900),
+                ('06UZCT00000000000000000091', 'syrdarya-region', 'Ширин', 'Shirin', 'Shirin', 'shirin', 910),
+                ('06UZCT00000000000000000092', 'syrdarya-region', 'Янгиер', 'Yangiyer', 'Yangiyer', 'yangiyer', 920),
+                ('06UZCT00000000000000000093', 'tashkent-region', 'Аккурган', 'Oqqoʻrgʻon', 'Oqqoʻrgʻon', 'oqqorgon', 930),
+                ('06UZCT00000000000000000094', 'tashkent-region', 'Алмалык', 'Olmaliq', 'Olmaliq', 'olmaliq', 940),
+                ('06UZCT00000000000000000095', 'tashkent-region', 'Ангрен', 'Angren', 'Angren', 'angren', 950),
+                ('06UZCT00000000000000000096', 'tashkent-region', 'Ахангаран', 'Ohangaron', 'Ohangaron', 'ohangaron', 960),
+                ('06UZCT00000000000000000097', 'tashkent-region', 'Бекабад', 'Bekobod', 'Bekobod', 'bekobod', 970),
+                ('06UZCT00000000000000000098', 'tashkent-region', 'Бука', 'Boʻka', 'Boʻka', 'boka', 980),
+                ('06UZCT00000000000000000099', 'tashkent-region', 'Газалкент', 'Gʻazalkent', 'Gʻazalkent', 'gazalkent', 990),
+                ('06UZCT00000000000000000100', 'tashkent-region', 'Дустабад', 'Doʻstobod', 'Doʻstobod', 'dostobod', 1000),
+                ('06UZCT00000000000000000101', 'tashkent-region', 'Келес', 'Keles', 'Keles', 'keles', 1010),
+                ('06UZCT00000000000000000102', 'tashkent-region', 'Нурафшон', 'Nurafshon', 'Nurafshon', 'nurafshon', 1020),
+                ('06UZCT00000000000000000103', 'tashkent-region', 'Паркент', 'Parkent', 'Parkent', 'parkent', 1030),
+                ('06UZCT00000000000000000104', 'tashkent-region', 'Пскент', 'Piskent', 'Piskent', 'piskent', 1040),
+                ('06UZCT00000000000000000105', 'tashkent-region', 'Чиназ', 'Chinoz', 'Chinoz', 'chinoz', 1050),
+                ('06UZCT00000000000000000106', 'tashkent-region', 'Чирчик', 'Chirchiq', 'Chirchiq', 'chirchiq', 1060),
+                ('06UZCT00000000000000000107', 'tashkent-region', 'Янгиабад', 'Yangiobod', 'Yangiobod', 'yangiobod', 1070),
+                ('06UZCT00000000000000000108', 'tashkent-region', 'Янгиюль', 'Yangiyoʻl', 'Yangiyoʻl', 'yangiyol', 1080),
+                ('06UZCT00000000000000000109', 'fergana-region', 'Бешарык', 'Beshariq', 'Beshariq', 'beshariq', 1090),
+                ('06UZCT00000000000000000110', 'fergana-region', 'Коканд', 'Qoʻqon', 'Qoʻqon', 'qoqon', 1100),
+                ('06UZCT00000000000000000111', 'fergana-region', 'Кува', 'Quva', 'Quva', 'quva', 1110),
+                ('06UZCT00000000000000000112', 'fergana-region', 'Кувасай', 'Quvasoy', 'Quvasoy', 'quvasoy', 1120),
+                ('06UZCT00000000000000000113', 'fergana-region', 'Маргилан', 'Margʻilon', 'Margʻilon', 'margilon', 1130),
+                ('06UZCT00000000000000000114', 'fergana-region', 'Риштан', 'Rishton', 'Rishton', 'rishton', 1140),
+                ('06UZCT00000000000000000115', 'fergana-region', 'Тинчлик', 'Tinchlik', 'Tinchlik', 'tinchlik', 1150),
+                ('06UZCT00000000000000000116', 'fergana-region', 'Фергана', 'Fargʻona', 'Fargʻona', 'fargona', 1160),
+                ('06UZCT00000000000000000117', 'fergana-region', 'Яйпан', 'Yaypan', 'Yaypan', 'yaypan', 1170),
+                ('06UZCT00000000000000000118', 'khorezm-region', 'Питнак', 'Pitnak', 'Pitnak', 'pitnak', 1180),
+                ('06UZCT00000000000000000119', 'khorezm-region', 'Ургенч', 'Urganch', 'Urganch', 'urganch', 1190),
+                ('06UZCT00000000000000000120', 'khorezm-region', 'Хива', 'Xiva', 'Xiva', 'xiva', 1200)
+            ) AS seed(public_id, region_slug, name_ru, name_en, name_uz, slug, sort_order)
+            JOIN region ON region.country_id = country.id AND region.slug = seed.region_slug
+            WHERE country.code = 'UZ'
+            ON CONFLICT (public_id) DO UPDATE SET
+                country_id = EXCLUDED.country_id,
+                region_id = EXCLUDED.region_id,
+                name_ru = EXCLUDED.name_ru,
+                name_kz = EXCLUDED.name_kz,
+                name_en = EXCLUDED.name_en,
+                name_uz = EXCLUDED.name_uz,
+                slug = EXCLUDED.slug,
+                latitude = COALESCE(EXCLUDED.latitude, city.latitude),
+                longitude = COALESCE(EXCLUDED.longitude, city.longitude),
+                is_supported = true,
+                sort_order = EXCLUDED.sort_order,
+                updated_at = CURRENT_TIMESTAMP;
+
+            SELECT setval(pg_get_serial_sequence('region', 'id'), COALESCE((SELECT MAX(id) FROM region), 1), true);
+            SELECT setval(pg_get_serial_sequence('city', 'id'), COALESCE((SELECT MAX(id) FROM city), 1), true);
+        ]]></sql>
+    </changeSet>
+</databaseChangeLog>

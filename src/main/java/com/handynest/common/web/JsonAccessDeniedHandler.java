@@ -14,20 +14,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JsonAccessDeniedHandler implements AccessDeniedHandler {
 
-    private final ApiSecurityErrorWriter errorWriter;
+  private final ApiSecurityErrorWriter errorWriter;
 
-    @Override
-    public void handle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AccessDeniedException accessDeniedException
-    ) throws IOException {
-        errorWriter.write(
-                request,
-                response,
-                HttpStatus.FORBIDDEN,
-                ApiErrorCode.ACCESS_DENIED,
-                "Access denied"
-        );
-    }
+  @Override
+  public void handle(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      AccessDeniedException accessDeniedException)
+      throws IOException {
+    errorWriter.write(
+        request, response, HttpStatus.FORBIDDEN, ApiErrorCode.ACCESS_DENIED, "Access denied");
+  }
 }

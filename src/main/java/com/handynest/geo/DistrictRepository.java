@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DistrictRepository extends JpaRepository<District, Long> {
 
-    List<District> findAllByCityPublicIdOrderByNameRuAsc(String cityPublicId);
+  List<District> findAllByCityPublicIdAndSupportedTrueOrderByNameRuAsc(String cityPublicId);
 
-    Optional<District> findByPublicId(String publicId);
+  Optional<District> findByPublicId(String publicId);
 }

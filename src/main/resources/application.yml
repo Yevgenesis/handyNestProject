@@ -7,6 +7,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     generate-ddl: false
+    open-in-view: false
     hibernate:
       ddl-auto: validate
     properties:
@@ -18,6 +19,7 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.xml
+    contexts: ${HANDYNEST_LIQUIBASE_CONTEXTS:}
 
 springdoc:
   packages-to-scan:
@@ -65,7 +67,22 @@ app:
   notifications:
     outbox-worker:
       fixed-delay: ${HANDYNEST_OUTBOX_WORKER_FIXED_DELAY:10s}
+      initial-delay: ${HANDYNEST_OUTBOX_WORKER_INITIAL_DELAY:10s}
       batch-size: ${HANDYNEST_OUTBOX_WORKER_BATCH_SIZE:50}
+  risk:
+    customer:
+      low-severity-points: ${HANDYNEST_CUSTOMER_RISK_LOW_POINTS:1.00}
+      medium-severity-points: ${HANDYNEST_CUSTOMER_RISK_MEDIUM_POINTS:5.00}
+      high-severity-points: ${HANDYNEST_CUSTOMER_RISK_HIGH_POINTS:15.00}
+      critical-severity-points: ${HANDYNEST_CUSTOMER_RISK_CRITICAL_POINTS:30.00}
+      confirmed-complaint-points: ${HANDYNEST_CUSTOMER_RISK_COMPLAINT_POINTS:10.00}
+      moderation-threshold: ${HANDYNEST_CUSTOMER_RISK_MODERATION_THRESHOLD:30.00}
+      task-creation-block-threshold: ${HANDYNEST_CUSTOMER_RISK_TASK_BLOCK_THRESHOLD:60.00}
+      high-value-task-threshold: ${HANDYNEST_HIGH_VALUE_TASK_THRESHOLD:5000000.00}
+      max-active-tasks: ${HANDYNEST_MAX_ACTIVE_TASKS:10}
+      cancellation-event-threshold: ${HANDYNEST_CANCELLATION_EVENT_THRESHOLD:3}
+      high-cancellation-event-threshold: ${HANDYNEST_HIGH_CANCELLATION_EVENT_THRESHOLD:5}
+      cancellation-window: ${HANDYNEST_CANCELLATION_WINDOW:30d}
   storage:
     default-provider: ${HANDYNEST_STORAGE_PROVIDER:MINIO}
     public-bucket: ${HANDYNEST_STORAGE_PUBLIC_BUCKET:handynest-public}
@@ -88,6 +105,15 @@ app:
       path: ${HANDYNEST_REFRESH_COOKIE_PATH:/api/v1/auth}
       same-site: ${HANDYNEST_REFRESH_COOKIE_SAME_SITE:Lax}
       secure: ${HANDYNEST_REFRESH_COOKIE_SECURE:false}
+    otp:
+      enabled: ${HANDYNEST_OTP_ENABLED:true}
+      ttl: ${HANDYNEST_OTP_TTL:5m}
+      max-attempts: ${HANDYNEST_OTP_MAX_ATTEMPTS:5}
+      resend-cooldown: ${HANDYNEST_OTP_RESEND_COOLDOWN:60s}
+    email-verification:
+      enabled: ${HANDYNEST_EMAIL_VERIFICATION_ENABLED:false}
+      ttl: ${HANDYNEST_EMAIL_VERIFICATION_TTL:24h}
+      resend-cooldown: ${HANDYNEST_EMAIL_VERIFICATION_RESEND_COOLDOWN:1h}
     rate-limit:
       enabled: ${HANDYNEST_RATE_LIMIT_ENABLED:true}
       cleanup-interval: ${HANDYNEST_RATE_LIMIT_CLEANUP_INTERVAL:10m}
@@ -101,6 +127,15 @@ app:
       refresh:
         capacity: ${HANDYNEST_RATE_LIMIT_REFRESH_CAPACITY:60}
         window: ${HANDYNEST_RATE_LIMIT_REFRESH_WINDOW:1m}
+      otp-request:
+        capacity: ${HANDYNEST_RATE_LIMIT_OTP_REQUEST_CAPACITY:3}
+        window: ${HANDYNEST_RATE_LIMIT_OTP_REQUEST_WINDOW:10m}
+      otp-verify:
+        capacity: ${HANDYNEST_RATE_LIMIT_OTP_VERIFY_CAPACITY:5}
+        window: ${HANDYNEST_RATE_LIMIT_OTP_VERIFY_WINDOW:10m}
+      email-verification-request:
+        capacity: ${HANDYNEST_RATE_LIMIT_EMAIL_VERIFICATION_REQUEST_CAPACITY:3}
+        window: ${HANDYNEST_RATE_LIMIT_EMAIL_VERIFICATION_REQUEST_WINDOW:1h}
 
 ---
 spring:
@@ -111,6 +146,8 @@ spring:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:${POSTGRES_PORT:5432}/${POSTGRES_DB:handyDB}}
     username: ${SPRING_DATASOURCE_USERNAME:${POSTGRES_USER:postgres}}
     password: ${SPRING_DATASOURCE_PASSWORD:${POSTGRES_PASSWORD}}
+  liquibase:
+    contexts: ${HANDYNEST_LIQUIBASE_CONTEXTS:dev}
 
 ---
 spring:
@@ -121,3 +158,5 @@ spring:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
+  liquibase:
+    contexts: ${HANDYNEST_LIQUIBASE_CONTEXTS:dev}

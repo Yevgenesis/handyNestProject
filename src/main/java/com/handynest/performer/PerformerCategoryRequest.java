@@ -7,21 +7,9 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
 public record PerformerCategoryRequest(
-        @NotBlank
-        String categoryId,
-
-        @Min(0)
-        Integer experienceYears,
-
-        @DecimalMin("0.00")
-        BigDecimal priceFrom,
-
-        @DecimalMin("0.00")
-        BigDecimal priceTo,
-
-        @Size(min = 3, max = 3)
-        String currency,
-
-        Boolean primary
-) {
-}
+    @NotBlank String categoryId,
+    @Min(0) Integer experienceYears,
+    @DecimalMin("0.00") BigDecimal priceFrom,
+    @DecimalMin("0.00") BigDecimal priceTo,
+    @Size(min = 3, max = 3) String currency,
+    Boolean primary) {}

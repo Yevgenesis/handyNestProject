@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public class UnauthorizedBusinessException extends BusinessException {
 
-    public UnauthorizedBusinessException(String message) {
-        super(ApiErrorCode.UNAUTHORIZED, HttpStatus.UNAUTHORIZED, message);
-    }
+  public UnauthorizedBusinessException(String message) {
+    super(ApiErrorCode.UNAUTHORIZED, HttpStatus.UNAUTHORIZED, message);
+  }
 }

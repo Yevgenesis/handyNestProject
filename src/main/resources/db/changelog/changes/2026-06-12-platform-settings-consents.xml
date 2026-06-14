@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-12-01-platform-setting" author="codex">
+        <createTable tableName="platform_setting">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_platform_setting" nullable="false"/>
+            </column>
+            <column name="setting_key" type="VARCHAR(120)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_platform_setting_key"/>
+            </column>
+            <column name="setting_value" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <sql splitStatements="false"><![CDATA[
+            INSERT INTO platform_setting
+                (setting_key, setting_value, value_type, description, created_at, updated_at)
+            VALUES
+                ('feature.phone-verification.enabled', 'true', 'BOOLEAN', 'Allow phone OTP verification', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('feature.email-verification.enabled', 'false', 'BOOLEAN', 'Allow optional email verification', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('feature.payments.enabled', 'false', 'BOOLEAN', 'Allow on-platform payments', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('feature.escrow.enabled', 'false', 'BOOLEAN', 'Allow escrow payment mode', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('feature.public-tasks.enabled', 'true', 'BOOLEAN', 'Expose public task search and detail', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('feature.customer-rating.enabled', 'true', 'BOOLEAN', 'Allow performer feedback about customers', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('feature.performer-complaints.enabled', 'true', 'BOOLEAN', 'Allow performers to complain about customers', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('feature.customer-risk-blocking.enabled', 'true', 'BOOLEAN', 'Enforce customer risk blocking', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('marketplace.free-offer-limit-monthly', '10', 'INTEGER', 'Monthly free offer limit per performer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('marketplace.milestone-threshold-kzt', '500000.00', 'DECIMAL', 'Minimum deal value for milestones in KZT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('marketplace.task-expiration-days', '30', 'INTEGER', 'Default task expiration period in days', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('risk.max-active-tasks', '10', 'INTEGER', 'Maximum active tasks per customer', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('legal.terms.version', '1.0', 'STRING', 'Current Terms of Service version', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('legal.privacy-policy.version', '1.0', 'STRING', 'Current Privacy Policy version', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('legal.personal-data-processing.version', '1.0', 'STRING', 'Current personal data processing consent version', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('legal.performer-rules.version', '1.0', 'STRING', 'Current performer rules version', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('legal.customer-rules.version', '1.0', 'STRING', 'Current customer rules version', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('legal.prohibited-services-policy.version', '1.0', 'STRING', 'Current prohibited services policy version', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+                ('legal.payment-policy.version', '1.0', 'STRING', 'Current payment policy version', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+        ]]></sql>
+    </changeSet>
+
+    <changeSet id="2026-06-12-02-user-consent" author="codex">
+        <createTable tableName="user_consent">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_user_consent" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_user_consent_user"
+                             referencedTableName="handy_user" referencedColumnNames="id"/>
+            </column>
+            <column name="consent_type" type="VARCHAR(48)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="document_version" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accepted_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip_address" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_agent" type="VARCHAR(500)"/>
+        </createTable>
+        <addUniqueConstraint tableName="user_consent"
+                             columnNames="user_id,consent_type,document_version"
+                             constraintName="uk_user_consent_version"/>
+        <createIndex tableName="user_consent" indexName="idx_user_consent_user_accepted">
+            <column name="user_id"/>
+            <column name="accepted_at" descending="true"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

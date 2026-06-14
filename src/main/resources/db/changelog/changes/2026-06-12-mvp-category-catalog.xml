@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-12-04-approved-mvp-category-catalog" author="codex">
+        <comment>Replace public legacy catalog with the approved section 10.10 MVP tree without deleting referenced rows.</comment>
+        <sql splitStatements="false"><![CDATA[
+            UPDATE category
+            SET active = false,
+                public_visible = false,
+                launch_phase = CASE
+                    WHEN title IN ('Строительство', 'Сиделка') THEN 'PHASE_2'
+                    ELSE 'PROHIBITED_FOR_MVP'
+                END,
+                updated_at = CURRENT_TIMESTAMP;
+
+            UPDATE category SET title = 'Ремонт и отделка', slug = 'repair-finishing' WHERE id = 1;
+            UPDATE category SET title = 'Клининг', slug = 'cleaning' WHERE id = 3;
+            UPDATE category SET title = 'Грузоперевозки', slug = 'freight-transport' WHERE id = 4;
+            UPDATE category SET title = 'Курьерские услуги', slug = 'courier-services' WHERE id = 5;
+            UPDATE category SET title = 'Обучение', slug = 'education' WHERE id = 7;
+            UPDATE category SET title = 'Дизайн', slug = 'design' WHERE id = 8;
+            UPDATE category SET title = 'IT и разработка', slug = 'it-development' WHERE id = 9;
+            UPDATE category SET title = 'Фото и видео', slug = 'photo-video' WHERE id = 11;
+
+            CREATE TEMP TABLE mvp_category_seed (
+                seq INT PRIMARY KEY,
+                parent_slug VARCHAR(120),
+                title VARCHAR(255) NOT NULL,
+                slug VARCHAR(120) NOT NULL UNIQUE,
+                sort_order INT NOT NULL
+            ) ON COMMIT DROP;
+
+            INSERT INTO mvp_category_seed (seq, parent_slug, title, slug, sort_order) VALUES
+                (1, NULL, 'Курьерские услуги', 'courier-services', 10),
+                (2, 'courier-services', 'Курьерская доставка', 'courier-delivery', 10),
+                (3, 'courier-services', 'Доставка продуктов', 'grocery-delivery', 20),
+                (4, 'courier-services', 'Доставка документов', 'document-delivery', 30),
+                (5, 'courier-services', 'Доставка товаров', 'goods-delivery', 40),
+                (6, 'courier-services', 'Доставка цветов и подарков', 'flowers-gifts-delivery', 50),
+                (7, 'courier-services', 'Личные поручения', 'personal-errands', 60),
+                (8, 'courier-services', 'Другое', 'courier-other', 70),
+                (9, NULL, 'Домашний мастер', 'home-handyman', 20),
+                (10, 'home-handyman', 'Мелкий бытовой ремонт', 'minor-home-repair', 10),
+                (11, 'home-handyman', 'Сантехник', 'plumber', 20),
+                (12, 'home-handyman', 'Электрик', 'electrician', 30),
+                (13, 'home-handyman', 'Установка полок, карнизов, зеркал', 'shelves-curtains-mirrors', 40),
+                (14, 'home-handyman', 'Установка замков', 'lock-installation', 50),
+                (15, 'home-handyman', 'Сверление отверстий', 'drilling', 60),
+                (16, 'home-handyman', 'Другое', 'home-handyman-other', 70),
+                (17, NULL, 'Установка бытовой техники', 'appliance-installation', 30),
+                (18, 'appliance-installation', 'Стиральные машины', 'install-washing-machines', 10),
+                (19, 'appliance-installation', 'Посудомоечные машины', 'install-dishwashers', 20),
+                (20, 'appliance-installation', 'Вытяжки', 'install-hoods', 30),
+                (21, 'appliance-installation', 'Кондиционеры', 'install-air-conditioners', 40),
+                (22, 'appliance-installation', 'Телевизоры', 'install-televisions', 50),
+                (23, 'appliance-installation', 'Бойлеры', 'install-boilers', 60),
+                (24, 'appliance-installation', 'Электроплиты и духовки', 'install-electric-stoves-ovens', 70),
+                (25, 'appliance-installation', 'Другое', 'appliance-installation-other', 80),
+                (26, NULL, 'Ремонт техники', 'appliance-repair', 40),
+                (27, 'appliance-repair', 'Крупная бытовая техника', 'large-appliance-repair', 10),
+                (28, 'appliance-repair', 'Мелкая бытовая техника', 'small-appliance-repair', 20),
+                (29, 'appliance-repair', 'Компьютеры и ноутбуки', 'computer-laptop-repair', 30),
+                (30, 'appliance-repair', 'Телефоны и планшеты', 'phone-tablet-repair', 40),
+                (31, 'appliance-repair', 'Телевизоры и аудио', 'tv-audio-repair', 50),
+                (32, 'appliance-repair', 'Оргтехника', 'office-equipment-repair', 60),
+                (33, 'appliance-repair', 'Другое', 'appliance-repair-other', 70),
+                (34, NULL, 'Мебельные работы', 'furniture-services', 50),
+                (35, 'furniture-services', 'Сборка мебели', 'furniture-assembly', 10),
+                (36, 'furniture-services', 'Ремонт мебели', 'furniture-repair', 20),
+                (37, 'furniture-services', 'Изготовление мебели', 'furniture-manufacturing', 30),
+                (38, 'furniture-services', 'Перетяжка мебели', 'furniture-upholstery', 40),
+                (39, 'furniture-services', 'Сборка кухни', 'kitchen-assembly', 50),
+                (40, 'furniture-services', 'Другое', 'furniture-other', 60),
+                (41, NULL, 'Клининг', 'cleaning', 60),
+                (42, 'cleaning', 'Уборка квартир', 'apartment-cleaning', 10),
+                (43, 'cleaning', 'Генеральная уборка', 'deep-cleaning', 20),
+                (44, 'cleaning', 'Уборка после ремонта', 'post-renovation-cleaning', 30),
+                (45, 'cleaning', 'Уборка домов', 'house-cleaning', 40),
+                (46, 'cleaning', 'Уборка офисов', 'office-cleaning', 50),
+                (47, 'cleaning', 'Мойка окон', 'window-cleaning', 60),
+                (48, 'cleaning', 'Химчистка мебели и ковров', 'furniture-carpet-dry-cleaning', 70),
+                (49, 'cleaning', 'Другое', 'cleaning-other', 80),
+                (50, NULL, 'Грузоперевозки', 'freight-transport', 70),
+                (51, 'freight-transport', 'Грузчики', 'loaders', 10),
+                (52, 'freight-transport', 'Переезд', 'moving-services', 20),
+                (53, 'freight-transport', 'Перевозка мебели и техники', 'furniture-appliance-transport', 30),
+                (54, 'freight-transport', 'Вывоз мусора', 'waste-removal', 40),
+                (55, 'freight-transport', 'Вывоз снега', 'snow-removal', 50),
+                (56, 'freight-transport', 'Другое', 'freight-other', 60),
+                (57, NULL, 'Ремонт и отделка', 'repair-finishing', 80),
+                (58, 'repair-finishing', 'Косметический ремонт', 'cosmetic-renovation', 10),
+                (59, 'repair-finishing', 'Частичный ремонт', 'partial-renovation', 20),
+                (60, 'repair-finishing', 'Плиточные работы', 'tiling', 30),
+                (61, 'repair-finishing', 'Малярные работы', 'painting', 40),
+                (62, 'repair-finishing', 'Штукатурка и шпаклёвка', 'plaster-putty', 50),
+                (63, 'repair-finishing', 'Поклейка обоев', 'wallpapering', 60),
+                (64, 'repair-finishing', 'Напольные работы', 'flooring', 70),
+                (65, 'repair-finishing', 'Двери и окна', 'doors-windows', 80),
+                (66, 'repair-finishing', 'Демонтаж', 'demolition', 90),
+                (67, 'repair-finishing', 'Другое', 'repair-finishing-other', 100),
+                (68, NULL, 'Бытовые услуги', 'household-services', 90),
+                (69, 'household-services', 'Швея и ремонт одежды', 'tailoring-clothing-repair', 10),
+                (70, 'household-services', 'Ремонт обуви', 'shoe-repair', 20),
+                (71, 'household-services', 'Стирка и глажка', 'laundry-ironing', 30),
+                (72, 'household-services', 'Сад и огород', 'garden-services', 40),
+                (73, 'household-services', 'Ремонт сумок', 'bag-repair', 50),
+                (74, 'household-services', 'Ремонт велосипедов', 'bicycle-repair', 60),
+                (75, 'household-services', 'Заточка инструментов', 'tool-sharpening', 70),
+                (76, 'household-services', 'Другое', 'household-other', 80),
+                (77, NULL, 'Дизайн', 'design', 100),
+                (78, 'design', 'Логотипы', 'logo-design', 10),
+                (79, 'design', 'UX/UI', 'ux-ui-design', 20),
+                (80, 'design', 'Дизайн сайта', 'website-design', 30),
+                (81, 'design', 'Полиграфия', 'print-design', 40),
+                (82, 'design', 'Баннеры', 'banner-design', 50),
+                (83, 'design', 'Иллюстрации', 'illustrations', 60),
+                (84, 'design', '3D дизайн', '3d-design', 70),
+                (85, 'design', 'Другое', 'design-other', 80),
+                (86, NULL, 'Работа в интернете', 'online-work', 110),
+                (87, 'online-work', 'Копирайтинг', 'copywriting', 10),
+                (88, 'online-work', 'Рерайтинг', 'rewriting', 20),
+                (89, 'online-work', 'Ввод данных', 'data-entry', 30),
+                (90, 'online-work', 'Сбор информации', 'information-research', 40),
+                (91, 'online-work', 'Презентации', 'presentations', 50),
+                (92, 'online-work', 'Наполнение сайтов', 'website-content', 60),
+                (93, 'online-work', 'Расшифровка аудио/видео', 'audio-video-transcription', 70),
+                (94, 'online-work', 'Другое', 'online-work-other', 80),
+                (95, NULL, 'IT и разработка', 'it-development', 120),
+                (96, 'it-development', 'Создание сайтов', 'website-development', 10),
+                (97, 'it-development', 'Доработка сайта', 'website-improvements', 20),
+                (98, 'it-development', 'Landing page', 'landing-page', 30),
+                (99, 'it-development', 'Разработка ПО', 'software-development', 40),
+                (100, 'it-development', 'Мобильные приложения', 'mobile-app-development', 50),
+                (101, 'it-development', 'QA тестирование', 'qa-testing', 60),
+                (102, 'it-development', 'Администрирование серверов', 'server-administration', 70),
+                (103, 'it-development', '1С', 'one-c-services', 80),
+                (104, 'it-development', 'Другое', 'it-development-other', 90),
+                (105, NULL, 'Реклама и маркетинг', 'marketing-advertising', 130),
+                (106, 'marketing-advertising', 'SMM', 'smm', 10),
+                (107, 'marketing-advertising', 'Контекстная реклама', 'contextual-advertising', 20),
+                (108, 'marketing-advertising', 'SEO', 'seo', 30),
+                (109, 'marketing-advertising', 'Email-маркетинг', 'email-marketing', 40),
+                (110, 'marketing-advertising', 'Наружная реклама', 'outdoor-advertising', 50),
+                (111, 'marketing-advertising', 'Промоутеры', 'promoters', 60),
+                (112, 'marketing-advertising', 'Тайный покупатель', 'mystery-shopping', 70),
+                (113, 'marketing-advertising', 'Другое', 'marketing-other', 80),
+                (114, NULL, 'Фото и видео', 'photo-video', 140),
+                (115, 'photo-video', 'Фотограф', 'photographer', 10),
+                (116, 'photo-video', 'Видеооператор', 'videographer', 20),
+                (117, 'photo-video', 'Монтаж видео', 'video-editing', 30),
+                (118, 'photo-video', 'Обработка фотографий', 'photo-editing', 40),
+                (119, 'photo-video', 'Предметная съёмка', 'product-photography', 50),
+                (120, 'photo-video', 'Свадебная съёмка', 'wedding-photography', 60),
+                (121, 'photo-video', 'Аэросъёмка', 'aerial-photography', 70),
+                (122, 'photo-video', 'Другое', 'photo-video-other', 80),
+                (123, NULL, 'Услуги для животных', 'pet-services', 150),
+                (124, 'pet-services', 'Выгул собак', 'dog-walking', 10),
+                (125, 'pet-services', 'Передержка', 'pet-boarding', 20),
+                (126, 'pet-services', 'Стрижка животных', 'pet-grooming', 30),
+                (127, 'pet-services', 'Мытьё животных', 'pet-washing', 40),
+                (128, 'pet-services', 'Перевозка животных', 'pet-transport', 50),
+                (129, 'pet-services', 'Аквариумы', 'aquarium-services', 60),
+                (130, 'pet-services', 'Другое', 'pet-services-other', 70),
+                (131, NULL, 'Обучение', 'education', 160),
+                (132, 'education', 'Репетиторы по предметам', 'subject-tutoring', 10),
+                (133, 'education', 'Иностранные языки', 'foreign-languages', 20),
+                (134, 'education', 'Программирование', 'programming-lessons', 30),
+                (135, 'education', 'Музыка', 'music-lessons', 40),
+                (136, 'education', 'Подготовка к школе', 'school-preparation', 50),
+                (137, 'education', 'ПДД и автоинструкторы', 'driving-lessons', 60),
+                (138, 'education', 'Другое', 'education-other', 70),
+                (139, NULL, 'Мероприятия', 'events', 170),
+                (140, 'events', 'Ведущий', 'event-host', 10),
+                (141, 'events', 'Аниматоры', 'animators', 20),
+                (142, 'events', 'DJ и музыка', 'dj-music', 30),
+                (143, 'events', 'Фото/видео на мероприятие', 'event-photo-video', 40),
+                (144, 'events', 'Кейтеринг', 'catering', 50),
+                (145, 'events', 'Оформление', 'event-decoration', 60),
+                (146, 'events', 'Персонал', 'event-staff', 70),
+                (147, 'events', 'Другое', 'events-other', 80),
+                (148, NULL, 'Автоуслуги', 'auto-services', 180),
+                (149, 'auto-services', 'Помощь в дороге', 'roadside-assistance', 10),
+                (150, 'auto-services', 'Эвакуатор', 'tow-truck', 20),
+                (151, 'auto-services', 'Замена колёс', 'wheel-replacement', 30),
+                (152, 'auto-services', 'Запуск двигателя', 'engine-start', 40),
+                (153, 'auto-services', 'Шиномонтаж', 'tire-service', 50),
+                (154, 'auto-services', 'Автоэлектрика', 'auto-electrics', 60),
+                (155, 'auto-services', 'Химчистка салона', 'car-interior-cleaning', 70),
+                (156, 'auto-services', 'Другое', 'auto-services-other', 80);
+
+            INSERT INTO category (
+                public_id, title, parent_id, weight, slug, icon, risk_level, service_mode,
+                launch_phase, active, public_visible, sort_order, requires_verification_level,
+                requires_manual_approval, requires_license, allows_remote, allows_onsite,
+                allows_escrow, allows_cash, allows_milestones, allows_attachments,
+                allows_contact_reveal, created_at, updated_at, version
+            )
+            SELECT
+                '06CAT' || LPAD(seed.seq::text, 21, '0'), seed.title, NULL, seed.sort_order,
+                seed.slug, NULL, 'LOW', 'HYBRID', 'MVP', true, true, seed.sort_order, 'NONE',
+                false, false, true, true, true, true, false, true, false,
+                CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0
+            FROM mvp_category_seed seed
+            WHERE seed.parent_slug IS NULL
+            ON CONFLICT (slug) DO UPDATE SET
+                title = EXCLUDED.title,
+                active = true,
+                public_visible = true,
+                launch_phase = 'MVP',
+                sort_order = EXCLUDED.sort_order,
+                weight = EXCLUDED.weight,
+                updated_at = CURRENT_TIMESTAMP;
+
+            INSERT INTO category (
+                public_id, title, parent_id, weight, slug, icon, risk_level, service_mode,
+                launch_phase, active, public_visible, sort_order, requires_verification_level,
+                requires_manual_approval, requires_license, allows_remote, allows_onsite,
+                allows_escrow, allows_cash, allows_milestones, allows_attachments,
+                allows_contact_reveal, created_at, updated_at, version
+            )
+            SELECT
+                '06CAT' || LPAD(seed.seq::text, 21, '0'), seed.title, parent.id, seed.sort_order,
+                seed.slug, NULL, 'LOW', 'HYBRID', 'MVP', true, true, seed.sort_order, 'NONE',
+                false, false, true, true, true, true, false, true, false,
+                CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0
+            FROM mvp_category_seed seed
+            JOIN category parent ON parent.slug = seed.parent_slug
+            WHERE seed.parent_slug IS NOT NULL
+            ON CONFLICT (slug) DO UPDATE SET
+                title = EXCLUDED.title,
+                parent_id = EXCLUDED.parent_id,
+                active = true,
+                public_visible = true,
+                launch_phase = 'MVP',
+                sort_order = EXCLUDED.sort_order,
+                weight = EXCLUDED.weight,
+                updated_at = CURRENT_TIMESTAMP;
+
+            UPDATE category category
+            SET risk_level = CASE
+                    WHEN root.slug IN ('design', 'online-work', 'it-development') THEN 'LOW'
+                    WHEN root.slug IN ('repair-finishing', 'auto-services') THEN 'HIGH'
+                    ELSE 'MEDIUM'
+                END,
+                service_mode = CASE
+                    WHEN root.slug IN ('online-work', 'it-development') THEN 'REMOTE'
+                    WHEN root.slug IN ('design', 'marketing-advertising', 'photo-video', 'education') THEN 'HYBRID'
+                    ELSE 'ONSITE'
+                END,
+                requires_verification_level = CASE
+                    WHEN root.slug IN ('design', 'online-work', 'it-development') THEN 'NONE'
+                    WHEN root.slug IN ('repair-finishing', 'auto-services') THEN 'ID_VERIFIED'
+                    ELSE 'PHONE_VERIFIED'
+                END,
+                allows_remote = root.slug IN ('design', 'online-work', 'it-development', 'marketing-advertising', 'photo-video', 'education'),
+                allows_onsite = root.slug NOT IN ('online-work', 'it-development'),
+                allows_escrow = true,
+                allows_cash = true,
+                allows_milestones = root.slug IN ('repair-finishing', 'design', 'it-development'),
+                allows_attachments = true,
+                active = true,
+                public_visible = true,
+                launch_phase = 'MVP',
+                updated_at = CURRENT_TIMESTAMP
+            FROM mvp_category_seed seed
+            JOIN category seeded ON seeded.slug = seed.slug
+            JOIN category root ON root.id = COALESCE(seeded.parent_id, seeded.id)
+            WHERE category.id = seeded.id;
+
+            UPDATE category
+            SET risk_level = 'HIGH', requires_verification_level = 'ID_VERIFIED'
+            WHERE slug IN ('electrician', 'demolition', 'aerial-photography');
+
+            INSERT INTO category_translation (category_id, locale, name, description, created_at, updated_at)
+            SELECT category.id, locale.locale, seed.title, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM mvp_category_seed seed
+            JOIN category ON category.slug = seed.slug
+            CROSS JOIN (VALUES ('ru'), ('kk')) locale(locale)
+            ON CONFLICT (category_id, locale) DO UPDATE SET
+                name = EXCLUDED.name,
+                updated_at = CURRENT_TIMESTAMP;
+
+            SELECT setval(
+                pg_get_serial_sequence('category', 'id'),
+                COALESCE((SELECT MAX(id) FROM category), 1),
+                true
+            );
+        ]]></sql>
+    </changeSet>
+</databaseChangeLog>

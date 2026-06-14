@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "tasks": "Тапсырмалар",
+    "performers": "Орындаушылар",
+    "categories": "Санаттар",
+    "login": "Кіру",
+    "register": "Тіркелу",
+    "dashboard": "Кабинет",
+    "logout": "Шығу",
+    "security": "Қауіпсіздік",
+    "openMenu": "Мәзірді ашу"
+  },
+  "locale": {
+    "label": "Интерфейс тілі",
+    "ru": "Русский",
+    "kk": "Қазақша",
+    "en": "English"
+  },
+  "common": {
+    "loading": "Жүктелуде…",
+    "retry": "Қайталау",
+    "details": "Толығырақ",
+    "search": "Іздеу",
+    "all": "Барлығы",
+    "previous": "Артқа",
+    "next": "Келесі"
+  },
+  "auth": {
+    "loginTitle": "HandyNest жүйесіне кіру",
+    "registerTitle": "Тіркелгі жасау",
+    "email": "Электрондық пошта",
+    "password": "Құпиясөз",
+    "firstName": "Аты",
+    "lastName": "Тегі",
+    "passwordConfirmation": "Құпиясөзді қайталаңыз",
+    "submitLogin": "Кіру",
+    "submitRegister": "Тіркелгі жасау"
+  },
+  "footer": {
+    "tagline": "Қазақстанға арналған қызметтер сервисі.",
+    "categories": "Санаттар",
+    "tasks": "Тапсырмалар",
+    "performers": "Орындаушылар"
+  }
+}

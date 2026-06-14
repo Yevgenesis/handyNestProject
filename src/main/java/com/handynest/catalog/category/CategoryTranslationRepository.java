@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoryTranslationRepository extends JpaRepository<CategoryTranslation, Long> {
 
-    List<CategoryTranslation> findByCategoryIdInAndLocaleIn(
-            Collection<Long> categoryIds,
-            Collection<String> locales
-    );
+  List<CategoryTranslation> findByCategoryIdInAndLocaleIn(
+      Collection<Long> categoryIds, Collection<String> locales);
+
+  List<CategoryTranslation> findAllByCategoryIdOrderByLocale(Long categoryId);
+
+  void deleteAllByCategoryId(Long categoryId);
 }

@@ -13,54 +13,64 @@ import org.springframework.data.repository.query.Param;
 
 public interface TaskOfferRepository extends JpaRepository<TaskOffer, Long> {
 
-    boolean existsByTaskIdAndPerformerIdAndStatus(Long taskId, Long performerId, TaskOfferStatus status);
+  boolean existsByTaskIdAndPerformerIdAndStatus(
+      Long taskId, Long performerId, TaskOfferStatus status);
 
-    long countByTaskPublicIdAndStatus(String taskPublicId, TaskOfferStatus status);
+  long countByTaskPublicIdAndStatus(String taskPublicId, TaskOfferStatus status);
 
-    @EntityGraph(attributePaths = {
-            "task",
-            "task.customer",
-            "performer",
-            "performer.user"
-    })
-    List<TaskOffer> findAllByTaskPublicIdOrderByCreatedAtDesc(String taskPublicId);
+  long countByPerformerIdAndCreatedAtGreaterThanEqual(Long performerId, Instant createdAt);
 
-    @EntityGraph(attributePaths = {
-            "task",
-            "task.customer",
-            "performer",
-            "performer.user"
-    })
-    List<TaskOffer> findAllByPerformerUserIdOrderByCreatedAtDesc(Long userId);
+  @EntityGraph(
+      attributePaths = {
+        "task",
+        "task.customer",
+        "task.category",
+        "task.city",
+        "performer",
+        "performer.user"
+      })
+  List<TaskOffer> findAllByTaskPublicIdOrderByCreatedAtDesc(String taskPublicId);
 
-    @EntityGraph(attributePaths = {
-            "task",
-            "task.customer",
-            "performer",
-            "performer.user"
-    })
-    Optional<TaskOffer> findByPublicId(String publicId);
+  @EntityGraph(
+      attributePaths = {
+        "task",
+        "task.customer",
+        "task.category",
+        "task.city",
+        "performer",
+        "performer.user"
+      })
+  List<TaskOffer> findAllByPerformerUserIdOrderByCreatedAtDesc(Long userId);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("""
+  @EntityGraph(
+      attributePaths = {
+        "task",
+        "task.customer",
+        "task.category",
+        "task.city",
+        "performer",
+        "performer.user"
+      })
+  Optional<TaskOffer> findByPublicId(String publicId);
+
+  @Lock(LockModeType.PESSIMISTIC_WRITE)
+  @Query(
+      """
             select offer
             from TaskOffer offer
             join fetch offer.task task
             join fetch task.customer
+            join fetch task.category
+            join fetch task.city
             join fetch offer.performer performer
             join fetch performer.user
             where task.publicId = :taskPublicId and offer.publicId = :offerPublicId
             """)
-    Optional<TaskOffer> findByTaskPublicIdAndPublicIdForUpdate(
-            @Param("taskPublicId") String taskPublicId,
-            @Param("offerPublicId") String offerPublicId
-    );
+  Optional<TaskOffer> findByTaskPublicIdAndPublicIdForUpdate(
+      @Param("taskPublicId") String taskPublicId, @Param("offerPublicId") String offerPublicId);
 
-    List<TaskOffer> findAllByTaskIdAndStatus(Long taskId, TaskOfferStatus status);
+  List<TaskOffer> findAllByTaskIdAndStatus(Long taskId, TaskOfferStatus status);
 
-    List<TaskOffer> findAllByStatusAndExpiresAtLessThanEqual(
-            TaskOfferStatus status,
-            Instant expiresAt,
-            Pageable pageable
-    );
+  List<TaskOffer> findAllByStatusAndExpiresAtLessThanEqual(
+      TaskOfferStatus status, Instant expiresAt, Pageable pageable);
 }

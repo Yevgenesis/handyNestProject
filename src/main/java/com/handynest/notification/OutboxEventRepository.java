@@ -9,15 +9,19 @@ import org.springframework.data.repository.query.Param;
 
 public interface OutboxEventRepository extends JpaRepository<OutboxEvent, Long> {
 
-    @Query("""
-            select event
-              from OutboxEvent event
-             where event.status in (:statuses)
-               and event.nextAttemptAt <= :nextAttemptAt
-             order by event.createdAt asc
-            """)
-    List<OutboxEvent> findDueEvents(
-            @Param("statuses") List<OutboxStatus> statuses,
-            @Param("nextAttemptAt") Instant nextAttemptAt,
-            Pageable pageable);
+  @Query(
+      value =
+          """
+            select *
+              from outbox_event
+             where status in (:statuses)
+               and next_attempt_at <= :nextAttemptAt
+             order by created_at asc
+             for update skip locked
+            """,
+      nativeQuery = true)
+  List<OutboxEvent> findDueEvents(
+      @Param("statuses") List<String> statuses,
+      @Param("nextAttemptAt") Instant nextAttemptAt,
+      Pageable pageable);
 }

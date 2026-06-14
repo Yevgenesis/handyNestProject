@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-12-dev-user-consents" author="codex" context="dev">
+        <sql splitStatements="false"><![CDATA[
+            INSERT INTO user_consent
+                (user_id, consent_type, document_version, accepted_at, ip_address, user_agent)
+            SELECT user_id, consent_type, '1.0', CURRENT_TIMESTAMP, '127.0.0.1', 'HandyNest dev seed'
+            FROM (
+                SELECT id AS user_id
+                FROM handy_user
+                WHERE email IN ('customer@handynest.dev', 'performer@handynest.dev', 'admin@handynest.dev')
+            ) users
+            CROSS JOIN (VALUES
+                ('TERMS_OF_SERVICE'),
+                ('PRIVACY_POLICY'),
+                ('PERSONAL_DATA_PROCESSING'),
+                ('PERFORMER_RULES'),
+                ('CUSTOMER_RULES'),
+                ('PROHIBITED_SERVICES_POLICY'),
+                ('PAYMENT_POLICY')
+            ) types(consent_type)
+            ON CONFLICT (user_id, consent_type, document_version) DO NOTHING;
+        ]]></sql>
+    </changeSet>
+</databaseChangeLog>

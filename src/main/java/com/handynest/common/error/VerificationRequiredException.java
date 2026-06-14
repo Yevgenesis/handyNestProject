@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public class VerificationRequiredException extends BusinessException {
 
-    public VerificationRequiredException(String message) {
-        super(ApiErrorCode.VERIFICATION_REQUIRED, HttpStatus.FORBIDDEN, message);
-    }
+  public VerificationRequiredException(String message) {
+    super(ApiErrorCode.VERIFICATION_REQUIRED, HttpStatus.FORBIDDEN, message);
+  }
 }

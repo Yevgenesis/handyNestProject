@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <!--
+      Suppressions require an evidence-based reason, owner, ticket and review-by date.
+      Expired suppressions must be removed or explicitly re-approved.
+    -->
+    <suppress>
+        <notes><![CDATA[
+            Owner: backend team. Review by: 2026-09-11.
+            CVE-2026-42582 affects QpackDecoder in Netty HTTP/3 4.2 before 4.2.13.Final.
+            HandyNest uses Netty 4.1.x, which does not contain that vulnerable HTTP/3 decoder;
+            Dependency-Check matched the broad Netty CPE to netty-transport as a false positive.
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.netty/[^@]+@4\.1\..*$</packageUrl>
+        <cve>CVE-2026-42582</cve>
+    </suppress>
+</suppressions>

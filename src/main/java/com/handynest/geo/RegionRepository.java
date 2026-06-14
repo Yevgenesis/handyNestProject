@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RegionRepository extends JpaRepository<Region, Long> {
 
-    List<Region> findAllByCountryCodeIgnoreCaseOrderByNameRuAsc(String countryCode);
+  List<Region> findAllByCountryCodeIgnoreCaseAndSupportedTrueOrderByNameRuAsc(String countryCode);
 
-    Optional<Region> findByPublicId(String publicId);
+  Optional<Region> findByPublicId(String publicId);
 }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-11-03-category-version" author="codex">
+        <addColumn tableName="category">
+            <column name="version" type="BIGINT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2026-06-11-04-category-synonym" author="codex">
+        <createTable tableName="category_synonym">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_category_synonym"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locale" type="VARCHAR(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(160)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="normalized_value" type="VARCHAR(160)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="category_synonym"
+                                 baseColumnNames="category_id"
+                                 referencedTableName="category"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_category_synonym_category"
+                                 onDelete="CASCADE"/>
+        <addUniqueConstraint tableName="category_synonym"
+                             columnNames="category_id,locale,normalized_value"
+                             constraintName="uc_category_synonym_locale_value"/>
+        <createIndex tableName="category_synonym" indexName="idx_category_synonym_lookup">
+            <column name="locale"/>
+            <column name="normalized_value"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-06-11-05-category-audit" author="codex">
+        <createTable tableName="category_audit_event">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_category_audit_event"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="actor_user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="changed_fields" type="VARCHAR(2000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="category_audit_event"
+                                 baseColumnNames="category_id"
+                                 referencedTableName="category"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_category_audit_category"/>
+        <addForeignKeyConstraint baseTableName="category_audit_event"
+                                 baseColumnNames="actor_user_id"
+                                 referencedTableName="handy_user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_category_audit_actor"/>
+        <createIndex tableName="category_audit_event" indexName="idx_category_audit_category_created">
+            <column name="category_id"/>
+            <column name="created_at" descending="true"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-06-11-06-category-sequence-sync" author="codex">
+        <sql dbms="postgresql">
+            SELECT setval(
+                pg_get_serial_sequence('category', 'id'),
+                COALESCE((SELECT MAX(id) FROM category), 1),
+                true
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

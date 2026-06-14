@@ -11,20 +11,24 @@ import org.springframework.data.repository.query.Param;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    Page<Notification> findAllByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);
+  boolean existsBySourceEventIdAndUserId(Long sourceEventId, Long userId);
 
-    Page<Notification> findAllByUserIdAndReadAtIsNullOrderByCreatedAtDesc(Long userId, Pageable pageable);
+  Page<Notification> findAllByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);
 
-    Optional<Notification> findByPublicIdAndUserId(String publicId, Long userId);
+  Page<Notification> findAllByUserIdAndReadAtIsNullOrderByCreatedAtDesc(
+      Long userId, Pageable pageable);
 
-    Optional<Notification> findByPublicId(String publicId);
+  Optional<Notification> findByPublicIdAndUserId(String publicId, Long userId);
 
-    @Modifying
-    @Query("""
+  Optional<Notification> findByPublicId(String publicId);
+
+  @Modifying
+  @Query(
+      """
             update Notification notification
                set notification.readAt = :readAt
              where notification.user.id = :userId
                and notification.readAt is null
             """)
-    int markAllUnreadAsRead(@Param("userId") Long userId, @Param("readAt") Instant readAt);
+  int markAllUnreadAsRead(@Param("userId") Long userId, @Param("readAt") Instant readAt);
 }

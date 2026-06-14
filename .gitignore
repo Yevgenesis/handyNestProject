@@ -1,9 +1,16 @@
 HELP.md
 target/
+backups/
 .env
 .env.*
 !.env.example
+!apps/web/.env.example
 .DS_Store
+node_modules/
+.next/
+playwright-report/
+test-results/
+coverage/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

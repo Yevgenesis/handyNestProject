@@ -14,51 +14,56 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(
-        name = "category_translation",
-        uniqueConstraints = @UniqueConstraint(
-                name = "uc_category_translation_category_locale",
-                columnNames = {"category_id", "locale"}
-        )
-)
+    name = "category_translation",
+    uniqueConstraints =
+        @UniqueConstraint(
+            name = "uc_category_translation_category_locale",
+            columnNames = {"category_id", "locale"}))
 public class CategoryTranslation extends BaseAuditEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "category_id", nullable = false)
+  private Category category;
 
-    @Column(nullable = false, length = 8)
-    private String locale;
+  @Column(nullable = false, length = 8)
+  private String locale;
 
-    @Column(nullable = false, length = 255)
-    private String name;
+  @Column(nullable = false, length = 255)
+  private String name;
 
-    @Column(length = 2000)
-    private String description;
+  @Column(length = 2000)
+  private String description;
 
-    protected CategoryTranslation() {
-    }
+  protected CategoryTranslation() {}
 
-    public Long getId() {
-        return id;
-    }
+  public CategoryTranslation(Category category, String locale, String name, String description) {
+    this.category = category;
+    this.locale = locale;
+    this.name = name;
+    this.description = description;
+  }
 
-    public Category getCategory() {
-        return category;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getLocale() {
-        return locale;
-    }
+  public Category getCategory() {
+    return category;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getLocale() {
+    return locale;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public String getName() {
+    return name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
 }

@@ -8,11 +8,11 @@
         <version>3.5.14</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>Codezilla</groupId>
+    <groupId>com.handynest</groupId>
     <artifactId>handyNestProject</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>handyNestProject</name>
-    <description>handyNestProject</description>
+    <description>HandyNest transactional service marketplace backend</description>
     <properties>
         <java.version>21</java.version>
         <mapstruct.version>1.6.3</mapstruct.version>
@@ -23,8 +23,18 @@
         <bucket4j.version>8.19.0</bucket4j.version>
         <aws-sdk.version>2.45.1</aws-sdk.version>
         <netty.version>4.1.133.Final</netty.version>
+        <spring-framework.version>6.2.19</spring-framework.version>
+        <spring-security.version>6.5.11</spring-security.version>
+        <tomcat.version>10.1.55</tomcat.version>
+        <postgresql.version>42.7.11</postgresql.version>
+        <log4j2.version>2.25.4</log4j2.version>
+        <swagger-ui.version>5.32.6</swagger-ui.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <commons-compress.version>1.28.0</commons-compress.version>
+        <spotless.version>3.6.0</spotless.version>
+        <google-java-format.version>1.35.0</google-java-format.version>
+        <jacoco.version>0.8.15</jacoco.version>
+        <dependency-check.version>12.2.2</dependency-check.version>
     </properties>
 
     <dependencyManagement>
@@ -38,6 +48,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
                 <version>${commons-compress.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>swagger-ui</artifactId>
+                <version>${swagger-ui.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -89,12 +104,6 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${springdoc.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.mysql</groupId>-->
-<!--            <artifactId>mysql-connector-j</artifactId>-->
-<!--            <version>8.0.33</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
@@ -186,7 +195,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.12</version>
+                <version>${jacoco.version}</version>
                 <configuration>
                     <dataFile>${project.build.directory}/jacoco.exec</dataFile>
                     <excludes>
@@ -207,7 +216,98 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>coverage-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.80</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>BRANCH</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.55</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                                <rule>
+                                    <element>CLASS</element>
+                                    <includes>
+                                        <include>com.handynest.auth.application.AuthV1Service</include>
+                                        <include>com.handynest.identity.UserConsentService</include>
+                                        <include>com.handynest.marketplace.MarketplaceService</include>
+                                        <include>com.handynest.notification.OutboxEventWorker</include>
+                                        <include>com.handynest.platform.PlatformSettingService</include>
+                                    </includes>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.70</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <configuration>
+                    <java>
+                        <googleJavaFormat>
+                            <version>${google-java-format.version}</version>
+                        </googleJavaFormat>
+                        <removeUnusedImports/>
+                        <trimTrailingWhitespace/>
+                        <endWithNewline/>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>format-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>${dependency-check.version}</version>
+                <configuration>
+                    <failBuildOnCVSS>7</failBuildOnCVSS>
+                    <suppressionFiles>
+                        <suppressionFile>${project.basedir}/config/dependency-check-suppressions.xml</suppressionFile>
+                    </suppressionFiles>
+                    <formats>
+                        <format>HTML</format>
+                        <format>JSON</format>
+                    </formats>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
+                    <driver>org.postgresql.Driver</driver>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

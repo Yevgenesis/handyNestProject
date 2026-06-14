@@ -1,6 +1,7 @@
 package com.handynest.marketplace;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,16 +13,26 @@ import org.springframework.data.repository.query.Param;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 
-    Optional<ChatMessage> findByPublicIdAndDeletedAtIsNull(String publicId);
+  Optional<ChatMessage> findByPublicIdAndDeletedAtIsNull(String publicId);
 
-    @EntityGraph(attributePaths = {
-            "chat",
-            "sender"
-    })
-    Page<ChatMessage> findAllByChatPublicIdAndDeletedAtIsNull(String chatId, Pageable pageable);
+  @EntityGraph(attributePaths = {"chat", "sender"})
+  List<ChatMessage> findByChatPublicIdAndDeletedAtIsNullOrderByIdDesc(
+      String chatId, Pageable pageable);
 
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("""
+  @EntityGraph(attributePaths = {"chat", "sender"})
+  List<ChatMessage> findByChatPublicIdAndDeletedAtIsNullAndIdLessThanOrderByIdDesc(
+      String chatId, Long id, Pageable pageable);
+
+  @EntityGraph(attributePaths = {"chat", "sender"})
+  List<ChatMessage> findByChatPublicIdAndDeletedAtIsNullAndIdGreaterThanOrderByIdAsc(
+      String chatId, Long id, Pageable pageable);
+
+  @EntityGraph(attributePaths = {"chat", "sender"})
+  Page<ChatMessage> findAllByChatPublicIdAndDeletedAtIsNull(String chatId, Pageable pageable);
+
+  @Modifying(clearAutomatically = true, flushAutomatically = true)
+  @Query(
+      """
             update ChatMessage message
             set message.readAt = :readAt
             where message.chat.publicId = :chatId
@@ -29,9 +40,8 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
               and message.readAt is null
               and message.deletedAt is null
             """)
-    int markUnreadMessagesAsRead(
-            @Param("chatId") String chatId,
-            @Param("readerId") Long readerId,
-            @Param("readAt") Instant readAt
-    );
+  int markUnreadMessagesAsRead(
+      @Param("chatId") String chatId,
+      @Param("readerId") Long readerId,
+      @Param("readAt") Instant readAt);
 }

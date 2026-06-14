@@ -16,28 +16,28 @@ import lombok.Setter;
 @Table(name = "data_retention_policy")
 public class DataRetentionPolicy extends BaseAuditEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false, unique = true, length = 80)
-    private String name;
+  @Column(nullable = false, unique = true, length = 80)
+  private String name;
 
-    @Column(nullable = false)
-    private boolean active;
+  @Column(nullable = false)
+  private boolean active;
 
-    @Column(name = "verification_document_retention_days", nullable = false)
-    private int verificationDocumentRetentionDays;
+  @Column(name = "verification_document_retention_days", nullable = false)
+  private int verificationDocumentRetentionDays;
 
-    @Column(name = "deleted_user_anonymization_days", nullable = false)
-    private int deletedUserAnonymizationDays;
+  @Column(name = "deleted_user_anonymization_days", nullable = false)
+  private int deletedUserAnonymizationDays;
 
-    @Column(name = "chat_retention_days", nullable = false)
-    private int chatRetentionDays;
+  @Column(name = "chat_retention_days", nullable = false)
+  private int chatRetentionDays;
 
-    @Column(name = "audit_log_retention_days", nullable = false)
-    private int auditLogRetentionDays;
+  @Column(name = "audit_log_retention_days", nullable = false)
+  private int auditLogRetentionDays;
 
-    @Column(name = "attachment_retention_days", nullable = false)
-    private int attachmentRetentionDays;
+  @Column(name = "attachment_retention_days", nullable = false)
+  private int attachmentRetentionDays;
 }

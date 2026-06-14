@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-07-01-risk-event-chat-message-unique" author="codex">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*)
+                FROM (
+                    SELECT chat_message_id
+                    FROM risk_event
+                    WHERE chat_message_id IS NOT NULL
+                    GROUP BY chat_message_id
+                    HAVING COUNT(*) > 1
+                ) duplicates
+            </sqlCheck>
+        </preConditions>
+
+        <sql>
+            CREATE UNIQUE INDEX IF NOT EXISTS uk_risk_event_chat_message
+                ON risk_event(chat_message_id)
+                WHERE chat_message_id IS NOT NULL;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

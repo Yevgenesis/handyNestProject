@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-12-07-active-complaint-uniqueness" author="codex">
+        <sql>
+            CREATE UNIQUE INDEX uk_complaint_active_reporter_target
+                ON complaint (reporter_user_id, target_type, target_id)
+                WHERE status IN ('OPEN', 'IN_REVIEW');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -14,20 +14,19 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JsonAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private final ApiSecurityErrorWriter errorWriter;
+  private final ApiSecurityErrorWriter errorWriter;
 
-    @Override
-    public void commence(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AuthenticationException authException
-    ) throws IOException {
-        errorWriter.write(
-                request,
-                response,
-                HttpStatus.UNAUTHORIZED,
-                ApiErrorCode.UNAUTHORIZED,
-                "Authentication required"
-        );
-    }
+  @Override
+  public void commence(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      AuthenticationException authException)
+      throws IOException {
+    errorWriter.write(
+        request,
+        response,
+        HttpStatus.UNAUTHORIZED,
+        ApiErrorCode.UNAUTHORIZED,
+        "Authentication required");
+  }
 }

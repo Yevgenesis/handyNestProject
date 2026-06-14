@@ -5,9 +5,13 @@ import com.handynest.marketplace.StorageProvider;
 
 public interface FileStorageService {
 
-    StorageProvider provider();
+  StorageProvider provider();
 
-    PresignedStorageUrl createUploadUrl(MarketplaceAttachment attachment);
+  PresignedStorageUrl createUploadUrl(MarketplaceAttachment attachment);
 
-    PresignedStorageUrl createDownloadUrl(MarketplaceAttachment attachment);
+  PresignedStorageUrl createDownloadUrl(MarketplaceAttachment attachment);
+
+  StoredObjectMetadata inspectObject(MarketplaceAttachment attachment);
+
+  void deleteObject(MarketplaceAttachment attachment);
 }

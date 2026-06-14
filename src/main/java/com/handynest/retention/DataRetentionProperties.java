@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "app.data-retention")
 public class DataRetentionProperties {
 
-    private Duration cleanupInterval = Duration.ofHours(24);
-    private int batchSize = 100;
-    private int verificationDocumentRetentionDays = 90;
-    private int deletedUserAnonymizationDays = 30;
-    private int chatRetentionDays = 1095;
-    private int auditLogRetentionDays = 1825;
-    private int attachmentRetentionDays = 365;
+  private Duration cleanupInterval = Duration.ofHours(24);
+  private int batchSize = 100;
+  private int verificationDocumentRetentionDays = 90;
+  private int deletedUserAnonymizationDays = 30;
+  private int chatRetentionDays = 1095;
+  private int auditLogRetentionDays = 1825;
+  private int attachmentRetentionDays = 365;
 }

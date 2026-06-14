@@ -30,109 +30,94 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Performers", description = "Performer profiles")
 public class PerformerProfileApiV1Controller {
 
-    private final PerformerProfileService performerProfileService;
+  private final PerformerProfileService performerProfileService;
 
-    @PostMapping("/me")
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create current user's performer profile")
-    public PerformerProfileResponse createMe(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody PerformerProfileRequest request,
-            @RequestParam(required = false) String locale,
-            @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
-    ) {
-        return performerProfileService.createMe(
-                userDetails,
-                request,
-                SupportedLocaleResolver.resolve(locale, acceptLanguage)
-        );
-    }
+  @PostMapping("/me")
+  @ResponseStatus(HttpStatus.CREATED)
+  @Operation(summary = "Create current user's performer profile")
+  public PerformerProfileResponse createMe(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @Valid @RequestBody PerformerProfileRequest request,
+      @RequestParam(required = false) String locale,
+      @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage) {
+    return performerProfileService.createMe(
+        userDetails, request, SupportedLocaleResolver.resolve(locale, acceptLanguage));
+  }
 
-    @GetMapping("/me")
-    @Operation(summary = "Get current user's performer profile")
-    public PerformerProfileResponse me(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam(required = false) String locale,
-            @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
-    ) {
-        return performerProfileService.me(userDetails, SupportedLocaleResolver.resolve(locale, acceptLanguage));
-    }
+  @GetMapping("/me")
+  @Operation(summary = "Get current user's performer profile")
+  public PerformerProfileResponse me(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @RequestParam(required = false) String locale,
+      @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage) {
+    return performerProfileService.me(
+        userDetails, SupportedLocaleResolver.resolve(locale, acceptLanguage));
+  }
 
-    @PatchMapping("/me")
-    @Operation(summary = "Update current user's performer profile")
-    public PerformerProfileResponse updateMe(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody PerformerProfileRequest request,
-            @RequestParam(required = false) String locale,
-            @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
-    ) {
-        return performerProfileService.updateMe(
-                userDetails,
-                request,
-                SupportedLocaleResolver.resolve(locale, acceptLanguage)
-        );
-    }
+  @PatchMapping("/me")
+  @Operation(summary = "Update current user's performer profile")
+  public PerformerProfileResponse updateMe(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @Valid @RequestBody PerformerProfileRequest request,
+      @RequestParam(required = false) String locale,
+      @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage) {
+    return performerProfileService.updateMe(
+        userDetails, request, SupportedLocaleResolver.resolve(locale, acceptLanguage));
+  }
 
-    @PostMapping("/me/availability")
-    @Operation(summary = "Update current user's performer availability")
-    public PerformerProfileResponse updateAvailability(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @Valid @RequestBody PerformerAvailabilityRequest request,
-            @RequestParam(required = false) String locale,
-            @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
-    ) {
-        return performerProfileService.updateAvailability(
-                userDetails,
-                request,
-                SupportedLocaleResolver.resolve(locale, acceptLanguage)
-        );
-    }
+  @PostMapping("/me/availability")
+  @Operation(summary = "Update current user's performer availability")
+  public PerformerProfileResponse updateAvailability(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @Valid @RequestBody PerformerAvailabilityRequest request,
+      @RequestParam(required = false) String locale,
+      @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage) {
+    return performerProfileService.updateAvailability(
+        userDetails, request, SupportedLocaleResolver.resolve(locale, acceptLanguage));
+  }
 
-    @GetMapping("/{performerId}")
-    @Operation(summary = "Get public performer profile")
-    public PerformerProfileResponse findById(
-            @PathVariable String performerId,
-            @RequestParam(required = false) String locale,
-            @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
-    ) {
-        return performerProfileService.findByPublicId(
-                performerId,
-                SupportedLocaleResolver.resolve(locale, acceptLanguage)
-        );
-    }
+  @GetMapping("/{performerId}")
+  @Operation(summary = "Get public performer profile")
+  public PerformerProfileResponse findById(
+      @PathVariable String performerId,
+      @RequestParam(required = false) String locale,
+      @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage) {
+    return performerProfileService.findByPublicId(
+        performerId, SupportedLocaleResolver.resolve(locale, acceptLanguage));
+  }
 
-    @GetMapping
-    @Operation(summary = "Search public performer profiles")
-    public PageResponse<PerformerProfileResponse> search(
-            @RequestParam(required = false) String categoryId,
-            @RequestParam(required = false) String cityId,
-            @RequestParam(required = false) String districtId,
-            @RequestParam(required = false) CategoryServiceMode serviceMode,
-            @RequestParam(required = false) PerformerVerificationLevel verificationLevel,
-            @RequestParam(required = false) Boolean isAvailable,
-            @RequestParam(required = false) Boolean isTopPerformer,
-            @RequestParam(required = false) BigDecimal ratingMin,
-            @RequestParam(required = false) BigDecimal priceMin,
-            @RequestParam(required = false) BigDecimal priceMax,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(required = false) String locale,
-            @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
-    ) {
-        return performerProfileService.search(
-                categoryId,
-                cityId,
-                districtId,
-                serviceMode,
-                verificationLevel,
-                isAvailable,
-                isTopPerformer,
-                ratingMin,
-                priceMin,
-                priceMax,
-                page,
-                size,
-                SupportedLocaleResolver.resolve(locale, acceptLanguage)
-        );
-    }
+  @GetMapping
+  @Operation(summary = "Search public performer profiles")
+  public PageResponse<PerformerProfileResponse> search(
+      @RequestParam(required = false) String categoryId,
+      @RequestParam(required = false) String cityId,
+      @RequestParam(required = false) String districtId,
+      @RequestParam(required = false) String countryCode,
+      @RequestParam(required = false) CategoryServiceMode serviceMode,
+      @RequestParam(required = false) PerformerVerificationLevel verificationLevel,
+      @RequestParam(required = false) Boolean isAvailable,
+      @RequestParam(required = false) Boolean isTopPerformer,
+      @RequestParam(required = false) BigDecimal ratingMin,
+      @RequestParam(required = false) BigDecimal priceMin,
+      @RequestParam(required = false) BigDecimal priceMax,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "20") int size,
+      @RequestParam(required = false) String locale,
+      @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage) {
+    return performerProfileService.search(
+        categoryId,
+        cityId,
+        districtId,
+        countryCode,
+        serviceMode,
+        verificationLevel,
+        isAvailable,
+        isTopPerformer,
+        ratingMin,
+        priceMin,
+        priceMax,
+        page,
+        size,
+        SupportedLocaleResolver.resolve(locale, acceptLanguage));
+  }
 }

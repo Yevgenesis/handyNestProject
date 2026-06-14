@@ -14,8 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class HandyNestProjectApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(HandyNestProjectApplication.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(HandyNestProjectApplication.class, args);
+  }
 }

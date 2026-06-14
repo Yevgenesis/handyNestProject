@@ -16,28 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/notifications")
 public class NotificationApiV1Controller {
 
-    private final NotificationService notificationService;
+  private final NotificationService notificationService;
 
-    @GetMapping
-    public PageResponse<NotificationResponse> myNotifications(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam(required = false) Boolean unreadOnly,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
-    ) {
-        return notificationService.myNotifications(userDetails, unreadOnly, page, size);
-    }
+  @GetMapping
+  public PageResponse<NotificationResponse> myNotifications(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @RequestParam(required = false) Boolean unreadOnly,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "20") int size) {
+    return notificationService.myNotifications(userDetails, unreadOnly, page, size);
+  }
 
-    @PostMapping("/{notificationId}/read")
-    public NotificationResponse markRead(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String notificationId
-    ) {
-        return notificationService.markRead(userDetails, notificationId);
-    }
+  @PostMapping("/{notificationId}/read")
+  public NotificationResponse markRead(
+      @AuthenticationPrincipal UserDetails userDetails, @PathVariable String notificationId) {
+    return notificationService.markRead(userDetails, notificationId);
+  }
 
-    @PostMapping("/read-all")
-    public NotificationsReadAllResponse markAllRead(@AuthenticationPrincipal UserDetails userDetails) {
-        return new NotificationsReadAllResponse(notificationService.markAllRead(userDetails));
-    }
+  @PostMapping("/read-all")
+  public NotificationsReadAllResponse markAllRead(
+      @AuthenticationPrincipal UserDetails userDetails) {
+    return new NotificationsReadAllResponse(notificationService.markAllRead(userDetails));
+  }
 }

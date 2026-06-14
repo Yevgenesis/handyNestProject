@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-13-05-contact-reveal" author="codex">
+        <createTable tableName="contact_reveal">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_contact_reveal" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_contact_reveal_public_id"/>
+            </column>
+            <column name="deal_id" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="requested_by_user_id" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="subject_user_id" type="BIGINT"><constraints nullable="false"/></column>
+            <column name="contact_type" type="VARCHAR(20)"><constraints nullable="false"/></column>
+            <column name="ip_address" type="VARCHAR(64)"><constraints nullable="false"/></column>
+            <column name="user_agent" type="VARCHAR(500)"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="contact_reveal" baseColumnNames="deal_id"
+                                 referencedTableName="deal" referencedColumnNames="id"
+                                 constraintName="fk_contact_reveal_deal"/>
+        <addForeignKeyConstraint baseTableName="contact_reveal" baseColumnNames="requested_by_user_id"
+                                 referencedTableName="handy_user" referencedColumnNames="id"
+                                 constraintName="fk_contact_reveal_requester"/>
+        <addForeignKeyConstraint baseTableName="contact_reveal" baseColumnNames="subject_user_id"
+                                 referencedTableName="handy_user" referencedColumnNames="id"
+                                 constraintName="fk_contact_reveal_subject"/>
+        <addUniqueConstraint tableName="contact_reveal"
+                             columnNames="deal_id,requested_by_user_id,subject_user_id,contact_type"
+                             constraintName="uk_contact_reveal_participants_type"/>
+        <createIndex tableName="contact_reveal" indexName="idx_contact_reveal_deal_created">
+            <column name="deal_id"/><column name="created_at" descending="true"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-06-13-06-deal-cancellation-audit" author="codex">
+        <addColumn tableName="deal">
+            <column name="canceled_by_user_id" type="BIGINT"/>
+            <column name="cancel_reason" type="VARCHAR(40)"/>
+            <column name="cancel_comment" type="VARCHAR(1000)"/>
+            <column name="canceled_after_contact_reveal" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="deal" baseColumnNames="canceled_by_user_id"
+                                 referencedTableName="handy_user" referencedColumnNames="id"
+                                 constraintName="fk_deal_canceled_by_user"/>
+
+        <createTable tableName="audit_log">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_audit_log" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_audit_log_public_id"/>
+            </column>
+            <column name="actor_user_id" type="BIGINT"/>
+            <column name="action" type="VARCHAR(80)"><constraints nullable="false"/></column>
+            <column name="entity_type" type="VARCHAR(80)"><constraints nullable="false"/></column>
+            <column name="entity_public_id" type="VARCHAR(80)"><constraints nullable="false"/></column>
+            <column name="metadata_json" type="TEXT"><constraints nullable="false"/></column>
+            <column name="ip_address" type="VARCHAR(64)"/>
+            <column name="user_agent" type="VARCHAR(500)"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="audit_log" baseColumnNames="actor_user_id"
+                                 referencedTableName="handy_user" referencedColumnNames="id"
+                                 constraintName="fk_audit_log_actor"/>
+        <createIndex tableName="audit_log" indexName="idx_audit_log_entity_created">
+            <column name="entity_type"/><column name="entity_public_id"/><column name="created_at" descending="true"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-06-13-07-risk-event-deal-link" author="codex">
+        <addColumn tableName="risk_event"><column name="deal_id" type="BIGINT"/></addColumn>
+        <addForeignKeyConstraint baseTableName="risk_event" baseColumnNames="deal_id"
+                                 referencedTableName="deal" referencedColumnNames="id"
+                                 constraintName="fk_risk_event_deal"/>
+        <createIndex tableName="risk_event" indexName="idx_risk_event_user_type_created">
+            <column name="user_id"/><column name="risk_type"/><column name="created_at" descending="true"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

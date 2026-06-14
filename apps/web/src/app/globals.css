@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f9f8;
+  --surface: #ffffff;
+  --surface-muted: #eef3f1;
+  --foreground: #17201d;
+  --muted: #62706b;
+  --border: #dbe4e0;
+  --primary: #087f5b;
+  --primary-strong: #066547;
+  --primary-soft: #dff5ec;
+  --blue: #2563eb;
+  --amber: #b45309;
+  --red: #c2413b;
+  --shadow: 0 10px 30px rgb(20 37 31 / 8%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--background);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  outline-offset: 3px;
+}
+
+::selection {
+  color: #ffffff;
+  background: var(--primary);
+}
+
+.container-page {
+  width: min(1180px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.page-section {
+  padding-block: 44px;
+}
+
+.surface-panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    width: min(1180px, calc(100% - 64px));
+  }
+
+  .page-section {
+    padding-block: 64px;
+  }
+}

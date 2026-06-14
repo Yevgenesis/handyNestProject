@@ -15,7 +15,7 @@
     <include file="/db/changelog/changes/2026-05-25-category-public-id.xml"/>
 
     <!--    insert test data to DB -->
-    <include file="/db/changelog/data/test/02-01-changelog.xml"/>
+    <include file="/db/changelog/data/test/02-01-changelog.xml" contextFilter="test"/>
 
     <!--    add auth v1 session support -->
     <include file="/db/changelog/changes/2026-05-25-auth-v1.xml"/>
@@ -70,5 +70,60 @@
 
     <!--    harden marketplace task-offer-deal-chat state flow -->
     <include file="/db/changelog/changes/2026-06-07-marketplace-flow-hardening.xml"/>
+
+    <!--    add OTP phone and optional email verification foundation -->
+    <include file="/db/changelog/changes/2026-06-07-auth-otp-email-verification.xml"/>
+
+    <!--    harden risk event and moderation case lifecycle guarantees -->
+    <include file="/db/changelog/changes/2026-06-07-risk-moderation-hardening.xml"/>
+
+    <!--    add auditable customer risk scoring and task creation policy -->
+    <include file="/db/changelog/changes/2026-06-10-customer-risk-model.xml"/>
+
+    <!--    harden verification documents and performer access to risk categories -->
+    <include file="/db/changelog/changes/2026-06-11-verification-category-access-hardening.xml"/>
+
+    <!--    add administrable category catalog, search synonyms and audit history -->
+    <include file="/db/changelog/changes/2026-06-11-category-admin-catalog.xml"/>
+
+    <!--    add production platform settings and immutable legal consent tracking -->
+    <include file="/db/changelog/changes/2026-06-12-platform-settings-consents.xml"/>
+
+    <!--    replace public legacy categories with the approved MVP catalog -->
+    <include file="/db/changelog/changes/2026-06-12-mvp-category-catalog.xml"/>
+
+    <!--    make domain events authoritative and track physical object deletion -->
+    <include file="/db/changelog/changes/2026-06-12-domain-events-file-cleanup.xml"/>
+
+    <!--    harden complaint, moderation and dispute administration flows -->
+    <include file="/db/changelog/changes/2026-06-12-trust-safety-hardening.xml"/>
+
+    <!--    add typed operational settings used by reliability workers -->
+    <include file="/db/changelog/changes/2026-06-12-operations-settings.xml"/>
+
+    <!--    switch the launch market to Uzbekistan while preserving Kazakhstan history -->
+    <include file="/db/changelog/changes/2026-06-13-uzbekistan-market-foundation.xml"/>
+
+    <!--    enable the complete Uzbekistan region and city classifier -->
+    <include file="/db/changelog/changes/2026-06-13-uzbekistan-all-cities.xml"/>
+
+    <!--    add controlled contact reveal, deal cancellation audit and risk links -->
+    <include file="/db/changelog/changes/2026-06-13-contact-reveal-deal-cancellation.xml"/>
+
+    <!--    test-only feature switches used by integration scenarios -->
+    <include file="/db/changelog/data/test/2026-06-12-test-platform-settings.xml"/>
+
+    <!--    local/dev-only fixture data for manual marketplace smoke checks -->
+    <include file="/db/changelog/data/dev/2026-06-07-dev-marketplace-seed.xml"/>
+
+    <!--    legal consents for local/dev fixture users -->
+    <include file="/db/changelog/data/dev/2026-06-12-dev-consents.xml"/>
+
+    <!--    align the dev performer with a low-risk approved MVP category -->
+    <include file="/db/changelog/data/dev/2026-06-12-dev-catalog-alignment.xml"/>
+
+    <!--    align local fixtures with Uzbekistan, Tashkent and UZS -->
+    <include file="/db/changelog/data/dev/2026-06-13-dev-uzbekistan-market.xml"/>
+    <include file="/db/changelog/data/dev/2026-06-13-dev-smoke-limits.xml"/>
 
 </databaseChangeLog>

@@ -11,5 +11,5 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "app.payment")
 public class PaymentProperties {
 
-    private String webhookToken;
+  private String webhookToken;
 }

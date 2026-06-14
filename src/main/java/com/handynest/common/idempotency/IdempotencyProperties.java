@@ -12,6 +12,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "app.idempotency")
 public class IdempotencyProperties {
 
-    private Duration requestTtl = Duration.ofHours(24);
-    private Duration cleanupInterval = Duration.ofHours(1);
+  private Duration requestTtl = Duration.ofHours(24);
+  private Duration cleanupInterval = Duration.ofHours(1);
 }

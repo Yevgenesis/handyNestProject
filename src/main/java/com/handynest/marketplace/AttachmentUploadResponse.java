@@ -1,13 +1,13 @@
 package com.handynest.marketplace;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
 import java.util.Map;
 
+@Schema(description = "Presigned upload contract for a marketplace attachment.")
 public record AttachmentUploadResponse(
-        AttachmentResponse attachment,
-        String uploadUrl,
-        String uploadMethod,
-        Map<String, String> uploadHeaders,
-        Instant uploadExpiresAt
-) {
-}
+    AttachmentResponse attachment,
+    String uploadUrl,
+    String uploadMethod,
+    Map<String, String> uploadHeaders,
+    Instant uploadExpiresAt) {}

@@ -21,96 +21,86 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class PaymentApiV1Controller {
 
-    private static final String WEBHOOK_TOKEN_HEADER = "X-HandyNest-Webhook-Token";
+  private static final String WEBHOOK_TOKEN_HEADER = "X-HandyNest-Webhook-Token";
 
-    private final PaymentService paymentService;
+  private final PaymentService paymentService;
 
-    @PostMapping("/deals/{dealId}/payments")
-    @ResponseStatus(HttpStatus.CREATED)
-    public PaymentTransactionResponse createPayment(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String dealId,
-            @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
-            @Valid @RequestBody PaymentCreateRequest request
-    ) {
-        return paymentService.createPayment(userDetails, dealId, idempotencyKey, request);
-    }
+  @PostMapping("/deals/{dealId}/payments")
+  @ResponseStatus(HttpStatus.CREATED)
+  public PaymentTransactionResponse createPayment(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable String dealId,
+      @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
+      @Valid @RequestBody PaymentCreateRequest request) {
+    return paymentService.createPayment(userDetails, dealId, idempotencyKey, request);
+  }
 
-    @GetMapping("/deals/{dealId}/payments")
-    public List<PaymentTransactionResponse> dealPayments(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String dealId
-    ) {
-        return paymentService.dealPayments(userDetails, dealId);
-    }
+  @GetMapping("/deals/{dealId}/payments")
+  public List<PaymentTransactionResponse> dealPayments(
+      @AuthenticationPrincipal UserDetails userDetails, @PathVariable String dealId) {
+    return paymentService.dealPayments(userDetails, dealId);
+  }
 
-    @PostMapping("/payments/{paymentId}/authorize")
-    public PaymentTransactionResponse authorizePayment(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String paymentId,
-            @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
-            @Valid @RequestBody(required = false) PaymentTransitionRequest request
-    ) {
-        return paymentService.authorizePayment(userDetails, paymentId, idempotencyKey, request);
-    }
+  @PostMapping("/payments/{paymentId}/authorize")
+  public PaymentTransactionResponse authorizePayment(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable String paymentId,
+      @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
+      @Valid @RequestBody(required = false) PaymentTransitionRequest request) {
+    return paymentService.authorizePayment(userDetails, paymentId, idempotencyKey, request);
+  }
 
-    @PostMapping("/payments/{paymentId}/hold")
-    public PaymentTransactionResponse holdPayment(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String paymentId,
-            @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
-            @Valid @RequestBody(required = false) PaymentTransitionRequest request
-    ) {
-        return paymentService.holdPayment(userDetails, paymentId, idempotencyKey, request);
-    }
+  @PostMapping("/payments/{paymentId}/hold")
+  public PaymentTransactionResponse holdPayment(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable String paymentId,
+      @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
+      @Valid @RequestBody(required = false) PaymentTransitionRequest request) {
+    return paymentService.holdPayment(userDetails, paymentId, idempotencyKey, request);
+  }
 
-    @PostMapping("/payments/{paymentId}/release")
-    public PaymentTransactionResponse releasePayment(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String paymentId,
-            @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
-            @Valid @RequestBody(required = false) PaymentTransitionRequest request
-    ) {
-        return paymentService.releasePayment(userDetails, paymentId, idempotencyKey, request);
-    }
+  @PostMapping("/payments/{paymentId}/release")
+  public PaymentTransactionResponse releasePayment(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable String paymentId,
+      @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
+      @Valid @RequestBody(required = false) PaymentTransitionRequest request) {
+    return paymentService.releasePayment(userDetails, paymentId, idempotencyKey, request);
+  }
 
-    @PostMapping("/payments/{paymentId}/refund")
-    public PaymentTransactionResponse refundPayment(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String paymentId,
-            @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
-            @Valid @RequestBody(required = false) PaymentTransitionRequest request
-    ) {
-        return paymentService.refundPayment(userDetails, paymentId, idempotencyKey, request);
-    }
+  @PostMapping("/payments/{paymentId}/refund")
+  public PaymentTransactionResponse refundPayment(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable String paymentId,
+      @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
+      @Valid @RequestBody(required = false) PaymentTransitionRequest request) {
+    return paymentService.refundPayment(userDetails, paymentId, idempotencyKey, request);
+  }
 
-    @PostMapping("/payments/{paymentId}/fail")
-    public PaymentTransactionResponse failPayment(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String paymentId,
-            @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
-            @Valid @RequestBody(required = false) PaymentTransitionRequest request
-    ) {
-        return paymentService.failPayment(userDetails, paymentId, idempotencyKey, request);
-    }
+  @PostMapping("/payments/{paymentId}/fail")
+  public PaymentTransactionResponse failPayment(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable String paymentId,
+      @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
+      @Valid @RequestBody(required = false) PaymentTransitionRequest request) {
+    return paymentService.failPayment(userDetails, paymentId, idempotencyKey, request);
+  }
 
-    @PostMapping("/payments/{paymentId}/cancel")
-    public PaymentTransactionResponse cancelPayment(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable String paymentId,
-            @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
-            @Valid @RequestBody(required = false) PaymentTransitionRequest request
-    ) {
-        return paymentService.cancelPayment(userDetails, paymentId, idempotencyKey, request);
-    }
+  @PostMapping("/payments/{paymentId}/cancel")
+  public PaymentTransactionResponse cancelPayment(
+      @AuthenticationPrincipal UserDetails userDetails,
+      @PathVariable String paymentId,
+      @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
+      @Valid @RequestBody(required = false) PaymentTransitionRequest request) {
+    return paymentService.cancelPayment(userDetails, paymentId, idempotencyKey, request);
+  }
 
-    @PostMapping("/payments/webhooks/{provider}")
-    public PaymentTransactionResponse applyWebhook(
-            @PathVariable String provider,
-            @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
-            @RequestHeader(WEBHOOK_TOKEN_HEADER) String webhookToken,
-            @Valid @RequestBody PaymentWebhookRequest request
-    ) {
-        return paymentService.applyWebhook(provider, idempotencyKey, webhookToken, request);
-    }
+  @PostMapping("/payments/webhooks/{provider}")
+  public PaymentTransactionResponse applyWebhook(
+      @PathVariable String provider,
+      @RequestHeader(ApiConstants.IDEMPOTENCY_KEY_HEADER) String idempotencyKey,
+      @RequestHeader(WEBHOOK_TOKEN_HEADER) String webhookToken,
+      @Valid @RequestBody PaymentWebhookRequest request) {
+    return paymentService.applyWebhook(provider, idempotencyKey, webhookToken, request);
+  }
 }

@@ -16,14 +16,14 @@ cleanup() {
     wait "${APP_PID}" 2>/dev/null || true
   fi
 
-  docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" down >/dev/null 2>&1 || true
-
-  for port in "${DEV_PORT}" 5432 9000 9001; do
+  for port in "${DEV_PORT}"; do
     lsof -nP -iTCP:"${port}" -sTCP:LISTEN >/dev/null 2>&1 && {
-      echo "Port ${port} is still in use after smoke cleanup:" >&2
+      echo "Application port ${port} is still in use after smoke cleanup:" >&2
       lsof -nP -iTCP:"${port}" -sTCP:LISTEN >&2 || true
     }
   done
+
+  echo "PostgreSQL and MinIO remain running for local development."
 
   return 0
 }
@@ -90,9 +90,9 @@ fi
 
 curl -fsS "${BASE_URL}/api/v1/categories" >/dev/null
 
-email="smoke$(date +%s%N)@example.kz"
+email="smoke$(date +%s%N)@example.uz"
 register_payload="$(
-  printf '{"firstName":"Smoke","lastName":"User","email":"%s","password":"Test121314#","passwordConfirmation":"Test121314#"}' "${email}"
+  printf '{"firstName":"Smoke","lastName":"User","email":"%s","password":"Test121314#","passwordConfirmation":"Test121314#","consents":[{"type":"TERMS_OF_SERVICE","documentVersion":"1.0"},{"type":"PRIVACY_POLICY","documentVersion":"1.0"},{"type":"PERSONAL_DATA_PROCESSING","documentVersion":"1.0"},{"type":"PERFORMER_RULES","documentVersion":"1.0"},{"type":"CUSTOMER_RULES","documentVersion":"1.0"},{"type":"PROHIBITED_SERVICES_POLICY","documentVersion":"1.0"},{"type":"PAYMENT_POLICY","documentVersion":"1.0"}]}' "${email}"
 )"
 register_response="$(
   curl -fsS \
@@ -144,9 +144,9 @@ if ! printf '%s' "${verification_documents_response}" | grep -q "${verification_
   exit 1
 fi
 
-performer_email="performer$(date +%s%N)@example.kz"
+performer_email="performer$(date +%s%N)@example.uz"
 performer_register_payload="$(
-  printf '{"firstName":"Smoke","lastName":"Performer","email":"%s","password":"Test121314#","passwordConfirmation":"Test121314#"}' "${performer_email}"
+  printf '{"firstName":"Smoke","lastName":"Performer","email":"%s","password":"Test121314#","passwordConfirmation":"Test121314#","consents":[{"type":"TERMS_OF_SERVICE","documentVersion":"1.0"},{"type":"PRIVACY_POLICY","documentVersion":"1.0"},{"type":"PERSONAL_DATA_PROCESSING","documentVersion":"1.0"},{"type":"PERFORMER_RULES","documentVersion":"1.0"},{"type":"CUSTOMER_RULES","documentVersion":"1.0"},{"type":"PROHIBITED_SERVICES_POLICY","documentVersion":"1.0"},{"type":"PAYMENT_POLICY","documentVersion":"1.0"}]}' "${performer_email}"
 )"
 performer_register_response="$(
   curl -fsS \
@@ -162,11 +162,11 @@ if [[ -z "${performer_token}" ]]; then
   exit 1
 fi
 
-category_id="06F5Z8NMS7YQE4Q2F4R1HN9EZG"
-city_id="06KZCT00000000000000000001"
+category_id="06CAT000000000000000000011"
+city_id="06UZCT00000000000000000001"
 
 performer_payload="$(
-  printf '{"displayName":"Smoke Pro","description":"Smoke performer","skillsDescription":"Repair","cityId":"%s","serviceRadiusKm":30,"worksRemotely":false,"worksOnsite":true,"categories":[{"categoryId":"%s","experienceYears":3,"priceFrom":5000,"priceTo":20000,"currency":"KZT","primary":true}]}' \
+  printf '{"displayName":"Smoke Pro","description":"Smoke performer","skillsDescription":"Repair","cityId":"%s","serviceRadiusKm":30,"worksRemotely":false,"worksOnsite":true,"categories":[{"categoryId":"%s","experienceYears":3,"priceFrom":5000,"priceTo":20000,"currency":"UZS","primary":true}]}' \
     "${city_id}" \
     "${category_id}"
 )"
@@ -252,7 +252,7 @@ if ! printf '%s' "${favorite_list_response}" | grep -q "${performer_id}"; then
 fi
 
 task_payload="$(
-  printf '{"title":"Smoke task","description":"Smoke marketplace flow","categoryId":"%s","serviceMode":"ONSITE","priceType":"FIXED","fixedPrice":12000,"currency":"KZT","cityId":"%s","addressText":"Smoke address"}' \
+  printf '{"title":"Smoke task","description":"Smoke marketplace flow","categoryId":"%s","serviceMode":"ONSITE","priceType":"FIXED","fixedPrice":12000,"currency":"UZS","cityId":"%s","addressText":"Smoke address"}' \
     "${category_id}" \
     "${city_id}"
 )"
@@ -321,7 +321,7 @@ offer_response="$(
     -H 'Content-Type: application/json' \
     -H "Authorization: Bearer ${performer_token}" \
     -H "Idempotency-Key: $(idempotency_key)" \
-    -d '{"message":"Ready for smoke task","proposedPrice":11000,"currency":"KZT","estimatedDuration":"2 hours","includesMaterials":true}' \
+    -d '{"message":"Ready for smoke task","proposedPrice":11000,"currency":"UZS","estimatedDuration":"2 hours","includesMaterials":true}' \
     "${BASE_URL}/api/v1/tasks/${task_id}/offers"
 )"
 offer_id="$(printf '%s' "${offer_response}" | sed -n 's/.*"publicId":"\([^"]*\)".*/\1/p')"
@@ -439,7 +439,7 @@ payment_response="$(
     -H 'Content-Type: application/json' \
     -H "Authorization: Bearer ${access_token}" \
     -H "Idempotency-Key: $(idempotency_key)" \
-    -d '{"amount":12000,"currency":"KZT","paymentMode":"ON_PLATFORM_ESCROW"}' \
+    -d '{"amount":12000,"currency":"UZS","paymentMode":"ON_PLATFORM_ESCROW"}' \
     "${BASE_URL}/api/v1/deals/${deal_id}/payments"
 )"
 payment_id="$(printf '%s' "${payment_response}" | sed -n 's/.*"publicId":"\([^"]*\)".*/\1/p')"
@@ -603,7 +603,7 @@ if ! printf '%s' "${performer_profile_response}" | grep -q '"ratingCount":1'; th
 fi
 
 dispute_task_payload="$(
-  printf '{"title":"Smoke dispute task","description":"Smoke dispute flow","categoryId":"%s","serviceMode":"ONSITE","priceType":"FIXED","fixedPrice":14000,"currency":"KZT","cityId":"%s","addressText":"Smoke dispute address"}' \
+  printf '{"title":"Smoke dispute task","description":"Smoke dispute flow","categoryId":"%s","serviceMode":"ONSITE","priceType":"FIXED","fixedPrice":14000,"currency":"UZS","cityId":"%s","addressText":"Smoke dispute address"}' \
     "${category_id}" \
     "${city_id}"
 )"
@@ -627,7 +627,7 @@ dispute_offer_response="$(
     -H 'Content-Type: application/json' \
     -H "Authorization: Bearer ${performer_token}" \
     -H "Idempotency-Key: $(idempotency_key)" \
-    -d '{"message":"Ready for dispute smoke task","proposedPrice":13000,"currency":"KZT","estimatedDuration":"3 hours","includesMaterials":true}' \
+    -d '{"message":"Ready for dispute smoke task","proposedPrice":13000,"currency":"UZS","estimatedDuration":"3 hours","includesMaterials":true}' \
     "${BASE_URL}/api/v1/tasks/${dispute_task_id}/offers"
 )"
 dispute_offer_id="$(printf '%s' "${dispute_offer_response}" | sed -n 's/.*"publicId":"\([^"]*\)".*/\1/p')"

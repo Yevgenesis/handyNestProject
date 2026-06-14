@@ -6,29 +6,31 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface PerformerProfileRepository
-        extends JpaRepository<PerformerProfile, Long>, JpaSpecificationExecutor<PerformerProfile> {
+    extends JpaRepository<PerformerProfile, Long>, JpaSpecificationExecutor<PerformerProfile> {
 
-    boolean existsByUserId(Long userId);
+  boolean existsByUserId(Long userId);
 
-    @EntityGraph(attributePaths = {
-            "user",
-            "baseCountry",
-            "baseRegion",
-            "baseCity",
-            "baseDistrict",
-            "categories",
-            "categories.category"
-    })
-    Optional<PerformerProfile> findByUserId(Long userId);
+  @EntityGraph(
+      attributePaths = {
+        "user",
+        "baseCountry",
+        "baseRegion",
+        "baseCity",
+        "baseDistrict",
+        "categories",
+        "categories.category"
+      })
+  Optional<PerformerProfile> findByUserId(Long userId);
 
-    @EntityGraph(attributePaths = {
-            "user",
-            "baseCountry",
-            "baseRegion",
-            "baseCity",
-            "baseDistrict",
-            "categories",
-            "categories.category"
-    })
-    Optional<PerformerProfile> findByPublicId(String publicId);
+  @EntityGraph(
+      attributePaths = {
+        "user",
+        "baseCountry",
+        "baseRegion",
+        "baseCity",
+        "baseDistrict",
+        "categories",
+        "categories.category"
+      })
+  Optional<PerformerProfile> findByPublicId(String publicId);
 }

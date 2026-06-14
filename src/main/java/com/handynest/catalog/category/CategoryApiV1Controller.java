@@ -20,27 +20,26 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Categories", description = "Public category catalog")
 public class CategoryApiV1Controller {
 
-    private final CategoryQueryService categoryQueryService;
+  private final CategoryQueryService categoryQueryService;
 
-    @GetMapping
-    @Operation(summary = "List categories", description = "Returns the public category tree.")
-    public List<CategoryResponse> findAll(
-            @RequestParam(required = false) String locale,
-            @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
-    ) {
-        return categoryQueryService.findTree(SupportedLocaleResolver.resolve(locale, acceptLanguage));
-    }
+  @GetMapping
+  @Operation(summary = "List categories", description = "Returns the public category tree.")
+  public List<CategoryResponse> findAll(
+      @RequestParam(required = false) String locale,
+      @RequestParam(required = false) String query,
+      @RequestParam(required = false) CategoryServiceMode serviceMode,
+      @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage) {
+    return categoryQueryService.findTree(
+        SupportedLocaleResolver.resolve(locale, acceptLanguage), query, serviceMode);
+  }
 
-    @GetMapping("/{categoryId}")
-    @Operation(summary = "Get category", description = "Returns one category by public id.")
-    public CategoryResponse findById(
-            @PathVariable String categoryId,
-            @RequestParam(required = false) String locale,
-            @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage
-    ) {
-        return categoryQueryService.findByPublicId(
-                categoryId,
-                SupportedLocaleResolver.resolve(locale, acceptLanguage)
-        );
-    }
+  @GetMapping("/{categoryId}")
+  @Operation(summary = "Get category", description = "Returns one category by public id.")
+  public CategoryResponse findById(
+      @PathVariable String categoryId,
+      @RequestParam(required = false) String locale,
+      @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String acceptLanguage) {
+    return categoryQueryService.findByPublicId(
+        categoryId, SupportedLocaleResolver.resolve(locale, acceptLanguage));
+  }
 }

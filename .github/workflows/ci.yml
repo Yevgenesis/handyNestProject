@@ -1,0 +1,130 @@
+name: Проверка HandyNest
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Проверка форматирования backend
+        run: ./mvnw -B spotless:check
+      - name: Компиляция, тесты и coverage gates
+        run: ./mvnw -B clean verify
+      - name: Сохранение OpenAPI-контракта
+        uses: actions/upload-artifact@v4
+        with:
+          name: handynest-openapi
+          path: target/openapi/openapi.json
+          if-no-files-found: error
+      - name: Сохранение отчётов тестов и покрытия
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-reports
+          path: |
+            target/surefire-reports
+            target/site/jacoco
+
+  liquibase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16.2
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: admin
+          POSTGRES_DB: handyDB
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d handyDB"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Проверка Liquibase changelog
+        run: >-
+          ./mvnw -B liquibase:validate
+          -Dliquibase.url=jdbc:postgresql://localhost:5432/handyDB
+          -Dliquibase.username=postgres
+          -Dliquibase.password=admin
+
+  dependency-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Установка frontend-зависимостей для security scan
+        run: pnpm install --frozen-lockfile
+      - name: OWASP-проверка зависимостей
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        run: ./mvnw -B dependency-check:check -DnvdApiKey="$NVD_API_KEY"
+      - name: Сохранение отчёта по зависимостям
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: target/dependency-check-report.*
+          if-no-files-found: warn
+
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Сборка Java 21 runtime image
+        run: docker build --tag handynest-backend:ci .
+      - name: Проверка entrypoint образа
+        run: docker image inspect handynest-backend:ci --format '{{json .Config.Entrypoint}}'
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Установка frontend-зависимостей
+        run: pnpm install --frozen-lockfile
+      - name: Проверки качества frontend
+        run: pnpm --filter @handynest/web check

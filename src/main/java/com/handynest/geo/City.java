@@ -16,86 +16,92 @@ import java.math.BigDecimal;
 @Table(name = "city")
 public class City extends PublicIdEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "country_id", nullable = false)
-    private Country country;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "country_id", nullable = false)
+  private Country country;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "region_id", nullable = false)
-    private Region region;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "region_id", nullable = false)
+  private Region region;
 
-    @Column(name = "name_ru", nullable = false, length = 120)
-    private String nameRu;
+  @Column(name = "name_ru", nullable = false, length = 120)
+  private String nameRu;
 
-    @Column(name = "name_kz", nullable = false, length = 120)
-    private String nameKz;
+  @Column(name = "name_kz", nullable = false, length = 120)
+  private String nameKz;
 
-    @Column(name = "name_en", nullable = false, length = 120)
-    private String nameEn;
+  @Column(name = "name_en", nullable = false, length = 120)
+  private String nameEn;
 
-    @Column(nullable = false, unique = true, length = 120)
-    private String slug;
+  @Column(name = "name_uz", nullable = false, length = 120)
+  private String nameUz;
 
-    @Column(precision = 10, scale = 7)
-    private BigDecimal latitude;
+  @Column(nullable = false, unique = true, length = 120)
+  private String slug;
 
-    @Column(precision = 10, scale = 7)
-    private BigDecimal longitude;
+  @Column(precision = 10, scale = 7)
+  private BigDecimal latitude;
 
-    @Column(name = "is_supported", nullable = false)
-    private boolean supported;
+  @Column(precision = 10, scale = 7)
+  private BigDecimal longitude;
 
-    @Column(name = "sort_order", nullable = false)
-    private int sortOrder;
+  @Column(name = "is_supported", nullable = false)
+  private boolean supported;
 
-    protected City() {
-    }
+  @Column(name = "sort_order", nullable = false)
+  private int sortOrder;
 
-    public Long getId() {
-        return id;
-    }
+  protected City() {}
 
-    public Country getCountry() {
-        return country;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public Region getRegion() {
-        return region;
-    }
+  public Country getCountry() {
+    return country;
+  }
 
-    public String getNameRu() {
-        return nameRu;
-    }
+  public Region getRegion() {
+    return region;
+  }
 
-    public String getNameKz() {
-        return nameKz;
-    }
+  public String getNameRu() {
+    return nameRu;
+  }
 
-    public String getNameEn() {
-        return nameEn;
-    }
+  public String getNameKz() {
+    return nameKz;
+  }
 
-    public String getSlug() {
-        return slug;
-    }
+  public String getNameEn() {
+    return nameEn;
+  }
 
-    public BigDecimal getLatitude() {
-        return latitude;
-    }
+  public String getNameUz() {
+    return nameUz;
+  }
 
-    public BigDecimal getLongitude() {
-        return longitude;
-    }
+  public String getSlug() {
+    return slug;
+  }
 
-    public boolean isSupported() {
-        return supported;
-    }
+  public BigDecimal getLatitude() {
+    return latitude;
+  }
 
-    public int getSortOrder() {
-        return sortOrder;
-    }
+  public BigDecimal getLongitude() {
+    return longitude;
+  }
+
+  public boolean isSupported() {
+    return supported;
+  }
+
+  public int getSortOrder() {
+    return sortOrder;
+  }
 }

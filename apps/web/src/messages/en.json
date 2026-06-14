@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "tasks": "Tasks",
+    "performers": "Professionals",
+    "categories": "Categories",
+    "login": "Sign in",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "logout": "Sign out",
+    "security": "Security",
+    "openMenu": "Open menu"
+  },
+  "locale": {
+    "label": "Interface language",
+    "ru": "Русский",
+    "kk": "Қазақша",
+    "en": "English"
+  },
+  "common": {
+    "loading": "Loading…",
+    "retry": "Try again",
+    "details": "Details",
+    "search": "Search",
+    "all": "All",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "auth": {
+    "loginTitle": "Sign in to HandyNest",
+    "registerTitle": "Create an account",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "passwordConfirmation": "Confirm password",
+    "submitLogin": "Sign in",
+    "submitRegister": "Create account"
+  },
+  "footer": {
+    "tagline": "Services marketplace for Kazakhstan.",
+    "categories": "Categories",
+    "tasks": "Tasks",
+    "performers": "Professionals"
+  }
+}

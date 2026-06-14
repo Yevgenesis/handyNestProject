@@ -1,7 +1,7 @@
 package com.handynest.verification;
 
-import com.handynest.identity.User;
 import com.handynest.common.domain.PublicIdEntity;
+import com.handynest.identity.User;
 import com.handynest.marketplace.MarketplaceAttachment;
 import com.handynest.performer.PerformerProfile;
 import com.handynest.performer.PerformerVerificationLevel;
@@ -28,87 +28,85 @@ import lombok.Getter;
 @Table(name = "verification_request")
 public class VerificationRequest extends PublicIdEntity {
 
-    @Getter
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Getter
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Version
-    @Column(nullable = false)
-    private long version;
+  @Version
+  @Column(nullable = false)
+  private long version;
 
-    @Getter
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "performer_profile_id", nullable = false)
-    private PerformerProfile performerProfile;
+  @Getter
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "performer_profile_id", nullable = false)
+  private PerformerProfile performerProfile;
 
-    @Getter
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "requested_by_user_id", nullable = false)
-    private User requestedBy;
+  @Getter
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "requested_by_user_id", nullable = false)
+  private User requestedBy;
 
-    @Getter
-    @Enumerated(EnumType.STRING)
-    @Column(name = "requested_level", nullable = false, length = 32)
-    private PerformerVerificationLevel requestedLevel;
+  @Getter
+  @Enumerated(EnumType.STRING)
+  @Column(name = "requested_level", nullable = false, length = 32)
+  private PerformerVerificationLevel requestedLevel;
 
-    @Getter
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 32)
-    private VerificationRequestStatus status = VerificationRequestStatus.PENDING;
+  @Getter
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 32)
+  private VerificationRequestStatus status = VerificationRequestStatus.PENDING;
 
-    @Getter
-    @Column(length = 1000)
-    private String comment;
+  @Getter
+  @Column(length = 1000)
+  private String comment;
 
-    @Getter
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reviewed_by_user_id")
-    private User reviewedBy;
+  @Getter
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "reviewed_by_user_id")
+  private User reviewedBy;
 
-    @Getter
-    @Column(name = "reviewed_at")
-    private Instant reviewedAt;
+  @Getter
+  @Column(name = "reviewed_at")
+  private Instant reviewedAt;
 
-    @Getter
-    @Column(name = "rejection_reason", length = 1000)
-    private String rejectionReason;
+  @Getter
+  @Column(name = "rejection_reason", length = 1000)
+  private String rejectionReason;
 
-    @Getter
-    @OneToMany(mappedBy = "verificationRequest", cascade = CascadeType.ALL)
-    private Set<MarketplaceAttachment> documents = new LinkedHashSet<>();
+  @Getter
+  @OneToMany(mappedBy = "verificationRequest", cascade = CascadeType.ALL)
+  private Set<MarketplaceAttachment> documents = new LinkedHashSet<>();
 
-    protected VerificationRequest() {
-    }
+  protected VerificationRequest() {}
 
-    public VerificationRequest(
-            PerformerProfile performerProfile,
-            User requestedBy,
-            PerformerVerificationLevel requestedLevel,
-            String comment
-    ) {
-        this.performerProfile = performerProfile;
-        this.requestedBy = requestedBy;
-        this.requestedLevel = requestedLevel;
-        this.comment = comment;
-    }
+  public VerificationRequest(
+      PerformerProfile performerProfile,
+      User requestedBy,
+      PerformerVerificationLevel requestedLevel,
+      String comment) {
+    this.performerProfile = performerProfile;
+    this.requestedBy = requestedBy;
+    this.requestedLevel = requestedLevel;
+    this.comment = comment;
+  }
 
-    public void addDocument(MarketplaceAttachment document) {
-        document.attachToVerificationRequest(this);
-        documents.add(document);
-    }
+  public void addDocument(MarketplaceAttachment document) {
+    document.attachToVerificationRequest(this);
+    documents.add(document);
+  }
 
-    public void approve(User admin, Instant reviewedAt) {
-        this.status = VerificationRequestStatus.APPROVED;
-        this.reviewedBy = admin;
-        this.reviewedAt = reviewedAt;
-        this.rejectionReason = null;
-    }
+  public void approve(User admin, Instant reviewedAt) {
+    this.status = VerificationRequestStatus.APPROVED;
+    this.reviewedBy = admin;
+    this.reviewedAt = reviewedAt;
+    this.rejectionReason = null;
+  }
 
-    public void reject(User admin, String reason, Instant reviewedAt) {
-        this.status = VerificationRequestStatus.REJECTED;
-        this.reviewedBy = admin;
-        this.reviewedAt = reviewedAt;
-        this.rejectionReason = reason;
-    }
+  public void reject(User admin, String reason, Instant reviewedAt) {
+    this.status = VerificationRequestStatus.REJECTED;
+    this.reviewedBy = admin;
+    this.reviewedAt = reviewedAt;
+    this.rejectionReason = reason;
+  }
 }

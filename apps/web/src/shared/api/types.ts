@@ -1,0 +1,35 @@
+import type { components } from "@/shared/api/generated/schema";
+
+export type ApiSchemas = components["schemas"];
+export type ApiErrorResponse = ApiSchemas["ApiErrorResponse"];
+export type ApiFieldError = ApiSchemas["ApiFieldError"];
+export type AuthTokenResponse = ApiSchemas["AuthTokenResponse"];
+export type AuthUserResponse = ApiSchemas["AuthUserResponse"];
+export type AuthLoginRequest = ApiSchemas["AuthLoginRequest"];
+export type AuthRegisterRequest = ApiSchemas["AuthRegisterRequest"];
+export type ConsentRequirement = ApiSchemas["ConsentRequirementResponse"];
+export type MarketConfig = ApiSchemas["MarketConfigResponse"];
+export type Category = ApiSchemas["CategoryResponse"];
+export type GeoRegion = ApiSchemas["GeoRegionResponse"];
+export type GeoCity = ApiSchemas["GeoCityResponse"];
+export type MarketplaceTask = ApiSchemas["MarketplaceTaskResponse"];
+export type MarketplaceTaskPage =
+  ApiSchemas["PageResponseMarketplaceTaskResponse"];
+export type PerformerProfile = ApiSchemas["PerformerProfileResponse"];
+export type PerformerPage = ApiSchemas["PageResponsePerformerProfileResponse"];
+export type UserProfile = ApiSchemas["UserProfileResponse"];
+export type TaskOffer = ApiSchemas["TaskOfferResponse"];
+export type Deal = ApiSchemas["DealResponse"];
+export type DealChat = ApiSchemas["DealChatResponse"];
+export type ChatMessage = ApiSchemas["ChatMessageResponse"];
+export type ChatTimeline = ApiSchemas["ChatMessageTimelineResponse"];
+export type MarketplaceAttachment = ApiSchemas["AttachmentResponse"];
+export type ChatAttachmentUpload = ApiSchemas["AttachmentUploadResponse"];
+export type DisputeCase = ApiSchemas["DisputeCaseResponse"];
+export type TaskAttachment = ApiSchemas["TaskAttachmentResponse"];
+export type TaskAttachmentUpload = ApiSchemas["TaskAttachmentUploadResponse"];
+export type VerificationRequest = ApiSchemas["VerificationRequestResponse"];
+export type UserConsent = ApiSchemas["UserConsentResponse"];
+export type Feedback = ApiSchemas["FeedbackResponse"];
+export type Notification = ApiSchemas["NotificationResponse"];
+export type NotificationPage = ApiSchemas["PageResponseNotificationResponse"];

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-13-dev-uzbekistan-market" author="codex" context="dev">
+        <comment>Move local fixtures to the Uzbekistan-first launch market without changing historical migrations.</comment>
+        <sql splitStatements="false"><![CDATA[
+            UPDATE handy_user
+            SET phone = CASE email
+                    WHEN 'customer@handynest.dev' THEN '+998900000001'
+                    WHEN 'performer@handynest.dev' THEN '+998900000002'
+                    WHEN 'admin@handynest.dev' THEN '+998900000003'
+                END,
+                is_phone_verified = true,
+                country_id = (SELECT id FROM country WHERE code = 'UZ'),
+                city_id = (SELECT id FROM city WHERE public_id = '06UZCT00000000000000000001'),
+                district_id = NULL,
+                updated_on = CURRENT_TIMESTAMP
+            WHERE email IN (
+                'customer@handynest.dev',
+                'performer@handynest.dev',
+                'admin@handynest.dev'
+            );
+
+            UPDATE performer_profile
+            SET description = 'Local fixture performer for the Tashkent launch market.',
+                skills_description = 'Santexnika, o‘rnatish va uy ishlari.',
+                base_country_id = (SELECT id FROM country WHERE code = 'UZ'),
+                base_region_id = (SELECT id FROM region WHERE public_id = '06UZRG00000000000000000001'),
+                base_city_id = (SELECT id FROM city WHERE public_id = '06UZCT00000000000000000001'),
+                base_district_id = NULL,
+                travel_fee_policy = 'Toshkent shahri bo‘ylab chiqish narxi kelishiladi.',
+                verification_level = 'PHONE_VERIFIED',
+                updated_at = CURRENT_TIMESTAMP
+            WHERE public_id = '06DEVPERFORMERPROFILE00001';
+
+            DELETE FROM performer_category
+            WHERE performer_profile_id = (
+                SELECT id FROM performer_profile WHERE public_id = '06DEVPERFORMERPROFILE00001'
+            );
+
+            INSERT INTO performer_category (
+                performer_profile_id,
+                category_id,
+                experience_years,
+                price_from,
+                price_to,
+                currency,
+                is_primary,
+                approval_status,
+                created_at,
+                updated_at
+            )
+            SELECT performer_profile.id,
+                   category.id,
+                   5,
+                   150000.00,
+                   750000.00,
+                   'UZS',
+                   true,
+                   'APPROVED',
+                   CURRENT_TIMESTAMP,
+                   CURRENT_TIMESTAMP
+            FROM performer_profile
+            JOIN category ON category.slug = 'plumber'
+            WHERE performer_profile.public_id = '06DEVPERFORMERPROFILE00001'
+            ON CONFLICT (performer_profile_id, category_id) DO UPDATE SET
+                experience_years = EXCLUDED.experience_years,
+                price_from = EXCLUDED.price_from,
+                price_to = EXCLUDED.price_to,
+                currency = EXCLUDED.currency,
+                is_primary = true,
+                approval_status = 'APPROVED',
+                updated_at = CURRENT_TIMESTAMP;
+
+            UPDATE marketplace_task
+            SET category_id = (SELECT id FROM category WHERE slug = 'plumber'),
+                title = 'Dev seed: установить кухонный смеситель',
+                description = 'Тестовая задача для ручной проверки marketplace flow в Ташкенте.',
+                fixed_price = 450000.00,
+                currency = 'UZS',
+                country_id = (SELECT id FROM country WHERE code = 'UZ'),
+                region_id = (SELECT id FROM region WHERE public_id = '06UZRG00000000000000000001'),
+                city_id = (SELECT id FROM city WHERE public_id = '06UZCT00000000000000000001'),
+                district_id = (SELECT id FROM district WHERE public_id = '06UZDT00000000000000000011'),
+                address_text = 'Ташкент, Юнусабадский район',
+                updated_at = CURRENT_TIMESTAMP
+            WHERE public_id = '06DEVMARKETPLACETASK000001';
+
+            UPDATE task_offer
+            SET proposed_price = 400000.00,
+                currency = 'UZS',
+                updated_at = CURRENT_TIMESTAMP
+            WHERE public_id = '06DEVMARKETPLACEOFFER00001';
+        ]]></sql>
+    </changeSet>
+</databaseChangeLog>

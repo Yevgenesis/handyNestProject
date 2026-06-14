@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-12-dev-performer-category-alignment" author="codex" context="dev">
+        <comment>Keep the dev performer usable with the approved low-risk MVP catalog.</comment>
+        <sql splitStatements="false"><![CDATA[
+            UPDATE performer_category
+            SET is_primary = false,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE performer_profile_id = (
+                SELECT id
+                FROM performer_profile
+                WHERE public_id = '06DEVPERFORMERPROFILE00001'
+            );
+
+            INSERT INTO performer_category (
+                performer_profile_id,
+                category_id,
+                experience_years,
+                price_from,
+                price_to,
+                currency,
+                is_primary,
+                created_at,
+                updated_at
+            )
+            SELECT
+                performer_profile.id,
+                category.id,
+                5,
+                5000.00,
+                25000.00,
+                'KZT',
+                true,
+                CURRENT_TIMESTAMP,
+                CURRENT_TIMESTAMP
+            FROM performer_profile
+            JOIN category ON category.public_id = '06F5Z8NMT2F6FDSRCEXZMHNEMR'
+            WHERE performer_profile.public_id = '06DEVPERFORMERPROFILE00001'
+            ON CONFLICT (performer_profile_id, category_id) DO UPDATE
+            SET experience_years = EXCLUDED.experience_years,
+                price_from = EXCLUDED.price_from,
+                price_to = EXCLUDED.price_to,
+                currency = EXCLUDED.currency,
+                is_primary = true,
+                updated_at = CURRENT_TIMESTAMP;
+        ]]></sql>
+    </changeSet>
+
+</databaseChangeLog>

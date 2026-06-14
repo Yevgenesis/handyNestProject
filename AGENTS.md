@@ -7,16 +7,18 @@ Full specifications:
 ```text
 docs/HandyNest_TZ_for_Codex_ru_v6.md
 docs/HandyNest_Frontend_TZ_for_Codex_ru.md
+docs/HandyNest_Uzbekistan_Market_TZ_Addendum_ru.md
 ```
 
 Backend specification is the source of truth for business logic and API.
+The Uzbekistan addendum takes precedence for market, geo, currency, localization and contact reveal.
 Frontend specification is the source of truth for web UI structure and frontend stack.
 
 ---
 
 ## 1. Project
 
-HandyNest is a Kazakhstan-focused service marketplace.
+HandyNest is an Uzbekistan-first multi-country service marketplace. All Uzbekistan cities are supported; Tashkent is the default city.
 
 Core flow:
 

@@ -1,51 +1,72 @@
-# HandyNest Backend Remaining Roadmap
+# Оставшаяся дорожная карта backend HandyNest
 
-This checklist tracks the remaining backend work needed to converge the current codebase to
-`docs/HandyNest_TZ_for_Codex_ru_v6.md`.
+Документ фиксирует оставшуюся backend-работу относительно `docs/HandyNest_TZ_for_Codex_ru_v6.md`.
 
-## Current Focus
+## Текущее состояние
 
-The backend already contains most canonical MVP foundations. Legacy CRUD controllers are removed
-or blocked from runtime, and the Java source is converging on feature-owned `com.handynest`
-packages without changing database tables unnecessarily.
+Backend содержит канонический transactional marketplace flow, auth verification, правила доступа к private files, Uzbekistan-first geo/catalog foundation, typed platform settings, append-only legal consents, trust and safety administration, transactional outbox и production CI gates.
 
-## Slices
+Первый активный рынок: Узбекистан; поддерживаются все 14 регионов и 120 городов, Ташкент используется по умолчанию. Валюта новых операций: `UZS`. Публичный MVP-каталог ограничен пятью направлениями из Uzbekistan addendum. Данные Казахстана сохранены как неподдерживаемый исторический рынок.
 
-1. Harden canonical `MarketplaceTask` lifecycle:
-   - status transitions;
-   - moderation/open flow;
-   - auto-expire jobs;
-   - search/filter behavior.
-2. Harden `TaskOffer -> Deal -> Chat`:
-   - optimistic locking;
-   - concurrency tests;
-   - idempotency checks for critical POST actions.
-3. Complete file storage flow:
+Дальнейшая backend-работа должна определяться результатами интеграции frontend и выбором production-провайдеров, а не legacy cleanup.
+
+## Выполненные блоки
+
+1. Marketplace lifecycle hardening:
+   - явные переходы task/offer/deal;
+   - moderation и expiration;
+   - атомарное принятие offer и concurrency tests;
+   - idempotency критических действий.
+2. Category policy и administration:
+   - локализованные `ru/uz` названия и поисковые синонимы;
+   - risk, launch phase, verification и payment capability flags;
+   - optimistic admin updates и audit history;
+   - reconciliation performer assignments.
+3. Uzbekistan MVP category seed:
+   - пять публичных корневых направлений;
+   - стабильные slug/publicId и `ru/uz` переводы;
+   - metadata категорий;
+   - сохранение связанных legacy rows.
+4. File storage и verification access:
    - presigned upload/download URLs;
-   - bucket and visibility rules;
-   - private verification document access.
-4. Complete admin/moderation/dispute flows:
+   - typed private verification documents;
+   - audited admin access;
+   - approval для risk categories.
+5. Admin, moderation и dispute flows:
    - evidence attachments;
    - admin resolution;
-   - complaint/risk-event handling.
-5. Complete notification/outbox processing:
+   - complaint и risk-event handling.
+6. Transactional notifications/outbox:
    - worker;
-   - event mapping for key marketplace actions.
-6. Complete payment abstraction:
+   - events для ключевых marketplace actions.
+7. Payment abstraction:
    - state machine;
-   - webhook/idempotency skeleton;
-   - no card data storage.
-7. Finish production hardening:
+   - webhook/idempotency foundation;
+   - отсутствие хранения card data.
+8. Production hardening:
    - CI quality gates;
    - dependency scan;
-   - OpenAPI artifact generation;
-   - backup/restore documentation;
-   - expanded state-machine and security tests.
+   - OpenAPI artifact;
+   - backup/restore docs;
+   - state-machine и security tests.
+9. Uzbekistan-first launch market:
+   - `/api/v1/market/config`;
+   - все 14 регионов и 120 городов Узбекистана;
+   - Ташкент как город по умолчанию и его 12 районов;
+   - UZS defaults без переписывания legacy KZT;
+   - controlled contact reveal, deal cancellation audit и antifraud signals.
 
-## Guardrails
+## Следующая рекомендуемая работа
 
-- Do not modify old Liquibase changesets.
-- Do not expose JPA entities through API.
-- Keep `/api/v1` as the only public contract.
-- Prefer small, verifiable slices over a large rewrite.
-- Free project ports after smoke or local runtime checks.
+- использовать `target/openapi/openapi.json` как контракт frontend;
+- продолжать `apps/web` по frontend-фазам;
+- выбрать production SMS/email/payment/storage providers;
+- провести staging load, backup/restore и security drills перед запуском.
+
+## Ограничения
+
+- не изменять старые Liquibase changesets;
+- не отдавать JPA entities через API;
+- сохранять `/api/v1` единственным публичным контрактом;
+- выполнять изменения проверяемыми bounded slices;
+- после runtime-проверок освобождать app-порты.

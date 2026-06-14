@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-07-03-auth-otp-email-verification" author="codex">
+        <createTable tableName="otp_code">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_otp_code"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="purpose" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code_hash" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attempts" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_attempts" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="consumed_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="resend_available_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by_ip" type="VARCHAR(64)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="otp_code"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_otp_code_user"
+                                 referencedTableName="handy_user"
+                                 referencedColumnNames="id"/>
+
+        <createIndex tableName="otp_code" indexName="idx_otp_code_user">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="otp_code" indexName="idx_otp_code_phone_purpose">
+            <column name="phone_number"/>
+            <column name="purpose"/>
+        </createIndex>
+        <createIndex tableName="otp_code" indexName="idx_otp_code_expires_at">
+            <column name="expires_at"/>
+        </createIndex>
+
+        <createTable tableName="email_verification_token">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_email_verification_token"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token_hash" type="VARCHAR(64)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uc_email_verification_token_hash"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="consumed_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="resend_available_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by_ip" type="VARCHAR(64)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="email_verification_token"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_email_verification_token_user"
+                                 referencedTableName="handy_user"
+                                 referencedColumnNames="id"/>
+
+        <createIndex tableName="email_verification_token" indexName="idx_email_verification_token_user">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="email_verification_token" indexName="idx_email_verification_token_email">
+            <column name="email"/>
+        </createIndex>
+        <createIndex tableName="email_verification_token" indexName="idx_email_verification_token_expires_at">
+            <column name="expires_at"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

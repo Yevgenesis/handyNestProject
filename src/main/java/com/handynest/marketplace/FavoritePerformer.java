@@ -1,7 +1,7 @@
 package com.handynest.marketplace;
 
-import com.handynest.identity.User;
 import com.handynest.common.domain.BaseAuditEntity;
+import com.handynest.identity.User;
 import com.handynest.performer.PerformerProfile;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,39 +17,37 @@ import lombok.Getter;
 
 @Entity
 @Table(
-        name = "favorite_performer",
-        uniqueConstraints = @UniqueConstraint(
-                name = "uk_favorite_performer_customer_performer",
-                columnNames = {"customer_id", "performer_profile_id"}
-        )
-)
+    name = "favorite_performer",
+    uniqueConstraints =
+        @UniqueConstraint(
+            name = "uk_favorite_performer_customer_performer",
+            columnNames = {"customer_id", "performer_profile_id"}))
 public class FavoritePerformer extends BaseAuditEntity {
 
-    @Getter
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Getter
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Getter
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "customer_id", nullable = false)
-    private User customer;
+  @Getter
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "customer_id", nullable = false)
+  private User customer;
 
-    @Getter
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "performer_profile_id", nullable = false)
-    private PerformerProfile performerProfile;
+  @Getter
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "performer_profile_id", nullable = false)
+  private PerformerProfile performerProfile;
 
-    @Getter
-    @Column(length = 500)
-    private String note;
+  @Getter
+  @Column(length = 500)
+  private String note;
 
-    protected FavoritePerformer() {
-    }
+  protected FavoritePerformer() {}
 
-    public FavoritePerformer(User customer, PerformerProfile performerProfile, String note) {
-        this.customer = customer;
-        this.performerProfile = performerProfile;
-        this.note = note;
-    }
+  public FavoritePerformer(User customer, PerformerProfile performerProfile, String note) {
+    this.customer = customer;
+    this.performerProfile = performerProfile;
+    this.note = note;
+  }
 }

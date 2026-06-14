@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-11-01-verification-document-type" author="codex">
+        <addColumn tableName="marketplace_attachment">
+            <column name="verification_document_type" type="VARCHAR(40)"/>
+        </addColumn>
+
+        <sql>
+            UPDATE marketplace_attachment
+            SET verification_document_type = 'OTHER'
+            WHERE attachment_type = 'VERIFICATION_DOCUMENT'
+        </sql>
+
+        <sql>
+            ALTER TABLE marketplace_attachment
+            ADD CONSTRAINT chk_attachment_verification_document_type
+            CHECK (
+                (attachment_type = 'VERIFICATION_DOCUMENT' AND verification_document_type IS NOT NULL)
+                OR
+                (attachment_type &lt;&gt; 'VERIFICATION_DOCUMENT' AND verification_document_type IS NULL)
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="2026-06-11-02-performer-category-approval" author="codex">
+        <addColumn tableName="performer_category">
+            <column name="approval_status" type="VARCHAR(32)" defaultValue="NOT_REQUIRED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reviewed_by_user_id" type="BIGINT"/>
+            <column name="reviewed_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="rejection_reason" type="VARCHAR(1000)"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="performer_category"
+                                 baseColumnNames="reviewed_by_user_id"
+                                 constraintName="fk_performer_category_reviewed_by"
+                                 referencedTableName="handy_user"
+                                 referencedColumnNames="id"/>
+
+        <sql>
+            UPDATE performer_category pc
+            SET approval_status = CASE
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM category c
+                    WHERE c.id = pc.category_id
+                      AND (c.requires_manual_approval = TRUE OR c.requires_license = TRUE)
+                ) THEN 'PENDING'
+                ELSE 'NOT_REQUIRED'
+            END
+        </sql>
+
+        <sql>
+            ALTER TABLE performer_category
+            ADD CONSTRAINT chk_performer_category_approval_status
+            CHECK (approval_status IN ('NOT_REQUIRED', 'PENDING', 'APPROVED', 'REJECTED'))
+        </sql>
+        <createIndex tableName="performer_category" indexName="idx_performer_category_approval_status">
+            <column name="approval_status"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-06-11-03-verification-audit-event" author="codex">
+        <createTable tableName="verification_audit_event">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_verification_audit_event" nullable="false"/>
+            </column>
+            <column name="public_id" type="VARCHAR(26)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_verification_audit_event_public_id"/>
+            </column>
+            <column name="verification_request_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_verification_audit_event_request"
+                             referencedTableName="verification_request"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="actor_user_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_verification_audit_event_actor"
+                             referencedTableName="handy_user"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="attachment_id" type="BIGINT">
+                <constraints foreignKeyName="fk_verification_audit_event_attachment"
+                             referencedTableName="marketplace_attachment"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="action" type="VARCHAR(48)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="verification_audit_event" indexName="idx_verification_audit_event_request_created">
+            <column name="verification_request_id"/>
+            <column name="created_at"/>
+        </createIndex>
+        <createIndex tableName="verification_audit_event" indexName="idx_verification_audit_event_actor_created">
+            <column name="actor_user_id"/>
+            <column name="created_at"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2026-06-11-04-single-pending-verification-request" author="codex">
+        <sql>
+            CREATE UNIQUE INDEX uk_verification_request_pending_performer
+            ON verification_request (performer_profile_id)
+            WHERE status = 'PENDING'
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -1,8 +1,7 @@
 package com.handynest.marketplace;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 
-public record WorkAcceptanceRequest(
-        @Size(max = 2000) String message
-) {
-}
+@Schema(description = "Optional customer message when accepting submitted work.")
+public record WorkAcceptanceRequest(@Size(max = 2000) String message) {}

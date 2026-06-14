@@ -1,0 +1,22 @@
+{
+  "name": "handynest-fullstack",
+  "private": true,
+  "packageManager": "pnpm@10.34.3",
+  "scripts": {
+    "web:dev": "pnpm --filter @handynest/web dev",
+    "web:build": "pnpm --filter @handynest/web build",
+    "web:lint": "pnpm --filter @handynest/web lint",
+    "web:format": "pnpm --filter @handynest/web format",
+    "web:format:check": "pnpm --filter @handynest/web format:check",
+    "web:typecheck": "pnpm --filter @handynest/web typecheck",
+    "web:test": "pnpm --filter @handynest/web test",
+    "web:test:e2e": "pnpm --filter @handynest/web test:e2e",
+    "web:check": "pnpm --filter @handynest/web check",
+    "web:api:generate": "pnpm --filter @handynest/web api:generate"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss": "8.5.15"
+    }
+  }
+}

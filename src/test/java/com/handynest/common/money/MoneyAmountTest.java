@@ -1,24 +1,23 @@
 package com.handynest.common.money;
 
-import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.math.BigDecimal;
+import org.junit.jupiter.api.Test;
+
 class MoneyAmountTest {
 
-    @Test
-    void defaultsCurrencyToKzt() {
-        MoneyAmount amount = new MoneyAmount(new BigDecimal("1000.00"), null);
+  @Test
+  void defaultsCurrencyToUzs() {
+    MoneyAmount amount = new MoneyAmount(new BigDecimal("1000.00"), null);
 
-        assertEquals(new BigDecimal("1000.00"), amount.amount());
-        assertEquals(CurrencyCode.KZT, amount.currency());
-    }
+    assertEquals(new BigDecimal("1000.00"), amount.amount());
+    assertEquals(CurrencyCode.UZS, amount.currency());
+  }
 
-    @Test
-    void rejectsNullAmount() {
-        assertThrows(NullPointerException.class, () -> new MoneyAmount(null, CurrencyCode.KZT));
-    }
+  @Test
+  void rejectsNullAmount() {
+    assertThrows(NullPointerException.class, () -> new MoneyAmount(null, CurrencyCode.UZS));
+  }
 }

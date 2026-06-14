@@ -15,24 +15,23 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ApiSecurityErrorWriter {
 
-    private final ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
 
-    public void write(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            HttpStatus status,
-            ApiErrorCode code,
-            String message
-    ) throws IOException {
-        if (response.isCommitted()) {
-            return;
-        }
-
-        response.setStatus(status.value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        objectMapper.writeValue(
-                response.getOutputStream(),
-                ApiErrorResponse.of(status, code, message, request.getRequestURI())
-        );
+  public void write(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      HttpStatus status,
+      ApiErrorCode code,
+      String message)
+      throws IOException {
+    if (response.isCommitted()) {
+      return;
     }
+
+    response.setStatus(status.value());
+    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    objectMapper.writeValue(
+        response.getOutputStream(),
+        ApiErrorResponse.of(status, code, message, request.getRequestURI()));
+  }
 }

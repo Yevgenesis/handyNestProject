@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-13-dev-smoke-limits" author="codex" context="dev">
+        <comment>Allow repeatable local HTTP smoke and Playwright runs without weakening production limits.</comment>
+        <sql><![CDATA[
+            UPDATE platform_setting
+            SET setting_value = '1000', updated_at = CURRENT_TIMESTAMP
+            WHERE setting_key = 'marketplace.free-offer-limit-monthly';
+
+            UPDATE platform_setting
+            SET setting_value = '100', updated_at = CURRENT_TIMESTAMP
+            WHERE setting_key = 'risk.max-active-tasks';
+        ]]></sql>
+    </changeSet>
+
+</databaseChangeLog>

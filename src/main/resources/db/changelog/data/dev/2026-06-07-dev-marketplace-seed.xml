@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="2026-06-07-03-dev-marketplace-seed" author="codex" context="dev">
+        <comment>Local/dev-only fixture accounts and marketplace data. Never run in production.</comment>
+        <sql splitStatements="false"><![CDATA[
+            WITH fixture_users AS (
+                SELECT *
+                FROM (VALUES
+                    (
+                        '06DEVUSERCUSTOMER000000001',
+                        'customer@handynest.dev',
+                        'Dev',
+                        'Customer',
+                        '+77000000001',
+                        'USER'
+                    ),
+                    (
+                        '06DEVUSERPERFORMER00000001',
+                        'performer@handynest.dev',
+                        'Dev',
+                        'Performer',
+                        '+77000000002',
+                        'PERFORMER'
+                    ),
+                    (
+                        '06DEVUSERADMIN000000000001',
+                        'admin@handynest.dev',
+                        'Dev',
+                        'Admin',
+                        '+77000000003',
+                        'ADMIN'
+                    )
+                ) AS data(public_id, email, first_name, last_name, phone, primary_role)
+            ),
+            upserted_users AS (
+                INSERT INTO handy_user (
+                    public_id,
+                    first_name,
+                    last_name,
+                    email,
+                    phone,
+                    is_email_verified,
+                    is_phone_verified,
+                    status,
+                    account_type,
+                    password,
+                    task_count,
+                    is_deleted,
+                    user_rating,
+                    customer_risk_score,
+                    country_id,
+                    city_id,
+                    preferred_service_radius_km,
+                    created_on,
+                    updated_on
+                )
+                SELECT
+                    fixture_users.public_id,
+                    fixture_users.first_name,
+                    fixture_users.last_name,
+                    fixture_users.email,
+                    fixture_users.phone,
+                    true,
+                    true,
+                    'ACTIVE',
+                    'PERSONAL',
+                    '$2a$10$d9KizCHnvpyhuA3UGr3QFe61SOMZaKAD7cl1VZZVV5S2VY2bAXyh.',
+                    0,
+                    false,
+                    100.0,
+                    0.00,
+                    country.id,
+                    city.id,
+                    25,
+                    CURRENT_TIMESTAMP,
+                    CURRENT_TIMESTAMP
+                FROM fixture_users
+                JOIN country ON country.code = 'KZ'
+                JOIN city ON city.public_id = '06KZCT00000000000000000001'
+                ON CONFLICT (email) DO UPDATE
+                SET first_name = EXCLUDED.first_name,
+                    last_name = EXCLUDED.last_name,
+                    phone = EXCLUDED.phone,
+                    is_email_verified = true,
+                    is_phone_verified = true,
+                    status = 'ACTIVE',
+                    account_type = 'PERSONAL',
+                    password = EXCLUDED.password,
+                    is_deleted = false,
+                    deleted_at = NULL,
+                    country_id = EXCLUDED.country_id,
+                    city_id = EXCLUDED.city_id,
+                    preferred_service_radius_km = EXCLUDED.preferred_service_radius_km,
+                    updated_on = CURRENT_TIMESTAMP
+                RETURNING id, email
+            )
+            INSERT INTO customer_profile (
+                user_id,
+                rating_average,
+                rating_count,
+                completed_orders_count,
+                canceled_orders_count,
+                dispute_count,
+                no_show_count,
+                created_at,
+                updated_at
+            )
+            SELECT handy_user.id, 0.00, 0, 0, 0, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM handy_user
+            WHERE handy_user.email IN (
+                'customer@handynest.dev',
+                'performer@handynest.dev',
+                'admin@handynest.dev'
+            )
+            ON CONFLICT (user_id) DO UPDATE
+            SET updated_at = CURRENT_TIMESTAMP;
+
+            INSERT INTO user_roles (user_id, role_name)
+            SELECT handy_user.id, roles.role_name
+            FROM handy_user
+            JOIN (VALUES
+                ('customer@handynest.dev', 'USER'),
+                ('performer@handynest.dev', 'USER'),
+                ('performer@handynest.dev', 'PERFORMER'),
+                ('admin@handynest.dev', 'USER'),
+                ('admin@handynest.dev', 'ADMIN')
+            ) AS roles(email, role_name) ON roles.email = handy_user.email
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM user_roles existing
+                WHERE existing.user_id = handy_user.id
+                  AND existing.role_name = roles.role_name
+            );
+
+            INSERT INTO performer_profile (
+                public_id,
+                user_id,
+                display_name,
+                description,
+                skills_description,
+                base_country_id,
+                base_region_id,
+                base_city_id,
+                service_radius_km,
+                works_remotely,
+                works_onsite,
+                travel_fee_policy,
+                verification_level,
+                verification_status,
+                rating_average,
+                rating_count,
+                completed_tasks_count,
+                canceled_tasks_count,
+                dispute_count,
+                is_available,
+                is_top_performer,
+                created_at,
+                updated_at
+            )
+            SELECT
+                '06DEVPERFORMERPROFILE00001',
+                performer_user.id,
+                'Dev Handy Pro',
+                'Local fixture performer for HandyNest marketplace smoke checks.',
+                'Repairs, installation and household tasks in Almaty.',
+                country.id,
+                city.region_id,
+                city.id,
+                30,
+                false,
+                true,
+                'Travel inside Almaty is included in the dev fixture price.',
+                'NONE',
+                'NOT_SUBMITTED',
+                0.00,
+                0,
+                0,
+                0,
+                0,
+                true,
+                false,
+                CURRENT_TIMESTAMP,
+                CURRENT_TIMESTAMP
+            FROM handy_user performer_user
+            JOIN country ON country.code = 'KZ'
+            JOIN city ON city.public_id = '06KZCT00000000000000000001'
+            WHERE performer_user.email = 'performer@handynest.dev'
+            ON CONFLICT (user_id) DO UPDATE
+            SET display_name = EXCLUDED.display_name,
+                description = EXCLUDED.description,
+                skills_description = EXCLUDED.skills_description,
+                base_country_id = EXCLUDED.base_country_id,
+                base_region_id = EXCLUDED.base_region_id,
+                base_city_id = EXCLUDED.base_city_id,
+                service_radius_km = EXCLUDED.service_radius_km,
+                works_remotely = EXCLUDED.works_remotely,
+                works_onsite = EXCLUDED.works_onsite,
+                travel_fee_policy = EXCLUDED.travel_fee_policy,
+                is_available = true,
+                updated_at = CURRENT_TIMESTAMP;
+
+            INSERT INTO performer_category (
+                performer_profile_id,
+                category_id,
+                experience_years,
+                price_from,
+                price_to,
+                currency,
+                is_primary,
+                created_at,
+                updated_at
+            )
+            SELECT
+                performer_profile.id,
+                category.id,
+                5,
+                5000.00,
+                25000.00,
+                'KZT',
+                true,
+                CURRENT_TIMESTAMP,
+                CURRENT_TIMESTAMP
+            FROM performer_profile
+            JOIN category ON category.public_id = '06F5Z8NMS7YQE4Q2F4R1HN9EZG'
+            WHERE performer_profile.public_id = '06DEVPERFORMERPROFILE00001'
+            ON CONFLICT (performer_profile_id, category_id) DO UPDATE
+            SET experience_years = EXCLUDED.experience_years,
+                price_from = EXCLUDED.price_from,
+                price_to = EXCLUDED.price_to,
+                currency = EXCLUDED.currency,
+                is_primary = true,
+                updated_at = CURRENT_TIMESTAMP;
+
+            INSERT INTO marketplace_task (
+                public_id,
+                customer_id,
+                category_id,
+                title,
+                description,
+                service_mode,
+                price_type,
+                fixed_price,
+                currency,
+                country_id,
+                region_id,
+                city_id,
+                address_text,
+                status,
+                publication_status,
+                revision_count,
+                expires_at,
+                created_at,
+                updated_at,
+                version
+            )
+            SELECT
+                '06DEVMARKETPLACETASK000001',
+                customer_user.id,
+                category.id,
+                'Dev seed: install kitchen faucet',
+                'Local dev task used for manual offer acceptance checks.',
+                'ONSITE',
+                'FIXED',
+                12000.00,
+                'KZT',
+                country.id,
+                city.region_id,
+                city.id,
+                'Алматы, dev fixture address',
+                'OPEN',
+                'PUBLISHED',
+                0,
+                CURRENT_TIMESTAMP + INTERVAL '30 days',
+                CURRENT_TIMESTAMP,
+                CURRENT_TIMESTAMP,
+                0
+            FROM handy_user customer_user
+            JOIN category ON category.public_id = '06F5Z8NMS7YQE4Q2F4R1HN9EZG'
+            JOIN country ON country.code = 'KZ'
+            JOIN city ON city.public_id = '06KZCT00000000000000000001'
+            WHERE customer_user.email = 'customer@handynest.dev'
+            ON CONFLICT (public_id) DO NOTHING;
+
+            INSERT INTO task_offer (
+                public_id,
+                task_id,
+                performer_id,
+                message,
+                proposed_price,
+                currency,
+                estimated_duration,
+                includes_materials,
+                status,
+                expires_at,
+                created_at,
+                updated_at,
+                version
+            )
+            SELECT
+                '06DEVMARKETPLACEOFFER00001',
+                marketplace_task.id,
+                performer_profile.id,
+                'Dev seed offer for manual acceptance checks.',
+                11000.00,
+                'KZT',
+                '2 hours',
+                true,
+                'PENDING',
+                CURRENT_TIMESTAMP + INTERVAL '14 days',
+                CURRENT_TIMESTAMP,
+                CURRENT_TIMESTAMP,
+                0
+            FROM marketplace_task
+            JOIN performer_profile ON performer_profile.public_id = '06DEVPERFORMERPROFILE00001'
+            WHERE marketplace_task.public_id = '06DEVMARKETPLACETASK000001'
+            ON CONFLICT (public_id) DO NOTHING;
+        ]]></sql>
+    </changeSet>
+
+    <changeSet id="2026-06-07-04-dev-customer-profile-backfill" author="codex" context="dev">
+        <comment>Ensure local/dev fixture users always have canonical customer profiles.</comment>
+        <sql><![CDATA[
+            INSERT INTO customer_profile (
+                user_id,
+                rating_average,
+                rating_count,
+                completed_orders_count,
+                canceled_orders_count,
+                dispute_count,
+                no_show_count,
+                created_at,
+                updated_at
+            )
+            SELECT handy_user.id, 0.00, 0, 0, 0, 0, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM handy_user
+            WHERE handy_user.email IN (
+                'customer@handynest.dev',
+                'performer@handynest.dev',
+                'admin@handynest.dev'
+            )
+              AND NOT EXISTS (
+                  SELECT 1
+                  FROM customer_profile existing
+                  WHERE existing.user_id = handy_user.id
+              );
+        ]]></sql>
+    </changeSet>
+</databaseChangeLog>
